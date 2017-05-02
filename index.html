@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Idea Lab</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="Band of Ideas">
+    <meta name="keywords" content="music,ideas,bands,collaboration,share,message,videos,audio">
+    <meta name="author" content="KHOOF">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="css/bootstrap-3.3.7.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="css/bootstrap-theme-3.3.7.min.css">
+    <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+    <!-- App Styling -->
+    <link rel="stylesheet" href="css/home.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
+    <!-- Dependencies - Latest compiled and minified JavaScript -->
+    <script src="../js/dependencies/jquery/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script src="../js/dependencies/bootstrap/bootstrap-3.3.7.min.js" type="text/javascript"></script>
+    <script src="../js/dependencies/angular/angular-1.5.8.min.js" type="text/javascript"></script>
+    <script src="../js/dependencies/angular/angular-route-1.5.8.min.js" type="text/javascript"></script>
+    <script src="../js/dependencies/angular/angular-mocks-1.5.8.js" type="text/javascript"></script>
+    <script src="../js/dependencies/angular/angular-resource-1.5.8.min.js" type="text/javascript"></script>
+    <!-- TODO Remove the line below when finished. -->
+    <script src="https://apis.google.com/js/client.js" type="text/javascript"></script>
+  </head>
+  <body ng-app="myApp">
+    <div class="header">
+      <nav class="navbar navbar-default navbar-static-top">
+        <ul id="navRoutes" class="nav navbar-nav">
+          <li><a href="/#/home">Home</a></li>
+          <li><a href="/#/music">Music</a></li>
+          <li><a href="/#/upload">Upload</a></li>
+          <li><a href="/#/comment">Leave A Comment</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="container" ng-view></div>
+
+
+    <div class="footer">
+      <div class="container">
+        <p>Made by Kyle Vanderhoof - 2017</p>
+      </div>
+    </div>
+
+    
+    <!-- Managers -->
+    <script src="js/managers/app.js" type="text/javascript"></script>
+    <script src="js/managers/drive.js" type="text/javascript"></script>
+    <script src="js/managers/settings.js" type="text/javascript"></script>
+
+    <!-- Objects -->
+    <script src="js/objects/folder.js" type="text/javascript"></script>
+    <script src="js/objects/file.js" type="text/javascript"></script>
+    <script src="js/objects/audio.js" type="text/javascript"></script>
+    <script src="js/objects/test.js" type="text/javascript"></script>
+
+    <!-- Controllers -->
+    <script src="js/controllers/mainController.js" type="text/javascript"></script>
+    <script src="js/controllers/musicController.js" type="text/javascript"></script>
+    <script src="js/controllers/commentController.js" type="text/javascript"></script>
+    <script src="js/controllers/webController.js" type="text/javascript"></script>
+    <script src="js/controllers/uploadController.js" type="text/javascript"></script>
+
+    <!-- Disqus -->
+    <script src="js/managers/disqus.js" type="text/javascript"></script>
+    <script id="dsq-count-scr" src="//idea-app.disqus.com/count.js" async></script>
+
+    <!-- Directives -->
+    <script src="js/directives/loading.js" type="text/javascript"></script>
+  </body>
+</html>

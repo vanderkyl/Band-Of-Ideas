@@ -1,0 +1,446 @@
+html, body {
+  background: #F5F5F5;
+  margin: 0;
+  padding: 0;
+  font-family: 'Century Gothic', sans-serif;
+  width:100%;
+}
+
+.container {
+  width: 98%;
+}
+
+.main #disqus_thread {
+  margin-left: 30px;
+  margin-right: 30px;
+}
+
+.navbar-nav {
+  font-size: 24px;
+  color: #777;
+  position: relative;
+  display: block;
+}
+
+.navbar-nav img {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  margin-left: 80px;
+}
+
+.navbar-nav img:hover {
+  background-color: rgba(51, 122, 183, 0.13);
+  transition: background 1500ms;
+  border-radius: 50px;
+}
+
+#navRoutes {
+  margin-left: 20px;
+}
+
+#navTool1 {
+  display: block;
+}
+
+#navTool2 {
+  display: none;
+  margin-top: 9%;
+}
+
+.navTools {
+  margin-right: 40px;
+  margin-top: 7px;
+}
+
+.header {
+  padding: 15px;
+}
+
+.header img {
+  display: inline-block;
+}
+
+.header h1 {
+  display: inline-block;
+  text-align: center;
+  margin-left: -30px;
+}
+
+.main {
+  padding: 50px 0;
+}
+
+.main h1 {
+  color: #444;
+  font-size: 64px;
+  margin: 0 0 50px 0;
+  line-height: 60px;
+  width: 100%;
+  text-align: center;
+}
+
+.main h2 {
+  background-color: #444;
+  color: #FFF;
+  font-size: 20px;
+  padding: 20px 0;
+  text-align: center;
+  margin-right: 0px;
+  margin-bottom: 40px;
+}
+
+.inputs {
+  font-size: 12px;
+  margin: 0 0 40px 0;
+  text-align: center;
+}
+
+.buttons {
+  font-size: 12px;
+  margin: 0 0 40px 0;
+  text-align: center;
+}
+
+.player {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  position: relative;
+  border-radius: 10px;
+  margin-bottom: 50px;
+  text-align: center;
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+
+.player:hover {
+  background-color: #ddd;
+  transition: background 50ms;
+}
+
+#audioPlayer {
+  text-align: center;
+  position: relative;
+  font-size: 16px;
+  z-index: 1000;
+  width: 70%;
+  margin-left: 15%;
+  display: none;
+}
+
+.thumbnail {
+  border: 0px;
+  position: relative;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  border-radius: 5px;
+  margin-bottom: 50px;
+}
+
+.button {
+}
+
+.file {
+  padding: 50px
+}
+
+.file, .folder , .homeButton, .navTools, .fileTitle {
+  cursor: pointer;
+  cursor: hand;
+}
+
+.file:hover, .folder:hover, .homeButton:hover{
+  background-color: rgba(51, 122, 183, 0.13);
+  transition: background 500ms;
+}
+
+#audio {
+  width: 100%;
+  display: none;
+}
+
+#audioId {
+  width: 100%;
+  display: block;
+}
+
+#video {
+  position: relative;
+	padding-bottom: 56.25%; /* 16:9 */
+	padding-top: 25px;
+	height: 0;
+  display: none;
+}
+
+#videoId {
+  position: relative;
+	padding-bottom: 56.25%; /* 16:9 */
+	padding-top: 25px;
+	height: 0;
+  display: block;
+}
+
+#video iframe, #videoId iframe {
+  position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+#loading {
+  display: none;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+#file {
+  display: none;
+  position: relative;
+}
+
+#file .fileButtons {
+  margin-right: 30px;
+  margin-bottom: 5px;
+}
+
+.fileButtons img {
+  width: 30px;
+  height: 30px;
+}
+
+#loadSongs {
+  cursor: pointer;
+  cursor: hand;
+  border: 0px;
+  position: relative;
+  padding: 50px;
+  border-radius: 0;
+  margin-bottom: 50px;
+  text-align: center;
+  display: none;
+}
+
+#loginButton {
+  cursor: pointer;
+  cursor: hand;
+  border: 0px;
+  position: relative;
+  padding: 50px;
+  border-radius: 0;
+  margin-bottom: 50px;
+  text-align: center;
+  display: block;
+}
+
+#loadTestButton {
+  cursor: pointer;
+  cursor: hand;
+  border: 0px;
+  position: relative;
+  padding: 50px;
+  border-radius: 0;
+  margin-bottom: 50px;
+  text-align: center;
+  display: none;
+}
+
+#driveLogin2 {
+  display: none;
+}
+
+#driveLogin:hover #driveLogin1 {
+  display: none;
+}
+
+#driveLogin:hover #driveLogin2 {
+  display: block;
+}
+
+#driveLogin:after #driveLogin2 {
+  display: none;
+}
+
+#homeButtons {
+  margin-left: 30px;
+  margin-right: 30px;
+}
+
+#loadDisqus {
+  cursor: pointer;
+  cursor: hand;
+  border: 0px;
+  position: relative;
+  border-radius: 0;
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.title {
+  color: #444;
+  margin-bottom: 30px;
+  font-size: 2.5vh;
+  font-weight: 200;
+}
+
+.homeButton {
+  margin-bottom: 15px;
+  color: #444;
+  font-size: 4vmax;
+  text-align: center;
+}
+
+.folderTitle {
+  color: #444;
+  margin: 0;
+  font-size: 3vmax;
+  text-align: center;
+}
+
+.folder:hover .folderTitle, .homeButton:hover .folderTitle {
+  color: black;
+  text-shadow: 0px 1px #0f0f0f;
+}
+
+.folder:active, .homeButton:active {
+  background-color: rgba(20, 54, 81, 0.66);
+}
+
+.folder:active .folderTitle {
+  color: white;
+}
+
+.homeButton:active .folderTitle {
+  color: white;
+}
+
+.fileTitle {
+  color: #444;
+  margin: 0;
+  font-size: 30px;
+  font-weight: 800;
+}
+
+.fileSize {
+  color: #a3a3a3 ;
+  font-size: 14px;
+  font-weight: 200;
+  text-align: right;
+  width: 102%;
+}
+
+#file .fileSize {
+  padding-right: 2%;
+}
+
+.fileViews {
+  color: #a3a3a3 ;
+  font-size: 20px;
+  font-weight: 200;
+  padding: 0;
+  position: absolute;
+}
+
+.fileButtons {
+  text-align: right;
+  -webkit-user-select: none;
+    -moz-user-select: none;
+     -ms-user-select: none;
+  margin: 0px 20px -30px 20px;
+}
+
+.likes {
+  background: #3CB371;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 19px;
+  line-height: 50px;
+  min-width: 50px;
+  height: 50px;
+  border-radius: 5%;
+  margin: 0 -30px 0 40px;
+  text-align: center;
+  font-weight: 200;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: background 500ms;
+}
+
+.closeFile {
+  background: #4285f4;
+  color: #d6d6d6;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 19px;
+  line-height: 30px;
+  min-width: 30px;
+  height: 33px;
+  border-radius: 5%;
+  margin: 0 5px 0 40px;
+  text-align: center;
+  font-weight: 400;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: background 500ms;
+  float: right;
+}
+
+.download {
+  background: #F65A5B;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 19px;
+  line-height: 50px;
+  min-width: 50px;
+  height: 50px;
+  border-radius: 5%;
+  margin: 0 -30px 0 40px;
+  text-align: center;
+  font-weight: 200;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: background 500ms;
+}
+
+.download:hover {
+  color: #F65A5B;
+  background: rgba(246, 90, 91, 0.25);
+  transition: background 500ms;
+}
+
+.closeFile:hover {
+  color: #343434;
+  background: rgba(68, 142, 255, 0.59);
+  transition: background 500ms;
+}
+
+.likes:hover {
+  color: #2c7044;
+  background: rgba(5, 234, 65, 0.09);
+  transition: background 500ms;
+}
+
+.likes:active,
+.download:active,
+.closeFile:active {
+  background: white;
+  transition: background 500ms;
+}
+
+.video {
+  width: 100% !important;
+  height: auto !important;
+}
+
+.footer {
+  text-align: center;
+  margin: 80px 0 110px;
+}
+
+.footer h2 {
+  font-size: 24px;
+  margin-bottom: 25px;
+}
+
+.footer img {
+   margin: 0 10px;
+}

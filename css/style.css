@@ -1,0 +1,156 @@
+#authorize-div {
+    position: relative;
+    height: auto;
+    display: none;
+}
+
+#system {
+  position: relative;
+  width: 100%
+}
+
+#sun {
+    position: relative;
+    /* Positions the top-left corner of the image to be *
+    /* in the middle of the box */
+    left: 48%;
+    z-index: 1000;
+
+    /* Play with these numbers to see what it does */
+    height: 50px;
+    width: 50px;
+
+    border-color: orange;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 50%;
+
+    box-shadow: 0 0 128px red;
+}
+
+.driveSun {
+  cursor: pointer;
+  cursor: hand;
+}
+
+#sun p {
+  text-align: center;
+  font-size: 30px;
+  color: #444;
+  left: 109%;
+  position: relative;
+  float: right;
+}
+
+#sun:hover {
+  border-color: white;
+  box-shadow: 0 0 128px white;
+}
+
+img:active {
+  border-color: white;
+}
+
+#earth {
+  /* Style your earth */
+  position: absolute;
+  top: 8%;
+  left: 50%;
+
+  z-index: 2;
+  height: 20px;
+  width: 20px;
+  margin-left: -25px;
+  margin-top:-25px;
+
+  border-color: white;
+  border-width: 3px;
+  border-style: solid;
+  border-radius: 50%;
+
+  box-shadow: 0 0 128px blue;
+}
+
+#earth-orbit {
+  position: absolute;
+  bottom: -150%;
+  left: 37%;
+  right: 37.5%;
+  margin: auto;
+
+  z-index: 1;
+  height: 200px;
+  width: 200px;
+
+  border-color: #d9edf7;
+  border-width: 2px;
+  border-style: dotted;
+  border-radius: 50%;
+
+  -webkit-animation: spin-right 12s linear infinite;
+   -moz-animation: spin-right 12s linear infinite;
+    -ms-animation: spin-right 12s linear infinite;
+     -o-animation: spin-right 12s linear infinite;
+        animation: spin-right 12s linear infinite;
+}
+
+#moon {
+  /* Style your earth */
+  position: absolute;
+  top: 0;
+  left: 50%;
+
+  height: 20px;
+  width: 20px;
+  margin-left: -10px;
+  margin-top: -10px;
+
+  border-color: white;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 50%;
+
+  box-shadow: 0 0 128px green;
+}
+
+#moon-orbit {
+  position: inherit;
+
+  top: 0;
+  left: 50%;
+  height: 150px;
+  width: 150px;
+  margin-left: -75px;
+  margin-top: -75px;
+
+  border-color: white;
+  border-width: 2px;
+  border-style: dotted;
+  border-radius: 50%;
+
+  -webkit-animation: spin-right 3s linear infinite;
+   -moz-animation: spin-right 3s linear infinite;
+    -ms-animation: spin-right 3s linear infinite;
+     -o-animation: spin-right 3s linear infinite;
+        animation: spin-right 3s linear infinite;
+}
+
+@-webkit-keyframes spin-right {
+  100% {
+    -webkit-transform: rotate(360deg);
+       -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+         -o-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@keyframes spin-right {
+  100% {
+    -webkit-transform: rotate(360deg);
+       -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+         -o-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
