@@ -60,4 +60,3 @@ $.fn.scrollView = function () {
         }, 1000);
     });
 }
-
