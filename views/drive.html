@@ -1,0 +1,74 @@
+<div>
+  <!-- Loading Animation -->
+  <loading id="loading"></loading>
+
+  <!-- Login to Google Drive -->
+  <div id="authorize-div" class="col-md-12">
+    <div id="loginButton" class="thumbnail folder button" onclick="handleAuthClick(event);">
+      <p class="title folderTitle">{{ loginMessage }}</p>
+    </div>
+    <div id="loadTestButton" class="thumbnail folder button" onclick="loadTestFiles();">
+      <p class="title folderTitle">{{ testMessage }}</p>
+    </div>
+  </div>
+  <!-- Button to load initial folder -->
+  <div id="loadSongs" class="thumbnail folder button" ng-click="getFiles();">
+    <p class="title folderTitle">Enter</p>
+  </div>
+  <!-- Container that holds all folders -->
+  <div class="container">
+    <div ng-repeat="folder in folders" class="col-md-6">
+      <div class="thumbnail folder" ng-click="openFolder($index)">
+        <p class="folderTitle">{{ folder.name }}</p>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <!-- Container that holds an opened file -->
+  <div id="audioPlayer" class="col-md-12">
+    <div id="trackName" class="col-md-12 fileTitle">{{ file.name }}</div>
+    <div id="playButton" class="col-md-4 player" onclick="playAudio();">Play</div>
+    <div id="pauseButton" class="col-md-4 player" onclick="pauseAudio();">Pause</div>
+    <div id="quitButton" class="col-md-4 player" onclick="quitPlayer();">Quit Player</div>
+  </div>
+  <div id="file" class="container">
+    <br><br><br>
+    <p class="closeFile" ng-click="closeFile()"> x </p>
+    <p class="fileTitle" ng-click="goToFilePage()">{{ file.name }}</a></p>
+    <br><br><br>
+    <audio id="audio" preload="auto" controls>
+      <source id="m4aSource" ng-src="{{ file.path }}" type="audio/mp4" />
+      <p>Your browser does not support HTML5 audio.</p>
+    </audio>
+    <div id="video">
+      <iframe src="{{ file.previewPath }}"></iframe>
+    </div>
+    <br>
+    <p class="fileViews">{{ file.views }} view(s)</p>
+    <p class="fileSize">{{ file.size }}</p>
+    <div class="fileButtons">
+      <p class="likes" ng-click="plusOneOnFile()">+{{ file.likes }}</p>
+      <p class="download" ng-click="downloadFromFile()"><img src="img/downloadButton.png"></p>
+    </div>
+    <br>
+    <div id="disqus_thread"></div>
+    <br>
+  </div>
+  <hr>
+  <!-- Container that holds all files -->
+  <div id="files" class="container">
+    <div ng-repeat="song in files" class="col-md-6">
+      <div id="{{ song.id }}" class="thumbnail file" ng-click="openFile($index)">
+        <p class="title">{{ song.name }}</p>
+        <p class="fileSize">{{ song.size }}</p>
+        <div>
+          <p class="fileViews col-md-6">{{ song.views }} view(s)</p>
+          <div class="fileButtons">
+            <p class="likes" ng-click="plusOne($index)">+{{ song.likes }}</p>
+            <p class="download" ng-click="download($index)"><img src="img/downloadButton.png"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

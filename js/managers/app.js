@@ -17,6 +17,10 @@ app.config(function ($routeProvider) {
     controller: 'musicController',
     templateUrl: 'views/music.html'
   })
+  .when('/drive', {
+    controller: 'driveController',
+    templateUrl: 'views/drive.html'
+  })
   .when('/upload', {
     controller: 'uploadController',
     templateUrl: 'views/upload.html'
