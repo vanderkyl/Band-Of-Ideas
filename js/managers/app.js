@@ -13,6 +13,10 @@ app.config(function ($routeProvider) {
     controller: 'mainController',
     templateUrl: 'views/home.html'
   })
+  .when('/user', {
+    controller: 'mainController',
+    templateUrl: 'views/user.html'
+  })
   .when('/music', {
     controller: 'musicController',
     templateUrl: 'views/music.html'

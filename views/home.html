@@ -1,11 +1,13 @@
 <div class="main">
   <div class="container">
-    <h1><strong>{{ title }}</strong></h1>
-    <h2>{{ message }}</h2>
     <div id="homeButtons">
-      <div id="driveLogin" class="col-md-12 thumbnail homeButton button" ng-click="navigateToSongIdeas();">
-        <div id="driveLogin1">Log In</div>
-        <div id="driveLogin2">Log into Idea Manager with your Google account.</div>
+      <div id="signIn" class="col-md-12 thumbnail homeButton button" ng-click="signIn();">
+        <div id="signInMessage1">Welcome Back</div>
+        <div id="signInMessage2">Sign In</div>
+      </div>
+      <div id="bands" class="col-md-12 thumbnail homeButton button">
+        <div id="createBand">Create a Band</div>
+        <div id="createBandButton" ng-click="createBand();">+</div>
       </div>
     </div>
   </div>

@@ -7,6 +7,27 @@ var FILE_LIST = [];
 var FOLDER_ID = "0BysYdC4iJkFUb1Rpbm1ySFNFNEE";
 var filesReady = false;
 
+/**
+ * Check if current user has authorized this application.
+ */
+function googleLogin() {
+  console.log("Checking authorization...");
+  gapi.client.setApiKey(API_KEY);
+  gapi.auth.authorize(
+      {
+          'client_id': CLIENT_ID,
+          'scope': SCOPES.join(' '),
+          'immediate': true
+      }, onSignIn);
+}
+
+function onSignIn(googleUser) {
+  var profile = googleUser.getBasicProfile();
+  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+  console.log('Name: ' + profile.getName());
+  console.log('Image URL: ' + profile.getImageUrl());
+  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+}
 
 /**
  * Check if current user has authorized this application.

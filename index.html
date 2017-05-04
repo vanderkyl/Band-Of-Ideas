@@ -7,6 +7,7 @@
     <meta name="keywords" content="music,ideas,bands,collaboration,share,message,videos,audio">
     <meta name="author" content="KHOOF">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-signin-client_id" content="528197877151-u6dq0rnndrkjcsflhfc7550dnleu9vju.apps.googleusercontent.com">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="css/bootstrap-3.3.7.min.css">
@@ -23,8 +24,10 @@
     <script src="../js/dependencies/angular/angular-route-1.5.8.min.js" type="text/javascript"></script>
     <script src="../js/dependencies/angular/angular-mocks-1.5.8.js" type="text/javascript"></script>
     <script src="../js/dependencies/angular/angular-resource-1.5.8.min.js" type="text/javascript"></script>
-    <!-- TODO Remove the line below when finished. -->
+    <!-- TODO Remove the line below when finished.
     <script src="https://apis.google.com/js/client.js" type="text/javascript"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script> -->
+
   </head>
   <body ng-app="myApp">
     <div>
@@ -48,9 +51,13 @@
               <li class="navButtons"><a href="/#/music">Music</a></li>
               <li class="navButtons"><a href="/#/drive">Google Drive</a></li>
               <li class="navButtons"><a href="/#/upload">Upload</a></li>
-              <li class="navButtons"><a href="/#/comment">Leave A Comment</a></li>
             </ul>
-            <form class="navbar-form navbar-left">
+            <ul class="nav navbar-nav navbar-right">
+              <li id="signIn" class="navButtons" onclick="signIn()"><a href="/#/user">Sign In</a></li>
+              <li id="signOut" class="navButtons" onclick="signOut()"><a href="/#/home">Sign Out</a></li>
+            </ul>
+
+            <form class="navbar-form navbar-right">
               <div class="form-group">
                 <input type="text" class="form-control" placeholder="Search">
               </div>
@@ -62,7 +69,6 @@
     </div>
 
     <div class="container" ng-view></div>
-
 
     <div class="footer">
       <div class="container">

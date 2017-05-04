@@ -1,7 +1,5 @@
 app.controller('mainController', ['$scope',
 function($scope) {
-  $scope.title = 'Band of Ideas';
-  $scope.message = '';
   $scope.navigateToSongIdeas = function() {
     navigateToURL("/#/music");
   };
@@ -9,3 +7,11 @@ function($scope) {
     navigateToURL("/#/comment");
   };
 }]);
+function signIn() {
+  hideElementById("signIn");
+  displayElementById("signOut");
+};
+function signOut() {
+  hideElementById("signOut");
+  displayElementById("signIn");
+};

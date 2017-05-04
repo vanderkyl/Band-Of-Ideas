@@ -1,20 +1,4 @@
 <div>
-  <!-- Loading Animation -->
-  <loading id="loading"></loading>
-
-  <!-- Login to Google Drive -->
-  <div id="authorize-div" class="col-md-12">
-    <div id="loginButton" class="thumbnail folder button" onclick="handleAuthClick(event);">
-      <p class="title folderTitle">{{ loginMessage }}</p>
-    </div>
-    <div id="loadTestButton" class="thumbnail folder button" onclick="loadTestFiles();">
-      <p class="title folderTitle">{{ testMessage }}</p>
-    </div>
-  </div>
-  <!-- Button to load initial folder -->
-  <div id="loadSongs" class="thumbnail folder button" ng-click="getFiles();">
-    <p class="title folderTitle">Enter</p>
-  </div>
   <!-- Container that holds all folders -->
   <div class="container">
     <div ng-repeat="folder in folders" class="col-md-6">

@@ -14,13 +14,16 @@ html, body {
 .navbar>.container .navbar-brand {
   margin-left: 0px;
 }
+.navbar>.container .navbar-brand:hover {
+  background: #444;
+}
 
 .navbar-inverse .navbar-nav>li>a, .navbar-default .navbar-brand {
   color: white;
 }
 
 .navButtons:hover {
-  background: #cecece;
+  background: #444;
   text-decoration: none;
 }
 
@@ -204,19 +207,23 @@ html, body {
   display: none;
 }
 
-#driveLogin2 {
+#signOut {
   display: none;
 }
 
-#driveLogin:hover #driveLogin1 {
+#signInMessage2 {
   display: none;
 }
 
-#driveLogin:hover #driveLogin2 {
+#signIn:hover #signInMessage1 {
+  display: none;
+}
+
+#signIn:hover #signInMessage2 {
   display: block;
 }
 
-#driveLogin:after #driveLogin2 {
+#signIn:after #signInMessage2 {
   display: none;
 }
 
