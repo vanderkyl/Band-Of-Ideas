@@ -106,12 +106,12 @@ html, body {
   padding: 50px
 }
 
-.file, .folder , .homeButton, .fileTitle {
+.file, .folder , .homeButton, .fileTitle, #signUpForm {
   cursor: pointer;
   cursor: hand;
 }
 
-.file:hover, .folder:hover, .homeButton:hover{
+.file:hover, .folder:hover, .homeButton:hover, #signUpForm:hover {
   background-color: rgba(51, 122, 183, 0.13);
   transition: background 500ms;
 }
@@ -207,23 +207,15 @@ html, body {
   display: none;
 }
 
+#signInButton {
+  margin-top: 8px;
+}
+
 #signOut {
   display: none;
 }
 
 #signInMessage2 {
-  display: none;
-}
-
-#signIn:hover #signInMessage1 {
-  display: none;
-}
-
-#signIn:hover #signInMessage2 {
-  display: block;
-}
-
-#signIn:after #signInMessage2 {
   display: none;
 }
 
@@ -240,6 +232,68 @@ html, body {
   border-radius: 0;
   margin-bottom: 50px;
   text-align: center;
+}
+
+#authentication {
+  left: 10%;
+  width: 80%;
+}
+
+.mainForm {
+  background-color: #265a88;
+  position: relative;
+  margin: 0 auto;
+  font-size: 18px;
+}
+
+.mainForm h3 {
+  color: #FFF;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.mainForm input {
+  width: 100%;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  padding: 12px 20px;
+  border-radius: 2px;
+  text-align: center;
+}
+
+.form input[type=button], .form input[type=reset] {
+  background-color: rgb(58, 58, 58);
+  color: #FFF;
+}
+
+.form input[type=button]:hover, .form input[type=reset]:hover {
+  background-color: #333;
+}
+
+.form {
+  width: 100%;
+  padding: 20px 35px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  border-radius: 10px;
+  background-color: #265a88;
+}
+
+.form input {
+  padding: 12px 20px;
+}
+
+.dropdown-menu {
+  padding: 20px 20px;
+  text-align: center;
+  width: 500px;
+  background-color: rgb(58, 58, 58);
+}
+
+.dropdown-menu input {
+  width: 100%;
 }
 
 .title {
@@ -263,12 +317,12 @@ html, body {
   text-align: center;
 }
 
-.folder:hover .folderTitle, .homeButton:hover .folderTitle {
+.folder:hover .folderTitle, .homeButton:hover .folderTitle, #signUpForm:hover h3{
   color: black;
   text-shadow: 0px 1px #0f0f0f;
 }
 
-.folder:active, .homeButton:active {
+.folder:active, .homeButton:active , #signUpForm:active {
   background-color: rgba(20, 54, 81, 0.66);
 }
 

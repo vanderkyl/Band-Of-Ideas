@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Idea Lab</title>
+    <title>BoI</title>
     <meta charset="UTF-8">
     <meta name="description" content="Band of Ideas">
     <meta name="keywords" content="music,ideas,bands,collaboration,share,message,videos,audio">
@@ -41,7 +41,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/#/home">BAND OF IDEAS</a>
+            <a class="navbar-brand" href="/#/user">BAND OF IDEAS</a>
           </div>
 
           <!-- Collect the nav links, forms, and other content for toggling -->
@@ -52,10 +52,29 @@
               <li class="navButtons"><a href="/#/drive">Google Drive</a></li>
               <li class="navButtons"><a href="/#/upload">Upload</a></li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-              <li id="signIn" class="navButtons" onclick="signIn()"><a href="/#/user">Sign In</a></li>
+            <div class="nav navbar-nav navbar-right dropdown">
+              <div id="signInButton">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Sign In
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  <div class="form">
+                    <form name="signIn">
+                      <input type="text" name="email" placeholder="Email"/>
+                      <input type="password" name="pswrd" placeholder="Password"/>
+                      <input type="button" onclick="login(this.form)" value="Login"/>
+                      <input type="reset" value="Cancel"/>
+                    </form>
+                  </div>
+                  <hr>
+                  <div>
+                    <h2><a href="/#/">Join a Band!</a></h2>
+                  </div>
+                  <h2 id="accountOutput"></h2>
+                </ul>
+              </div>
               <li id="signOut" class="navButtons" onclick="signOut()"><a href="/#/home">Sign Out</a></li>
-            </ul>
+            </div>
 
             <form class="navbar-form navbar-right">
               <div class="form-group">

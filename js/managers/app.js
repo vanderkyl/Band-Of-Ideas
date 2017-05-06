@@ -7,7 +7,7 @@ app.factory('folders', function () {
 app.config(function ($routeProvider) {
   $routeProvider.when('/', {
     controller: 'mainController',
-    templateUrl: 'views/home.html'
+    templateUrl: 'views/user.html'
   })
   .when('/home', {
     controller: 'mainController',
