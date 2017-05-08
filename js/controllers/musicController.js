@@ -1,7 +1,5 @@
 app.controller('musicController', ['$scope', '$sce',
 function($scope, $sce) {
-  $scope.loginMessage = "Logging In";
-  $scope.testMessage = "Load Test Files";
   // Folders
   $scope.folders = [];
   $scope.folderName = "";
@@ -134,24 +132,6 @@ function($scope, $sce) {
       this.$apply(fn);
     }
   };
-  
-  //TODO remove log in button when reentering
-  // If a folder is already open get the files, else log in.
-  if (FILE_LIST.length !== 0) {
-    $scope.getFiles();
-    hideElementById("authorize-div");
-  } else {
-    displayElementById("authorize-div");
-    if (getParameterByName("test") === "true") {
-        console.log(getParameterByName("test"));
-        displayElementById("loadTestButton");
-    } else {
-        try {
-            checkAuth();
-        } catch (err) {
-            $scope.loginMessage = "Log In";
-            console.log("Authorization failed. Please log in.");
-        }
-    }
-  }
+
+  $scope.folderName = currentBand;
 }]);

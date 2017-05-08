@@ -1,40 +1,48 @@
 <div id="authentication" class="col-md-12">
   <div id="signUpForm" class="mainForm form col-sm-12" ng-click="openBandForm()">
-    <form name="signUp">
-      <div id="startBand">
-        <h3>Start a<br>
-          BAND OF IDEAS
-        </h3>
-      </div>
-      <div id="startBandForm" style="display: none">
-        <input type="text" name="bandName" placeholder="Band Name"/>
-        <input type="text" name="firstName" placeholder="First Name" class="col-md-6"/>
-        <input type="text" name="lastName" placeholder="Last Name" class="col-md-6"/>
-        <input type="text" name="email" placeholder="Email"/>
-        <input type="password" name="password" placeholder="Password"/>
-        <input type="password" name="passwordAgain" placeholder="Password Again"/>
-        <input type="button" onclick="joinTheBand(this.form)" value="Join The Band"/>
+    <div id="startBand">
+      <h3>Start a<br>
+        BAND OF IDEAS
+      </h3>
+    </div>
+    <div id="startBandForm">
+      <form name="signUp">
+        <input id="bandName" type="text" name="bandName" placeholder="Band Name" ng-model="user.bands[0]" required/>
+        <input id="firstName" type="text" name="firstName" placeholder="First Name" class="col-md-6" ng-model="user.firstName"/>
+        <input id="lastName" type="text" name="lastName" placeholder="Last Name" class="col-md-6" ng-model="user.lastName"/>
+        <input id="signUpEmail" type="text" name="email" placeholder="Email" ng-model="user.email" required/>
+        <input id="signUpPassword" type="password" name="password" placeholder="Password" ng-model="user.password" required/>
+        <input id="passwordAgain" type="password" name="passwordAgain" placeholder="Password Again" ng-model="user.passwordAgain" required/>
+        <input type="submit" ng-click="joinTheBand()" value="Join The Band"/>
         <input type="reset" value="Cancel"/>
-      </div>
-  </form>
-</div>
-  <div id="signInForm" class="mainForm form col-sm-12" >
+      </form>
+    </div>
+  </div>
+  <div id="signInForm" class="mainForm form col-sm-12">
     <form name="signIn">
       <h3>or<br>Sign In</h3>
-      <input type="text" name="email" placeholder="Email"/>
-      <input type="password" name="password" placeholder="Password"/>
-      <input type="button" onclick="login(this.form)" value="Login"/>
+      <input id="signInEmail" type="text" name="email" placeholder="Email" ng-model="user.email" required/>
+      <input id="signInPassword" type="password" name="password" placeholder="Password" ng-model="user.password" required/>
+      <input type="submit" ng-click="login()" value="Login"/>
       <input type="reset" value="Cancel"/>
     </form>
   </div>
-<h2 id="accountOutput"></h2>
-<script language="javascript">
-function check(form)/*function to check userid & password*/
-{
-  console.log("Win");
-}
+</div>
 
-</script>
+<div id="accountInformation">
+  <div ng-repeat="band in user.bands" class="col-md-12">
+    <div class=" thumbnail folder buttons" ng-click="enterBand($index)">
+      <h2>{{ band }}</h2>
+    </div>
+  </div>
+  <div class="thumbnail folder buttons col-md-12" ng-click="addBand()">
+    <h2>Add a Band</h2>
+  </div>
+
+  <h2>Name: {{ user.firstName }} {{ user.lastName }}</h2>
+  <h2>Email: {{ user.email }}</h2>
+</div>
+
 <!-- function onLogin($user) {
     $token = GenerateRandomToken(); // generate a token, should be 128 - 256 bit
     storeTokenForUser($user, $token);

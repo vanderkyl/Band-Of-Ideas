@@ -111,7 +111,7 @@ html, body {
   cursor: hand;
 }
 
-.file:hover, .folder:hover, .homeButton:hover, #signUpForm:hover {
+.file:hover, .folder:hover, .homeButton:hover {
   background-color: rgba(51, 122, 183, 0.13);
   transition: background 500ms;
 }
@@ -211,7 +211,7 @@ html, body {
   margin-top: 8px;
 }
 
-#signOut {
+#signOutButton {
   display: none;
 }
 
@@ -234,9 +234,26 @@ html, body {
   text-align: center;
 }
 
+.accountLinks a:hover{
+  color: white;
+}
+
+#accountInfoLink {
+  display: none;
+}
+
+#accountInformation {
+  display: none;
+}
+
+#navLinks {
+  display: none;
+}
+
 #authentication {
   left: 10%;
   width: 80%;
+  display: block;
 }
 
 .mainForm {
@@ -262,12 +279,17 @@ html, body {
   text-align: center;
 }
 
-.form input[type=button], .form input[type=reset] {
+.invalidInput {
+  box-shadow: 0 0 10px red;
+  border-color: red;
+}
+
+.form input[type=submit], .form input[type=reset] {
   background-color: rgb(58, 58, 58);
   color: #FFF;
 }
 
-.form input[type=button]:hover, .form input[type=reset]:hover {
+.form input[type=submit]:hover, .form input[type=reset]:hover {
   background-color: #333;
 }
 
@@ -283,6 +305,10 @@ html, body {
 
 .form input {
   padding: 12px 20px;
+}
+
+.form input:focus {
+  border: 1px solid #ccc;
 }
 
 .dropdown-menu {
@@ -317,12 +343,12 @@ html, body {
   text-align: center;
 }
 
-.folder:hover .folderTitle, .homeButton:hover .folderTitle, #signUpForm:hover h3{
+.folder:hover .folderTitle, .homeButton:hover .folderTitle {
   color: black;
   text-shadow: 0px 1px #0f0f0f;
 }
 
-.folder:active, .homeButton:active , #signUpForm:active {
+.folder:active, .homeButton:active {
   background-color: rgba(20, 54, 81, 0.66);
 }
 

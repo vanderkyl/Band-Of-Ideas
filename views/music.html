@@ -1,6 +1,7 @@
 <div>
   <!-- Container that holds all folders -->
   <div class="container">
+    <h2>{{folderName}}</h2>
     <div ng-repeat="folder in folders" class="col-md-6">
       <div class="thumbnail folder" ng-click="openFolder($index)">
         <p class="folderTitle">{{ folder.name }}</p>

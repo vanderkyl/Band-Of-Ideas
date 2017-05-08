@@ -11,7 +11,7 @@ function displayElementById(id) {
 }
 
 function saveItemToLocalStorage(key, value) {
-    localStorage.setItem(key, value);
+    return localStorage.setItem(key, value);
 }
 
 function getItemFromLocalStorage(key) {
