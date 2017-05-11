@@ -1,5 +1,5 @@
-app.controller('mainController', ['$scope',
-function($scope) {
+app.controller('mainController', ['$scope', '$http',
+function($scope, $http) {
   $scope.user = {
     id: "",
     bands: [],
@@ -9,6 +9,8 @@ function($scope) {
     password: "",
     passwordAgain: ""
   };
+  $scope.loginMessage = "";
+  $scope.sqlUser = "";
 
   $scope.login = function() {
     if ($scope.validLogin()) {
@@ -21,16 +23,42 @@ function($scope) {
   };
 
   $scope.joinTheBand = function() {
-    if ($scope.checkValidity()) {
-      console.log("Adding new user.");
-      var newUser = $scope.user;
-      saveUser(newUser);
-      loginUser();
-      console.log("Success!");
-    } else {
-      console.log("Please try again.");
-    }
+    $scope.checkValidity(function(valid) {
+      if (valid) {
+        console.log("Adding new user.");
+        var newUser = $scope.user;
+        $scope.saveUser(function(saved) {
+          if (saved) {
+            loginUser();
+            console.log("Success!");
+          } else {
+            console.log("The user was not added to the database");
+          }
+        });
+      } else {
+        console.log("Please try again.");
+      }
+    });
   };
+
+  $scope.saveUser = function(callback) {
+    var newUser = $scope.user;
+    console.log("saving user");
+    $http.post("addUser.php", newUser)
+    .then(
+      function (response) {
+        console.log(response.data);
+        console.log(response.error);
+        callback(true);
+      },
+      function (response) {
+        console.log(response);
+        console.log(response.data);
+        console.log(response.error);
+        callback(false);
+      }
+    );
+  }
 
   // Open the Sign Up form
   $scope.openBandForm = function() {
@@ -51,17 +79,47 @@ function($scope) {
       user = JSON.parse(getItemFromLocalStorage($scope.user.email));
     }
     return valid;
-  }
+  };
+
+  $scope.getSQLUser = function(email) {
+    $http.get("users.php?email=" + email)
+    .then(function (response) {
+      $scope.loginMessage = response.data;
+      console.log(response.data);
+    });
+  };
 
   // Check the validity of the sign up form input
-  $scope.checkValidity = function() {
+  $scope.checkValidity = function(callback) {
     var valid = true;
-    valid = bandIsValid($scope.bandName) && valid;
-    valid = validSignUpEmail($scope.email) && valid;
-    valid = passwordsMatch($scope.password, $scope.passwordAgain) && valid;
-    valid = checkName($scope.firstName, $scope.lastName) && valid;
-    console.log(valid);
-    return valid;
+    $scope.validEmail(function(validEmail) {
+      valid = validEmail && valid;
+      valid = passwordsMatch($scope.user.password, $scope.user.passwordAgain) && valid;
+      valid = checkName($scope.user.firstName, $scope.user.lastName) && valid;
+      console.log(valid);
+      callback(valid);
+    });
+  };
+
+  $scope.validEmail = function(callback) {
+    var email = $scope.user.email;
+    if (email == "") {
+      console.log("Please give your email.");
+      showInvalidInput("signUpEmail");
+      return false;
+    }
+    $http.get("users.php?email=" + email)
+    .then(function (response) {
+      $scope.loginMessage = response.data;
+      console.log(response.data);
+      if (objectIsEmpty(response.data)) {
+        callback(true);
+      } else {
+        console.log("Sorry, " + email + " already exists.");
+        showInvalidInput("signUpEmail");
+        callback(false);
+      }
+    });
   };
 
   // Check if user is logged in. Show user information instead of authentication forms.

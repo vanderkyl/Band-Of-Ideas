@@ -1,11 +1,22 @@
 <div>
   <!-- Container that holds all folders -->
   <div class="container">
-    <h2>{{folderName}}</h2>
-    <div ng-repeat="folder in folders" class="col-md-6">
+    <h2>{{ bandName }}</h2>
+    <div ng-repeat="folder in folders" class="col-md-12">
       <div class="thumbnail folder" ng-click="openFolder($index)">
         <p class="folderTitle">{{ folder.name }}</p>
       </div>
+    </div>
+    <div id="addFolderInput">
+      <div class="thumbnail buttons col-md-12">
+        <input type="text" name="folderName" placeholder="Folder Name" ng-model="newFolder" required/>
+      </div>
+      <div class="thumbnail folder buttons col-md-12" ng-click="addFolder()">
+        <h2>Add Folder</h2>
+      </div>
+    </div>
+    <div id="addFolder" class="thumbnail folder buttons col-md-12" ng-click="showAddFolderInput()">
+      <h2>Add New Folder</h2>
     </div>
   </div>
   <hr>

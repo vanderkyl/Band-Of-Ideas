@@ -1,5 +1,6 @@
 var bands = [];
-var user = {};
+var user = {}; // This is the current user that is logged in
+var sqlUser = {}; // This is the user that will be checked against when signing up/in
 var currentBand = "";
 
 function saveUser(newUser) {
@@ -63,6 +64,7 @@ function signOut() {
 };
 
 function passwordsMatch(password, passwordAgain) {
+  console.log(password);
   var valid = true;
   if (password == "") {
     console.log("Please give a password.");
@@ -77,6 +79,7 @@ function passwordsMatch(password, passwordAgain) {
   if (password === passwordAgain && valid) {
     return true;
   } else {
+    showInvalidInput("passwordAgain");
     console.log("Sorry, your passwords do not match.");
     return false;
   }
@@ -114,24 +117,6 @@ function bandIsValid(bandName) {
   return true;
 }
 
-function validSignUpEmail(email) {
-  if (email == "") {
-    console.log("Please give your email.");
-    showInvalidInput("signUpEmail");
-    return false;
-  }
-  var userList = getUserList();
-  for (user in userList) {
-    console.log(userList[user].email)
-    if (userList[user].email === email) {
-      console.log("Sorry, " + email + " already exists.");
-      showInvalidInput("signUpEmail");
-      return false;
-    }
-  }
-  return true;
-}
-
 function checkEmail(email) {
   if (email == "") {
     console.log("Please give your email.");
@@ -144,7 +129,6 @@ function checkEmail(email) {
   } else {
     return true;
   }
-  return ;
 }
 
 function checkPassword(email, password) {
@@ -191,4 +175,8 @@ function getUserList() {
     userList = [];
     return userList;
   }
+}
+
+function objectIsEmpty(obj) {
+  return Object.keys(obj).length === 0 && obj.constructor === Object;
 }

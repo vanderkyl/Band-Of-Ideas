@@ -60,3 +60,24 @@ $.fn.scrollView = function () {
         }, 1000);
     });
 }
+
+function httpGet(url, callback) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.responseText);
+    }
+    xmlHttp.open("GET", url, true); // true for asynchronous
+    xmlHttp.send(null);
+}
+
+function httpPost(url, callback) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("POST", url, true); // true for asynchronous
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.responseText);
+    };
+
+    xmlHttp.send(null);
+}

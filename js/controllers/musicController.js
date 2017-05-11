@@ -2,17 +2,22 @@ app.controller('musicController', ['$scope', '$sce',
 function($scope, $sce) {
   // Folders
   $scope.folders = [];
-  $scope.folderName = "";
+  $scope.newFolder = "";
+  $scope.bandName = "";
   // Files
   $scope.files = [];
   $scope.file = {};
   //TODO Create functionality for a recent file selection
 
-  $scope.addFolder = function(folder) {
-    $scope.safeApply(function() {
-      $scope.folders.push(getFolder(folder));
-    });
+  $scope.addFolder = function() {
+    var folderName = $scope.newFolder;
+    $scope.folders.push({name: folderName});
   };
+
+  $scope.showAddFolderInput = function() {
+    hideElementById("addFolder");
+    displayElementById("addFolderInput");
+  }
 
   $scope.addFile = function(file) {
     $scope.safeApply(function() {
@@ -21,14 +26,7 @@ function($scope, $sce) {
   };
 
   $scope.openFolder = function(index) {
-    var folder = $scope.folders[index];
-    var folderId = folder.id;
-    $scope.folderName = folder.name;
-    $scope.clearFilesAndFolders();
-    loadFolder(folderId,
-      $scope.loadFiles,
-      $scope.getFiles,
-      $scope.waitUntilFilesAreLoaded);
+
   };
 
   $scope.openFile = function(index) {
@@ -133,5 +131,5 @@ function($scope, $sce) {
     }
   };
 
-  $scope.folderName = currentBand;
+  $scope.bandName = currentBand;
 }]);

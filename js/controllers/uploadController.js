@@ -9,28 +9,18 @@ function($scope, $http) {
   form.onsubmit = function(event) {
     event.preventDefault();
 
-    // Update button text.
     uploadButton.innerHTML = 'Uploading...';
-
-    // The rest of the code will go here...
-    // Get the selected files from the input.
     var uploadedFiles = fileSelect.files;
-    // Create a new FormData object.
     var formData = new FormData();
-    // Loop through each of the selected files.
     for (var i = 0; i < uploadedFiles.length; i++) {
       var file = uploadedFiles[i];
-
       // Add the file to the request.
       formData.append('files[]', file, file.name);
     }
 
-
     // Set up the request.
     var xhr = new XMLHttpRequest();
-    // Open the connection.
     xhr.open('POST', 'http://www.bandofideas.com/upload.php', true);
-    // Set up a handler for when the request finishes.
     xhr.onload = function () {
       if (xhr.status === 200) {
         // File(s) uploaded.

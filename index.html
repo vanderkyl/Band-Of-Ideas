@@ -71,6 +71,8 @@
                   <div class="accountLinks">
                     <h2 id="joinBandLink"><a href="/#/user">Join a Band!</a></h2>
                     <h2 id="accountInfoLink"><a href="/#/user">Account Info</a></h2>
+                    <div class="btn btn-primary" onclick="clearStorage()">Clear Storage</div>
+                    <div class="btn btn-primary" onclick="showAccounts()">Show Accounts</div>
                   </div>
                 </ul>
               </div>
@@ -87,8 +89,7 @@
         </div>
       </nav>
     </div>
-    <div class="btn btn-primary" onclick="clearStorage()">Clear Storage</div>
-    <div class="btn btn-primary" onclick="showAccounts()">Show Accounts</div>
+
     <div class="container" ng-view></div>
 
     <div class="footer">

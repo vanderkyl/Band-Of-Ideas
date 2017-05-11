@@ -2,7 +2,7 @@
   <div id="signUpForm" class="mainForm form col-sm-12" ng-click="openBandForm()">
     <div id="startBand">
       <h3>Start a<br>
-        BAND OF IDEAS
+        Band of Ideas
       </h3>
     </div>
     <div id="startBandForm">
@@ -27,11 +27,12 @@
       <input type="reset" value="Cancel"/>
     </form>
   </div>
+  <div class="btn btn-primary" ng-click="getSQLUser('v@gmaile.com')">Show Users</div>
 </div>
 
 <div id="accountInformation">
   <div ng-repeat="band in user.bands" class="col-md-12">
-    <div class=" thumbnail folder buttons" ng-click="enterBand($index)">
+    <div class="thumbnail folder buttons" ng-click="enterBand($index)">
       <h2>{{ band }}</h2>
     </div>
   </div>
