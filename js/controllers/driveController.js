@@ -135,23 +135,25 @@ function($scope, $sce) {
     }
   };
 
-  //TODO remove log in button when reentering
-  // If a folder is already open get the files, else log in.
-  if (FILE_LIST.length !== 0) {
-    $scope.getFiles();
-    hideElementById("authorize-div");
-  } else {
-    displayElementById("authorize-div");
-    if (getParameterByName("test") === "true") {
+  if (isLoggedIn()) {
+    //TODO remove log in button when reentering
+    // If a folder is already open get the files, else log in.
+    if (FILE_LIST.length !== 0) {
+      $scope.getFiles();
+      hideElementById("authorize-div");
+    } else {
+      displayElementById("authorize-div");
+      if (getParameterByName("test") === "true") {
         console.log(getParameterByName("test"));
         displayElementById("loadTestButton");
-    } else {
+      } else {
         try {
             checkAuth();
         } catch (err) {
             $scope.loginMessage = "Log In";
             console.log("Authorization failed. Please log in.");
         }
+      }
     }
   }
 }]);

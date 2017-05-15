@@ -54,6 +54,8 @@ function($scope, $http) {
 */
   }
 
-
+  if (isLoggedIn()) {
+    // Do uploady stuff
+  }
 
 }]);

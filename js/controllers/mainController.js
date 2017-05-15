@@ -3,30 +3,106 @@ function($scope, $http) {
   $scope.user = {
     id: "",
     bands: [],
-    firstName: "",
-    lastName: "",
+    name: "",
     email: "",
     password: "",
     passwordAgain: ""
   };
   $scope.loginMessage = "";
   $scope.sqlUser = "";
+  $scope.sqlBand = {};
+  $scope.currentBandCode = "";
+  $scope.newBand = "";
+  var existingBand = "";
 
   $scope.login = function() {
-    if ($scope.validLogin()) {
-      var user = JSON.parse(getItemFromLocalStorage($scope.user.email));
-      console.log(user.email);
-      console.log(user);
-      loginUser();
-      $scope.user = user;
-    }
+    $scope.validLogin(function(valid) {
+      if (valid) {
+        $scope.user = user;
+        console.log(user.email);
+        console.log(user);
+        loginUser();
+      }
+    });
   };
+
+  $scope.validLogin = function(callback) {
+    var valid = true;
+    var email = $scope.user.email;
+    var password = $scope.user.password;
+    $scope.validCreds(function(dbUser) {
+      if (dbUser) {
+        valid = checkEmail(email, dbUser.email) && checkPassword(password, dbUser.password);
+      } else {
+        valid = false;
+      }
+      if (valid) {
+        user = dbUser;
+      }
+      callback(valid);
+    });
+  };
+
+  $scope.validCreds = function(callback) {
+    var email = $scope.user.email;
+    var password = $scope.user.password;
+    if (inputEmpty(email, "signInEmail") || inputEmpty(password, "signInPassword")) {
+      callback(false);
+    }
+    $http.get("getUser.php?email=" + email)
+    .then(function (response) {
+      console.log(response.data);
+      if (objectIsEmpty(response.data)) {
+        console.log("Sorry, " + email + " doesn't exist.");
+        showInvalidInput("signInEmail");
+        callback(false);
+      } else {
+        callback(response.data);
+      }
+
+    });
+  }
+
+  $scope.checkBandAvailability = function() {
+    $http.get("getBand.php?bandName=" + $scope.user.bands[0])
+    .then(function (response) {
+      hideElementById("chooseBand");
+      if (objectIsEmpty(response.data)) {
+        console.log($scope.user.bands[0]);
+        $scope.user.bands = [{id: "",
+                             name: $scope.user.bands[0],
+                             memberIds: "",
+                             code: "1234"}];
+        displayElementById("chooseUser");
+      } else {
+        $scope.sqlBand = response.data;
+        console.log("This band already exists");
+        displayElementById("joinBand");
+      }
+    });
+  };
+
+  $scope.checkBandCode = function() {
+    if (!inputEmpty($scope.currentBandCode, "bandCode")) {
+      if ($scope.sqlBand.code === $scope.currentBandCode) {
+        existingBand = $scope.sqlBand.name;
+        hideElementById("joinBand");
+        displayElementById("chooseUser");
+      } else {
+        console.log("Please try again.");
+        showInvalidInput("bandCode");
+      }
+    }
+  }
 
   $scope.joinTheBand = function() {
     $scope.checkValidity(function(valid) {
       if (valid) {
         console.log("Adding new user.");
         var newUser = $scope.user;
+        console.log($scope.sqlBand);
+        console.log(existingBand);
+        newUser.existingBand = existingBand;
         $scope.saveUser(function(saved) {
           if (saved) {
             loginUser();
@@ -41,61 +117,13 @@ function($scope, $http) {
     });
   };
 
-  $scope.saveUser = function(callback) {
-    var newUser = $scope.user;
-    console.log("saving user");
-    $http.post("addUser.php", newUser)
-    .then(
-      function (response) {
-        console.log(response.data);
-        console.log(response.error);
-        callback(true);
-      },
-      function (response) {
-        console.log(response);
-        console.log(response.data);
-        console.log(response.error);
-        callback(false);
-      }
-    );
-  }
-
-  // Open the Sign Up form
-  $scope.openBandForm = function() {
-    displayElementById("startBandForm");
-    hideElementById("signInForm");
-  };
-
-  $scope.enterBand = function(index) {
-    currentBand = $scope.user.bands[index];
-    navigateToURL("/#/music");
-  }
-
-  $scope.validLogin = function() {
-    var valid = true;
-    valid = checkEmail($scope.user.email) && valid;
-    valid = checkPassword($scope.user.email, $scope.user.password) && valid;
-    if (valid) {
-      user = JSON.parse(getItemFromLocalStorage($scope.user.email));
-    }
-    return valid;
-  };
-
-  $scope.getSQLUser = function(email) {
-    $http.get("users.php?email=" + email)
-    .then(function (response) {
-      $scope.loginMessage = response.data;
-      console.log(response.data);
-    });
-  };
-
   // Check the validity of the sign up form input
   $scope.checkValidity = function(callback) {
     var valid = true;
     $scope.validEmail(function(validEmail) {
       valid = validEmail && valid;
       valid = passwordsMatch($scope.user.password, $scope.user.passwordAgain) && valid;
-      valid = checkName($scope.user.firstName, $scope.user.lastName) && valid;
+      valid = checkName($scope.user.name) && valid;
       console.log(valid);
       callback(valid);
     });
@@ -103,15 +131,12 @@ function($scope, $http) {
 
   $scope.validEmail = function(callback) {
     var email = $scope.user.email;
-    if (email == "") {
-      console.log("Please give your email.");
-      showInvalidInput("signUpEmail");
+    if(inputEmpty(email, "signUpEmail")) {
       return false;
-    }
-    $http.get("users.php?email=" + email)
+    };
+    $http.get("getUser.php?email=" + email)
     .then(function (response) {
       $scope.loginMessage = response.data;
-      console.log(response.data);
       if (objectIsEmpty(response.data)) {
         callback(true);
       } else {
@@ -122,36 +147,69 @@ function($scope, $http) {
     });
   };
 
+  $scope.saveUser = function(callback) {
+    var newUser = $scope.user;
+    $http.post("addUser.php", newUser)
+    .then(
+      function (response) {
+        console.log(response.data);
+
+        callback(true);
+      },
+      function (response) {
+        console.log(response);
+        console.log(response.data);
+        callback(false);
+      }
+    );
+  }
+
+  $scope.enterBand = function(index) {
+    currentBand = $scope.user.bands[index];
+    navigateToURL("/#/music");
+  };
+
+  // Open the Sign Up form
+  $scope.openBandForm = function() {
+    displayElementById("startBandForm");
+    hideElementById("chooseUser");
+    hideElementById("signInForm");
+  };
+
+  // Show add band input
+  $scope.showAddBandInput = function() {
+    hideElementById("addBand");
+    displayElementById("addBandInput");
+  };
+
+  // Show add band input
+  $scope.addBand = function() {
+    var bandName = $scope.newBand;
+    $scope.user.bands.push({name: bandName,
+                            memberIds: [$scope.user.id],
+                            code: "1234"});
+    hideElementById("addBandInput");
+    displayElementById("addBand");
+  };
+
   // Check if user is logged in. Show user information instead of authentication forms.
-  console.log(isLoggedIn());
   if (isLoggedIn()) {
-    loadUserInfo();
     $scope.user = user;
+    hideAuthenticationUI();
   } else {
     hideElementById("startBandForm");
   }
 }]);
 // End of mainController scope
 
-function login(form) {
-  if (validLogin(form)) {
-    var user = JSON.parse(getItemFromLocalStorage(form.email.value));
-    console.log(form.email.value);
-    console.log(user);
-    loginUser();
-    navigateToURL("/#/user");
-    navigateToURL("/#/");
+function inputEmpty(input, inputId) {
+  if (input === "") {
+    console.log("Please try again.");
+    showInvalidInput(inputId);
+    return true;
+  } else {
+    return false;
   }
-};
-
-function validLogin(form) {
-  var valid = true;
-  valid = checkEmail(form.email.value) && valid;
-  valid = checkPassword(form.email.value, form.password.value) && valid;
-  if (valid) {
-    user = JSON.parse(getItemFromLocalStorage(form.email.value));
-  }
-  return valid;
 }
 
 function clearStorage() {

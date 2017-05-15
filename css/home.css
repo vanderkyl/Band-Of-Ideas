@@ -215,6 +215,14 @@ html, body {
   display: none;
 }
 
+#chooseUser, #joinBand {
+  display: none;
+}
+
+#startBandForm {
+  display: none;
+}
+
 #signInMessage2 {
   display: none;
 }
@@ -250,7 +258,7 @@ html, body {
   display: none;
 }
 
-#addFolderInput {
+#addFolderInput, #addBandInput {
   display: none;
 }
 

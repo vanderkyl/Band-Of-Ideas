@@ -1,21 +1,46 @@
 <div id="authentication" class="col-md-12">
-  <div id="signUpForm" class="mainForm form col-sm-12" ng-click="openBandForm()">
-    <div id="startBand">
+  <div id="signUpForm" class="mainForm form col-sm-12">
+    <div id="startBand" ng-click="openBandForm()">
       <h3>Start a<br>
         Band of Ideas
       </h3>
     </div>
     <div id="startBandForm">
-      <form name="signUp">
-        <input id="bandName" type="text" name="bandName" placeholder="Band Name" ng-model="user.bands[0]" required/>
-        <input id="firstName" type="text" name="firstName" placeholder="First Name" class="col-md-6" ng-model="user.firstName"/>
-        <input id="lastName" type="text" name="lastName" placeholder="Last Name" class="col-md-6" ng-model="user.lastName"/>
-        <input id="signUpEmail" type="text" name="email" placeholder="Email" ng-model="user.email" required/>
-        <input id="signUpPassword" type="password" name="password" placeholder="Password" ng-model="user.password" required/>
-        <input id="passwordAgain" type="password" name="passwordAgain" placeholder="Password Again" ng-model="user.passwordAgain" required/>
-        <input type="submit" ng-click="joinTheBand()" value="Join The Band"/>
-        <input type="reset" value="Cancel"/>
-      </form>
+      <!-- <form name="signUp"> -->
+        <div id="chooseBand">
+          <form>
+            <input id="bandName" type="text" name="bandName" placeholder="Band Name" ng-model="user.bands[0]" autocomplete="off" required/>
+            <input type="submit" ng-click="checkBandAvailability()" value="Check Band"/>
+            <input type="reset" value="Cancel"/>
+          </form>
+        </div>
+        <div id="joinBand">
+          <hr>
+          <h3><strong>{{ user.bands[0].name }}</strong><br><br>
+            This band already exists.<br>
+            If you want to join, enter the band code
+          </h3>
+          <form>
+            <input id="bandCode" type="text" name="bandCode" placeholder="Band Code" ng-model="currentBandCode" autocomplete="off" required/>
+            <input type="submit" ng-click="checkBandCode()" value="Check Code"/>
+            <input type="reset" value="Cancel"/>
+            <br>
+            <input type="button" onclick="backToChooseBand()" value="Go Back"/>
+          </form>
+        </div>
+        <div id="chooseUser">
+          <hr>
+          <h3><strong>{{ user.bands[0].name }}</strong></h3>
+          <form>
+            <input id="name" type="text" name="name" placeholder="Name" class="col-md-6" ng-model="user.name"/>
+            <input id="signUpEmail" type="text" name="email" placeholder="Email" ng-model="user.email" required/>
+            <input id="signUpPassword" type="password" name="password" placeholder="Password" ng-model="user.password" required/>
+            <input id="passwordAgain" type="password" name="passwordAgain" placeholder="Password Again" ng-model="user.passwordAgain" required/>
+            <input type="submit" ng-click="joinTheBand()" value="Join The Band"/>
+            <input type="reset" value="Cancel"/>
+          </form>
+        </div>
+      <!-- </form> -->
     </div>
   </div>
   <div id="signInForm" class="mainForm form col-sm-12">
@@ -27,20 +52,27 @@
       <input type="reset" value="Cancel"/>
     </form>
   </div>
-  <div class="btn btn-primary" ng-click="getSQLUser('v@gmaile.com')">Show Users</div>
 </div>
 
 <div id="accountInformation">
   <div ng-repeat="band in user.bands" class="col-md-12">
     <div class="thumbnail folder buttons" ng-click="enterBand($index)">
-      <h2>{{ band }}</h2>
+      <h2>{{ band.name }}</h2>
     </div>
   </div>
-  <div class="thumbnail folder buttons col-md-12" ng-click="addBand()">
-    <h2>Add a Band</h2>
+  <div id="addBandInput">
+    <div class="thumbnail buttons col-md-12">
+      <input type="text" name="bandName" placeholder="Band Name" ng-model="newBand" required/>
+    </div>
+    <div class="thumbnail folder buttons col-md-12" ng-click="addBand()">
+      <h3>Add Band</h3>
+    </div>
+  </div>
+  <div id="addBand" class="thumbnail folder buttons col-md-12" ng-click="showAddBandInput()">
+    <h2>Add New Band</h2>
   </div>
 
-  <h2>Name: {{ user.firstName }} {{ user.lastName }}</h2>
+  <h2>Name: {{ user.name }}</h2>
   <h2>Email: {{ user.email }}</h2>
 </div>
 

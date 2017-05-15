@@ -1,7 +1,8 @@
 var bands = [];
 var user = {}; // This is the current user that is logged in
 var sqlUser = {}; // This is the user that will be checked against when signing up/in
-var currentBand = "";
+var currentBand = {};
+var loggedIn = false;
 
 function saveUser(newUser) {
   user = newUser;
@@ -19,18 +20,9 @@ function saveUser(newUser) {
 }
 
 function loginUser() {
-  saveItemToLocalStorage("*loggedIn*", JSON.stringify(user));
+  //saveItemToLocalStorage("*loggedIn*", JSON.stringify(user));
   hideAuthenticationUI();
-}
-
-function loadUserInfo() {
-  var userInfo = getItemFromLocalStorage("*loggedIn*");
-  if (userInfo !== 'null') {
-    user = (JSON.parse(userInfo));
-  } else {
-    console.log("Invalid user");
-  }
-  hideAuthenticationUI();
+  loggedIn = true;
 }
 
 function hideAuthenticationUI() {
@@ -41,19 +33,8 @@ function hideAuthenticationUI() {
   displayElementById("signOutButton");
 }
 
-function showAccounts() {
-  console.log(JSON.parse(getItemFromLocalStorage("*userList*")));
-}
-
-function isLoggedIn() {
-  console.log(getItemFromLocalStorage("*loggedIn*"));
-  var loggedIn = getItemFromLocalStorage("*loggedIn*") !== 'null';
-  console.log(loggedIn);
-  return loggedIn;
-}
-
 function signOut() {
-  saveItemToLocalStorage("*loggedIn*", 'null');
+  loggedIn = false;
   navigateToURL("/#/");
   hideElementById("signOutButton");
   displayElementById("signInButton");
@@ -85,16 +66,11 @@ function passwordsMatch(password, passwordAgain) {
   }
 }
 
-function checkName(firstName, lastName) {
+function checkName(name) {
   var valid = true;
-  if (firstName == "") {
-    console.log("Please give your first name.");
-    showInvalidInput("firstName");
-    valid = false;
-  }
-  if (lastName == "") {
-    console.log("Please give your last name.");
-    showInvalidInput("lastName");
+  if (name == "") {
+    console.log("Please give your name.");
+    showInvalidInput("name");
     valid = false;
   }
   return valid;
@@ -117,36 +93,23 @@ function bandIsValid(bandName) {
   return true;
 }
 
-function checkEmail(email) {
-  if (email == "") {
-    console.log("Please give your email.");
-    showInvalidInput("signUpEmail");
-    return false;
-  } else if (getItemFromLocalStorage(email) === null) {
+function checkEmail(email, userEmail) {
+  if (email === userEmail) {
+    return true;
+  } else {
     console.log("User does not exist");
     showInvalidInput("signUpEmail");
     return false;
-  } else {
-    return true;
   }
 }
 
-function checkPassword(email, password) {
-  // TODO do smart storage getting
-  var user = getItemFromLocalStorage(email);
-  if (user !== null) {
-    user = JSON.parse(user);
-    if (password === user.password) {
-      console.log("Passwords match");
-      return true;
-    } else {
-      console.log("Incorrect password");
-      showInvalidInput("signInPassword");
-      return false;
-    }
+function checkPassword(password, userPassword) {
+  if (password === userPassword) {
+    console.log("Passwords match");
+    return true;
   } else {
-    console.log("User does not exist.");
-    showInvalidInput("signInEmail");
+    console.log("Incorrect password");
+    showInvalidInput("signInPassword");
     return false;
   }
 }
@@ -175,6 +138,18 @@ function getUserList() {
     userList = [];
     return userList;
   }
+}
+
+function backToChooseBand() {
+  hideElementById("joinBand");
+  displayElementById("chooseBand");
+}
+
+function isLoggedIn() {
+  if (!loggedIn) {
+    navigateToURL("/#/");
+  }
+  return loggedIn;
 }
 
 function objectIsEmpty(obj) {

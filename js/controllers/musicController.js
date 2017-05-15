@@ -3,7 +3,7 @@ function($scope, $sce) {
   // Folders
   $scope.folders = [];
   $scope.newFolder = "";
-  $scope.bandName = "";
+  $scope.band = {};
   // Files
   $scope.files = [];
   $scope.file = {};
@@ -131,5 +131,8 @@ function($scope, $sce) {
     }
   };
 
-  $scope.bandName = currentBand;
+  if (isLoggedIn()) {
+    $scope.band = currentBand;
+    console.log(currentBand);
+  }
 }]);
