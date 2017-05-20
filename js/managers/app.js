@@ -29,10 +29,6 @@ app.config(function ($routeProvider) {
     controller: 'uploadController',
     templateUrl: 'views/upload.html'
   })
-  .when('/comment', {
-      controller: 'commentController',
-      templateUrl: 'views/comment.html'
-  })
   .otherwise({
     redirectTo: '/'
   });

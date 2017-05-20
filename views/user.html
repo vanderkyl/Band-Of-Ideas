@@ -1,15 +1,18 @@
 <div id="authentication" class="col-md-12">
+  <div id="startBand" class="mainForm form col-sm-12" ng-click="openBandForm()">
+    <h3>Start a<br>
+      Band of Ideas
+    </h3>
+  </div>
   <div id="signUpForm" class="mainForm form col-sm-12">
-    <div id="startBand" ng-click="openBandForm()">
-      <h3>Start a<br>
-        Band of Ideas
-      </h3>
-    </div>
+    <h3>Start a<br>
+      Band of Ideas
+    </h3>
     <div id="startBandForm">
       <!-- <form name="signUp"> -->
         <div id="chooseBand">
           <form>
-            <input id="bandName" type="text" name="bandName" placeholder="Band Name" ng-model="user.bands[0]" autocomplete="off" required/>
+            <input id="bandName" type="text" name="bandName" placeholder="Band Name" ng-model="user.bands[0].name" autocomplete="off" required/>
             <input type="submit" ng-click="checkBandAvailability()" value="Check Band"/>
             <input type="reset" value="Cancel"/>
           </form>
@@ -25,12 +28,14 @@
             <input type="submit" ng-click="checkBandCode()" value="Check Code"/>
             <input type="reset" value="Cancel"/>
             <br>
-            <input type="button" onclick="backToChooseBand()" value="Go Back"/>
+            <input type="button" ng-click="backToChooseBand()" value="Go Back"/>
           </form>
         </div>
         <div id="chooseUser">
           <hr>
-          <h3><strong>{{ user.bands[0].name }}</strong></h3>
+          <h3><strong>{{ user.bands[0].name }}</strong><br><br>
+            Now time to create your account!
+          </h3>
           <form>
             <input id="name" type="text" name="name" placeholder="Name" class="col-md-6" ng-model="user.name"/>
             <input id="signUpEmail" type="text" name="email" placeholder="Email" ng-model="user.email" required/>
@@ -42,6 +47,9 @@
         </div>
       <!-- </form> -->
     </div>
+  </div>
+  <div id="startSignIn" class="mainForm form col-sm-12" ng-click="openSignInForm()">
+      <h3>or<br>Sign In</h3>
   </div>
   <div id="signInForm" class="mainForm form col-sm-12">
     <form name="signIn">

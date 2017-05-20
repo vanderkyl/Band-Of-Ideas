@@ -106,7 +106,7 @@ html, body {
   padding: 50px
 }
 
-.file, .folder , .homeButton, .fileTitle, #signUpForm {
+.file, .folder , .homeButton, .fileTitle, #startBand, #startSignIn {
   cursor: pointer;
   cursor: hand;
 }
@@ -219,7 +219,7 @@ html, body {
   display: none;
 }
 
-#startBandForm {
+#signUpForm, #startSignIn {
   display: none;
 }
 

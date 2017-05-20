@@ -1,5 +1,5 @@
-app.controller('musicController', ['$scope', '$sce',
-function($scope, $sce) {
+app.controller('musicController', ['$scope', '$sce', '$http',
+function($scope, $sce, $http) {
   // Folders
   $scope.folders = [];
   $scope.newFolder = "";
@@ -10,13 +10,36 @@ function($scope, $sce) {
   //TODO Create functionality for a recent file selection
 
   $scope.addFolder = function() {
-    var folderName = $scope.newFolder;
-    $scope.folders.push({name: folderName});
+    var folderName = {
+      name: $scope.newFolder,
+      band: $scope.band.name
+    };
+    $http.post("addFolder.php", folderName)
+    .then(
+      function (response) {
+        console.log(response.data);
+        $scope.folders.push(folderName);
+        hideElementById('addFolderInput');
+        displayElementById('addFolder');
+      },
+      function (response) {
+        console.log(response.data);
+      });
+
+
   };
 
   $scope.showAddFolderInput = function() {
     hideElementById("addFolder");
     displayElementById("addFolderInput");
+  }
+
+  $scope.getFolders = function() {
+    $http.get("getFolders.php?bandName=" + $scope.band.name)
+    .then(function (response) {
+      console.log(response.data);
+      $scope.folders = response.data;
+    });
   }
 
   $scope.addFile = function(file) {
@@ -73,6 +96,7 @@ function($scope, $sce) {
     }
   }
 
+  /*
   // Go through the files that were saved from the Google Api Call
   $scope.getFiles = function() {
     console.log("Getting Files");
@@ -118,7 +142,7 @@ function($scope, $sce) {
     console.log("Cleared previous folders and files.");
     hideElementById("file");
   };
-
+  */
   // Safely wait until the digest is finished before applying the ui change
   $scope.safeApply = function(fn) {
     var phase = this.$root.$$phase;
@@ -133,6 +157,12 @@ function($scope, $sce) {
 
   if (isLoggedIn()) {
     $scope.band = currentBand;
-    console.log(currentBand);
+    console.log(currentBand.id);
+    if (currentFolders === "") {
+      $scope.getFolders();
+    } else {
+      $scope.folders = currentFolders;
+    }
+
   }
 }]);

@@ -63,29 +63,35 @@ function($scope, $http) {
     });
   }
 
+  // Checks if the band name given already exists
   $scope.checkBandAvailability = function() {
-    $http.get("getBand.php?bandName=" + $scope.user.bands[0])
+    var bandName = $scope.user.bands[0].name;
+    $http.get("getBand.php?bandName=" + bandName)
     .then(function (response) {
       hideElementById("chooseBand");
+      // If the response is an empty object, the band does not exist yet.
       if (objectIsEmpty(response.data)) {
-        console.log($scope.user.bands[0]);
-        $scope.user.bands = [{id: "",
-                             name: $scope.user.bands[0],
-                             memberIds: "",
-                             code: "1234"}];
+        $scope.user.bands = [
+          {id: "",
+           name: bandName,
+           memberIds: "",
+           code: "1234"}
+        ];
         displayElementById("chooseUser");
+        // Else the band does exist already, so load the band data and prompt user for band code
       } else {
+        $scope.user.bands[0] = response.data;
         $scope.sqlBand = response.data;
-        console.log("This band already exists");
         displayElementById("joinBand");
       }
     });
   };
 
+  // Make sure the given code matches the band code in the database
   $scope.checkBandCode = function() {
     if (!inputEmpty($scope.currentBandCode, "bandCode")) {
-      if ($scope.sqlBand.code === $scope.currentBandCode) {
-        existingBand = $scope.sqlBand.name;
+      if ($scope.user.bands[0].code === $scope.currentBandCode) {
+        existingBand = $scope.user.bands[0].name;
         hideElementById("joinBand");
         displayElementById("chooseUser");
       } else {
@@ -99,10 +105,7 @@ function($scope, $http) {
     $scope.checkValidity(function(valid) {
       if (valid) {
         console.log("Adding new user.");
-        var newUser = $scope.user;
-        console.log($scope.sqlBand);
-        console.log(existingBand);
-        newUser.existingBand = existingBand;
+        user = $scope.user;
         $scope.saveUser(function(saved) {
           if (saved) {
             loginUser();
@@ -149,6 +152,7 @@ function($scope, $http) {
 
   $scope.saveUser = function(callback) {
     var newUser = $scope.user;
+    newUser.existingBand = existingBand;
     $http.post("addUser.php", newUser)
     .then(
       function (response) {
@@ -171,9 +175,19 @@ function($scope, $http) {
 
   // Open the Sign Up form
   $scope.openBandForm = function() {
+    displayElementById("signUpForm");
     displayElementById("startBandForm");
-    hideElementById("chooseUser");
+    hideElementById("startBand");
     hideElementById("signInForm");
+    displayElementById("startSignIn");
+  };
+
+  // Open the Sign Up form
+  $scope.openSignInForm = function() {
+    displayElementById("signInForm");
+    displayElementById("startBand");
+    hideElementById("signUpForm");
+    hideElementById("startSignIn");
   };
 
   // Show add band input
@@ -181,6 +195,12 @@ function($scope, $http) {
     hideElementById("addBand");
     displayElementById("addBandInput");
   };
+
+  $scope.backToChooseBand = function() {
+    $scope.user.bands[0].name = "";
+    hideElementById("joinBand");
+    displayElementById("chooseBand");
+  }
 
   // Show add band input
   $scope.addBand = function() {

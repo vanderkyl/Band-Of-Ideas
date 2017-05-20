@@ -2,6 +2,7 @@ var bands = [];
 var user = {}; // This is the current user that is logged in
 var sqlUser = {}; // This is the user that will be checked against when signing up/in
 var currentBand = {};
+var currentFolders = "";
 var loggedIn = false;
 
 function saveUser(newUser) {
@@ -138,11 +139,6 @@ function getUserList() {
     userList = [];
     return userList;
   }
-}
-
-function backToChooseBand() {
-  hideElementById("joinBand");
-  displayElementById("chooseBand");
 }
 
 function isLoggedIn() {
