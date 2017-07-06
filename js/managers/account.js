@@ -1,24 +1,78 @@
 var bands = [];
-var user = {}; // This is the current user that is logged in
+var CURRENT_USER = {}; // This is the current user that is logged in
 var sqlUser = {}; // This is the user that will be checked against when signing up/in
-var currentBand = {};
-var currentFolders = "";
+var CURRENT_BAND = {};
+var CURRENT_FOLDERS = "";
+var CURRENT_FOLDER = "";
+var CURRENT_FILES = "";
 var loggedIn = false;
 
-function saveUser(newUser) {
-  user = newUser;
-  bands = user.bands;
-  console.log(user);
-  saveItemToLocalStorage(newUser.email, JSON.stringify(newUser));
-  var userList = getUserList();
-  var userId = userList.length + 1;
-  newUser.id = userId;
-  userList.push(newUser);
-  saveItemToLocalStorage("*userList*", JSON.stringify(userList));
-  var bandList = getBandList();
-  bandList.push(newUser.bandName);
-  saveItemToLocalStorage("*bandList*", JSON.stringify(bandList));
-}
+// TEST DATA
+var testUser = {
+  id: "0",
+  bands: [
+    {id: "0",
+     name: "Test Band",
+     metaName: "test_band",
+     memberIds: "0",
+     code: "1234"}
+  ],
+  name: "Test User",
+  email: "test@test.com",
+  password: "1234",
+  passwordAgain: "1234"
+};
+var testFolders = [{
+  bandId: "0",
+  id: "0",
+  name: "Test Folder",
+  metaName: "test_folder",
+  parentId: "0"
+}];
+var testFiles = [{
+    folderId: "0",
+    id: "0",
+    likes: "0",
+    link: "/uploads/bands/1/1/8-Bit.m4a",
+    name: "Test File",
+    metaName: "test_file",
+    size: "34637",
+    type: "audio/x-m4a",
+    views: "0"
+  }, {
+      folderId: "0",
+      id: "0",
+      likes: "0",
+      link: "/uploads/bands/1/1/8-Bit.m4a",
+      name: "Test File",
+      metaName: "test_file",
+      size: "34637",
+      type: "audio/x-m4a",
+      views: "0"
+    }, {
+        folderId: "0",
+        id: "0",
+        likes: "0",
+        link: "/uploads/bands/1/1/8-Bit.m4a",
+        name: "Test File",
+        metaName: "test_file",
+        size: "34637",
+        type: "audio/x-m4a",
+        views: "0"
+      },
+    {
+    folderId: "0",
+    id: "1",
+    likes: "0",
+    link: "/uploads/bands/1/1/8-Bit.m4a",
+    name: "Test File2",
+    metaName: "test_file2",
+    size: "34637",
+    type: "audio/x-m4a",
+    views: "0"
+  }
+];
+// END OF TEST DATA
 
 function loginUser() {
   //saveItemToLocalStorage("*loggedIn*", JSON.stringify(user));
@@ -138,6 +192,16 @@ function getUserList() {
   } else {
     userList = [];
     return userList;
+  }
+}
+
+function addNavLink(id, name, link) {
+  $("#navLinks ul").append('<li id="' + id + '" class="navButtons"><a href="' + link + '">' + name + '</a></li>');
+}
+
+function removeNavLink(id) {
+  if ($(id).length != 0) {
+    $(id).remove();
   }
 }
 

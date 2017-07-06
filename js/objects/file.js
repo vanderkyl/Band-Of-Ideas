@@ -21,7 +21,7 @@ function loadFilePage($sce) {
   var file = CURRENT_FILE;
   if (file.type === null) {
     //TODO Make sense of this shit
-    
+
   } else {
     //TODO finish filling out the file properties
     console.log("Getting file from Google Drive");
@@ -47,28 +47,28 @@ function loadFilePage($sce) {
 }
 
 function loadFile(file) {
-    addViewToFile(file);
+    //addViewToFile(file);
     switch(file.type) {
-        case "m4a":
+        case "audio/x-m4a":
             loadAudio(file);
             break;
-        case "MP4":
+        case "video/MP4":
             loadVideo(file);
             break;
         default:
     }
-    loadDisqus(file);
+    //loadDisqus(file);
 }
 
 function loadVideo(file) {
-  scrollToElementById("files");
+  scrollToElementById("folderButtons");
   displayElementById("video");
   displayElementById("file");
 }
 
 function loadAudio(file) {
   hideElementById("audioPlayer");
-  scrollToElementById("files");
+  scrollToElementById("folderButtons");
   displayElementById("file");
   displayElementById("audio");
   var audio = getElementById("audio");

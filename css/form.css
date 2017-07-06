@@ -1,0 +1,101 @@
+#signInButton {
+  margin-top: 8px;
+}
+
+#signOutButton {
+  display: none;
+}
+
+#chooseUser, #joinBand {
+  display: none;
+}
+
+#signUpForm, #startSignIn {
+  display: none;
+}
+
+#signInMessage2 {
+  display: none;
+}
+
+#loginButton {
+  cursor: pointer;
+  cursor: hand;
+  border: 0px;
+  position: relative;
+  padding: 50px;
+  border-radius: 0;
+  margin-bottom: 50px;
+  text-align: center;
+  display: block;
+}
+
+.inputs {
+  font-size: 12px;
+  margin: 0 0 40px 0;
+  text-align: center;
+}
+
+.mainForm {
+  /*background-color: #265a88;*/
+  background: url('../dumb.png') no-repeat center center fixed;
+  background-size: cover;
+  position: relative;
+  margin: 0 auto;
+  font-size: 18px;
+}
+
+.mainForm h3 {
+  color: #FFF;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2.5vmax;
+}
+
+.mainForm input {
+  width: 100%;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  padding: 8px;
+  border-radius: 2px;
+  text-align: center;
+}
+
+.invalidInput {
+  box-shadow: 0 0 10px red;
+  border-color: red;
+}
+
+.form input[type=submit], .form input[type=reset] {
+  background-color: rgb(58, 58, 58);
+  color: #FFF;
+}
+
+.form input[type=submit]:hover, .form input[type=reset]:hover {
+  background-color: #333;
+}
+
+.form {
+  width: 100%;
+  padding: 20px 35px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  border-radius: 10px;
+  background-color: #265a88;
+}
+
+.form input {
+  padding: 8px;
+}
+
+.form input:focus {
+  border: 1px solid #ccc;
+}
+
+#authentication {
+  left: 10%;
+  width: 80%;
+  display: block;
+}

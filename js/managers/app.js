@@ -17,7 +17,7 @@ app.config(function ($routeProvider) {
     controller: 'mainController',
     templateUrl: 'views/user.html'
   })
-  .when('/music', {
+  .when('/band/:name?/:folder?/:file?', {
     controller: 'musicController',
     templateUrl: 'views/music.html'
   })
@@ -25,9 +25,9 @@ app.config(function ($routeProvider) {
     controller: 'driveController',
     templateUrl: 'views/drive.html'
   })
-  .when('/upload', {
-    controller: 'uploadController',
-    templateUrl: 'views/upload.html'
+  .when('/file', {
+    controller: 'fileController',
+    templateUrl: 'views/file.html'
   })
   .otherwise({
     redirectTo: '/'

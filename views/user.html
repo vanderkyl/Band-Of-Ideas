@@ -12,7 +12,7 @@
       <!-- <form name="signUp"> -->
         <div id="chooseBand">
           <form>
-            <input id="bandName" type="text" name="bandName" placeholder="Band Name" ng-model="user.bands[0].name" autocomplete="off" required/>
+            <input id="bandNameInput" type="text" name="bandName" placeholder="Band Name" ng-model="user.bands[0].name" autocomplete="off" required/>
             <input type="submit" ng-click="checkBandAvailability()" value="Check Band"/>
             <input type="reset" value="Cancel"/>
           </form>
@@ -24,7 +24,7 @@
             If you want to join, enter the band code
           </h3>
           <form>
-            <input id="bandCode" type="text" name="bandCode" placeholder="Band Code" ng-model="currentBandCode" autocomplete="off" required/>
+            <input id="bandCodeInput" type="text" name="bandCode" placeholder="Band Code" ng-model="currentBandCode" autocomplete="off" required/>
             <input type="submit" ng-click="checkBandCode()" value="Check Code"/>
             <input type="reset" value="Cancel"/>
             <br>
@@ -60,14 +60,22 @@
       <input type="reset" value="Cancel"/>
     </form>
   </div>
+  <div id="testLogin" class="mainForm form col-sm-12" ng-click="testLogin()">
+    <h3>
+      Test
+    </h3>
+  </div>
 </div>
 
 <div id="accountInformation">
+  <h2 id="bandName">Band(s)</h2>
+  <hr><br>
   <div ng-repeat="band in user.bands" class="col-md-12">
     <div class="thumbnail folder buttons" ng-click="enterBand($index)">
-      <h2>{{ band.name }}</h2>
+      <h2 class="folderTitle">{{ band.name }}</h2>
     </div>
   </div>
+  <!--
   <div id="addBandInput">
     <div class="thumbnail buttons col-md-12">
       <input type="text" name="bandName" placeholder="Band Name" ng-model="newBand" required/>
@@ -79,9 +87,7 @@
   <div id="addBand" class="thumbnail folder buttons col-md-12" ng-click="showAddBandInput()">
     <h2>Add New Band</h2>
   </div>
-
-  <h2>Name: {{ user.name }}</h2>
-  <h2>Email: {{ user.email }}</h2>
+-->
 </div>
 
 <!-- function onLogin($user) {

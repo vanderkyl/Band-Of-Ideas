@@ -10,13 +10,16 @@
     <meta name="google-signin-client_id" content="528197877151-u6dq0rnndrkjcsflhfc7550dnleu9vju.apps.googleusercontent.com">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="css/bootstrap-3.3.7.min.css">
+    <link rel="stylesheet" href="css/bootstrap/bootstrap-3.3.7.min.css">
     <!-- Optional theme -->
-    <link rel="stylesheet" href="css/bootstrap-theme-3.3.7.min.css">
-    <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+    <link rel="stylesheet" href="css/bootstrap/bootstrap-theme-3.3.7.min.css">
+    <link rel="stylesheet" href="css/bootstrap/bootstrap-responsive.min.css">
     <!-- App Styling -->
-    <link rel="stylesheet" href="css/home.css"/>
+    <link rel="stylesheet" href="css/app.css"/>
+    <link rel="stylesheet" href="css/player.css"/>
     <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/files.css"/>
+    <link rel="stylesheet" href="css/form.css"/>
     <!-- Dependencies - Latest compiled and minified JavaScript -->
     <script src="../js/dependencies/jquery/jquery-3.1.1.min.js" type="text/javascript"></script>
     <script src="../js/dependencies/bootstrap/bootstrap-3.3.7.min.js" type="text/javascript"></script>
@@ -24,10 +27,6 @@
     <script src="../js/dependencies/angular/angular-route-1.5.8.min.js" type="text/javascript"></script>
     <script src="../js/dependencies/angular/angular-mocks-1.5.8.js" type="text/javascript"></script>
     <script src="../js/dependencies/angular/angular-resource-1.5.8.min.js" type="text/javascript"></script>
-    <!-- TODO Remove the line below when finished.
-    <script src="https://apis.google.com/js/client.js" type="text/javascript"></script>
-    <script src="https://apis.google.com/js/platform.js" async defer></script> -->
-
   </head>
   <body ng-app="myApp">
     <div>
@@ -48,9 +47,7 @@
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <div id="navLinks">
               <ul class="nav navbar-nav">
-                <li class="navButtons"><a href="/#/music">Music</a></li>
-                <li class="navButtons"><a href="/#/drive">Google Drive</a></li>
-                <li class="navButtons"><a href="/#/upload">Upload</a></li>
+                <!--<li class="navButtons"><a href="/#/music">Music</a></li> -->
               </ul>
             </div>
             <div class="nav navbar-nav navbar-right dropdown">
@@ -90,6 +87,10 @@
       </nav>
     </div>
 
+    <div id="loading">
+      <h2>Loading...</h2>
+    </div>
+
     <div class="container" ng-view></div>
 
     <div class="footer">
@@ -104,6 +105,7 @@
     <script src="js/managers/drive.js" type="text/javascript"></script>
     <script src="js/managers/settings.js" type="text/javascript"></script>
     <script src="js/managers/account.js" type="text/javascript"></script>
+    <script src="js/managers/webTools.js" type="text/javascript"></script>
 
     <!-- Objects -->
     <script src="js/objects/folder.js" type="text/javascript"></script>
@@ -114,10 +116,7 @@
     <!-- Controllers -->
     <script src="js/controllers/mainController.js" type="text/javascript"></script>
     <script src="js/controllers/musicController.js" type="text/javascript"></script>
-    <script src="js/controllers/driveController.js" type="text/javascript"></script>
-    <script src="js/controllers/commentController.js" type="text/javascript"></script>
-    <script src="js/controllers/webController.js" type="text/javascript"></script>
-    <script src="js/controllers/uploadController.js" type="text/javascript"></script>
+    <script src="js/controllers/fileController.js" type="text/javascript"></script>
 
     <!-- Disqus
     <script src="js/managers/disqus.js" type="text/javascript"></script>

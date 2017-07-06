@@ -1,0 +1,75 @@
+<div>
+  <div class="filePage">
+    <div id="folderButtons" class="container">
+      <div id="previousFolder">
+        <div class="filesButton buttons col-xs-6" ng-click="openPreviousFolder()">
+          <h2>Go Back</h2>
+        </div>
+      </div>
+      <div id="uploadFiles" class="filesButton buttons col-xs-6" ng-click="uploadFiles()">
+        <h2>Upload</h2>
+      </div>
+    </div>
+    <div id="upload">
+      <div>
+        <form id="fileForm" action="../php/upload.php" method="POST">
+          <input type="file" id="fileSelector" name="files[]" multiple/>
+          <button type="submit" id="uploadButton">Upload</button>
+        </form>
+        <h2>Upload Progress: <p id="uploadPercentage"></p></h2>
+        <h2>Status: <p id="uploadStatus"></p></h2>
+        <h2>Results: <p id="uploadResult"></p></h2>
+      </div>
+    </div>
+      <br><br><br>
+    </div>
+    <hr>
+    <br>
+    <!-- Container that holds an opened file -->
+    <div id="file" class="container">
+      <br>
+      <p class="closeFile" ng-click="closeFile()"> x </p>
+      <p class="fileTitle" ng-click="goToFilePage()">{{ file.name }}</a></p>
+      <br><br><br>
+      <audio id="audio" preload="auto" controls>
+        <source id="m4aSource" ng-src="{{ file.link }}" type="audio/mp4"/>
+        <p>Your browser does not support HTML5 audio.</p>
+      </audio>
+      <video id="video" controls>
+        <source ng-src="{{ file.link }}" type="audio/mp4"></source>
+      </video>
+      <!--
+      <br>
+      <p class="fileViews">{{ file.views }} view(s)</p>
+      <p class="fileSize">{{ file.size }}</p>
+      <div class="fileButtons">
+        <p class="likes" ng-click="plusOneOnFile()">+{{ file.likes }}</p>
+        <p class="download" ng-click="downloadFromFile()"><img src="img/downloadButton.png"></p>
+      </div>
+    -->
+      <br><br><br>
+    </div>
+    <div id="audioPlayer" class="col-md-12">
+      <div id="trackName" class="col-md-12 fileTitle">{{ file.name }}</div>
+      <div id="playButton" class="col-md-4 player" onclick="playAudio();">Play</div>
+      <div id="pauseButton" class="col-md-4 player" onclick="pauseAudio();">Pause</div>
+      <div id="quitButton" class="col-md-4 player" onclick="quitPlayer();">Quit Player</div>
+    </div>
+    <!-- Container that holds all files -->
+    <div id="files" class="container">
+      <div ng-repeat="song in files" class="col-md-6">
+        <div id="file-{{ song.id }}" class="thumbnail file" ng-click="openFile($index)">
+          <p class="title">{{ song.name }}</p>
+          <p class="fileSize">{{ song.size }}</p>
+          <div>
+            <p class="fileViews col-md-6">{{ song.views }} view(s)</p>
+            <div class="fileButtons">
+              <p class="likes" ng-click="plusOne($index)">+{{ song.likes }}</p>
+              <p class="download" ng-click="download($index)"><img src="img/downloadButton.png"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

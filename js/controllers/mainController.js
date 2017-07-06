@@ -1,5 +1,10 @@
 app.controller('mainController', ['$scope', '$http',
 function($scope, $http) {
+  $scope.loginMessage = "";
+  $scope.sqlUser = "";
+  $scope.sqlBand = {};
+  $scope.currentBandCode = "";
+  $scope.newBand = "";
   $scope.user = {
     id: "",
     bands: [],
@@ -8,19 +13,21 @@ function($scope, $http) {
     password: "",
     passwordAgain: ""
   };
-  $scope.loginMessage = "";
-  $scope.sqlUser = "";
-  $scope.sqlBand = {};
-  $scope.currentBandCode = "";
-  $scope.newBand = "";
   var existingBand = "";
+
+  // Test login
+  $scope.testLogin = function() {
+    CURRENT_USER = testUser;
+    $scope.user = CURRENT_USER;
+    loginUser();
+  };
 
   $scope.login = function() {
     $scope.validLogin(function(valid) {
       if (valid) {
-        $scope.user = user;
-        console.log(user.email);
-        console.log(user);
+        $scope.user = CURRENT_USER;
+        console.log(CURRENT_USER.email);
+        console.log(CURRENT_USER);
         loginUser();
       }
     });
@@ -37,7 +44,7 @@ function($scope, $http) {
         valid = false;
       }
       if (valid) {
-        user = dbUser;
+        CURRENT_USER = dbUser;
       }
       callback(valid);
     });
@@ -49,7 +56,7 @@ function($scope, $http) {
     if (inputEmpty(email, "signInEmail") || inputEmpty(password, "signInPassword")) {
       callback(false);
     }
-    $http.get("getUser.php?email=" + email)
+    $http.get("/php/getUser.php?email=" + email)
     .then(function (response) {
       console.log(response.data);
       if (objectIsEmpty(response.data)) {
@@ -66,7 +73,7 @@ function($scope, $http) {
   // Checks if the band name given already exists
   $scope.checkBandAvailability = function() {
     var bandName = $scope.user.bands[0].name;
-    $http.get("getBand.php?bandName=" + bandName)
+    $http.get("/php/getBand.php?bandName=" + bandName)
     .then(function (response) {
       hideElementById("chooseBand");
       // If the response is an empty object, the band does not exist yet.
@@ -105,7 +112,7 @@ function($scope, $http) {
     $scope.checkValidity(function(valid) {
       if (valid) {
         console.log("Adding new user.");
-        user = $scope.user;
+        CURRENT_USER = $scope.user;
         $scope.saveUser(function(saved) {
           if (saved) {
             loginUser();
@@ -137,7 +144,7 @@ function($scope, $http) {
     if(inputEmpty(email, "signUpEmail")) {
       return false;
     };
-    $http.get("getUser.php?email=" + email)
+    $http.get("/php/getUser.php?email=" + email)
     .then(function (response) {
       $scope.loginMessage = response.data;
       if (objectIsEmpty(response.data)) {
@@ -153,7 +160,7 @@ function($scope, $http) {
   $scope.saveUser = function(callback) {
     var newUser = $scope.user;
     newUser.existingBand = existingBand;
-    $http.post("addUser.php", newUser)
+    $http.post("/php/addUser.php", newUser)
     .then(
       function (response) {
         console.log(response.data);
@@ -169,8 +176,10 @@ function($scope, $http) {
   }
 
   $scope.enterBand = function(index) {
-    currentBand = $scope.user.bands[index];
-    navigateToURL("/#/music");
+    CURRENT_BAND = $scope.user.bands[index];
+    navigateToURL("/#/band/" + CURRENT_BAND.metaName);
+    console.log("Adding band link");
+    addNavLink("bandLink", CURRENT_BAND.name, "/#/band/" + CURRENT_BAND.metaName);
   };
 
   // Open the Sign Up form
@@ -214,11 +223,17 @@ function($scope, $http) {
 
   // Check if user is logged in. Show user information instead of authentication forms.
   if (isLoggedIn()) {
-    $scope.user = user;
+    $scope.user = CURRENT_USER;
     hideAuthenticationUI();
   } else {
+    CURRENT_FILE = "";
+    CURRENT_FILES = "";
+    CURRENT_FOLDER = "";
+    CURRENT_FOLDERS = "";
     hideElementById("startBandForm");
   }
+  removeNavLink("#bandLink");
+  removeNavLink("#folderLink");
 }]);
 // End of mainController scope
 
