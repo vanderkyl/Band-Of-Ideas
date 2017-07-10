@@ -118,12 +118,18 @@ html, body {
 #bandName {
   color: #FFF;
   text-align: center;
+  margin-top: 3px;
+  padding: 10px;
+}
+
+#folderName {
+  color: #FFF;
+  text-align: center;
+  padding-bottom: 30px;
 }
 
 #folders {
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 30px;
+
 }
 
 #fileSection {
@@ -132,6 +138,18 @@ html, body {
 
 #folderSection {
   display: block;
+}
+
+#uploadPercentage {
+  border: 2px solid green;
+  padding: 10px;
+  margin: 15px;
+}
+
+#uploadPercentageBar {
+  background: green;
+  height: 10px;
+  margin-right: 100%;
 }
 
 .homeButton {
@@ -169,53 +187,64 @@ html, body {
   color: white;
 }
 
-#addFolder {
-  background: #3CB371;
+.folderButton {
   color: #fff;
+  background: #4c4c4c;
   cursor: pointer;
-  display: inline-block;
   font-size: 19px;
   line-height: 50px;
   min-width: 50px;
   height: 50px;
   border-radius: 5%;
-  margin: 0 -30px 0 40px;
   text-align: center;
   font-weight: 200;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
   transition: background 500ms;
 }
 
-#addFolder:hover {
-  color: #2c7044;
-  background: #d2faff;
+.folderButton:hover {
+  color: #3CB371;
   transition: background 500ms;
+}
+
+.folderButton1 {
+  display: block;
+}
+
+.folderButton2, #hiddenFolderButtons {
+  display: none;
+}
+
+#addFolder {
+  background: #3CB371;
+}
+
+#addFolder:hover {
+  background: #d2faff;
 }
 
 #cancelNewFolder {
   background: #851a8a;
-  color: #fff;
-  cursor: pointer;
   display: none;
-  font-size: 19px;
-  line-height: 50px;
-  min-width: 50px;
-  height: 50px;
-  border-radius: 5%;
-  margin: 0 -30px 0 40px;
-  text-align: center;
-  font-weight: 200;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  transition: background 500ms;
+}
+
+#extraButton2 {
+
 }
 
 #cancelNewFolder:hover {
-  color: #2c7044;
   background: #fdf1ff;
-  transition: background 500ms;
+}
+
+.addFolderButtons {
+  margin-bottom: 10px;
 }
 
 .folderButtons {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  padding: 20px 0px 0px 0px;
   margin-bottom: 20px;
 }
 
@@ -237,4 +266,8 @@ html, body {
 
 #addFolderInput, #accountInfoLink, #accountInformation, #navLinks, #addBandInput, #folderIndex, #upload, #loading {
   display: none;
+}
+
+#addFolderModal {
+  border: 2px solid #851a8a;
 }

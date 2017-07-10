@@ -19,6 +19,7 @@
         // Get current row as an array
         while($row = mysqli_fetch_assoc($result)) {
           $data = ['name' => $row["name"],
+                   'metaName' => $row["metaName"],
                    'memberIds' => [$row["memberIds"]],
                    'code' => $row["code"]];
         }

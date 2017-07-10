@@ -1,53 +1,88 @@
 <div>
+  <!-- Folders View -->
   <div id="folderSection">
-    <!-- <h2 id="bandName" class="col-md-12">{{ band.name }}</h2> -->
-    <!-- Container that holds all folders -->
-    <div class="folderButtons col-md-2">
-      <p id="addFolder" class="col-md-2" ng-click="showAddFolderInput()">+</p>
-      <p id="cancelNewFolder" class="col-md-2" ng-click="hideAddFolderInput()">-</p>
-    </div>
-    <div class="col-md-12">
-      <div id="addFolderInput">
-        <div class="thumbnail buttons col-md-12">
+    <!-- Folder Buttons -->
+    <div class="folderButtons col-md-12">
+      <!-- Add Folder Button -->
+      <div class="addFolderButtons col-md-2">
+        <p id="addFolder" class="folderButton1 folderButton" ng-click="showAddFolderInput()">+</p>
+        <p id="cancelNewFolder" class="folderButton2 folderButton" ng-click="hideAddFolderInput()">-</p>
+      </div>
+      <!-- Add Folder Modal -->
+      <div id="addFolderInput" class="col-md-10">
+        <div id="addFolderModal" class="thumbnail buttons col-md-12">
           <input type="text" name="folderName" placeholder="Folder Name" ng-model="newFolder" required/>
           <input type="button" value="Add Folder" ng-click="addFolder()">
         </div>
       </div>
-      <div id="folders" ng-repeat="folder in folders" class="col-md-12">
-        <div class="thumbnail folder" ng-click="openFolder($index)">
+      <!-- Optional Folder Buttons -->
+      <div class="addFolderButtons col-md-2">
+        <p id="showButtonsButton" class="folderButton1 folderButton" ng-click="showFolderButtons()">More</p>
+        <p id="hideButtonsButton" class="folderButton2 folderButton" ng-click="hideFolderButtons()">Less</p>
+      </div>
+      <div id="hiddenFolderButtons">
+        <div class="addFolderButtons col-md-2">
+          <p class="folderButton" ng-click="">Show All Files</p>
+        </div>
+        <div class="addFolderButtons col-md-2">
+          <p class="folderButton" ng-click=""></p>
+        </div>
+        <div class="addFolderButtons col-md-2">
+          <p class="folderButton" ng-click="">Delete</p>
+        </div>
+        <div class="addFolderButtons col-md-2">
+          <p class="folderButton" ng-click="">Share</p>
+        </div>
+      </div>
+      <!-- End of Optional Folder Buttons -->
+      <h3 id="bandName" class="col-md-8">{{ band.name }}</h3>
+    </div>
+    <!-- Container that holds all folders -->
+    <div class="col-md-12">
+      <div id="folders" ng-repeat="folder in folders" class="col-md-6">
+        <div id="{{ 'folder-' + $index }}" class="thumbnail folder" ng-click="openFolder($index)">
           <p class="deleteButton" ng-click="deleteFolder()"> x </p>
           <p class="folderTitle">{{ folder.name }}</p>
         </div>
       </div>
     </div>
   </div>
-
+  <!-- Files Section - Displayed when a folder is opened -->
   <div id="fileSection">
     <div class="filePage">
-      <div id="folderButtons" class="container">
+      <!-- Go Back and Upload Buttons -->
+      <div class="folderButtons container">
         <div id="previousFolder">
           <div class="filesButton buttons col-xs-6" ng-click="openPreviousFolder()">
-            <h2>Go Back</h2>
+            <h3>Go Back</h3>
           </div>
         </div>
         <div id="uploadFiles" class="filesButton buttons col-xs-6" ng-click="uploadFiles()">
-          <h2>Upload</h2>
+          <h3>Upload</h3>
         </div>
       </div>
+      <!-- Upload Modal -->
       <div id="upload">
         <div>
           <form id="fileForm" action="../php/upload.php" method="POST">
             <input type="file" id="fileSelector" name="files[]" multiple/>
             <button type="submit" id="uploadButton">Upload</button>
           </form>
-          <h2>Upload Progress: <p id="uploadPercentage"></p></h2>
-          <h2>Status: <p id="uploadStatus"></p></h2>
-          <h2>Results: <p id="uploadResult"></p></h2>
+          <h3>Upload Progress:
+            <div id="uploadPercentage">
+              <div id="uploadPercentageBar"></div>
+            </div>
+          </h3>
+          <h3>Status: </h3><p id="uploadStatus"></p>
+          <h3>Results: </h3><p id="uploadResult"></p>
+          <h3>File Status: </h3><p id="fileStatus"></p>
         </div>
       </div>
-      </div>
+      <!-- End of Upload Modal -->
+    </div>
       <hr>
       <br>
+      <h2 id="folderName" class="col-md-12">{{ folder.name }}</h2>
       <!-- Container that holds an opened file -->
       <div id="file" class="container">
         <br>
@@ -61,17 +96,9 @@
         <video id="video" controls>
           <source ng-src="{{ file.link }}" type="audio/mp4"></source>
         </video>
-        <!--
-        <br>
-        <p class="fileViews">{{ file.views }} view(s)</p>
-        <p class="fileSize">{{ file.size }}</p>
-        <div class="fileButtons">
-          <p class="likes" ng-click="plusOneOnFile()">+{{ file.likes }}</p>
-          <p class="download" ng-click="downloadFromFile()"><img src="img/downloadButton.png"></p>
-        </div>
-      -->
         <br><br><br>
       </div>
+      <!-- Floating Audio Player -->
       <div id="audioPlayer" class="col-md-12">
         <div id="trackName" class="col-md-12 fileTitle">{{ file.name }}</div>
         <div id="playButton" class="col-md-4 player" onclick="playAudio();">Play</div>
@@ -95,25 +122,7 @@
           </div>
         </div>
       </div>
+      <!-- End of Files -->
     </div>
   </div>
-
-
-  <!-- Container that holds all files
-  <div id="files" class="container">
-    <div ng-repeat="song in files" class="col-md-6">
-      <div id="{{ song.id }}" class="thumbnail file" ng-click="openFile($index)">
-        <p class="title">{{ song.name }}</p>
-        <p class="fileSize">{{ song.size }}</p>
-        <div>
-          <p class="fileViews col-md-6">{{ song.views }} view(s)</p>
-          <div class="fileButtons">
-            <p class="likes" ng-click="plusOne($index)">+{{ song.likes }}</p>
-            <p class="download" ng-click="download($index)"><img src="img/downloadButton.png"></p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  -->
 </div>

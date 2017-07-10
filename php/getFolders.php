@@ -30,6 +30,7 @@
         while ($row = mysqli_fetch_assoc($result)) {
           $data = ['id' => $row["id"],
                    'name' => $row["name"],
+                   'metaName' => $row["metaName"],
                    'bandId' => $row["bandId"],
                    'parentId' => $row["parentId"]];
           $folders[] = $data;

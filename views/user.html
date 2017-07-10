@@ -56,7 +56,7 @@
       <h3>or<br>Sign In</h3>
       <input id="signInEmail" type="text" name="email" placeholder="Email" ng-model="user.email" required/>
       <input id="signInPassword" type="password" name="password" placeholder="Password" ng-model="user.password" required/>
-      <input type="submit" ng-click="login()" value="Login"/>
+      <input id="signInSubmitButton" type="submit" ng-click="login()" value="{{ loginMessage }}"/>
       <input type="reset" value="Cancel"/>
     </form>
   </div>
@@ -71,7 +71,7 @@
   <h2 id="bandName">Band(s)</h2>
   <hr><br>
   <div ng-repeat="band in user.bands" class="col-md-12">
-    <div class="thumbnail folder buttons" ng-click="enterBand($index)">
+    <div id="{{ 'band-' + $index }}" class="thumbnail folder buttons" ng-click="enterBand($index)">
       <h2 class="folderTitle">{{ band.name }}</h2>
     </div>
   </div>

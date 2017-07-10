@@ -1,6 +1,6 @@
 app.controller('mainController', ['$scope', '$http',
 function($scope, $http) {
-  $scope.loginMessage = "";
+  $scope.loginMessage = "Login";
   $scope.sqlUser = "";
   $scope.sqlBand = {};
   $scope.currentBandCode = "";
@@ -9,6 +9,7 @@ function($scope, $http) {
     id: "",
     bands: [],
     name: "",
+    metaName: "",
     email: "",
     password: "",
     passwordAgain: ""
@@ -29,6 +30,9 @@ function($scope, $http) {
         console.log(CURRENT_USER.email);
         console.log(CURRENT_USER);
         loginUser();
+      } else {
+        $scope.loginMessage = "Login";
+        getElementById("signInSubmitButton").disabled = false;
       }
     });
   };
@@ -56,6 +60,8 @@ function($scope, $http) {
     if (inputEmpty(email, "signInEmail") || inputEmpty(password, "signInPassword")) {
       callback(false);
     }
+    $scope.loginMessage = "Logging In...";
+    getElementById("signInSubmitButton").disabled = true;
     $http.get("/php/getUser.php?email=" + email)
     .then(function (response) {
       console.log(response.data);
@@ -81,6 +87,7 @@ function($scope, $http) {
         $scope.user.bands = [
           {id: "",
            name: bandName,
+           metaName: generateMetaName(bandName),
            memberIds: "",
            code: "1234"}
         ];
@@ -112,6 +119,7 @@ function($scope, $http) {
     $scope.checkValidity(function(valid) {
       if (valid) {
         console.log("Adding new user.");
+        $scope.user.metaName = generateMetaName($scope.user.name);
         CURRENT_USER = $scope.user;
         $scope.saveUser(function(saved) {
           if (saved) {
@@ -178,8 +186,6 @@ function($scope, $http) {
   $scope.enterBand = function(index) {
     CURRENT_BAND = $scope.user.bands[index];
     navigateToURL("/#/band/" + CURRENT_BAND.metaName);
-    console.log("Adding band link");
-    addNavLink("bandLink", CURRENT_BAND.name, "/#/band/" + CURRENT_BAND.metaName);
   };
 
   // Open the Sign Up form

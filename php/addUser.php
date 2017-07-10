@@ -6,8 +6,10 @@
   $postData = file_get_contents("php://input");
   $data = json_decode($postData);
   $band = $data->bands[0]->name;
+  $bandMetaName = $data->bands[0]->metaName;
   $email = $data->email;
   $name = $data->name;
+  $metaName = $data->metaName;
   $password = $data->password;
   $existingBand = $data->existingBand;
   $userId = "";
@@ -58,8 +60,8 @@
 
     $bandQuery = "";
     if ($existingBand == "") {
-      $bandQuery = "INSERT INTO Bands (name, memberIds, code)
-                VALUES ('" . $band . "','" . $userId . "','1234')";
+      $bandQuery = "INSERT INTO Bands (name, metaName, memberIds, code)
+                VALUES ('" . $band . "','" . $bandMetaName . "','" . $userId . "','1234')";
       echo "Inserting the new band...";
     } else {
       $bandQuery = "UPDATE Bands SET memberIds = CONCAT(memberIds, '," . $userId . "') WHERE name = '" . $band . "';";

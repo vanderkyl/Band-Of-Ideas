@@ -6,6 +6,7 @@
   $postData = file_get_contents("php://input");
   $data = json_decode($postData);
   $name = $data->name;
+  $metaName = $data->metaName;
   $band = $data->band;
   $folderId = "";
 
@@ -24,8 +25,8 @@
       }
     }
 
-    $query = "INSERT INTO Folders (name, bandId)
-              VALUES ('" . $name . "','" . $bandId . "');";
+    $query = "INSERT INTO Folders (name, metaName, bandId)
+              VALUES ('" . $name . "','" . $metaName . "','" . $bandId . "');";
     if ($result = mysqli_query($conn, $query)) {
       echo "New record created successfully!";
     } else {

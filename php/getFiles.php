@@ -22,6 +22,7 @@
         while ($row = mysqli_fetch_assoc($result)) {
           $data = ['id' => $row["id"],
                    'name' => $row["name"],
+                   'metaName' => $row["metaName"],
                    'type' => $row["type"],
                    'size' => $row["size"],
                    'link' => $row["link"],

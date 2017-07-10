@@ -90,12 +90,14 @@ function hideAuthenticationUI() {
 
 function signOut() {
   loggedIn = false;
-  navigateToURL("/#/");
+  removeNavLink("folderLink");
+  removeNavLink("bandLink");
+  hideElementById("navLinks");
   hideElementById("signOutButton");
   displayElementById("signInButton");
+  navigateToURL("/#/");
   hideElementById("accountInformation");
   hideElementById("startBandForm");
-  hideElementById("navLinks");
   displayElementById("authentication");
 };
 
@@ -195,16 +197,6 @@ function getUserList() {
   }
 }
 
-function addNavLink(id, name, link) {
-  $("#navLinks ul").append('<li id="' + id + '" class="navButtons"><a href="' + link + '">' + name + '</a></li>');
-}
-
-function removeNavLink(id) {
-  if ($(id).length != 0) {
-    $(id).remove();
-  }
-}
-
 function isLoggedIn() {
   if (!loggedIn) {
     navigateToURL("/#/");
@@ -214,4 +206,9 @@ function isLoggedIn() {
 
 function objectIsEmpty(obj) {
   return Object.keys(obj).length === 0 && obj.constructor === Object;
+}
+
+function generateMetaName(name) {
+  name = name.toLowerCase().split(' ').join('_');
+  return name;
 }

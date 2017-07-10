@@ -81,3 +81,21 @@ function httpPost(url, callback) {
 
     xmlHttp.send(null);
 }
+
+function addNavLink(id, name, link) {
+  if (id === "bandLink") {
+    $("#bandLinks").append('<li id="' + id + '" class="navButtons"><a href="' + link + '">' + name + '</a></li>');
+  } else if (id === "folderLink") {
+    $("#folderLinks").append('<li id="' + id + '" class="navButtons"><a href="' + link + '">' + name + '</a></li>');
+  } else {
+    console.log("Can't add this link: " + id);
+  }
+
+}
+
+function removeNavLink(id) {
+  var link = getElementById(id);
+  if (link != null) {
+    link.remove();
+  }
+}

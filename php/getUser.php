@@ -42,6 +42,7 @@
         if ($row = mysqli_fetch_assoc($result)) {
           $band = ['id' => $row["id"],
                   'name' => $row["name"],
+                  'metaName' => $row["metaName"],
                   'memberIds' => $row["memberIds"],
                   'code' => $row["code"]];
           $bands[] = $band;

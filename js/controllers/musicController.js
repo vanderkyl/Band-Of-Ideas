@@ -12,23 +12,22 @@ function($scope, $sce, $http) {
   //TODO Create functionality for a recent file selection
 
   $scope.addFolder = function() {
-    var folderName = {
+    var folder = {
       name: $scope.newFolder,
+      metaName: generateMetaName($scope.newFolder),
       band: $scope.band.name
     };
-    $http.post("/php/addFolder.php", folderName)
+    $http.post("/php/addFolder.php", folder)
     .then(
       function (response) {
         console.log(response.data);
-        $scope.folders.push(folderName);
+        $scope.folders.push(folder);
         hideElementById('addFolderInput');
         displayElementById('addFolder');
       },
       function (response) {
         console.log(response.data);
       });
-
-
   };
 
   $scope.showAddFolderInput = function() {
@@ -41,6 +40,20 @@ function($scope, $sce, $http) {
     hideElementById("cancelNewFolder");
     hideElementById("addFolderInput");
     displayElementById("addFolder");
+  }
+
+  $scope.showFolderButtons = function() {
+    hideElementById("showButtonsButton");
+    displayElementById("hideButtonsButton");
+    displayElementById("hiddenFolderButtons");
+    hideElementById("bandName");
+  }
+
+  $scope.hideFolderButtons = function() {
+    hideElementById("hideButtonsButton");
+    displayElementById("showButtonsButton");
+    hideElementById("hiddenFolderButtons");
+    displayElementById("bandName");
   }
 
   $scope.getFolders = function() {
@@ -65,18 +78,17 @@ function($scope, $sce, $http) {
   $scope.openFolder = function(index) {
     console.log("open folder");
     console.log($scope.folders[index]);
-    displayElementById("loading");
     var folderUrl = "/#/band/" + CURRENT_BAND.metaName + "/";
-
+    var folderName = $scope.folders[index].name;
+    $scope.folders[index].name = "Loading...";
     if ($scope.folders[index].name == "Test Folder") {
       CURRENT_FILES = testFiles;
       CURRENT_FOLDERS = $scope.folders;
       CURRENT_FOLDER = $scope.folders[index];
       folderUrl += CURRENT_FOLDER.metaName;
+      console.log("folder link: " + folderUrl);
+      $scope.folders[index].name = folderName;
       navigateToURL(folderUrl);
-      addNavLink("folderLink", CURRENT_FOLDER.name, folderUrl);
-
-      hideElementById("loading");
     } else {
       $http.get("/php/getFiles.php?folderId=" + $scope.folders[index].id)
       .then(function (response) {
@@ -85,10 +97,9 @@ function($scope, $sce, $http) {
         CURRENT_FOLDERS = $scope.folders;
         CURRENT_FOLDER = $scope.folders[index];
         folderUrl += CURRENT_FOLDER.metaName;
+        console.log("folder link: " + folderUrl);
+        $scope.folders[index].name = folderName;
         navigateToURL(folderUrl);
-        addNavLink("folderLink", CURRENT_FOLDER.name, folderUrl);
-
-        hideElementById("loading");
       });
     }
 
@@ -148,7 +159,6 @@ function($scope, $sce, $http) {
   */
 
   //Files Section
-  var form = document.getElementById('fileForm');
 
   $scope.openPreviousFolder = function() {
     var previousUrl = "/#/band/" + CURRENT_BAND.metaName;
@@ -230,14 +240,18 @@ function($scope, $sce, $http) {
     }
   };
 
+  //Start of Upload Functionality
+  var fileSelect = document.getElementById('fileSelector');
+  var uploadButton = document.getElementById('uploadButton');
+  var uploadState = document.getElementById('uploadState');
+  var uploadStatus = document.getElementById('uploadStatus');
+  var uploadResult = document.getElementById('uploadResult');
+  var uploadPercentage = document.getElementById('uploadPercentage');
+  var form = document.getElementById('fileForm');
+
   form.onsubmit = function(event) {
+    uploadStatus.innerHTML = "Upload Started..."
     event.preventDefault();
-    var fileSelect = document.getElementById('fileSelector');
-    var uploadButton = document.getElementById('uploadButton');
-    var uploadState = document.getElementById('uploadState');
-    var uploadStatus = document.getElementById('uploadStatus');
-    var uploadResult = document.getElementById('uploadResult');
-    var uploadPercentage = document.getElementById('uploadPercentage');
     uploadButton.innerHTML = 'Uploading...';
     var uploadedFiles = fileSelect.files;
     var formData = new FormData();
@@ -253,9 +267,10 @@ function($scope, $sce, $http) {
     xhr.upload.addEventListener("progress", function(evt){
       if (evt.lengthComputable) {
         var percentComplete = (evt.loaded / evt.total) * 100;
+        fileStatus.innerHTML = percentComplete + "%";
+        percentComplete = 100 - percentComplete;
         //Do something with upload progress
-        uploadPercentage.innerHTML = percentComplete + "%";
-        console.log(percentComplete);
+        uploadPercentageBar.style.marginRight = percentComplete + "%";
       }
     }, false);
     xhr.onload = function () {
@@ -265,16 +280,21 @@ function($scope, $sce, $http) {
       } else {
         alert('An error occurred!');
       }
-      uploadStatus.innerHTML = xhr.status;
+      if (xhr.status == "200") {
+        uploadStatus.innerHTML = "Success!";
+      } else {
+        uploadStatus.innerHTML = "Failure.";
+      }
+
       uploadResult.innerHTML = xhr.responseText;
 
-      displayElementById("loading");
-      $http.get("getFiles.php?folderId=" + $scope.folder.id)
+      fileStatus.innerHTML = "Loading file: " + file.name;
+      $http.get("/php/getFiles.php?folderId=" + $scope.folder.id)
       .then(function (response) {
         console.log(response.data);
         CURRENT_FILES = response.data;
         $scope.files = CURRENT_FILES;
-        hideElementById("loading");
+        resetUploadModal();
         hideElementById("upload");
       });
     };
@@ -283,6 +303,14 @@ function($scope, $sce, $http) {
     console.log(formData);
   }
 
+  function resetUploadModal() {
+    form.reset();
+    uploadStatus.innerHTML = "";
+    uploadResult.innerHTML = "";
+    fileStatus.innerHTML = "";
+  }
+
+  // Do this if logged in
   if (isLoggedIn()) {
     $scope.band = CURRENT_BAND;
     $scope.files = CURRENT_FILES;
@@ -299,12 +327,17 @@ function($scope, $sce, $http) {
     var urlPaths = window.location.hash.split('/');
     // If the url has 3 path identifiers ( # / band / bandName )
     if (urlPaths.length === 3) {
+      var bandUrl = "/#/band/" + CURRENT_BAND.metaName;
+      removeNavLink("bandLink");
+      addNavLink("bandLink", CURRENT_BAND.name, bandUrl)
       hideElementById("fileSection");
       displayElementById("folderSection");
     } else {
       hideElementById("folderSection");
       displayElementById("fileSection");
+      var folderUrl = "/#/band/" + CURRENT_BAND.metaName + "/" + CURRENT_FOLDER.metaName;
+      removeNavLink("folderLink");
+      addNavLink("folderLink", CURRENT_FOLDER.name, folderUrl);
     }
-
   }
 }]);
