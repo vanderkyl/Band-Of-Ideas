@@ -2,10 +2,10 @@
   $sqlUser = "kylevanderhoof";
   $sqlPW = "ashdrum10";
   $sqlDB = "IdeaBand";
-  $bandId = $_GET['bandId'];
-  $folderId = $_GET['folderId'];
-  $bandDir = "../uploads/band/" . $bandId . "/";
-  $targetDir = "../uploads/band/" . $bandId . "/" . $folderId . "/";
+  $bandName = $_GET['bandName'];
+  $folderName = $_GET['folderName'];
+  $bandDir = "../uploads/band/" . $bandName . "/";
+  $targetDir = "../uploads/band/" . $bandName . "/" . $folderName . "/";
   $uploadedFiles = reArrayFiles($_FILES["files"]);
   //$uploadedFiles = reArrayFiles($data);
   //echo 1232;
@@ -38,14 +38,18 @@
         } else if(!mysqli_ping($conn)) {
           echo "Error: " . msqli_error($conn);
         } else {
+          // Find folder id
+          if ($result = mysqli_query($conn, "SELECT id FROM Folders WHERE metaName='" . $folderName . "';")) {
+            if($row = mysqli_fetch_assoc($result)) {
+              $folderId = $row["id"];
+            }
+          }
           $name = $file["name"];
           $type = $file["type"];
           $size = $file["size"];
-          $replacedSpaces = str_replace(' ', '_', $name);
-          $metaName = strtolower($replacedSpaces);
-          $link = "/uploads/band/" . $bandId . "/" . $folderId . "/" . $file["name"];
+          $link = "/uploads/band/" . $bandName . "/" . $folderName . "/" . $file["name"];
           $query = "INSERT INTO Files (name, metaName, type, size, link, folderId)
-                    VALUES ('" . $name . "','" . $metaName . "','" . $type . "','" . $size . "','" . $link . "','" . $folderId . "')";
+                    VALUES ('" . $name . "','" . $name . "','" . $type . "','" . $size . "','" . $link . "','" . $folderId . "')";
 
           if (!$conn->query($query) === TRUE) {
             echo "Error: " . $query . "<br>" . $conn->error;

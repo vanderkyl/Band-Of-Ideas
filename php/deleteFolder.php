@@ -5,9 +5,7 @@
   $conn = mysqli_connect("localhost", $sqlUser, $sqlPW, $sqlDB);
   $postData = file_get_contents("php://input");
   $data = json_decode($postData);
-  $name = $data->name;
-  $metaName = $data->metaName;
-  $band = $data->band;
+  $folderName = $data->folderName;
   $folderId = "";
   $bandId = "";
 

@@ -76,10 +76,14 @@ function loadAudio(file) {
   audio.play();
 }
 
-function closeFile(id) {
-  checkIfAudioIsPlaying();
+function openMiniPlayer(id) {
+  displayElementById("audioPlayer");
   hidePreviousFile();
   //scrollToElementById(id);
+}
+
+function closeFile(id) {
+  hidePreviousFile();
 }
 
 function hidePreviousFile() {

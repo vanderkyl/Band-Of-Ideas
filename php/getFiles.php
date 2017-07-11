@@ -4,14 +4,20 @@
   $sqlPW = "ashdrum10";
   $sqlDB = "IdeaBand";
   $conn = mysqli_connect("localhost", $sqlUser, $sqlPW, $sqlDB);
-  $folderId = $_GET['folderId'];
+  $folderName = $_GET['folderName'];
+  $folderId = "";
 
   if($conn->connect_error) {
     echo "Failed to connect." . $conn->connect_error;
   }
 
   if(mysqli_ping($conn)) {
-
+    // Find folder id
+    if ($result = mysqli_query($conn, "SELECT id FROM Folders WHERE metaName='" . $folderName . "';")) {
+      if($row = mysqli_fetch_assoc($result)) {
+        $folderId = $row["id"];
+      }
+    }
     $query = "SELECT * FROM Files WHERE folderId = '" . $folderId . "'";
 
     if ($result = mysqli_query($conn, $query)) {

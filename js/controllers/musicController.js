@@ -8,53 +8,33 @@ function($scope, $sce, $http) {
   // Files
   $scope.files = [];
   $scope.file = {};
+  $scope.addFolderMessage = "New Folder";
 
   //TODO Create functionality for a recent file selection
-
   $scope.addFolder = function() {
     var folder = {
       name: $scope.newFolder,
       metaName: generateMetaName($scope.newFolder),
       band: $scope.band.name
     };
+    // TODO verify that the right data is there
     $http.post("/php/addFolder.php", folder)
     .then(
       function (response) {
-        console.log(response.data);
-        $scope.folders.push(folder);
-        hideElementById('addFolderInput');
-        displayElementById('addFolder');
+        if (response.data === "New record created successfully!") {
+          $scope.addFolderMessage = "Success!";
+          $scope.folders.push(folder);
+          hideElementById('addFolderInput');
+          hideElementById('cancelNewFolder');
+          displayElementById('addFolder');
+        } else {
+          $scope.addFolderMessage = "Failed to add folder.";
+        }
       },
       function (response) {
         console.log(response.data);
       });
   };
-
-  $scope.showAddFolderInput = function() {
-    hideElementById("addFolder");
-    displayElementById("cancelNewFolder");
-    displayElementById("addFolderInput");
-  }
-
-  $scope.hideAddFolderInput = function() {
-    hideElementById("cancelNewFolder");
-    hideElementById("addFolderInput");
-    displayElementById("addFolder");
-  }
-
-  $scope.showFolderButtons = function() {
-    hideElementById("showButtonsButton");
-    displayElementById("hideButtonsButton");
-    displayElementById("hiddenFolderButtons");
-    hideElementById("bandName");
-  }
-
-  $scope.hideFolderButtons = function() {
-    hideElementById("hideButtonsButton");
-    displayElementById("showButtonsButton");
-    hideElementById("hiddenFolderButtons");
-    displayElementById("bandName");
-  }
 
   $scope.getFolders = function() {
     displayElementById("loading");
@@ -68,13 +48,6 @@ function($scope, $sce, $http) {
     });
   }
 
-/*
-  $scope.addFile = function(file) {
-    $scope.safeApply(function() {
-      $scope.files.push(getFile(file, $sce));
-    });
-  };
-*/
   $scope.openFolder = function(index) {
     console.log("open folder");
     console.log($scope.folders[index]);
@@ -90,7 +63,7 @@ function($scope, $sce, $http) {
       $scope.folders[index].name = folderName;
       navigateToURL(folderUrl);
     } else {
-      $http.get("/php/getFiles.php?folderId=" + $scope.folders[index].id)
+      $http.get("/php/getFiles.php?folderName=" + $scope.folders[index].metaName)
       .then(function (response) {
         console.log(response.data);
         CURRENT_FILES = response.data;
@@ -102,64 +75,28 @@ function($scope, $sce, $http) {
         navigateToURL(folderUrl);
       });
     }
-
   };
 
-  $scope.deleteFolder = function() {
-    var prompt = confirm("Are you sure you want to delete this folder?");
+  $scope.deleteFolder = function(index) {
+    console.log("Deleting folder");
+    var confirmDelete = confirm("Are you sure you want to delete this folder?");
+    if (confirmDelete) {
+      $http.get("/php/deleteFolder.php?folderName=" + $scope.folders[index].metaName)
+      .then(function (response) {
+        console.log(response.data);
+        CURRENT_FILES = response.data;
+        CURRENT_FOLDERS = $scope.folders;
+        CURRENT_FOLDER = $scope.folders[index];
+        folderUrl += CURRENT_FOLDER.metaName;
+        console.log("folder link: " + folderUrl);
+        $scope.folders[index].name = folderName;
+        navigateToURL(folderUrl);
+      });
+    }
     //deleteFile($scope.file.id);
   };
 
-  /*
-  // Go through the files that were saved from the Google Api Call
-  $scope.getFiles = function() {
-    console.log("Getting Files");
-    if (PREVIOUS_FOLDER.length > 0) {
-      $scope.addPreviousButton();
-    }
-    sortFiles($scope.addFolder, $scope.addFile);
-  };
-
-  $scope.goToFilePage = function() {
-    navigateToURL("/#/file?id=" + $scope.file.id);
-    CURRENT_FILE = $scope.file;
-  }
-
-  // Add button to go back to previous folder contents
-  $scope.addPreviousButton = function() {
-    $scope.safeApply(function() {
-      $scope.folders.push(getPreviousButton());
-    });
-  };
-
-  $scope.loadFiles = function() {
-    console.log("Loading files...");
-    $scope.getFiles();
-    filesReady = false;
-  };
-
-  $scope.waitUntilFilesAreLoaded = function() {
-    if (filesReady) {
-      $scope.loadFiles();
-    } else {
-      // TODO use a promise instead of a wait loop. This is dangerous
-      setTimeout($scope.waitUntilFilesAreLoaded, 500);
-    }
-  };
-
-  // Clear the arrays that hold the current files and folders
-  $scope.clearFilesAndFolders = function() {
-    $scope.folders.length = 0;
-    $scope.files.length = 0;
-    $scope.folders = [];
-    $scope.files = [];
-    console.log("Cleared previous folders and files.");
-    hideElementById("file");
-  };
-  */
-
   //Files Section
-
   $scope.openPreviousFolder = function() {
     var previousUrl = "/#/band/" + CURRENT_BAND.metaName;
     hideElementById("fileSection");
@@ -175,7 +112,6 @@ function($scope, $sce, $http) {
     } else {
       hideElementById("upload");
     }
-
   };
 
   $scope.openFile = function(index) {
@@ -186,10 +122,15 @@ function($scope, $sce, $http) {
     hidePreviousFile();
     console.log(file);
     loadFile(file);
+    scrollToElementById("fileSection");
   };
 
   $scope.closeFile = function() {
     closeFile($scope.file.id);
+  };
+
+  $scope.openMiniPlayer = function() {
+    openMiniPlayer($scope.file.id);
   };
 
   $scope.deleteFile = function() {
@@ -240,6 +181,32 @@ function($scope, $sce, $http) {
     }
   };
 
+  $scope.showAddFolderInput = function() {
+    hideElementById("addFolder");
+    displayElementById("cancelNewFolder");
+    displayElementById("addFolderInput");
+  }
+
+  $scope.hideAddFolderInput = function() {
+    hideElementById("cancelNewFolder");
+    hideElementById("addFolderInput");
+    displayElementById("addFolder");
+  }
+
+  $scope.showFolderButtons = function() {
+    hideElementById("showButtonsButton");
+    displayElementById("hideButtonsButton");
+    displayElementById("hiddenFolderButtons");
+    hideElementById("bandName");
+  }
+
+  $scope.hideFolderButtons = function() {
+    hideElementById("hideButtonsButton");
+    displayElementById("showButtonsButton");
+    hideElementById("hiddenFolderButtons");
+    displayElementById("bandName");
+  }
+
   //Start of Upload Functionality
   var fileSelect = document.getElementById('fileSelector');
   var uploadButton = document.getElementById('uploadButton');
@@ -263,7 +230,7 @@ function($scope, $sce, $http) {
 
     // Set up the request.
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', "http://www.bandofideas.com/php/upload.php?folderId=" + $scope.folder.id + "&bandId=" + $scope.folder.bandId, true);
+    xhr.open('POST', "http://www.bandofideas.com/php/upload.php?folderName=" + CURRENT_FOLDER.metaName + "&bandName=" + CURRENT_BAND.metaName, true);
     xhr.upload.addEventListener("progress", function(evt){
       if (evt.lengthComputable) {
         var percentComplete = (evt.loaded / evt.total) * 100;
