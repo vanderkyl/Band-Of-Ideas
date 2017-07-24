@@ -76,8 +76,13 @@ function loadAudio(file) {
   audio.play();
 }
 
-function openMiniPlayer(id) {
+function openMiniPlayer(id, name, source, time) {
+  getElementById("audio").pause();
+  getElementById("trackName").innerHTML = name;
+  getElementById("audioPlayerSource").src = source;
+  getElementById("audioPlayerAudio").currentTime = time;
   displayElementById("audioPlayer");
+  getElementById("audioPlayerAudio").load();
   hidePreviousFile();
   //scrollToElementById(id);
 }

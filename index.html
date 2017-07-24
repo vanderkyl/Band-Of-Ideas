@@ -69,22 +69,33 @@
                   </div>
                   <hr>
                   <div class="accountLinks">
-                    <h2 id="joinBandLink"><a href="/#/user">Join a Band!</a></h2>
+                    <h2 id="joinBandLink"><a href="" onclick="openJoinBandForm()">Join a Band!</a></h2>
                     <h2 id="accountInfoLink"><a href="/#/user">Account Info</a></h2>
-                    <div class="btn btn-primary" onclick="clearStorage()">Clear Storage</div>
-                    <div class="btn btn-primary" onclick="showAccounts()">Show Accounts</div>
+                    <p>Made by Kyle Vanderhoof - 2017</p>
                   </div>
                 </ul>
               </div>
               <li id="signOutButton" class="navButtons" onclick="signOut()"><a href="/#/user">Sign Out</a></li>
             </div>
-
+            <!--
             <form class="navbar-form navbar-right">
               <div class="form-group">
                 <input type="text" class="form-control" placeholder="Search">
               </div>
               <button type="submit" class="btn btn-default">Submit</button>
             </form>
+          -->
+            <!-- Floating Audio Player -->
+            <div id="audioPlayer">
+              <div id="trackName" class="playerFileTitle"></div>
+              <input id="playButton" type="button" value="Play" onclick="playAudioFromPlayer();">
+              <input id="pauseButton" type="button" value="Pause" onclick="pauseAudioFromPlayer();">
+              <input id="quitButton" type="button" value="Quit" onclick="quitPlayer();">
+              <audio id="audioPlayerAudio" preload="auto" autoplay="true" controls>
+                <source id="audioPlayerSource" src="" type="audio/mp4"/>
+                <p>Your browser does not support HTML5 audio.</p>
+              </audio>
+            </div>
           </div><!-- /.navbar-collapse -->
         </div>
       </nav>
@@ -94,12 +105,10 @@
       <h2>Loading...</h2>
     </div>
 
+
     <div class="container" ng-view></div>
 
     <div class="footer">
-      <div class="container">
-        <p>Made by Kyle Vanderhoof - 2017</p>
-      </div>
     </div>
 
 

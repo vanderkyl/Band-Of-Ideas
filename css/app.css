@@ -115,20 +115,24 @@ html, body {
   font-weight: 200;
 }
 
-#bandName {
+.userInfoTitles {
   color: #FFF;
   text-align: center;
   margin-top: 3px;
   padding: 10px;
 }
 
+.userInfo {
+  color: #FFF;
+  background: #265a88;
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 15px;
+}
+
 #folderName {
   color: #FFF;
   text-align: center;
-}
-
-#folders {
-
 }
 
 #fileSection {
@@ -206,6 +210,31 @@ html, body {
   transition: background 500ms;
 }
 
+.bandButton {
+  color: #fff;
+  background: #4c4c4c;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 40px;
+  min-width: 50px;
+  height: 40px;
+  border-radius: 5%;
+  text-align: center;
+  font-weight: 200;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: background 500ms;
+}
+
+.bandButton:hover {
+  color: #3CB371;
+  transition: background 500ms;
+}
+
+.folderLoadingMessage {
+  text-align: center;
+  color: #FFF;
+}
+
 .folderButton1 {
   display: block;
 }
@@ -214,24 +243,20 @@ html, body {
   display: none;
 }
 
-#addFolder {
+#addFolder, #addBand {
   background: #3CB371;
 }
 
-#addFolder:hover {
+#addFolder:hover, #addBand:hover {
   background: #d2faff;
 }
 
-#cancelNewFolder {
+#cancelNewFolder, #cancelNewBand {
   background: #851a8a;
   display: none;
 }
 
-#extraButton2 {
-
-}
-
-#cancelNewFolder:hover {
+#cancelNewFolder:hover, #cancelNewBand:hover {
   background: #fdf1ff;
 }
 
@@ -245,6 +270,7 @@ html, body {
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
   padding: 20px 0px 0px 0px;
   margin-bottom: 20px;
+  width: 100%;
 }
 
 .footer {
@@ -263,7 +289,9 @@ html, body {
    margin: 0 10px;
 }
 
-#addFolderInput, #accountInfoLink, #accountInformation, #navLinks, #addBandInput, #folderIndex, #upload, #loading {
+#addFolderInput, #accountInfoLink, #accountInformation,
+#navLinks, #addBandInput, #folderIndex, #upload, #loading,
+#userDetails, #bandDetails {
   display: none;
 }
 

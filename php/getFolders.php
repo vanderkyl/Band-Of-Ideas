@@ -33,7 +33,10 @@
                    'metaName' => $row["metaName"],
                    'bandId' => $row["bandId"],
                    'parentId' => $row["parentId"]];
-          $folders[] = $data;
+          // Only add the folder if it isn't archived
+          if ($row["archived"] == "false") {
+            $folders[] = $data;
+          }
         }
       }
       echo json_encode($folders);

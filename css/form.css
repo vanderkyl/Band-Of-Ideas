@@ -38,26 +38,26 @@
 
 .mainForm {
   /*background-color: #265a88;*/
-  background: url('../dumb.png') no-repeat center center fixed;
+
   background-size: cover;
   position: relative;
   margin: 0 auto;
-  font-size: 18px;
+  font-size: 14px;
 }
 
 .mainForm h3 {
   color: #FFF;
   text-align: center;
-  margin-bottom: 30px;
-  font-size: 2.5vmax;
+  margin-bottom: 20px;
+  font-size: 20px;
 }
 
 .mainForm input {
   width: 100%;
-  margin: 8px 0;
+  margin: 1px 0;
   border: 1px solid #ccc;
   box-sizing: border-box;
-  padding: 8px;
+  padding: 5px;
   border-radius: 2px;
   text-align: center;
 }
@@ -78,7 +78,7 @@
 
 .form {
   width: 100%;
-  padding: 20px 35px;
+  padding: 10px 35px;
   margin: 8px 0;
   border: 1px solid #ccc;
   box-sizing: border-box;
@@ -88,6 +88,7 @@
 
 .form input {
   padding: 8px;
+  text-align: center;
 }
 
 .form input:focus {

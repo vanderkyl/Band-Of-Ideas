@@ -1,9 +1,4 @@
 <div id="authentication" class="col-md-12">
-  <div id="startBand" class="mainForm form col-sm-12" ng-click="openBandForm()">
-    <h3>Start a<br>
-      Band of Ideas
-    </h3>
-  </div>
   <div id="signUpForm" class="mainForm form col-sm-12">
     <h3>Start a<br>
       Band of Ideas
@@ -48,27 +43,59 @@
       <!-- </form> -->
     </div>
   </div>
+  <!-- Sign In Section -->
   <div id="startSignIn" class="mainForm form col-sm-12" ng-click="openSignInForm()">
       <h3>or<br>Sign In</h3>
   </div>
   <div id="signInForm" class="mainForm form col-sm-12">
     <form name="signIn">
-      <h3>or<br>Sign In</h3>
+      <h3>Sign In</h3>
       <input id="signInEmail" type="text" name="email" placeholder="Email" ng-model="user.email" required/>
       <input id="signInPassword" type="password" name="password" placeholder="Password" ng-model="user.password" required/>
       <input id="signInSubmitButton" type="submit" ng-click="login()" value="{{ loginMessage }}"/>
       <input type="reset" value="Cancel"/>
     </form>
+    <a ng-click="testLogin()">Test</a>
   </div>
-  <div id="testLogin" class="mainForm form col-sm-12" ng-click="testLogin()">
-    <h3>
-      Test
+  <div id="startBand" class="mainForm form col-sm-12" ng-click="openBandForm()">
+    <h3>Start a<br>
+      Band of Ideas
     </h3>
   </div>
 </div>
 
+<!-- User Info -->
 <div id="accountInformation">
-  <h2 id="bandName">Band(s)</h2>
+  <h2 class="userInfoTitles">Hello {{ user.name }}</h2>
+  <div class="addFolderButtons col-md-2">
+    <p id="userDetailsButton" class="bandButton" ng-click="showUserDetails()">v</p>
+  </div>
+  <div id="userDetails">
+    <div class="col-md-12 userInfo">
+      <div class="col-md-6">
+        <h3>Email: </h3><p>{{ user.email }}</p>
+      </div>
+      <div class="col-md-6">
+        <h3>Password: </h3><p>{{ user.password}}</p>
+      </div>
+    </div>
+  </div>
+  <hr><br>
+  <h2 id="bandName" class="userInfoTitles">Bands</h2>
+  <div class="addFolderButtons col-md-2">
+    <p id="addBand" class="folderButton1 bandButton" ng-click="showAddBandInput()">+</p>
+    <p id="cancelNewBand" class="folderButton2 bandButton" ng-click="hideAddBandInput()">-</p>
+  </div>
+  <!-- Add Band Modal -->
+  <div id="addBandInput" class="col-md-12">
+    <div id="addBandModal" class="thumbnail buttons col-md-12">
+      <p class="col-md-4">{{ addBandMessage }}</p>
+      <div class="col-md-8">
+        <input type="text" name="bandName" placeholder="Band Name" ng-model="newBand" required/>
+        <input type="button" value="Add Band" ng-click="addBand()">
+      </div>
+    </div>
+  </div>
   <hr><br>
   <div ng-repeat="band in user.bands" class="col-md-12">
     <div id="{{ 'band-' + $index }}" class="thumbnail folder buttons" ng-click="enterBand($index)">

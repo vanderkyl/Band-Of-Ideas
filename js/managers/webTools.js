@@ -10,6 +10,10 @@ function displayElementById(id) {
     document.getElementById(id).style.display = "block";
 }
 
+function displayElementInlineById(id) {
+    document.getElementById(id).style.display = "inline-block";
+}
+
 function saveItemToLocalStorage(key, value) {
     return localStorage.setItem(key, value);
 }

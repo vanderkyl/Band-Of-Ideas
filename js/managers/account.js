@@ -27,7 +27,16 @@ var testFolders = [{
   id: "0",
   name: "Test Folder",
   metaName: "test_folder",
-  parentId: "0"
+  parentId: "0",
+  archived: "true"
+},
+{
+  bandId: "0",
+  id: "1",
+  name: "Test Folder2",
+  metaName: "test_folder2",
+  parentId: "0",
+  archived: "true"
 }];
 var testFiles = [{
     folderId: "0",
@@ -41,20 +50,20 @@ var testFiles = [{
     views: "0"
   }, {
       folderId: "0",
-      id: "0",
+      id: "1",
       likes: "0",
       link: "/uploads/bands/1/1/8-Bit.m4a",
-      name: "Test File",
+      name: "Test File2",
       metaName: "test_file",
       size: "34637",
       type: "audio/x-m4a",
       views: "0"
     }, {
         folderId: "0",
-        id: "0",
+        id: "2",
         likes: "0",
         link: "/uploads/bands/1/1/8-Bit.m4a",
-        name: "Test File",
+        name: "Test File3",
         metaName: "test_file",
         size: "34637",
         type: "audio/x-m4a",
@@ -148,6 +157,14 @@ function bandIsValid(bandName) {
     }
   }
   return true;
+}
+
+function openJoinBandForm() {
+  displayElementById("signUpForm");
+  displayElementById("startBandForm");
+  hideElementById("startBand");
+  hideElementById("signInForm");
+  displayElementById("startSignIn");
 }
 
 function checkEmail(email, userEmail) {

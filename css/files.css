@@ -1,7 +1,7 @@
 .fileTitle {
   color: #FFF;
   margin: 0;
-  font-size: 30px;
+  font-size: 25px;
   font-weight: 800;
 }
 
@@ -17,7 +17,9 @@
   padding-right: 2%;
 }
 
-
+#files {
+  width: 100%;
+}
 
 .fileViews {
   color: #a3a3a3 ;
@@ -84,13 +86,13 @@
   font-weight: 400;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
   transition: background 500ms;
-  float: right;
   position: absolute;
-  right: 1%;
+  z-index: 1000;
+  right: 4.5%;
   top: 5%;
 }
 
-.file:hover .deleteButton, .folder:hover .deleteButton {
+.file:hover .deleteButton, .folders:hover .deleteButton {
   display: block;
 }
 

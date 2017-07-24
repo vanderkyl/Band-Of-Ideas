@@ -1,6 +1,7 @@
 app.controller('mainController', ['$scope', '$http',
 function($scope, $http) {
   $scope.loginMessage = "Login";
+  $scope.addBandMessage = "";
   $scope.sqlUser = "";
   $scope.sqlBand = {};
   $scope.currentBandCode = "";
@@ -190,11 +191,7 @@ function($scope, $http) {
 
   // Open the Sign Up form
   $scope.openBandForm = function() {
-    displayElementById("signUpForm");
-    displayElementById("startBandForm");
-    hideElementById("startBand");
-    hideElementById("signInForm");
-    displayElementById("startSignIn");
+    openJoinBandForm();
   };
 
   // Open the Sign Up form
@@ -208,7 +205,15 @@ function($scope, $http) {
   // Show add band input
   $scope.showAddBandInput = function() {
     hideElementById("addBand");
+    displayElementById("cancelNewBand");
     displayElementById("addBandInput");
+  };
+
+  // Hide add band input
+  $scope.hideAddBandInput = function() {
+    hideElementById("addBandInput");
+    hideElementById("cancelNewBand");
+    displayElementById("addBand");
   };
 
   $scope.backToChooseBand = function() {
@@ -221,10 +226,25 @@ function($scope, $http) {
   $scope.addBand = function() {
     var bandName = $scope.newBand;
     $scope.user.bands.push({name: bandName,
+                            metaName: generateMetaName(bandName),
                             memberIds: [$scope.user.id],
                             code: "1234"});
-    hideElementById("addBandInput");
-    displayElementById("addBand");
+    //TODO check availability of band
+    $scope.hideAddBandInput;
+
+  };
+
+  // Open User Details
+  $scope.showUserDetails = function() {
+    var detailsDisplay = getElementById("userDetails").style.display;
+    var detailsButton = getElementById("userDetailsButton");
+    if (detailsDisplay == "none" || detailsDisplay === "") {
+      displayElementById("userDetails");
+      detailsButton.innerHTML = "^";
+    } else {
+      hideElementById("userDetails");
+      detailsButton.innerHTML = "v";
+    }
   };
 
   // Check if user is logged in. Show user information instead of authentication forms.
