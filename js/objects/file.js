@@ -82,6 +82,7 @@ function openMiniPlayer(id, name, source, time) {
   getElementById("audioPlayerSource").src = source;
   getElementById("audioPlayerAudio").currentTime = time;
   displayElementById("audioPlayer");
+  displayElementById("footer");
   getElementById("audioPlayerAudio").load();
   hidePreviousFile();
   //scrollToElementById(id);

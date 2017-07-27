@@ -78,7 +78,7 @@
 
 .form {
   width: 100%;
-  padding: 10px 35px;
+  padding: 20px 35px;
   margin: 8px 0;
   border: 1px solid #ccc;
   box-sizing: border-box;
@@ -98,5 +98,6 @@
 #authentication {
   left: 10%;
   width: 80%;
+  margin-top: 8%;
   display: block;
 }

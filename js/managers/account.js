@@ -68,14 +68,85 @@ var testFiles = [{
         size: "34637",
         type: "audio/x-m4a",
         views: "0"
-      },
+      }, {
+          folderId: "0",
+          id: "2",
+          likes: "0",
+          link: "/uploads/bands/1/1/8-Bit.m4a",
+          name: "Test File4",
+          metaName: "test_file",
+          size: "34637",
+          type: "audio/x-m4a",
+          views: "0"
+        }, {
+            folderId: "0",
+            id: "2",
+            likes: "0",
+            link: "/uploads/bands/1/1/8-Bit.m4a",
+            name: "Test File5",
+            metaName: "test_file",
+            size: "34637",
+            type: "audio/x-m4a",
+            views: "0"
+          }, {
+              folderId: "0",
+              id: "2",
+              likes: "0",
+              link: "/uploads/bands/1/1/8-Bit.m4a",
+              name: "Test File6",
+              metaName: "test_file",
+              size: "34637",
+              type: "audio/x-m4a",
+              views: "0"
+            }, {
+                folderId: "0",
+                id: "2",
+                likes: "0",
+                link: "/uploads/bands/1/1/8-Bit.m4a",
+                name: "Test File7",
+                metaName: "test_file",
+                size: "34637",
+                type: "audio/x-m4a",
+                views: "0"
+              }, {
+                  folderId: "0",
+                  id: "2",
+                  likes: "0",
+                  link: "/uploads/bands/1/1/8-Bit.m4a",
+                  name: "Test File8",
+                  metaName: "test_file",
+                  size: "34637",
+                  type: "audio/x-m4a",
+                  views: "0"
+                }, {
+                    folderId: "0",
+                    id: "2",
+                    likes: "0",
+                    link: "/uploads/bands/1/1/8-Bit.m4a",
+                    name: "Test File10",
+                    metaName: "test_file",
+                    size: "34637",
+                    type: "audio/x-m4a",
+                    views: "0"
+                  },
+                  {
+                      folderId: "0",
+                      id: "2",
+                      likes: "0",
+                      link: "/uploads/bands/1/1/8-Bit.m4a",
+                      name: "Test File11",
+                      metaName: "test_file",
+                      size: "34637",
+                      type: "audio/x-m4a",
+                      views: "0"
+                    },
     {
     folderId: "0",
     id: "1",
     likes: "0",
     link: "/uploads/bands/1/1/8-Bit.m4a",
-    name: "Test File2",
-    metaName: "test_file2",
+    name: "Test File9",
+    metaName: "test_file9",
     size: "34637",
     type: "audio/x-m4a",
     views: "0"

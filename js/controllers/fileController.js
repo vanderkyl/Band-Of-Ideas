@@ -1,14 +1,24 @@
-app.controller('fileController', ['$scope', '$http',
-function($scope, $http) {
-
+app.controller('fileController', ['$scope', '$sce', '$http', '$filter',
+function($scope, $sce, $http, $filter) {
+  // Folders
+  $scope.folders = [];
   $scope.folder = {};
+  $scope.newFolder = "";
+  $scope.band = {};
+  // Files
   $scope.files = [];
   $scope.file = {};
-  $scope.status = "status";
-  $scope.data = "data";
-  $scope.result = "result";
-  var form = document.getElementById('fileForm');
+  $scope.addFolderMessage = "New Folder";
+  $scope.folderMessage = "";
+  $scope.currentPage = 0;
+  $scope.sortBy = "name";
+  $scope.pageSize = "10";
+  $scope.search = "";
 
+  //TODO Create functionality for a recent file selection
+
+
+  //Files Section
   $scope.openPreviousFolder = function() {
     var previousUrl = "/#/band/" + CURRENT_BAND.metaName;
     navigateToURL(previousUrl);
@@ -22,21 +32,44 @@ function($scope, $http) {
     } else {
       hideElementById("upload");
     }
-
   };
 
-  $scope.openFile = function(index) {
-    var file = $scope.files[index];
-    $scope.safeApply(function(index) {
+  $scope.openFile = function(file) {
+    console.log(file);
+    file.views++;
+    $scope.safeApply(function() {
       $scope.file = file;
     });
     hidePreviousFile();
     console.log(file);
+    document.title = file.name;
     loadFile(file);
+    scrollToElementById("fileSection");
+    $http.post("/php/updateFile.php?type=views", file)
+    .then(
+      function (response) {
+        console.log(response.data);
+      },
+      function (response) {
+        console.log(response.data);
+      });
   };
 
   $scope.closeFile = function() {
+    getElementById("audio").pause();
+    document.title = CURRENT_FOLDER.name;
     closeFile($scope.file.id);
+  };
+
+  $scope.openMiniPlayer = function() {
+    var source = getElementById("m4aSource").src;
+    var currentTime = getElementById("audio").currentTime;
+    openMiniPlayer($scope.file.id, $scope.file.name, source, currentTime);
+  };
+
+  $scope.deleteFile = function() {
+    var prompt = confirm("Are you sure you want to delete this file?");
+    //deleteFile($scope.file.id);
   };
 
   // Add like on file when opened
@@ -48,7 +81,16 @@ function($scope, $http) {
   $scope.plusOne = function(index) {
     // Keeps this from adding twice
     stopPropogation();
-    saveLike($scope.files[index]);
+    $scope.files[index].likes++;
+    var file = $scope.files[index];
+    $http.post("/php/updateFile.php?type=likes", file)
+    .then(
+      function (response) {
+        console.log(response.data);
+      },
+      function (response) {
+        console.log(response.data);
+      });
   };
 
   $scope.download = function(index) {
@@ -70,6 +112,23 @@ function($scope, $http) {
     }
   };
 
+  $scope.getData = function () {
+      // needed for the pagination calc
+      // https://docs.angularjs.org/api/ng/filter/filter
+      return $filter('filter')($scope.files, $scope.search);
+    };
+
+  $scope.numberOfPages = function() {
+    return Math.ceil($scope.getData().length/$scope.pageSize);
+  };
+
+  $scope.formatFileData = function() {
+    for (var i = 0; i < CURRENT_FILES.length; i++) {
+      CURRENT_FILES[i].name = getFriendlyTitle(CURRENT_FILES[i]);
+      CURRENT_FILES[i].size = calculateFileSize(CURRENT_FILES.size);
+    }
+  };
+
   // Safely wait until the digest is finished before applying the ui change
   $scope.safeApply = function(fn) {
     var phase = this.$root.$$phase;
@@ -82,16 +141,21 @@ function($scope, $http) {
     }
   };
 
+  //Start of Upload Functionality
+  var fileSelect = document.getElementById('fileSelector');
+  var uploadButton = document.getElementById('uploadButton');
+  var uploadState = document.getElementById('uploadState');
+  var uploadStatus = document.getElementById('uploadStatus');
+  var uploadResult = document.getElementById('uploadResult');
+  var uploadPercentage = document.getElementById('uploadPercentage');
+  var form = document.getElementById('fileForm');
+
   form.onsubmit = function(event) {
+    uploadStatus.innerHTML = "Upload Started..."
     event.preventDefault();
-    var fileSelect = document.getElementById('fileSelector');
-    var uploadButton = document.getElementById('uploadButton');
-    var uploadState = document.getElementById('uploadState');
-    var uploadStatus = document.getElementById('uploadStatus');
-    var uploadResult = document.getElementById('uploadResult');
-    var uploadPercentage = document.getElementById('uploadPercentage');
     uploadButton.innerHTML = 'Uploading...';
     var uploadedFiles = fileSelect.files;
+
     var formData = new FormData();
     for (var i = 0; i < uploadedFiles.length; i++) {
       var file = uploadedFiles[i];
@@ -101,32 +165,40 @@ function($scope, $http) {
 
     // Set up the request.
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', "http://www.bandofideas.com/php/upload.php?folderId=" + $scope.folder.id + "&bandId=" + $scope.folder.bandId, true);
+    xhr.open('POST', "/php/upload.php?folderName=" + CURRENT_FOLDER.metaName + "&bandName=" + CURRENT_BAND.metaName, true);
+    xhr.withCredentials = true;
     xhr.upload.addEventListener("progress", function(evt){
       if (evt.lengthComputable) {
         var percentComplete = (evt.loaded / evt.total) * 100;
+        fileStatus.innerHTML = roundToTwoDecimals(percentComplete) + "%";
+        percentComplete = 100 - percentComplete;
         //Do something with upload progress
-        uploadPercentage.innerHTML = percentComplete + "%";
-        console.log(percentComplete);
+        uploadPercentageBar.style.marginRight = percentComplete + "%";
       }
     }, false);
     xhr.onload = function () {
+
       if (xhr.status === 200) {
         // File(s) uploaded.
         uploadButton.innerHTML = 'Upload';
       } else {
         alert('An error occurred!');
       }
-      uploadStatus.innerHTML = xhr.status;
+      if (xhr.status == "200") {
+        uploadStatus.innerHTML = "Success!";
+      } else {
+        uploadStatus.innerHTML = "Failure.";
+      }
+
       uploadResult.innerHTML = xhr.responseText;
 
-      displayElementById("loading");
-      $http.get("getFiles.php?folderId=" + $scope.folder.id)
+      fileStatus.innerHTML = "Loading file: " + file.name;
+      $http.get("/php/getFiles.php?folderName=" + $scope.folder.metaName)
       .then(function (response) {
         console.log(response.data);
         CURRENT_FILES = response.data;
         $scope.files = CURRENT_FILES;
-        hideElementById("loading");
+        resetUploadModal();
         hideElementById("upload");
       });
     };
@@ -135,31 +207,32 @@ function($scope, $http) {
     console.log(formData);
   }
 
-  if (isLoggedIn()) {
-    // Do uploady stuff
-    $scope.files = CURRENT_FILES;
-    $scope.folder = CURRENT_FOLDER;
-    console.log($scope.files);
+  function resetUploadModal() {
+    form.reset();
+    uploadStatus.innerHTML = "";
+    uploadResult.innerHTML = "";
+    fileStatus.innerHTML = "";
   }
 
+  // Do this if logged in
+  if (isLoggedIn()) {
+    $scope.band = CURRENT_BAND;
+    $scope.files = CURRENT_FILES;
+    $scope.folder = CURRENT_FOLDER;
+
+    //$scope.formatFileData();
+    document.title = CURRENT_FOLDER.name;
+    var folderUrl = "/#/band/" + CURRENT_BAND.metaName + "/" + CURRENT_FOLDER.metaName;
+    removeNavLink("folderLink");
+    addNavLink("folderLink", CURRENT_FOLDER.name, folderUrl);
+  }
 }]);
 
-
-    /*
-    $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
-
-
-    $http.post('http://www.bandofideas.com/upload.php', formData).
-    success(function(data, status) {
-      $scope.status = status;
-      $scope.data = data;
-      $scope.result = data; // Show result from server in our <pre></pre> element
-      uploadButton.innerHTML = 'Upload';
-    })
-    .
-    error(function(data, status) {
-      $scope.data = data || "Request failed";
-      $scope.status = status;
-    });
-
-*/
+//We already have a limitTo filter built-in to angular,
+//let's make a startFrom filter
+app.filter('startFrom', function() {
+    return function(input, start) {
+        start = +start; //parse to int
+        return input.slice(start);
+    }
+});

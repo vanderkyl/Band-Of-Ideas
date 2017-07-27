@@ -7,6 +7,27 @@
   $folderName = $_GET['folderName'];
   $folderId = "";
 
+  function roundToTwoDecimals($num) {
+    return round($num, 2);
+  }
+
+  function calculateFileSize($bytes) {
+    $kiloByte = 1024;
+    $megaByte = 1048576;
+    $gigaByte = 1073741824;
+    $fileSize = $bytes;
+    if ($bytes < $kiloByte) {
+      $fileSize += " bytes";
+    } else if ($bytes < $megaByte) {
+      $fileSize = roundToTwoDecimals($bytes/$kiloByte) . " KB";
+    } else if ($bytes < $gigaByte) {
+      $fileSize = roundToTwoDecimals($bytes/$megaByte) . " MB";
+    } else {
+      $fileSize = roundToTwoDecimals($bytes/$gigaByte) . " GB";
+    }
+    return $fileSize;
+  }
+
   if($conn->connect_error) {
     echo "Failed to connect." . $conn->connect_error;
   }
@@ -30,7 +51,8 @@
                    'name' => $row["name"],
                    'metaName' => $row["metaName"],
                    'type' => $row["type"],
-                   'size' => $row["size"],
+                   'size' => calculateFileSize($row["size"]),
+                   'bytes' => intval($row["size"]),
                    'link' => $row["link"],
                    'folderId' => $row["folderId"],
                    'views' => $row["views"],
@@ -45,4 +67,6 @@
   }
 
   mysqli_close($conn);
+
+
 ?>

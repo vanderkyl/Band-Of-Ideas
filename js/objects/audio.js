@@ -28,4 +28,5 @@ function quitPlayer() {
     document.title = "BoI";
     pauseAudioFromPlayer();
     hideElementById("audioPlayer");
+    hideElementById("footer");
 }

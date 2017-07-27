@@ -1,13 +1,11 @@
-app.controller('musicController', ['$scope', '$sce', '$http',
-function($scope, $sce, $http) {
+app.controller('musicController', ['$scope', '$sce', '$http', '$filter',
+function($scope, $sce, $http, $filter) {
   // Folders
   $scope.folders = [];
   $scope.folder = {};
   $scope.newFolder = "";
   $scope.band = {};
-  // Files
-  $scope.files = [];
-  $scope.file = {};
+
   $scope.addFolderMessage = "New Folder";
   $scope.folderMessage = "";
 
@@ -96,84 +94,6 @@ function($scope, $sce, $http) {
     navigateToURL("/#/");
   };
 
-  //Files Section
-  $scope.openPreviousFolder = function() {
-    var previousUrl = "/#/band/" + CURRENT_BAND.metaName;
-    hideElementById("fileSection");
-    displayElementById("folderSection");
-    navigateToURL(previousUrl);
-  };
-
-  $scope.uploadFiles = function() {
-    console.log(getElementById("upload").style.display);
-    var uploadDisplay = getElementById("upload").style.display;
-    if (uploadDisplay == "none" || uploadDisplay == "") {
-      displayElementById("upload");
-    } else {
-      hideElementById("upload");
-    }
-  };
-
-  $scope.openFile = function(index) {
-    var file = $scope.files[index];
-    $scope.safeApply(function(index) {
-      $scope.file = file;
-    });
-    hidePreviousFile();
-    console.log(file);
-    document.title = file.name;
-    loadFile(file);
-    scrollToElementById("fileSection");
-  };
-
-  $scope.closeFile = function() {
-    getElementById("audio").pause();
-    document.title = CURRENT_FOLDER.name;
-    closeFile($scope.file.id);
-  };
-
-  $scope.openMiniPlayer = function() {
-    var source = getElementById("m4aSource").src;
-    var currentTime = getElementById("audio").currentTime;
-    openMiniPlayer($scope.file.id, $scope.file.name, source, currentTime);
-  };
-
-  $scope.deleteFile = function() {
-    var prompt = confirm("Are you sure you want to delete this file?");
-    //deleteFile($scope.file.id);
-  };
-
-  // Add like on file when opened
-  $scope.plusOneOnFile = function() {
-    saveLike($scope.file);
-  };
-
-  // Add like on file button
-  $scope.plusOne = function(index) {
-    // Keeps this from adding twice
-    stopPropogation();
-    saveLike($scope.files[index]);
-  };
-
-  $scope.download = function(index) {
-    // Keeps this from downloading twice.
-    stopPropogation();
-    $scope.downloadFile($scope.files[index]);
-  };
-
-  $scope.downloadFromFile = function() {
-    $scope.downloadFile($scope.file);
-  };
-
-  $scope.downloadFile = function(file) {
-    // Check if file is greater than 25 MB
-    if (file.bytes > 26214400) {
-        openLinkInNewTab(file.link);
-    } else {
-        navigateToURL(file.link);
-    }
-  };
-
   // Safely wait until the digest is finished before applying the ui change
   $scope.safeApply = function(fn) {
     var phase = this.$root.$$phase;
@@ -223,78 +143,6 @@ function($scope, $sce, $http) {
     displayElementById("bandName");
   }
 
-  //Start of Upload Functionality
-  var fileSelect = document.getElementById('fileSelector');
-  var uploadButton = document.getElementById('uploadButton');
-  var uploadState = document.getElementById('uploadState');
-  var uploadStatus = document.getElementById('uploadStatus');
-  var uploadResult = document.getElementById('uploadResult');
-  var uploadPercentage = document.getElementById('uploadPercentage');
-  var form = document.getElementById('fileForm');
-
-  form.onsubmit = function(event) {
-    uploadStatus.innerHTML = "Upload Started..."
-    event.preventDefault();
-    uploadButton.innerHTML = 'Uploading...';
-    var uploadedFiles = fileSelect.files;
-    var formData = new FormData();
-    for (var i = 0; i < uploadedFiles.length; i++) {
-      var file = uploadedFiles[i];
-      // Add the file to the request.
-      formData.append('files[]', file, file.name);
-    }
-
-    // Set up the request.
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', "/php/upload.php?folderName=" + CURRENT_FOLDER.metaName + "&bandName=" + CURRENT_BAND.metaName, true);
-    xhr.withCredentials = true;
-    xhr.upload.addEventListener("progress", function(evt){
-      if (evt.lengthComputable) {
-        var percentComplete = (evt.loaded / evt.total) * 100;
-        fileStatus.innerHTML = percentComplete + "%";
-        percentComplete = 100 - percentComplete;
-        //Do something with upload progress
-        uploadPercentageBar.style.marginRight = percentComplete + "%";
-      }
-    }, false);
-    xhr.onload = function () {
-
-      if (xhr.status === 200) {
-        // File(s) uploaded.
-        uploadButton.innerHTML = 'Upload';
-      } else {
-        alert('An error occurred!');
-      }
-      if (xhr.status == "200") {
-        uploadStatus.innerHTML = "Success!";
-      } else {
-        uploadStatus.innerHTML = "Failure.";
-      }
-
-      uploadResult.innerHTML = xhr.responseText;
-
-      fileStatus.innerHTML = "Loading file: " + file.name;
-      $http.get("/php/getFiles.php?folderName=" + $scope.folder.metaName)
-      .then(function (response) {
-        console.log(response.data);
-        CURRENT_FILES = response.data;
-        $scope.files = CURRENT_FILES;
-        resetUploadModal();
-        hideElementById("upload");
-      });
-    };
-    // Send the Data.
-    xhr.send(formData);
-    console.log(formData);
-  }
-
-  function resetUploadModal() {
-    form.reset();
-    uploadStatus.innerHTML = "";
-    uploadResult.innerHTML = "";
-    fileStatus.innerHTML = "";
-  }
-
   // Do this if logged in
   if (isLoggedIn()) {
     $scope.band = CURRENT_BAND;
@@ -310,22 +158,10 @@ function($scope, $sce, $http) {
       $scope.folders = CURRENT_FOLDERS;
     }
     var urlPaths = window.location.hash.split('/');
-    // If the url has 3 path identifiers ( # / band / bandName )
-    if (urlPaths.length === 3) {
-      document.title = CURRENT_BAND.name;
-      var bandUrl = "/#/band/" + CURRENT_BAND.metaName;
-      removeNavLink("bandLink");
-      console.log(CURRENT_BAND.name);
-      addNavLink("bandLink", CURRENT_BAND.name, bandUrl)
-      hideElementById("fileSection");
-      displayElementById("folderSection");
-    } else {
-      document.title = CURRENT_FOLDER.name;
-      hideElementById("folderSection");
-      displayElementById("fileSection");
-      var folderUrl = "/#/band/" + CURRENT_BAND.metaName + "/" + CURRENT_FOLDER.metaName;
-      removeNavLink("folderLink");
-      addNavLink("folderLink", CURRENT_FOLDER.name, folderUrl);
-    }
+    document.title = CURRENT_BAND.name;
+    var bandUrl = "/#/band/" + CURRENT_BAND.metaName;
+    removeNavLink("bandLink");
+    console.log(CURRENT_BAND.name);
+    addNavLink("bandLink", CURRENT_BAND.name, bandUrl)
   }
 }]);

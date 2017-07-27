@@ -17,9 +17,13 @@ app.config(function ($routeProvider) {
     controller: 'mainController',
     templateUrl: 'views/user.html'
   })
-  .when('/band/:name?/:folder?/:file?', {
+  .when('/band/:name?', {
     controller: 'musicController',
     templateUrl: 'views/music.html'
+  })
+  .when('/band/:name?/:folder?/:file?', {
+    controller: 'fileController',
+    templateUrl: 'views/file.html'
   })
   .when('/drive', {
     controller: 'driveController',
