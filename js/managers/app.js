@@ -25,9 +25,9 @@ app.config(function ($routeProvider) {
     controller: 'fileController',
     templateUrl: 'views/file.html'
   })
-  .when('/drive', {
+  .when('/uploads/band/:name?/:folder?/:file?', {
     controller: 'driveController',
-    templateUrl: 'views/drive.html'
+    templateUrl: 'uploads/index.php'
   })
   .when('/file', {
     controller: 'fileController',

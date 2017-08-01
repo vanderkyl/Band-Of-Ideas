@@ -11,6 +11,7 @@ function($scope, $sce, $http, $filter) {
   $scope.addFolderMessage = "New Folder";
   $scope.folderMessage = "";
   $scope.currentPage = 0;
+  $scope.numberOfFiles = 0;
   $scope.sortBy = "name";
   $scope.pageSize = "10";
   $scope.search = "";
@@ -67,6 +68,15 @@ function($scope, $sce, $http, $filter) {
     openMiniPlayer($scope.file.id, $scope.file.name, source, currentTime);
   };
 
+  $scope.showFolderDetails = function() {
+    var detailsDisplay = getElementById("folderDetails").style.display;
+    if (detailsDisplay === "none" || detailsDisplay === "") {
+      displayElementById("folderDetails");
+    } else {
+      hideElementById("folderDetails");
+    }
+  };
+
   $scope.deleteFile = function() {
     var prompt = confirm("Are you sure you want to delete this file?");
     //deleteFile($scope.file.id);
@@ -78,25 +88,30 @@ function($scope, $sce, $http, $filter) {
   };
 
   // Add like on file button
-  $scope.plusOne = function(index) {
+  $scope.plusOne = function(file) {
     // Keeps this from adding twice
+    var index = file.id;
     stopPropogation();
-    $scope.files[index].likes++;
-    var file = $scope.files[index];
-    $http.post("/php/updateFile.php?type=likes", file)
+    displayElementInlineById("likedButton-" + index);
+    hideElementById("likeButton-" + index);
+    console.log(CURRENT_USER);
+    $http.post("/php/updateFile.php?type=likes&user=" + CURRENT_USER.email, file)
     .then(
       function (response) {
         console.log(response.data);
+        file.likes++;
+        console.log(file.likes);
       },
       function (response) {
         console.log(response.data);
+        console.log("Sorry, that didn't work.");
       });
   };
 
-  $scope.download = function(index) {
+  $scope.download = function(file) {
     // Keeps this from downloading twice.
     stopPropogation();
-    $scope.downloadFile($scope.files[index]);
+    $scope.downloadFile(file);
   };
 
   $scope.downloadFromFile = function() {
@@ -104,12 +119,7 @@ function($scope, $sce, $http, $filter) {
   };
 
   $scope.downloadFile = function(file) {
-    // Check if file is greater than 25 MB
-    if (file.bytes > 26214400) {
-        openLinkInNewTab(file.link);
-    } else {
-        navigateToURL(file.link);
-    }
+    openLinkInNewTab(file.link);
   };
 
   $scope.getData = function () {
@@ -128,6 +138,26 @@ function($scope, $sce, $http, $filter) {
       CURRENT_FILES[i].size = calculateFileSize(CURRENT_FILES.size);
     }
   };
+
+  $scope.checkIfFilesAreLiked = async function(file) {
+    //TODO figure out better way to do this.
+    await sleep(10);
+    console.log("Checking files");
+    var userId = CURRENT_USER.id;
+    var index = file.id;
+    var userLikes = file.userLikes;
+    for (var i = 0; i < userLikes.length; i++) {
+      if (userId === userLikes[i]) {
+        console.log("likeButton-" + index);
+        hideElementById("likeButton-" + index);
+        displayElementInlineById("likedButton-" + index);
+      }
+    }
+  };
+
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
   // Safely wait until the digest is finished before applying the ui change
   $scope.safeApply = function(fn) {
@@ -214,17 +244,19 @@ function($scope, $sce, $http, $filter) {
     fileStatus.innerHTML = "";
   }
 
+
+
   // Do this if logged in
   if (isLoggedIn()) {
     $scope.band = CURRENT_BAND;
     $scope.files = CURRENT_FILES;
     $scope.folder = CURRENT_FOLDER;
-
-    //$scope.formatFileData();
+    $scope.numberOfFiles = CURRENT_FILES.length;
     document.title = CURRENT_FOLDER.name;
     var folderUrl = "/#/band/" + CURRENT_BAND.metaName + "/" + CURRENT_FOLDER.metaName;
     removeNavLink("folderLink");
     addNavLink("folderLink", CURRENT_FOLDER.name, folderUrl);
+
   }
 }]);
 

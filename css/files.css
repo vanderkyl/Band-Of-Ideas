@@ -38,8 +38,27 @@
 }
 
 .likes {
-  background: #3CB371;
+  background: #FFF;
+  color: #3CB371;
+  border: 1px solid green;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 19px;
+  line-height: 50px;
+  min-width: 50px;
+  height: 50px;
+  border-radius: 5%;
+  margin: 0 -30px 0 40px;
+  text-align: center;
+  font-weight: 200;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: background 500ms;
+}
+
+.likedButton {
+  background: #0d4e2a;
   color: #fff;
+  border: 1px solid green;
   cursor: pointer;
   display: inline-block;
   font-size: 19px;
@@ -97,8 +116,9 @@
 }
 
 .download {
-  background: #F65A5B;
+  background: #FFF;
   color: #fff;
+  border: 1px solid red;
   cursor: pointer;
   display: inline-block;
   font-size: 19px;
@@ -115,7 +135,7 @@
 
 .download:hover {
   color: #F65A5B;
-  background: rgba(246, 90, 91, 0.25);
+  background: #F65A5B;
   transition: background 500ms;
 }
 
@@ -132,8 +152,8 @@
 }
 
 .likes:hover {
-  color: #2c7044;
-  background: rgba(5, 234, 65, 0.09);
+  color: #FFF;
+  background: #3CB371;
   transition: background 500ms;
 }
 
@@ -156,12 +176,21 @@
 }
 
 .fileButtons img {
-  width: 30px;
-  height: 30px;
+  width: 22px;
+  height: 22px;
+}
+
+*[id^='likeButton-']{
+  display: inline-block;
+}
+
+*[id^='likedButton-']{
+  display: none;
 }
 
 .file {
-  padding: 50px;
+  padding: 25px;
+  height: 150px;
   border: 2px solid #FFF;
 }
 
@@ -211,6 +240,16 @@
 
 .fileNavigation button {
   color: #000;
+}
+
+#folderDetailsButton {
+  height: 30px;
+  line-height: 30px;
+  margin-top: 20px;
+}
+
+#folderDetails {
+  display: none;
 }
 
 #upload {

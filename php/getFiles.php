@@ -55,8 +55,9 @@
                    'bytes' => intval($row["size"]),
                    'link' => $row["link"],
                    'folderId' => $row["folderId"],
-                   'views' => $row["views"],
-                   'likes' => $row["likes"]];
+                   'views' => intval($row["views"]),
+                   'likes' => intval($row["likes"]),
+                   'userLikes' => [$row["userLikes"]]];
           $files[] = $data;
         }
       }

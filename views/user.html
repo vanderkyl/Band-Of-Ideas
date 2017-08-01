@@ -66,55 +66,45 @@
 
 <!-- User Info -->
 <div id="accountInformation">
-  <h2 class="userInfoTitles">Hello {{ user.name }}</h2>
-  <div class="addFolderButtons col-md-2">
-    <p id="userDetailsButton" class="bandButton" ng-click="showUserDetails()">v</p>
-  </div>
-  <div id="userDetails">
-    <div class="col-md-12 userInfo">
-      <div class="col-md-6">
-        <h3>Email: </h3><p>{{ user.email }}</p>
+  <div class="user col-md-12 col-xs-12">
+    <h2 class="userInfoTitles">Hello {{ user.name }}</h2>
+    <div class="addFolderButtons">
+      <p id="userDetailsButton" class="bandButton col-md-6 col-xs-6" ng-click="showUserDetails()">v</p>
+      <p id="addBand" class="folderButton1 bandButton col-md-6 col-xs-6" ng-click="showAddBandInput()">+</p>
+      <p id="cancelNewBand" class="folderButton2 bandButton col-md-6 col-xs-6" ng-click="hideAddBandInput()">-</p>
+    </div>
+    <div class="col-md-12 col-xs-12">
+      <div id="userDetails">
+        <div class="col-md-12 userInfo">
+          <div class="col-md-6">
+            <h3>Email: </h3><p>{{ user.email }}</p>
+          </div>
+          <div class="col-md-6">
+            <h3>Password: </h3><p>{{ user.password}}</p>
+          </div>
+        </div>
       </div>
-      <div class="col-md-6">
-        <h3>Password: </h3><p>{{ user.password}}</p>
+      <!-- Add Band Modal -->
+      <div id="addBandInput" class="col-md-12">
+        <div id="addBandModal" class="thumbnail buttons col-md-12">
+          <p class="col-md-4">{{ addBandMessage }}</p>
+          <div class="col-md-8">
+            <input type="text" name="bandName" placeholder="Band Name" ng-model="newBand" required/>
+            <input type="button" value="Add Band" ng-click="addBand()">
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <hr><br>
-  <h2 id="bandName" class="userInfoTitles">Bands</h2>
-  <div class="addFolderButtons col-md-2">
-    <p id="addBand" class="folderButton1 bandButton" ng-click="showAddBandInput()">+</p>
-    <p id="cancelNewBand" class="folderButton2 bandButton" ng-click="hideAddBandInput()">-</p>
-  </div>
-  <!-- Add Band Modal -->
-  <div id="addBandInput" class="col-md-12">
-    <div id="addBandModal" class="thumbnail buttons col-md-12">
-      <p class="col-md-4">{{ addBandMessage }}</p>
-      <div class="col-md-8">
-        <input type="text" name="bandName" placeholder="Band Name" ng-model="newBand" required/>
-        <input type="button" value="Add Band" ng-click="addBand()">
+  
+  <div class="col-md-12 col-xs-12">
+    <!--<h2 id="bandName" class="userInfoTitles">Bands</h2>-->
+    <div id="bands" ng-repeat="band in user.bands" class="col-md-12">
+      <div id="{{ 'band-' + $index }}" class="thumbnail folder buttons" ng-click="enterBand($index)">
+        <h2 class="folderTitle">{{ band.name }}</h2>
       </div>
     </div>
   </div>
-  <hr>
-  <div ng-repeat="band in user.bands" class="col-md-12">
-    <div id="{{ 'band-' + $index }}" class="thumbnail folder buttons" ng-click="enterBand($index)">
-      <h2 class="folderTitle">{{ band.name }}</h2>
-    </div>
-  </div>
-  <!--
-  <div id="addBandInput">
-    <div class="thumbnail buttons col-md-12">
-      <input type="text" name="bandName" placeholder="Band Name" ng-model="newBand" required/>
-    </div>
-    <div class="thumbnail folder buttons col-md-12" ng-click="addBand()">
-      <h3>Add Band</h3>
-    </div>
-  </div>
-  <div id="addBand" class="thumbnail folder buttons col-md-12" ng-click="showAddBandInput()">
-    <h2>Add New Band</h2>
-  </div>
--->
 </div>
 
 <!-- function onLogin($user) {

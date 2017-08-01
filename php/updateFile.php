@@ -8,7 +8,7 @@
   $id = $data->id;
   $views = $data->views;
   $likes = $data->likes;
-  $updateType = $_GET['type'];;
+  $updateType = $_GET['type'];
 
   if($conn->connect_error) {
     echo "Failed to connect." . $conn->connect_error;
@@ -25,7 +25,20 @@
         echo $query;
       }
     } else if ($updateType == "likes") {
-      $query = "UPDATE Files SET likes='" . $likes . "' WHERE id='" . $id . "';";
+      $user= $_GET['user'];
+      $userId = "";
+      // Find user id
+      if ($result = mysqli_query($conn, "SELECT id FROM Users WHERE email='" . $user . "';")) {
+        if($row = mysqli_fetch_assoc($result)) {
+          $userId = $row["id"];
+        }
+      }
+
+      if ($likes == 0) { // If this was the first like
+        $query = "UPDATE Files SET likes = '" . ($likes+1) . "', userLikes = '" . $userId . "' WHERE id='" . $id . "';";
+      } else {
+        $query = "UPDATE Files SET likes = '" . ($likes+1) . "', userLikes = CONCAT(userLikes, '," . $userId . "') WHERE id = '" . $id. "';";
+      }
       if ($result = mysqli_query($conn, $query)) {
         echo "File updated successfully";
       } else {

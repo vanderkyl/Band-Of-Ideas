@@ -22,6 +22,7 @@ function($scope, $sce, $http, $filter) {
       function (response) {
         if (response.data === "New record created successfully!") {
           $scope.addFolderMessage = "Success!";
+          $scope.folderMessage = "";
           $scope.folders.push(folder);
           hideElementById('addFolderInput');
           hideElementById('cancelNewFolder');
@@ -41,7 +42,11 @@ function($scope, $sce, $http, $filter) {
     $http.get("/php/getFolders.php?bandName=" + bandName)
     .then(function (response) {
       console.log(response.data);
-      $scope.folderMessage = "";
+      if (response.data.length === 0) {
+        $scope.folderMessage = "Click the green button to Add a Folder!";
+      } else {
+        $scope.folderMessage = "";
+      }
       $scope.folders = response.data;
       CURRENT_FOLDERS = response.data;
     });

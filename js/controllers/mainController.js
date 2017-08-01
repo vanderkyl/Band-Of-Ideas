@@ -24,19 +24,30 @@ function($scope, $http) {
     loginUser();
   };
 
+  $scope.loginUser = function() {
+    $http.get("/php/getUser.php?email=" + CURRENT_USER.email)
+    .then(function (response) {
+      console.log(response.data);
+      CURRENT_USER = response.data;
+    });
+    loginUser();
+  };
+
   $scope.login = function() {
     $scope.validLogin(function(valid) {
       if (valid) {
         $scope.user = CURRENT_USER;
         console.log(CURRENT_USER.email);
         console.log(CURRENT_USER);
-        loginUser();
+        $scope.loginUser();
       } else {
         $scope.loginMessage = "Login";
         getElementById("signInSubmitButton").disabled = false;
       }
     });
   };
+
+
 
   $scope.validLogin = function(callback) {
     var valid = true;
@@ -124,7 +135,7 @@ function($scope, $http) {
         CURRENT_USER = $scope.user;
         $scope.saveUser(function(saved) {
           if (saved) {
-            loginUser();
+            $scope.loginUser();
             console.log("Success!");
           } else {
             console.log("The user was not added to the database");

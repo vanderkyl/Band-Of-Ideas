@@ -108,6 +108,10 @@ html, body {
   width: 100%;
 }
 
+.user {
+  border: 1px solid #FFF;
+}
+
 .title {
   color: #444;
   margin-bottom: 30px;
@@ -200,6 +204,10 @@ html, body {
 .folderButton:hover {
   color: #3CB371;
   transition: background 500ms;
+}
+
+#bands {
+  margin-top: 20px;
 }
 
 .bandButton {
