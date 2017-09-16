@@ -168,7 +168,7 @@ function($scope, $http) {
   };
 
   $scope.updateUser = function(userId, band, callback) {
-    $http.post("/php/updateUser.php?userId=" + userId, band)
+    $http.post("/php/updateUser.php?userId=" + userId + "&type=bandUpdate", band)
     .then(function (response) {
       console.log(response.data);
       callback(true);

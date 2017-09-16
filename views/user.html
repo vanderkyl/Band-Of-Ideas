@@ -23,14 +23,14 @@
         <div id="addBandModal" class="thumbnail buttons col-md-12 col-sm-12 col-xs-12">
           <div class="col-md-6 col-xs-6"
             <p class="col-md-12 col-xs-12">{{ addBandMessage }}</p>
-            <div class="col-md-12 col-xs-12">
+            <div class="col-md-12 col-xs-12 bandForm">
               <input type="text" class="col-md-12 col-xs-12" name="bandName" placeholder="Band Name" ng-model="newBandName" required/>
               <input type="button" class="col-md-12 col-xs-12" value="Add Band" ng-click="addBand()">
             </div>
           </div>
           <div class="col-md-6 col-xs-6">
             <p class="col-md-12 col-xs-12">{{ joinBandMessage }}</p>
-            <div class="col-md-12 col-xs-12">
+            <div class="col-md-12 col-xs-12 bandForm">
               <input type="text" class="col-md-12 col-xs-12" name="bandName" placeholder="Band Name" ng-model="joinBandName" required/>
               <input type="text" class="col-md-12 col-xs-12" name="bandCode" placeholder="Band Code" ng-model="bandCode" required/>
               <input type="button" class="col-md-12 col-xs-12" value="Join Band" ng-click="joinBand()">
