@@ -7,11 +7,8 @@
   $bandDir = "../uploads/band/" . $bandName . "/";
   $targetDir = "../uploads/band/" . $bandName . "/" . $folderName . "/";
   $uploadedFiles = reArrayFiles($_FILES["files"]);
-  //$uploadedFiles = reArrayFiles($data);
-  //echo 1232;
-  //echo $data;
   $uploadOk = 1;
-
+  $bandId = "";
 
   foreach ($uploadedFiles as $file) {
     $targetFile = $targetDir . basename($file["name"]);
@@ -38,8 +35,14 @@
         } else if(!mysqli_ping($conn)) {
           echo "Error: " . msqli_error($conn);
         } else {
+          // Find band id
+          if ($result = mysqli_query($conn, "SELECT id FROM Bands WHERE metaName='" . $bandName . "';")) {
+            if($row = mysqli_fetch_assoc($result)) {
+              $bandId = $row["id"];
+            }
+          }
           // Find folder id
-          if ($result = mysqli_query($conn, "SELECT id FROM Folders WHERE metaName='" . $folderName . "';")) {
+          if ($result = mysqli_query($conn, "SELECT id FROM Folders WHERE metaName='" . $folderName . "' AND bandId='" . $bandId . "';")) {
             if($row = mysqli_fetch_assoc($result)) {
               $folderId = $row["id"];
             }

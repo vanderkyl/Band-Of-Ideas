@@ -6,12 +6,12 @@ app.factory('folders', function () {
 
 app.config(function ($routeProvider) {
   $routeProvider.when('/', {
-    controller: 'mainController',
-    templateUrl: 'views/user.html'
+    controller: 'accountController',
+    templateUrl: 'views/login.html'
   })
-  .when('/home', {
-    controller: 'mainController',
-    templateUrl: 'views/home.html'
+  .when('/login', {
+    controller: 'accountController',
+    templateUrl: 'views/login.html'
   })
   .when('/user', {
     controller: 'mainController',
@@ -32,6 +32,10 @@ app.config(function ($routeProvider) {
   .when('/file', {
     controller: 'fileController',
     templateUrl: 'views/file.html'
+  })
+  .when('/logout', {
+    controller: 'accountController',
+    templateUrl: 'views/login.html'
   })
   .otherwise({
     redirectTo: '/'

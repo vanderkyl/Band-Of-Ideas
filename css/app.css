@@ -67,7 +67,7 @@ html, body {
   padding-top: 50px;
   padding-bottom: 50px;
   border-radius: 5px;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 }
 
 #loading {
@@ -114,7 +114,6 @@ html, body {
 
 .title {
   color: #444;
-  margin-bottom: 30px;
   font-size: 16px;
 }
 
@@ -132,6 +131,10 @@ html, body {
   text-align: center;
   margin-bottom: 30px;
   padding: 15px;
+}
+
+.folder {
+  padding: 20px;
 }
 
 #folderName {
@@ -264,6 +267,32 @@ html, body {
   margin-bottom: 10px;
 }
 
+.deleteFolderButton {
+  background: #FFF;
+  cursor: pointer;
+  display: none;
+  font-size: 19px;
+  line-height: 30px;
+  min-width: 30px;
+  height: 33px;
+  border-radius: 5%;
+  margin: 0 5px 0 40px;
+  text-align: center;
+  font-weight: 400;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: background 500ms;
+  position: absolute;
+  z-index: 1000;
+  left: -18px;
+  top: 8px;
+}
+
+.deleteFolderButton:hover {
+  color: #343434;
+  background: rgba(68, 142, 255, 0.59);
+  transition: background 500ms;
+}
+
 .folderButtons {
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -294,7 +323,7 @@ html, body {
    margin: 0 10px;
 }
 
-#addFolderInput, #accountInfoLink, #accountInformation,
+#addFolderInput, #accountInfoLink,
 #navLinks, #addBandInput, #folderIndex, #upload, #loading,
 #userDetails, #bandDetails {
   display: none;

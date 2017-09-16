@@ -1,10 +1,8 @@
-app.controller('mainController', ['$scope', '$http',
+app.controller('accountController', ['$scope', '$http',
 function($scope, $http) {
   $scope.loginMessage = "Login";
   $scope.addBandMessage = "New Band";
   $scope.joinBandMessage = "Join Band"
-  $scope.sqlUser = "";
-  $scope.sqlBand = {};
   $scope.newBandName = "";
   $scope.joinBandName = "";
   $scope.bandCode = "";
@@ -21,28 +19,18 @@ function($scope, $http) {
 
   // Test login
   $scope.testLogin = function() {
+    console.log(testUser);
     CURRENT_USER = testUser;
-    $scope.user = CURRENT_USER;
+    CURRENT_BANDS = testUser.bands;
     loginUser();
   };
 
-  $scope.loginUser = function() {
-    $http.get("/php/getUser.php?email=" + CURRENT_USER.email + "&login=true")
-    .then(function (response) {
-      console.log(response.data);
-      CURRENT_USER = response.data;
-      $scope.user = CURRENT_USER;
-      CURRENT_BANDS = response.data.bands;
-      console.log($scope.user.id);
-    });
-    loginUser();
-  };
-
+  // This function runs when submitting sign in form.
   $scope.login = function() {
+    // First validate the login credentials
     $scope.validLogin(function(valid) {
       if (valid) {
         $scope.user = CURRENT_USER;
-        console.log(CURRENT_USER);
         $scope.loginUser();
       } else {
         $scope.loginMessage = "Login";
@@ -51,46 +39,64 @@ function($scope, $http) {
     });
   };
 
+  // Before logging in user, get the user from the database
+  $scope.loginUser = function() {
+    $http.get("/php/getUser.php?email=" + CURRENT_USER.email + "&login=true")
+    .then(function (response) {
+      var user = response.data;
+      if (typeof user == "object") {
+        CURRENT_USER = response.data;
+        CURRENT_BANDS = response.data.bands;
+        loginUser();
+      } else {
+        console.log("Login Failed.");
+      }
+    });
+  };
 
-
+  // Validate login credentials. Started by $scope.login() function.
   $scope.validLogin = function(callback) {
     var valid = true;
     var email = $scope.user.email;
     var password = $scope.user.password;
+    // Validate that the credentials match the database
     $scope.validCreds(function(dbUser) {
       if (dbUser) {
         valid = checkEmail(email, dbUser.email) && checkPassword(password, dbUser.password);
+        if (valid) {
+          CURRENT_USER = dbUser;
+        }
       } else {
         valid = false;
-      }
-      if (valid) {
-        CURRENT_USER = dbUser;
       }
       callback(valid);
     });
   };
 
+  // Validate credentials in database
   $scope.validCreds = function(callback) {
     var email = $scope.user.email;
     var password = $scope.user.password;
     if (inputEmpty(email, "signInEmail") || inputEmpty(password, "signInPassword")) {
       callback(false);
     }
-    $scope.loginMessage = "Logging In...";
+    $scope.loginMessage = "Looking up account...";
     getElementById("signInSubmitButton").disabled = true;
-    $http.get("/php/getUser.php?email=" + email)
+    $http.get("/php/getUser.php?email=" + email + "&login=false")
     .then(function (response) {
-      console.log(response.data);
       if (objectIsEmpty(response.data)) {
         console.log("Sorry, " + email + " doesn't exist.");
         showInvalidInput("signInEmail");
+        $scope.loginMessage = "Log In";
         callback(false);
       } else {
+        $scope.loginMessage = "Logging In...";
         callback(response.data);
       }
-
     });
   }
+
+  // Start of Sign Up functionality //
 
   // Checks if the band name given already exists
   $scope.checkBandAvailability = function() {
@@ -106,31 +112,21 @@ function($scope, $http) {
            memberIds: "",
            code: generateBandCode()}
         ];
-
         displayElementById("chooseUser");
         // Else the band does exist already, so load the band data and prompt user for band code
       } else {
         $scope.user.bands = [band];
         console.log($scope.user.bands[0].code);
-        $scope.sqlBand = band;
         displayElementById("joinBand");
       }
     });
   };
 
-  $scope.getBand = function(bandName, callback) {
-    $http.get("/php/getBand.php?bandName=" + bandName)
-    .then(function (response) {
-      console.log(response.data);
-      callback(response.data);
-    });
-  };
+
 
   // Make sure the given code matches the band code in the database
   $scope.checkBandCode = function() {
     if (!inputEmpty($scope.bandCode, "bandCodeInput")) {
-      console.log($scope.user.bands[0].code);
-      console.log($scope.bandCode);
       if ($scope.user.bands[0].code === $scope.bandCode) {
         existingBand = $scope.user.bands[0].name;
         hideElementById("joinBand");
@@ -153,7 +149,7 @@ function($scope, $http) {
       } else {
         if (band.code === $scope.bandCode) {
           console.log($scope.user.id);
-          $scope.updateUser($scope.user.id, band, function(success) {
+          $scope.updateUserAndBand($scope.user.id, band, function(success) {
             if (success) {
               $scope.user.bands.push(band);
               CURRENT_BANDS = $scope.user.bands;
@@ -167,8 +163,8 @@ function($scope, $http) {
     });
   };
 
-  $scope.updateUser = function(userId, band, callback) {
-    $http.post("/php/updateUser.php?userId=" + userId, band)
+  $scope.updateUserAndBand = function(userId, band, callback) {
+    $http.post("/php/updateUser.php?userId=" + userId + "&type=bandUpdate", band)
     .then(function (response) {
       console.log(response.data);
       callback(true);
@@ -180,22 +176,31 @@ function($scope, $http) {
     });
   };
 
+  $scope.updateToken = function(userId, callback) {
+    $scope.updateUser(userId, "tokenUpdate", "token", function (success) {
+      callback(success);
+    })
+  };
+
+
+  // -- JOIN BAND FORM -- // ---------------------------------------------------
+
+  // Check validity of join the band form input. Add user and band if successful.
   $scope.joinTheBand = function() {
     $scope.checkValidity(function(valid) {
       if (valid) {
-        console.log("Adding new user.");
         $scope.user.metaName = generateMetaName($scope.user.name);
         CURRENT_USER = $scope.user;
+        console.log("Adding new user.");
         $scope.saveUser(function(saved) {
           if (saved) {
             $scope.loginUser();
-            console.log("Success!");
           } else {
-            console.log("The user was not added to the database");
+            console.log("Something went wrong...");
           }
         });
       } else {
-        console.log("Please try again.");
+        console.log("Band is invalid. Please try again.");
       }
     });
   };
@@ -212,46 +217,28 @@ function($scope, $http) {
     });
   };
 
+  // TODO change email to username
+  // Validate the given username in the database
   $scope.validEmail = function(callback) {
-    var email = $scope.user.email;
-    if(inputEmpty(email, "signUpEmail")) {
-      return false;
+    var username = $scope.user.email;
+    if(inputEmpty(username, "signUpEmail")) {
+      callback(false);
     };
-    $http.get("/php/getUser.php?email=" + email)
-    .then(function (response) {
-      $scope.loginMessage = response.data;
-      if (objectIsEmpty(response.data)) {
+    $scope.getUser(username, false, function (user) {
+      $scope.loginMessage = user;
+      if (objectIsEmpty(user)) {
         callback(true);
       } else {
-        console.log("Sorry, " + email + " already exists.");
+        console.log("Sorry, " + username + " already exists.");
         showInvalidInput("signUpEmail");
         callback(false);
       }
     });
   };
 
-  $scope.saveUser = function(callback) {
-    var newUser = $scope.user;
-    newUser.existingBand = existingBand;
-    $http.post("/php/addUser.php", newUser)
-    .then(
-      function (response) {
-        console.log(response.data);
 
-        callback(true);
-      },
-      function (response) {
-        console.log(response);
-        console.log(response.data);
-        callback(false);
-      }
-    );
-  }
 
-  $scope.enterBand = function(index) {
-    CURRENT_BAND = $scope.user.bands[index];
-    navigateToURL("/#/band/" + CURRENT_BAND.metaName);
-  };
+  // -- ACCOUNT UI MANAGEMENT -- // --------------------------------------------
 
   // Open the Sign Up form
   $scope.openBandForm = function() {
@@ -280,51 +267,128 @@ function($scope, $http) {
     displayElementById("addBand");
   };
 
+  // Go back to the band name input form
   $scope.backToChooseBand = function() {
     $scope.user.bands[0].name = "";
     hideElementById("joinBand");
     displayElementById("chooseBand");
   }
+  // -- END OF ACCOUNT UI MANAGEMENT -- // -------------------------------------
 
-  // Show add band input
-  $scope.addBand = function() {
-    var bandName = $scope.newBand;
-    $scope.user.bands.push({name: bandName,
-                            metaName: generateMetaName(bandName),
-                            memberIds: [$scope.user.id],
-                            code: "1234"});
-    //TODO check availability of band
-    $scope.hideAddBandInput;
 
+
+  // -- START OF PHP CALLS -- // -----------------------------------------------
+
+  // HTTP POST Request - Update user information
+  // userId [String] - the identifier to find the user in the database
+  // type [String] - the type of update that will occur [token, band]
+  // data [object] - the data that will be used in the update
+  // callback [function] - return the response data
+  $scope.updateUser = function(userId, type, data, callback) {
+    $http.post("/php/updateUser.php?userId=" + userId + "&type=" + type, data)
+    .then(function (response) {
+      console.log("Updated user successfully.");
+      callback(true);
+    },
+    function (response) {
+      console.log("The update failed: " + response.data);
+      callback(false);
+    });
+  }
+
+  // HTTP POST Request - Add the user to the database
+  // callback [function] - return if the post succeeded
+  $scope.saveUser = function(callback) {
+    var newUser = $scope.user;
+    newUser.existingBand = existingBand;
+    $http.post("/php/addUser.php", newUser)
+    .then(
+      function (response) {
+        console.log("The user was added successfully!");
+        callback(true);
+      },
+      function (response) {
+        console.log("The add failed: " + response.data);
+        callback(false);
+      }
+    );
+  }
+
+  // HTTP GET Request - Get User data
+  // userName [String] - use username to find user TODO change this in php file
+  // login [boolean] - true if getting a logged in user, false if just looking up user
+  // callback [function] - return the response data
+  $scope.getUser = function(userName, login, callback) {
+    $http.get("/php/getUser.php?email=" + userName + "&login=" + login)
+    .then(function (response) {
+      console.log("Retrieved User: " + response.data);
+      callback(response.data);
+    });
+  }
+
+  // Send GET request to retrieve band information.
+  $scope.getBand = function(bandName, callback) {
+    $http.get("/php/getBand.php?bandName=" + bandName)
+    .then(function (response) {
+      console.log(response.data);
+      callback(response.data);
+    });
   };
+  // -- END OF PHP CALLS -- // -------------------------------------------------
 
-  // Open User Details
-  $scope.showUserDetails = function() {
-    var detailsDisplay = getElementById("userDetails").style.display;
-    var detailsButton = getElementById("userDetailsButton");
-    if (detailsDisplay == "none" || detailsDisplay === "") {
-      displayElementById("userDetails");
-      detailsButton.innerHTML = "^";
-    } else {
-      hideElementById("userDetails");
-      detailsButton.innerHTML = "Details";
-    }
+  // Check if user is still logged in. Based on token in database.
+  $scope.checkDatabaseIfLoggedIn = function(callback) {
+    var unknownUser = "";
+    return $scope.getUser(unknownUser, false, function(rememberedUser) {
+      if (typeof rememberedUser == "string" || !rememberedUser) {
+        callback(rememberedUser, false);
+      } else {
+        callback(rememberedUser, true);
+      }
+    });
   };
 
   // Check if user is logged in. Show user information instead of authentication forms.
   if (isLoggedIn()) {
-    console.log(CURRENT_USER);
-    console.log(CURRENT_BANDS);
+    console.log(loggedIn);
     $scope.user = CURRENT_USER;
     $scope.user.bands = CURRENT_BANDS;
+    //hideAuthenticationUI();
+    navigateToURL("/#/user");
   } else {
-    CURRENT_FILE = "";
-    CURRENT_FILES = "";
-    CURRENT_FOLDER = "";
-    CURRENT_FOLDERS = "";
-    CURRENT_BANDS = "";
-    CURRENT_BAND = "";
-    navigateToURL("/#/");
+    console.log(signedOut);
+    if (signedOut) {
+      // change token
+      $scope.updateToken(CURRENT_USER.id, function(success) {
+        if (success) {
+          console.log("Updated token successfully.");
+          hideElementById("startBandForm");
+          displayElementById("authentication");
+        } else {
+          console.log("Update unsuccessful.");
+        }
+      });
+
+    } else {
+      $scope.checkDatabaseIfLoggedIn(function(loggedInUser, success) {
+        console.log
+        if (success) {
+          console.log("logged in: " + loggedInUser);
+          loggedIn = true;
+          CURRENT_USER = loggedInUser;
+          CURRENT_BANDS = loggedInUser.bands;
+          $scope.user = CURRENT_USER;
+          $scope.user.bands = CURRENT_BANDS;
+          console.log(lastUrl);
+          loginUser();
+        } else {
+          clearAccountData();
+          console.log("Showing login form");
+          displayElementById("authentication");
+          hideElementById("startBandForm");
+        }
+      });
+    }
   }
   removeNavLink("#bandLink");
   removeNavLink("#folderLink");

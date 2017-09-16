@@ -22,6 +22,11 @@ function getItemFromLocalStorage(key) {
     return localStorage.getItem(key);
 }
 
+function clearStorage() {
+  localStorage.clear();
+  console.log("Storage cleared.");
+}
+
 // Get query paramater from url
 // Credit to
 function getParameterByName(name, url) {

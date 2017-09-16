@@ -1,51 +1,4 @@
-var CURRENT_FILE = {};
-
-function getFile(newFile, $sce) {
-    var fileId = newFile.id;
-    var fileObject = {
-        name: getFriendlyTitle(newFile),
-        id: fileId,
-        path: $sce.trustAsResourceUrl(newFile.webContentLink),
-        previewPath: $sce.trustAsResourceUrl("https://drive.google.com/file/d/" + fileId + "/preview"),
-        type: newFile.fileExtension,
-        size: calculateFileSize(newFile.fileSize),
-        bytes: newFile.fileSize,
-        likes: getLikes(fileId),
-        views: getViews(fileId),
-        timestamps: []
-    };
-    return fileObject;
-}
-
-function loadFilePage($sce) {
-  var file = CURRENT_FILE;
-  if (file.type === null) {
-    //TODO Make sense of this shit
-
-  } else {
-    //TODO finish filling out the file properties
-    console.log("Getting file from Google Drive");
-    var fileId = getParameterByName("id");
-      file = {
-          name: fileId,
-          id: fileId,
-          path: $sce.trustAsResourceUrl("https://drive.google.com/file/d/" + fileId + "/preview"),
-          previewPath: $sce.trustAsResourceUrl("https://drive.google.com/file/d/" + fileId + "/preview"),
-          type: "m4a",
-          size: "",
-          bytes: "",
-          likes: getLikes(fileId),
-          views: getViews(fileId),
-          timestamps: []
-      };
-  }
-  console.log(file);
-  displayElementById("file");
-  hideElementById("authorize-div")
-  loadDisqus(file);
-  return file;
-}
-
+// Load m4a or MP4
 function loadFile(file) {
     //addViewToFile(file);
     switch(file.type) {
@@ -141,63 +94,10 @@ function calculateFileSize(bytes) {
   return fileSize;
 }
 
-function saveLike(file) {
-    var likesId = "likes-" + file.id;
-    var likes = parseInt(getItemFromLocalStorage(likesId));
-    likes += 1;
-    saveItemToLocalStorage(likesId, likes);
-    file.likes = likes;
-}
-
-function getLikes(fileId) {
-    var likesId = "likes-" + fileId;
-    var fileLikes = getItemFromLocalStorage(likesId);
-    console.log(fileLikes + " likes");
-    if (fileLikes === null) {
-        saveItemToLocalStorage(likesId, 0);
-        return 0;
-    } else {
-        return fileLikes;
-    }
-}
-
-function addViewToFile(file) {
-    var viewsId = "views-" + file.id;
-    var views = parseInt(getItemFromLocalStorage(viewsId));
-    views += 1;
-    saveItemToLocalStorage(viewsId, views);
-    file.views = views;
-}
-
-function getViews(fileId) {
-    var viewsId = "views-" + fileId;
-    var views = getItemFromLocalStorage(viewsId);
-    console.log(views + " views");
-    console.log(fileId + " id")
-    if (views === null) {
-        saveItemToLocalStorage(viewsId, 0);
-        return 0;
-    } else {
-        return views;
-    }
-}
-
 function isTrashed(file) {
   return file.explicitlyTrashed === false;
 }
 
 function isFolder(file) {
   return file.mimeType == "application/vnd.google-apps.folder";
-}
-
-function getFriendlyTitle(file) {
-    var title = file.title;
-    console.log(title);
-    if (file.fileExtension === "m4a") {
-        title = title.replace('.m4a', '');
-    } else if (file.fileExtension === "MP4") {
-        title = title.replace('.MP4', '');
-    }
-    console.log(title);
-    return title;
 }

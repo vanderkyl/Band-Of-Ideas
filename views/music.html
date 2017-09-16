@@ -5,8 +5,8 @@
     <div class="folderButtons col-md-12">
       <!-- Add Folder Button -->
       <div class="addFolderButtons col-md-2">
-        <p id="addFolder" class="folderButton1 folderButton" ng-click="showAddFolderInput()">+</p>
-        <p id="cancelNewFolder" class="folderButton2 folderButton" ng-click="hideAddFolderInput()">-</p>
+        <p id="addFolder" class="folderButton1 folderButton" ng-click="showAddFolderInput()">Add Folder</p>
+        <p id="cancelNewFolder" class="folderButton2 folderButton" ng-click="hideAddFolderInput()">Close</p>
       </div>
       <!-- Add Folder Modal -->
       <div id="addFolderInput" class="col-md-10">
@@ -53,8 +53,8 @@
     <!-- Container that holds all folders -->
     <div class="col-md-12">
       <h3 class="folderLoadingMessage">{{ folderMessage }}</h3>
-      <div id="{{ 'folder-' + $index }}" ng-repeat="folder in folders" class="col-md-6 folders">
-        <p class="deleteButton" ng-click="archiveFolder($index)"> x </p>
+      <div id="{{ 'folder-' + $index }}" ng-repeat="folder in folders " class="col-md-6 folders">
+        <p class="deleteFolderButton" ng-click="archiveFolder($index)"> x </p>
         <div class="thumbnail folder" ng-click="openFolder($index)">
           <p class="folderTitle">{{ folder.name }}</p>
 

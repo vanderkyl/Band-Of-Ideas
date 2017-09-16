@@ -36,6 +36,10 @@
   text-align: center;
 }
 
+.form-control {
+  font-size: 11px;
+}
+
 .mainForm {
   /*background-color: #265a88;*/
 
@@ -99,5 +103,5 @@
   left: 10%;
   width: 80%;
   margin-top: 8%;
-  display: block;
+  display: none;
 }

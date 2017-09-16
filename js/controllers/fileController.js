@@ -12,9 +12,10 @@ function($scope, $sce, $http, $filter) {
   $scope.folderMessage = "";
   $scope.currentPage = 0;
   $scope.numberOfFiles = 0;
-  $scope.sortBy = "name";
+  $scope.sortBy = "-likes";
   $scope.pageSize = "10";
   $scope.search = "";
+  $scope.fileIcon = "/img/music.png";
 
   //TODO Create functionality for a recent file selection
 
@@ -36,13 +37,17 @@ function($scope, $sce, $http, $filter) {
   };
 
   $scope.openFile = function(file) {
+    console.log("Opening file:");
     console.log(file);
     file.views++;
+    if (file.liked) {
+      hideElementById("likeButton");
+      displayElementInlineById("likedButton");
+    }
     $scope.safeApply(function() {
       $scope.file = file;
     });
     hidePreviousFile();
-    console.log(file);
     document.title = file.name;
     loadFile(file);
     scrollToElementById("fileSection");
@@ -50,6 +55,7 @@ function($scope, $sce, $http, $filter) {
     .then(
       function (response) {
         console.log(response.data);
+
       },
       function (response) {
         console.log(response.data);
@@ -108,6 +114,34 @@ function($scope, $sce, $http, $filter) {
       });
   };
 
+  $scope.showLikes = async function(file) {
+    stopPropogation();
+    // Fill out like data if it hasn't been done yet
+    if (getElementById("fileDetails-" + file.id).childElementCount === 0) {
+      for (var i = 0; i < file.userLikes.length; i++) {
+        var result = $scope.band.memberIds.filter(function( user ) {
+          return user.id == file.userLikes[i];
+        });
+        if (result) {
+          var user = result[0].email;
+          if (result[0].id === CURRENT_USER.id) {
+            user = "Me";
+          }
+          $("#fileDetails-" + file.id).append('<p class="fileData">' + user + ' <img src="/img/black-metal.png"/></p>');
+        }
+      }
+    }
+
+    displayElementById("fileDetails-" + file.id);
+    await sleep(3000);
+    hideElementById("fileDetails-" + file.id);
+  };
+
+  $scope.comment = function(file) {
+    stopPropogation();
+    displayElementById("commentInput");
+  };
+
   $scope.download = function(file) {
     // Keeps this from downloading twice.
     stopPropogation();
@@ -132,6 +166,15 @@ function($scope, $sce, $http, $filter) {
     return Math.ceil($scope.getData().length/$scope.pageSize);
   };
 
+  $scope.numberOfFilesOnPage = function() {
+    var numFiles = ($scope.currentPage + 1) * $scope.pageSize;
+    if (numFiles >= $scope.numberOfFiles) {
+      return $scope.numberOfFiles;
+    } else {
+      return numFiles;
+    }
+  };
+
   $scope.formatFileData = function() {
     for (var i = 0; i < CURRENT_FILES.length; i++) {
       CURRENT_FILES[i].name = getFriendlyTitle(CURRENT_FILES[i]);
@@ -143,12 +186,14 @@ function($scope, $sce, $http, $filter) {
     //TODO figure out better way to do this.
     await sleep(10);
     console.log("Checking files");
+    file.liked = false;
     var userId = CURRENT_USER.id;
     var index = file.id;
     var userLikes = file.userLikes;
     for (var i = 0; i < userLikes.length; i++) {
+      console.log(userLikes[i]);
       if (userId === userLikes[i]) {
-        console.log("likeButton-" + index);
+        file.liked = true;
         hideElementById("likeButton-" + index);
         displayElementInlineById("likedButton-" + index);
       }
@@ -223,7 +268,7 @@ function($scope, $sce, $http, $filter) {
       uploadResult.innerHTML = xhr.responseText;
 
       fileStatus.innerHTML = "Loading file: " + file.name;
-      $http.get("/php/getFiles.php?folderName=" + $scope.folder.metaName)
+      $http.get("/php/getFiles.php?folderName=" + $scope.folder.metaName + "&bandId=" + $scope.band.id)
       .then(function (response) {
         console.log(response.data);
         CURRENT_FILES = response.data;
@@ -254,9 +299,9 @@ function($scope, $sce, $http, $filter) {
     $scope.numberOfFiles = CURRENT_FILES.length;
     document.title = CURRENT_FOLDER.name;
     var folderUrl = "/#/band/" + CURRENT_BAND.metaName + "/" + CURRENT_FOLDER.metaName;
+
     removeNavLink("folderLink");
     addNavLink("folderLink", CURRENT_FOLDER.name, folderUrl);
-
   }
 }]);
 

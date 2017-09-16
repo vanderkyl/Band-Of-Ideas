@@ -18,9 +18,10 @@
       if ($result->num_rows > 0) {
         // Get current row as an array
         while($row = mysqli_fetch_assoc($result)) {
-          $data = ['name' => $row["name"],
+          $data = ['id' => $row["id"],
+                   'name' => $row["name"],
                    'metaName' => $row["metaName"],
-                   'memberIds' => [$row["memberIds"]],
+                   'memberIds' => explode(',', $row["memberIds"]),
                    'code' => $row["code"]];
         }
       } else {

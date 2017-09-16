@@ -33,6 +33,7 @@
         // Check if the band already exists
       if($row = mysqli_fetch_assoc($result)) {
         $bandId = $row["id"];
+        echo "band " . $band;
         echo "bandId " . $bandId;
       } else if ($result = mysqli_query($conn, "SELECT MAX(id) AS `maxid` FROM Bands;")){
         // Find the new band id
@@ -49,7 +50,7 @@
     }
     echo "band " . $bandId;
     echo "user " . $userId;
-    $userQuery = "INSERT INTO Users (name, email, password, bandIds, loggedIn)
+    $userQuery = "INSERT INTO Users (name, email, password, bandIds, token)
               VALUES ('" . $name . "','" . $email . "','" . $password . "','" . $bandId . "','true')";
     if ($result = mysqli_query($conn, $userQuery)) {
       echo "New record created successfully!";

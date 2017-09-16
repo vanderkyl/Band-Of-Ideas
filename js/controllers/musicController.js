@@ -68,18 +68,30 @@ function($scope, $sce, $http, $filter) {
       $scope.folders[index].name = folderName;
       navigateToURL(folderUrl);
     } else {
-      $http.get("/php/getFiles.php?folderName=" + $scope.folders[index].metaName)
-      .then(function (response) {
-        console.log(response.data);
-        CURRENT_FILES = response.data;
-        CURRENT_FOLDERS = $scope.folders;
-        CURRENT_FOLDER = $scope.folders[index];
-        folderUrl += CURRENT_FOLDER.metaName;
-        console.log("folder link: " + folderUrl);
+      var folderName = $scope.folders[index].metaName;
+      var bandId = CURRENT_BAND.id;
+      $scope.getFiles(folderName, bandId, index, function(success) {
         $scope.folders[index].name = folderName;
-        navigateToURL(folderUrl);
+        if (success) {
+          folderUrl += CURRENT_FOLDER.metaName;
+          navigateToURL(folderUrl);
+        } else {
+          console.log("Getting files failed.");
+        }
       });
+
     }
+  };
+
+  $scope.getFiles = function(folderName, bandId, index, callback) {
+    $http.get("/php/getFiles.php?folderName=" + $scope.folders[index].metaName + "&bandId=" + CURRENT_BAND.id)
+    .then(function (response) {
+      console.log(response.data);
+      CURRENT_FILES = response.data;
+      CURRENT_FOLDERS = $scope.folders;
+      CURRENT_FOLDER = $scope.folders[index];
+      callback(response.data);
+    });
   };
 
   $scope.archiveFolder = function(index) {
@@ -165,6 +177,7 @@ function($scope, $sce, $http, $filter) {
     var urlPaths = window.location.hash.split('/');
     document.title = CURRENT_BAND.name;
     var bandUrl = "/#/band/" + CURRENT_BAND.metaName;
+    lastUrl = bandUrl;
     removeNavLink("bandLink");
     console.log(CURRENT_BAND.name);
     addNavLink("bandLink", CURRENT_BAND.name, bandUrl)

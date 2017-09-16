@@ -2,195 +2,51 @@ var bands = [];
 var CURRENT_USER = {}; // This is the current user that is logged in
 var sqlUser = {}; // This is the user that will be checked against when signing up/in
 var CURRENT_BAND = {};
+var CURRENT_BANDS = [];
 var CURRENT_FOLDERS = "";
 var CURRENT_FOLDER = "";
 var CURRENT_FILES = "";
+var CURRENT_FILE = {};
 var loggedIn = false;
-
-// TEST DATA
-var testUser = {
-  id: "1",
-  bands: [
-    {id: "0",
-     name: "Test Band",
-     metaName: "test_band",
-     memberIds: "0",
-     code: "1234"}
-  ],
-  name: "Test User",
-  email: "test@test.com",
-  password: "1234",
-  passwordAgain: "1234"
-};
-var testFolders = [{
-  bandId: "0",
-  id: "0",
-  name: "Test Folder",
-  metaName: "test_folder",
-  parentId: "0",
-  archived: "true"
-},
-{
-  bandId: "0",
-  id: "1",
-  name: "Test Folder2",
-  metaName: "test_folder2",
-  parentId: "0",
-  archived: "true"
-}];
-var testFiles = [{
-    folderId: "0",
-    id: "0",
-    likes: "0",
-    userLikes: ["0"],
-    link: "/uploads/bands/1/1/8-Bit.m4a",
-    name: "Test File",
-    metaName: "test_file",
-    size: "34637",
-    type: "audio/x-m4a",
-    views: "0"
-  }, {
-      folderId: "0",
-      id: "1",
-      likes: "0",
-      userLikes: ["1"],
-      link: "/uploads/bands/1/1/8-Bit.m4a",
-      name: "Test File2",
-      metaName: "test_file",
-      size: "34637",
-      type: "audio/x-m4a",
-      views: "0"
-    }, {
-        folderId: "0",
-        id: "2",
-        likes: "0",
-        userLikes: ["1"],
-        link: "/uploads/bands/1/1/8-Bit.m4a",
-        name: "Test File3",
-        metaName: "test_file",
-        size: "34637",
-        type: "audio/x-m4a",
-        views: "0"
-      }, {
-          folderId: "0",
-          id: "3",
-          likes: "0",
-          userLikes: ["1"],
-          link: "/uploads/bands/1/1/8-Bit.m4a",
-          name: "Test File4",
-          metaName: "test_file",
-          size: "34637",
-          type: "audio/x-m4a",
-          views: "0"
-        }, {
-            folderId: "0",
-            id: "4",
-            likes: "0",
-            userLikes: ["1"],
-            link: "/uploads/bands/1/1/8-Bit.m4a",
-            name: "Test File5",
-            metaName: "test_file",
-            size: "34637",
-            type: "audio/x-m4a",
-            views: "0"
-          }, {
-              folderId: "0",
-              id: "5",
-              likes: "0",
-              userLikes: ["1"],
-              link: "/uploads/bands/1/1/8-Bit.m4a",
-              name: "Test File6",
-              metaName: "test_file",
-              size: "34637",
-              type: "audio/x-m4a",
-              views: "0"
-            }, {
-                folderId: "0",
-                id: "6",
-                likes: "0",
-                userLikes: ["1"],
-                link: "/uploads/bands/1/1/8-Bit.m4a",
-                name: "Test File7",
-                metaName: "test_file",
-                size: "34637",
-                type: "audio/x-m4a",
-                views: "0"
-              }, {
-                  folderId: "0",
-                  id: "7",
-                  likes: "0",
-                  userLikes: ["1"],
-                  link: "/uploads/bands/1/1/8-Bit.m4a",
-                  name: "Test File8",
-                  metaName: "test_file",
-                  size: "34637",
-                  type: "audio/x-m4a",
-                  views: "0"
-                }, {
-                    folderId: "0",
-                    id: "8",
-                    likes: "0",
-                    userLikes: ["1"],
-                    link: "/uploads/bands/1/1/8-Bit.m4a",
-                    name: "Test File10",
-                    metaName: "test_file",
-                    size: "34637",
-                    type: "audio/x-m4a",
-                    views: "0"
-                  },
-                  {
-                      folderId: "0",
-                      id: "9",
-                      likes: "0",
-                      userLikes: ["1"],
-                      link: "/uploads/bands/1/1/8-Bit.m4a",
-                      name: "Test File11",
-                      metaName: "test_file",
-                      size: "34637",
-                      type: "audio/x-m4a",
-                      views: "0"
-                    },
-    {
-    folderId: "0",
-    id: "10",
-    likes: "0",
-    userLikes: ["1"],
-    link: "/uploads/bands/1/1/8-Bit.m4a",
-    name: "Test File9",
-    metaName: "test_file9",
-    size: "34637",
-    type: "audio/x-m4a",
-    views: "0"
-  }
-];
-// END OF TEST DATA
+var signedOut = false;
+var lastUrl = window.location.href;
 
 function loginUser() {
   //saveItemToLocalStorage("*loggedIn*", JSON.stringify(user));
-  hideAuthenticationUI();
+  //hideAuthenticationUI();
   loggedIn = true;
+  displayElementById("navLinks");
+  hideElementById("signInButton");
+  displayElementById("signOutButton");
+  navigateToURL("/#/user");
 }
 
 function hideAuthenticationUI() {
   hideElementById("authentication");
   displayElementById("accountInformation");
-  displayElementById("navLinks");
-  hideElementById("signInButton");
-  displayElementById("signOutButton");
+
 }
 
 function signOut() {
   loggedIn = false;
+  signedOut = true;
+  clearAccountData();
   removeNavLink("folderLink");
   removeNavLink("bandLink");
   hideElementById("navLinks");
   hideElementById("signOutButton");
   displayElementById("signInButton");
-  navigateToURL("/#/");
-  hideElementById("accountInformation");
-  hideElementById("startBandForm");
-  displayElementById("authentication");
+  navigateToURL("/#/logout");
 };
+
+function clearAccountData() {
+  CURRENT_FILE = "";
+  CURRENT_FILES = "";
+  CURRENT_FOLDER = "";
+  CURRENT_FOLDERS = "";
+  CURRENT_BANDS = "";
+  CURRENT_BAND = "";
+}
 
 function passwordsMatch(password, passwordAgain) {
   console.log(password);
@@ -276,23 +132,13 @@ function showInvalidInput(id) {
   input.style = "box-shadow: 0 0 10px red; border-color: red;";
 }
 
-function getBandList() {
-  var bandList = JSON.parse(getItemFromLocalStorage("*bandList*"));
-  if (bandList) {
-    return bandList;
+function inputEmpty(input, inputId) {
+  if (input === "") {
+    console.log("Please try again.");
+    showInvalidInput(inputId);
+    return true;
   } else {
-    bandList = [];
-    return bandList;
-  }
-}
-
-function getUserList() {
-  var userList = JSON.parse(getItemFromLocalStorage("*userList*"));
-  if (userList) {
-    return userList;
-  } else {
-    userList = [];
-    return userList;
+    return false;
   }
 }
 
@@ -310,4 +156,10 @@ function objectIsEmpty(obj) {
 function generateMetaName(name) {
   name = name.toLowerCase().split(' ').join('_');
   return name;
+}
+
+function generateBandCode() {
+  var code = Math.random().toString(36).substring(2, 6).toUpperCase();
+  console.log("Generating code: " + code);
+  return code;
 }

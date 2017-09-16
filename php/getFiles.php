@@ -5,6 +5,7 @@
   $sqlDB = "IdeaBand";
   $conn = mysqli_connect("localhost", $sqlUser, $sqlPW, $sqlDB);
   $folderName = $_GET['folderName'];
+  $bandId = $_GET['bandId'];
   $folderId = "";
 
   function roundToTwoDecimals($num) {
@@ -28,13 +29,25 @@
     return $fileSize;
   }
 
+  function getFriendlyTitle($title) {
+    $fileExtensionStart = strlen($title) - 3;
+    $fileExtension = substr($title, $fileExtensionStart);
+    if ($fileExtension == "m4a") {
+        $title = str_replace('.m4a', '', $title);
+    } else if ($fileExtension == "MP4") {
+        $title = str_replace('.MP4', '', $title);
+    }
+    return $title;
+  }
+
   if($conn->connect_error) {
     echo "Failed to connect." . $conn->connect_error;
   }
 
   if(mysqli_ping($conn)) {
     // Find folder id
-    if ($result = mysqli_query($conn, "SELECT id FROM Folders WHERE metaName='" . $folderName . "';")) {
+    if ($result = mysqli_query($conn, "SELECT id FROM Folders WHERE metaName='" . $folderName . "' AND
+                                                                    bandId='" . $bandId . "';")) {
       if($row = mysqli_fetch_assoc($result)) {
         $folderId = $row["id"];
       }
@@ -48,7 +61,7 @@
         // Get current row as an array
         while ($row = mysqli_fetch_assoc($result)) {
           $data = ['id' => $row["id"],
-                   'name' => $row["name"],
+                   'name' => getFriendlyTitle($row["name"]),
                    'metaName' => $row["metaName"],
                    'type' => $row["type"],
                    'size' => calculateFileSize($row["size"]),
@@ -57,7 +70,7 @@
                    'folderId' => $row["folderId"],
                    'views' => intval($row["views"]),
                    'likes' => intval($row["likes"]),
-                   'userLikes' => [$row["userLikes"]]];
+                   'userLikes' => explode(',',$row["userLikes"])];
           $files[] = $data;
         }
       }
