@@ -1,0 +1,86 @@
+<div id="foldersView">
+  <!-- Folders View -->
+  <div id="folderSection">
+    <!-- Folder Buttons and Details -->
+    <div>
+      <!-- Folder Buttons -->
+      <div class="btn-group-justified ">
+        <div class="btn btn-primary" ng-click="goToUserInfo()">Go Back</div>
+        <div id="addFolder" class="btn btn-success" ng-click="ToggleAddFolderInput()">Add Folder</div>
+        <div class="btn btn-primary" ng-click="showBandDetails()">Band Info</div>
+        <!-- Optional Folder Buttons
+        <div class="col-xs-4">
+          <p id="showButtonsButton" class="folderButton1 folderButton" ng-click="showFolderButtons()">More</p>
+          <p id="hideButtonsButton" class="folderButton2 folderButton" ng-click="hideFolderButtons()">Less</p>
+        </div>
+
+        <div id="hiddenFolderButtons">
+
+          <div class="addFolderButtons col-xs-4">
+            <p class="folderButton" ng-click="">All Files</p>
+          </div>
+          <div class="addFolderButtons col-xs-4">
+            <p class="folderButton" ng-click="">Playlists</p>
+          </div>
+          <div class="addFolderButtons col-xs-4">
+            <p class="folderButton" ng-click="showBandDetails()">Band Info</p>
+          </div>
+        </div>
+         End of Optional Folder Buttons -->
+      </div>
+      <!-- End of Buttons -->
+      <!-- Folder Details -->
+      <div id="bandDetails">
+        <div class="col-xs-12 userInfo">
+          <div class="col-md-6">
+            <h3>Name: </h3><p>{{ band.name }}</p>
+          </div>
+          <div class="col-md-6">
+            <h3>Code: </h3><p>{{ band.code}}</p>
+          </div>
+        </div>
+      </div>
+      <!-- End of Folder Details -->
+      <!-- Add Folder Modal -->
+      <div id="addFolderInput" class="col-xs-12">
+        <div id="addFolderModal" class="thumbnail buttons col-md-12">
+          <p class="col-md-4">{{ addFolderMessage }}</p>
+          <div class="col-md-8">
+            <input type="text" name="folderName" placeholder="Folder Name" ng-model="newFolder" required/>
+            <input type="button" value="Add Folder" ng-click="addFolder()">
+          </div>
+        </div>
+      </div>
+      <!-- End of Folder Modal -->
+    </div>
+    <!-- End of Buttons and Details -->
+    <!-- Band Name -->
+    <h3 id="bandName" class="col-xs-12 userInfoTitles">{{ band.name }}</h3>
+    <!-- Container that holds all folders -->
+    <div class="col-xs-12">
+      <h3 class="folderLoadingMessage">{{ folderMessage }}</h3>
+      <!-- Single Folder -->
+      <div id="{{ 'folder-' + $index }}" ng-animate="'animate'" ng-repeat="folder in folders |
+      filter:{name: search } | startFrom:currentPage*pageSize
+      | limitTo:pageSize | orderBy:sortBy" class="col-xs-12 col-sm-6 col-md-3 folders">
+        <p class="deleteFolderButton" ng-click="archiveFolder(folder)"> x </p>
+        <div class="thumbnail folder" ng-click="openFolder(folder)">
+          <p class="folderTitle">{{ folder.name }}</p>
+        </div>
+      </div>
+      <!-- End of Single Folder -->
+    </div>
+    <!-- End of folder container -->
+    <!-- Folder Navigation -->
+    <div class="container fileNavigation">
+      <button class="col-sm-4 col-xs-4" ng-disabled="currentPage == 0 || search != ''" ng-click="currentPage=currentPage-1">
+        Previous
+      </button>
+      <p class="col-sm-4 col-xs-4">Page {{currentPage+1}}/{{numberOfPages()}}</p>
+      <button class="col-sm-4 col-xs-4" ng-disabled="currentPage >= getData().length/pageSize - 1 || search != ''" ng-click="currentPage=currentPage+1">
+        Next
+      </button>
+    </div>
+    <!-- End of Folder Navigation -->
+  </div>
+</div>

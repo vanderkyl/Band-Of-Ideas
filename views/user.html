@@ -1,53 +1,75 @@
 <!-- User Info -->
 <div id="accountInformation">
-  <div class="user col-md-12 col-xs-12">
-    <h2 class="userInfoTitles">Hello {{ user.name }}</h2>
-    <div class="addFolderButtons">
-      <p id="userDetailsButton" class="bandButton col-md-6 col-xs-6" ng-click="showUserDetails()">Details</p>
-      <p id="addBand" class="folderButton1 bandButton col-md-6 col-xs-6" ng-click="showAddBandInput()">Add Band</p>
-      <p id="cancelNewBand" class="folderButton2 bandButton col-md-6 col-xs-6" ng-click="hideAddBandInput()">Close</p>
+  <!-- Add Band Modal -->
+  <div id="addBandModal" class="modal fade" role="dialog">
+    <div id="addBandInput" class="thumbnail modal-dialog">
+      <div class="col-md-6 col-xs-12"
+        <p class="col-md-12 col-xs-12">{{ addBandMessage }}</p>
+        <div class="col-md-12 col-xs-12 form">
+          <input type="text" class="col-md-12 col-xs-12" name="bandName" placeholder="Band Name" ng-model="newBandName" required/>
+          <input type="button" class="col-md-12 col-xs-12 btn btn-default" value="Add Band" ng-click="addBand()">
+        </div>
+      </div>
+      <div class="col-md-6 col-xs-12">
+        <p class="col-md-12 col-xs-12">{{ joinBandMessage }}</p>
+        <div class="col-md-12 col-xs-12 form">
+          <input type="text" class="col-md-12 col-xs-12" name="bandName" placeholder="Band Name" ng-model="joinBandName" required/>
+          <input type="text" class="col-md-12 col-xs-12" name="bandCode" placeholder="Band Code" ng-model="bandCode" required/>
+          <input type="button" class="col-md-12 col-xs-12 btn btn-default" value="Join Band" ng-click="joinBand()">
+        </div>
+      </div>
     </div>
+  </div>
+  <!-- End of Add Band Modal -->
+  <!-- User Info -->
+  <div class="buttonBox col-xs-12">
+    <h3 class="userInfoTitles">Hello {{ user.name }}</h3>
+    <!-- Details and Add Band -->
     <div class="col-md-12 col-xs-12">
+      <!-- User Details Modal -->
       <div id="userDetails">
         <div class="col-md-12 userInfo">
           <div class="col-md-6">
-            <h3>Email: </h3><p>{{ user.email }}</p>
+            <h3>Username: </h3><p>{{ user.email }}</p>
           </div>
           <div class="col-md-6">
-            <h3>Password: </h3><p>{{ user.password}}</p>
+            <h3>Password: </h3><p>*******</p>
           </div>
         </div>
       </div>
-      <!-- Add Band Modal -->
-      <div id="addBandInput" class="col-md-12">
-        <div id="addBandModal" class="thumbnail buttons col-md-12 col-sm-12 col-xs-12">
-          <div class="col-md-6 col-xs-6"
-            <p class="col-md-12 col-xs-12">{{ addBandMessage }}</p>
-            <div class="col-md-12 col-xs-12 bandForm">
-              <input type="text" class="col-md-12 col-xs-12" name="bandName" placeholder="Band Name" ng-model="newBandName" required/>
-              <input type="button" class="col-md-12 col-xs-12" value="Add Band" ng-click="addBand()">
-            </div>
-          </div>
-          <div class="col-md-6 col-xs-6">
-            <p class="col-md-12 col-xs-12">{{ joinBandMessage }}</p>
-            <div class="col-md-12 col-xs-12 bandForm">
-              <input type="text" class="col-md-12 col-xs-12" name="bandName" placeholder="Band Name" ng-model="joinBandName" required/>
-              <input type="text" class="col-md-12 col-xs-12" name="bandCode" placeholder="Band Code" ng-model="bandCode" required/>
-              <input type="button" class="col-md-12 col-xs-12" value="Join Band" ng-click="joinBand()">
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- End of Band Modal -->
-    </div>
-  </div>
+      <!-- End of User Details Modal -->
 
-  <div class="col-md-12 col-xs-12">
-    <!--<h2 id="bandName" class="userInfoTitles">Bands</h2>-->
-    <div id="bands" ng-repeat="band in user.bands" class="col-md-12">
-      <div id="{{ 'band-' + $index }}" class="thumbnail folder buttons" ng-click="enterBand($index)">
-        <h2 class="folderTitle">{{ band.name }}</h2>
+
+    </div>
+    <!-- End of User Info-->
+  </div>
+  <div class="col-xs-12">
+
+    <!-- Bands -->
+    <div class="col-xs-12 col-sm-10" style="margin-top: 10px">
+      <!--<h2 id="bandName" class="userInfoTitles">Bands</h2>-->
+      <div id="bands" ng-repeat="band in user.bands">
+        <div id="{{ 'band-' + $index }}" class="thumbnail button" ng-click="enterBand(band)">
+          <h4 class="bandTitle col-xs-8">{{ band.name }}</h4>
+          <div class="col-xs-4" style="font-size:10px; text-align: center;">
+            <div class="btn btn-default">Edit</div>
+            <div class="btn btn-default">Details</div>
+          </div>
+        </div>
+        <!--
+        <div class="thumbnail folder buttons col-xs-2">Edit Band</div>
+        <div class="thumbnail folder buttons col-xs-2">Delete Band</div>
+      -->
       </div>
+    </div>
+    <!-- End of Bands -->
+    <!-- Buttons -->
+    <div class="buttons col-xs-12 col-sm-2">
+      <h4 class="col-xs-12">Tools</h4>
+      <div id="addBandButton" class="thumbnail button col-xs-4 col-sm-12" data-toggle="modal" data-target="#addBandModal">Add Band</div>
+      <div id="likedIdeasButton" class="thumbnail button col-xs-4 col-sm-12" ng-click="">Favorites</div>
+      <div id="userDetailsButton" class="thumbnail button col-xs-4 col-sm-12" ng-click="showUserDetails()">Details</div>
+
     </div>
   </div>
 </div>

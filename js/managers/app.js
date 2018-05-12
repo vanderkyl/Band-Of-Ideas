@@ -18,20 +18,20 @@ app.config(function ($routeProvider) {
     templateUrl: 'views/user.html'
   })
   .when('/band/:name?', {
-    controller: 'musicController',
-    templateUrl: 'views/music.html'
+    controller: 'folderController',
+    templateUrl: 'views/folders.html'
+  })
+  .when('/band/:name?/:folder?', {
+    controller: 'fileController',
+    templateUrl: 'views/files.html'
   })
   .when('/band/:name?/:folder?/:file?', {
-    controller: 'fileController',
-    templateUrl: 'views/file.html'
+    controller: 'ideaController',
+    templateUrl: 'views/idea.html'
   })
-  .when('/uploads/band/:name?/:folder?/:file?', {
-    controller: 'driveController',
-    templateUrl: 'uploads/index.php'
-  })
-  .when('/file', {
+  .when('/files', {
     controller: 'fileController',
-    templateUrl: 'views/file.html'
+    templateUrl: 'views/files.html'
   })
   .when('/logout', {
     controller: 'accountController',

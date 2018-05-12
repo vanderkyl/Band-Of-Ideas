@@ -1,8 +1,8 @@
 <?php
-  $sqlUser = "kylevanderhoof";
-  $sqlPW = "ashdrum10";
-  $sqlDB = "IdeaBand";
-  $conn = mysqli_connect("localhost", $sqlUser, $sqlPW, $sqlDB);
+  include 'dataHelper.php';
+  // Get database connection
+  $conn = connectToDatabase();
+  // Retrieve Post Data
   $postData = file_get_contents("php://input");
   $data = json_decode($postData);
   $band = $data->bands[0]->name;
@@ -12,68 +12,41 @@
   $metaName = $data->metaName;
   $password = $data->password;
   $existingBand = $data->existingBand;
+  // Set temp Ids
   $userId = "";
   $bandId = "";
 
-  if($conn->connect_error) {
-    echo "Failed to connect." . $conn->connect_error;
-  }
+  checkForConnectionError($conn);
 
   if(mysqli_ping($conn)) {
-    if ($result = mysqli_query($conn, "SELECT MAX(id) AS `maxid` FROM Users;")) {
-      if($row = mysqli_fetch_assoc($result)) {
-        $userId = $row["maxid"] + 1;
-      } else {
-        // First User
-        $userId = 1;
-      }
-    }
+    $userId = findIdForNewRow($conn, "Users");
 
     if ($result = mysqli_query($conn, "SELECT id FROM Bands WHERE name='" . $band . "';")) {
-        // Check if the band already exists
+      // Check if the band already exists
       if($row = mysqli_fetch_assoc($result)) {
         $bandId = $row["id"];
-        echo "band " . $band;
-        echo "bandId " . $bandId;
-      } else if ($result = mysqli_query($conn, "SELECT MAX(id) AS `maxid` FROM Bands;")){
-        // Find the new band id
-        if($row = mysqli_fetch_assoc($result)) {
-          $bandId = $row["maxid"] + 1;
-        } else {
-          // First Band
-          $bandId = 1;
-        }
+      } else {
+        $bandId = findIdForNewRow($conn, "Bands");
       }
     } else {
       $userId = null;
       $bandId = null;
+      echo "There was an error when trying to find user and band.";
     }
-    echo "band " . $bandId;
-    echo "user " . $userId;
-    $userQuery = "INSERT INTO Users (name, email, password, bandIds, token)
-              VALUES ('" . $name . "','" . $email . "','" . $password . "','" . $bandId . "','true')";
-    if ($result = mysqli_query($conn, $userQuery)) {
-      echo "New record created successfully!";
-    } else {
-      echo "Sorry, the user was not added.";
-      echo $userQuery;
-    }
+    $userQuery = "INSERT INTO Users (id, name, email, password, bandIds, token)
+              VALUES ('" . $userId . "','" . $name . "','" . $email . "','" . $password . "','" . $bandId . "','true')";
+    runMySQLInsertQuery($conn, $userQuery);
 
     $bandQuery = "";
     if ($existingBand == "") {
-      $bandQuery = "INSERT INTO Bands (name, metaName, memberIds, code)
-                VALUES ('" . $band . "','" . $bandMetaName . "','" . $userId . "','1234')";
+      $bandQuery = "INSERT INTO Bands (id, name, metaName, memberIds, code)
+                VALUES ('" . $bandId . "','" . $band . "','" . $bandMetaName . "','" . $userId . "','1234')";
       echo "Inserting the new band...";
     } else {
       $bandQuery = "UPDATE Bands SET memberIds = CONCAT(memberIds, '," . $userId . "') WHERE name = '" . $band . "';";
       echo "Updating existing band...";
     }
-    if ($result = mysqli_query($conn, $bandQuery)) {
-      echo "Success!";
-    } else {
-      echo "Sorry, it didn't work.";
-      echo $bandQuery;
-    }
+    runMySQLInsertQuery($conn, $bandQuery);
   }
 
   mysqli_close($conn);

@@ -1,8 +1,8 @@
 .fileTitle {
   color: #FFF;
-  margin: 0;
   font-size: 25px;
   font-weight: 800;
+  text-align: center;
 }
 
 .filterTitles {
@@ -11,9 +11,28 @@
   font-size: 12px;
 }
 
+#folderName {
+  color: #FFF;
+  text-align: center;
+  border: 1px solid white;
+  padding: 20px;
+  margin-top: 10px;
+}
+
 .fileData {
-  color: #a3a3a3 ;
+  color: #777777;
   font-size: 10px;
+  margin-left: 5px;
+}
+
+.fileComments {
+  color: #000000;
+  font-size: 10px;
+}
+
+#file .fileData {
+  margin-top: 15px;
+  margin-left: 15px;
 }
 
 .likedButton:hover .fileDetails {
@@ -22,6 +41,7 @@
 
 .fileInfo {
   display: inline-block;
+  right: 5px;
 }
 
 .likedButton:hover .fileInfo {
@@ -36,12 +56,81 @@
   width: 100%;
 }
 
+#showCommentsButton, #showHighlightsButton {
+  cursor: pointer;
+  cursor: hand;
+  text-align: center;
+  display: block;
+}
+
+#hideCommentsButton, #hideHighlightsButton {
+  cursor: pointer;
+  cursor: hand;
+  text-align: center;
+  display: none;
+}
+
+.highlightUserName {
+  color: #F65A5B;
+  font-size: 12px;
+}
+
+.commentUserName {
+  color: #2c6344;
+  font-size: 12px;
+}
+
+.commentText {
+  color: #FFF;
+}
+
+.commentTime {
+  font-size: 9px;
+  text-align: right;
+}
+
+.highlightTime {
+  font-size: 10px;
+  text-align: right;
+}
+
+.playListFile img{
+  height: 15px;
+  width: 15px;
+  filter: invert(100%);
+}
+
+.fileData img {
+  height: 15px;
+  width: 15px;
+}
+
+.playListFile {
+  border: 1px solid green;
+  background: #333;
+}
+
+.playListFile:hover {
+  border-color: #3CB371;
+}
+
+.playListFileSelected {
+  border: 1px solid white;
+  background: #5d5d5d;
+}
+
+.playListFileInfo {
+  color: #FFF;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 11px;
+}
+
 .fileButtons {
   text-align: right;
   -webkit-user-select: none;
     -moz-user-select: none;
      -ms-user-select: none;
-  margin: 0px 20px -30px 20px;
 }
 
 .likes {
@@ -50,12 +139,11 @@
   border: 1px solid green;
   cursor: pointer;
   display: inline-block;
-  font-size: 19px;
-  line-height: 50px;
-  min-width: 50px;
-  height: 50px;
+  font-size: 14px;
+  line-height: 30px;
+  min-width: 35px;
+  height: 35px;
   border-radius: 5%;
-  margin: 0 -30px 0 40px;
   text-align: center;
   font-weight: 200;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
@@ -68,12 +156,11 @@
   border: 1px solid green;
   cursor: pointer;
   display: inline-block;
-  font-size: 19px;
-  line-height: 50px;
-  min-width: 50px;
-  height: 50px;
+  font-size: 14px;
+  line-height: 30px;
+  min-width: 35px;
+  height: 35px;
   border-radius: 5%;
-  margin: 0 -30px 0 40px;
   text-align: center;
   font-weight: 200;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
@@ -90,12 +177,31 @@
   min-width: 30px;
   height: 33px;
   border-radius: 5%;
-  margin: 0 5px 0 40px;
+  margin: 0 15px 0 40px;
   text-align: center;
   font-weight: 400;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
   transition: background 500ms;
   float: right;
+}
+
+.otherFileButton {
+  background: #4285f4;
+  color: #d6d6d6;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 14px;
+  line-height: 30px;
+  border-radius: 5%;
+  margin: 0 5px 0 5px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: background 500ms;
+  padding: 0 5px;
+}
+
+.otherFileButtons {
+  text-align: center;
 }
 
 .deleteButton {
@@ -122,38 +228,117 @@
   display: block;
 }
 
-#commentInput {
-  display: none;
-  width: 60%;
-  margin-top: 25px;
+#fileList {
+  margin-top: 15px;
 }
 
-#commentInput input {
+.commentMetaData {
+  text-align: right;
+}
+
+#comments {
+}
+
+#highlights {
+  display: none;
+}
+
+.userComment {
+  margin-top: -20px;
+  padding: 0px;
+}
+
+.userComment p {
+  top: -6px;
+}
+
+#momentIndicator {
+  color: white;
+}
+
+#commentText, #highlightText {
+  width: 100%;
+}
+
+#commentInput {
+  display: none;
+  margin-bottom: 20px;
+}
+
+#commentInput input, #highlightInput input {
+  margin-bottom: 20px;
   width: 100%;
   height: 50px;
 }
 
+#highlightDetails {
+  display: none;
+}
+
 .comment {
   background: #FFF;
-  color: black;
-  border: 1px solid red;
+  border: 1px solid green;
   cursor: pointer;
   display: inline-block;
-  font-size: 16px;
-  line-height: 50px;
+  font-size: 10px;
+  line-height: 40px;
   min-width: 50px;
-  height: 50px;
+  height: 40px;
   border-radius: 5%;
-  margin: 0 -30px 0 40px;
-  text-align: center;
-  font-weight: 200;
-  padding-left: 5px;
-  padding-right: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 20px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
   transition: background 500ms;
 }
 
 .comment:hover {
+  color: #FFF;
+  background: #3CB371;
+  transition: background 500ms;
+}
+
+.highlight {
+  background: #FFF;
+  border: 1px solid red;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 10px;
+  line-height: 40px;
+  min-width: 50px;
+  height: 40px;
+  border-radius: 5%;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: background 500ms;
+}
+
+.highlight:hover {
+  color: #FFF;
+  background: #F65A5B;
+  transition: background 500ms;
+}
+
+.highlightPlayButton {
+  background: #FFF;
+  border: 1px solid red;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 10px;
+  line-height: 35px;
+  min-width: 50px;
+  height: 35px;
+  border-radius: 10%;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-left: -25px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: background 500ms;
+}
+
+.highlightPlayButton:hover {
   color: #FFF;
   background: #F65A5B;
   transition: background 500ms;
@@ -161,18 +346,14 @@
 
 .download {
   background: #FFF;
-  color: #fff;
   border: 1px solid red;
   cursor: pointer;
   display: inline-block;
-  font-size: 19px;
-  line-height: 50px;
-  min-width: 50px;
-  height: 50px;
+  line-height: 32px;
+  min-width: 35px;
+  height: 35px;
   border-radius: 5%;
-  margin: 0 -30px 0 40px;
   text-align: center;
-  font-weight: 200;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
   transition: background 500ms;
 }
@@ -210,19 +391,50 @@
 }
 
 #file {
-  display: none;
   position: relative;
-  padding: 20px;
 }
 
-#file .fileButtons {
+#filesFilter {
+  display: none;
+}
+
+.fileButtons {
+  position: absolute;
+  z-index: 1000;
+  width: 8%;
+  right: 50px;
+  top: 25px;
+}
+
+#file .ideaButtons {
+  float: right;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  margin-right: -25px;
+}
+
+.fileButtons img, .ideaButtons img {
+  width: 18px;
+  height: 18px;
+}
+
+#openFileDetails {
+  float: right;
+  display: none;
   margin-right: 30px;
-  margin-bottom: 5px;
+  position: absolute;
+  z-index: 1000;
+  top: 15%;
+  right: 15%%;
+  border: 1px solid black;
+  border-radius: 5px;
+  background: #FFF;
+  padding: 10px;
 }
 
-.fileButtons img {
-  width: 22px;
-  height: 22px;
+.fileData img {
+  width: 16px;
+  height: 16px;
 }
 
 *[id^='likeButton']{
@@ -257,8 +469,8 @@
 }
 
 .file {
-  padding: 25px;
-  height: 150px;
+  padding: 15px;
+  height: 120px;
   border: 2px solid #FFF;
 }
 
@@ -266,7 +478,7 @@
   border: 2px solid #4285f4;
 }
 
-.file, .folder, .filesButton, .homeButton, .fileTitle, #startBand, #startSignIn {
+.file, .folder, .filesButton, .homeButton, #startBand, #startSignIn, .playListFile {
   cursor: pointer;
   cursor: hand;
 }
@@ -275,7 +487,7 @@
 
 }
 
-.folder:hover, .homeButton:hover, .filesButton:hover {
+.folder:hover, .filesButton:hover {
   background-color: #265a88;
   transition: background 500ms;
 }
@@ -301,22 +513,23 @@
 
 .fileNavigation {
   text-align: center;
-  max-width: 75%;
   padding: 10px;
   color: #FFF;
 }
 
 .fileNavigation button {
   color: #000;
-  font-size: 11px;
+  font-size: 10px;
+
 }
 
+.fileNavigation p {
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid white;
 
-
-#folderDetailsButton {
-  height: 30px;
-  line-height: 30px;
-  margin-top: 20px;
+  bottom: 5px;
+  font-size: 12px;
 }
 
 #folderDetails {

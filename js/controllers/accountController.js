@@ -17,7 +17,7 @@ function($scope, $http) {
   };
   var existingBand = "";
 
-  // Test login
+  // Test login - Data from account.js
   $scope.testLogin = function() {
     console.log(testUser);
     CURRENT_USER = testUser;
@@ -27,7 +27,6 @@ function($scope, $http) {
 
   // This function runs when submitting sign in form.
   $scope.login = function() {
-    // First validate the login credentials
     $scope.validLogin(function(valid) {
       if (valid) {
         $scope.user = CURRENT_USER;
@@ -362,11 +361,12 @@ function($scope, $http) {
       $scope.updateToken(CURRENT_USER.id, function(success) {
         if (success) {
           console.log("Updated token successfully.");
-          hideElementById("startBandForm");
-          displayElementById("authentication");
+
         } else {
           console.log("Update unsuccessful.");
         }
+        hideElementById("startBandForm");
+        displayElementById("authentication");
       });
 
     } else {

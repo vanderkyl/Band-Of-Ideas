@@ -6,8 +6,16 @@ function hideElementById(id) {
     document.getElementById(id).style.display = "none";
 }
 
+function hideElementByIdWithAnimation(id) {
+    $("#"+id).hide(250);
+}
+
 function displayElementById(id) {
     document.getElementById(id).style.display = "block";
+}
+
+function showElementById(id) {
+    $("#"+id).show(500);
 }
 
 function displayElementInlineById(id) {
@@ -52,7 +60,7 @@ function openLinkInNewTab(path) {
 
 // Guarantee that the button pressed is the only one that activates
 // Use if there is a button on top of a button.
-function stopPropogation() {
+function stopPropogation(event) {
     event.cancelBubble = true;
     if(event.stopPropagation) event.stopPropagation();
 }
@@ -93,13 +101,14 @@ function httpPost(url, callback) {
 
 function addNavLink(id, name, link) {
   if (id === "bandLink") {
-    $("#bandLinks").append('<li id="' + id + '" class="navButtons"><a href="' + link + '">' + name + '</a></li>');
+    $("#bandLinks").append("<li id='" + id + '" class="navButtons"><a href="' + link + '">' + name + '</a></li>');
   } else if (id === "folderLink") {
     $("#folderLinks").append('<li id="' + id + '" class="navButtons"><a href="' + link + '">' + name + '</a></li>');
+  } else if (id === "fileLink") {
+    $("#fileLinks").append('<li id="' + id + '" class="navButtons"><a href="' + link + '">' + name + '</a></li>');
   } else {
     console.log("Can't add this link: " + id);
   }
-
 }
 
 function removeNavLink(id) {

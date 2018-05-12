@@ -58,8 +58,70 @@
       $data = "";
       $files = [];
       if ($result->num_rows > 0) {
+
         // Get current row as an array
         while ($row = mysqli_fetch_assoc($result)) {
+          // Check if the file has comments
+          $comments = [];
+          $commentQuery = "SELECT * FROM Comments WHERE fileId = '" . $row["id"] . "'";
+
+          if ($commentResult = mysqli_query($conn, $commentQuery)) {
+            if ($commentResult->num_rows > 0) {
+              while ($commentRow = mysqli_fetch_assoc($commentResult)) {
+                $comment = $commentRow["comment"];
+                // Find user name
+                $userName = "";
+                $userQuery = "SELECT * FROM Users WHERE id = '" . $commentRow["userId"] . "'";
+                if ($userResult = mysqli_query($conn, $userQuery)) {
+                  if ($userResult->num_rows > 0) {
+                    while ($userRow = mysqli_fetch_assoc($userResult)) {
+                      $userName = $userRow["name"];
+                    }
+                  }
+                }
+
+                if ($comment != null) {
+                  $commentObject = ['id' => $commentRow["id"],
+                                    'comment' => $comment,
+                                    'userName' => $userName,
+                                    'commentTime' => $commentRow["commentTime"]];
+                  $comments[] = $commentObject;
+                }
+              }
+            }
+          }
+          // Check if the file has highlights
+          $highlights = [];
+          $highlightQuery = "SELECT * FROM Highlights WHERE fileId = '" . $row["id"] . "'";
+
+          if ($highlightResult = mysqli_query($conn, $highlightQuery)) {
+            if ($highlightResult->num_rows > 0) {
+              while ($highlightRow = mysqli_fetch_assoc($highlightResult)) {
+                $highlight = $highlightRow["comment"];
+                // Find user name
+                $userName = "";
+                //echo $highlightRow["highlightTime"];
+                $userQuery = "SELECT * FROM Users WHERE id = '" . $highlightRow["userId"] . "'";
+                if ($userResult = mysqli_query($conn, $userQuery)) {
+                  if ($userResult->num_rows > 0) {
+                    while ($userRow = mysqli_fetch_assoc($userResult)) {
+                      $userName = $userRow["name"];
+                    }
+                  }
+                }
+
+                if ($highlight != null) {
+                  $highlightObject = ['id' => $highlightRow["id"],
+                                    'comment' => $highlight,
+                                    'userName' => $userName,
+                                    'commentTime' => $highlightRow["commentTime"],
+                                    'highlightTime' => $highlightRow["highlightTime"]];
+                  $highlights[] = $highlightObject;
+                }
+              }
+            }
+          }
+          // Fill out file data
           $data = ['id' => $row["id"],
                    'name' => getFriendlyTitle($row["name"]),
                    'metaName' => $row["metaName"],
@@ -67,10 +129,13 @@
                    'size' => calculateFileSize($row["size"]),
                    'bytes' => intval($row["size"]),
                    'link' => $row["link"],
+                   'source' => $row["source"],
                    'folderId' => $row["folderId"],
                    'views' => intval($row["views"]),
                    'likes' => intval($row["likes"]),
-                   'userLikes' => explode(',',$row["userLikes"])];
+                   'userLikes' => explode(',',$row["userLikes"]),
+                   'comments' => $comments,
+                   'highlights' => $highlights];
           $files[] = $data;
         }
       }

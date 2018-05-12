@@ -3,6 +3,7 @@ function($scope, $http) {
   $scope.loginMessage = "Login";
   $scope.addBandMessage = "New Band";
   $scope.joinBandMessage = "Join Band"
+  $scope.bandMessage = "";
   $scope.sqlUser = "";
   $scope.sqlBand = {};
   $scope.newBandName = "";
@@ -248,10 +249,33 @@ function($scope, $http) {
     );
   }
 
-  $scope.enterBand = function(index) {
-    CURRENT_BAND = $scope.user.bands[index];
-    navigateToURL("/#/band/" + CURRENT_BAND.metaName);
+  $scope.enterBand = function(band) {
+    console.log(band);
+    CURRENT_BAND = band;
+    if (CURRENT_FOLDERS.length > 0) {
+      if (CURRENT_FOLDERS[0].bandId === band.id) {
+        navigateToURL("/#/band/" + CURRENT_BAND.metaName);
+      }
+    }
+    $scope.getFolders(band, function() {
+      navigateToURL("/#/band/" + CURRENT_BAND.metaName);
+    });
   };
+
+  $scope.getFolders = function(band, callback) {
+    var bandName = band.name;
+    if (bandName === "Test Band") {
+      CURRENT_FOLDERS = testFolders;
+      callback();
+    } else {
+      $http.get("/php/getFolders.php?bandName=" + bandName)
+      .then(function (response) {
+        console.log(response.data);
+        CURRENT_FOLDERS = response.data;
+        callback();
+      });
+    }
+  }
 
   // Open the Sign Up form
   $scope.openBandForm = function() {
@@ -266,19 +290,6 @@ function($scope, $http) {
     hideElementById("startSignIn");
   };
 
-  // Show add band input
-  $scope.showAddBandInput = function() {
-    hideElementById("addBand");
-    displayElementById("cancelNewBand");
-    displayElementById("addBandInput");
-  };
-
-  // Hide add band input
-  $scope.hideAddBandInput = function() {
-    hideElementById("addBandInput");
-    hideElementById("cancelNewBand");
-    displayElementById("addBand");
-  };
 
   $scope.backToChooseBand = function() {
     $scope.user.bands[0].name = "";
@@ -288,7 +299,7 @@ function($scope, $http) {
 
   // Show add band input
   $scope.addBand = function() {
-    var bandName = $scope.newBand;
+    var bandName = $scope.newBandName;
     $scope.user.bands.push({name: bandName,
                             metaName: generateMetaName(bandName),
                             memberIds: [$scope.user.id],
@@ -304,7 +315,7 @@ function($scope, $http) {
     var detailsButton = getElementById("userDetailsButton");
     if (detailsDisplay == "none" || detailsDisplay === "") {
       displayElementById("userDetails");
-      detailsButton.innerHTML = "^";
+      detailsButton.innerHTML = "Close";
     } else {
       hideElementById("userDetails");
       detailsButton.innerHTML = "Details";

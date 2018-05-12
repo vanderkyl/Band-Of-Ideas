@@ -1,8 +1,5 @@
 <?php
-  $sqlUser = "kylevanderhoof";
-  $sqlPW = "ashdrum10";
-  $sqlDB = "IdeaBand";
-  $conn = mysqli_connect("localhost", $sqlUser, $sqlPW, $sqlDB);
+  include 'dataHelper.php';
   $postData = file_get_contents("php://input");
   $data = json_decode($postData);
   $userId = $_GET['userId'];
@@ -32,12 +29,8 @@
           $bandId = $row["id"];
 
           $userQuery = "UPDATE Users SET bandIds = CONCAT(bandIds, '," . $bandId . "') WHERE id = '" . $userId . "';";
-          echo $userId;
-          echo "Updating user...";
 
           $bandQuery = "UPDATE Bands SET memberIds = CONCAT(memberIds, '," . $userId . "') WHERE id = '" . $bandId . "';";
-          echo $bandId;
-          echo "Updating existing band...";
 
           if ($result = mysqli_query($conn, $userQuery)) {
             echo "User update successful!";

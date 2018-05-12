@@ -21,24 +21,31 @@ function loadVideo(file) {
 
 function loadAudio(file) {
   hideElementById("audioPlayer");
-  scrollToElementById("folderButtons");
+  //scrollToElementById("folderButtons");
   displayElementById("file");
-  displayElementById("audio");
+  //displayElementById("audio");
   var audio = getElementById("audio");
   audio.load();
-  audio.play();
+  //audio.play();
+}
+
+function openMiniAudioPlayer(id, name) {
+  getElementById("trackName").innerHTML = name;
+  displayElementById("audioPlayer");
+  displayElementById("footer");
+  hideElementById("playButton");
+  displayElementInlineById("pauseButton");
+  getElementById("audioPlayerAudio").load();
 }
 
 function openMiniPlayer(id, name, source, time) {
-  getElementById("audio").pause();
-  getElementById("trackName").innerHTML = name;
+  var audio = getElementById("audio");
+  if (audio != null) {
+    audio.pause();
+  }
   getElementById("audioPlayerSource").src = source;
   getElementById("audioPlayerAudio").currentTime = time;
-  displayElementById("audioPlayer");
-  displayElementById("footer");
-  getElementById("audioPlayerAudio").load();
-  hidePreviousFile();
-  //scrollToElementById(id);
+  openMiniAudioPlayer(id, name);
 }
 
 function closeFile(id) {

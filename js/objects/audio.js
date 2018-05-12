@@ -30,3 +30,22 @@ function quitPlayer() {
     hideElementById("audioPlayer");
     hideElementById("footer");
 }
+
+function timeToString(currentTime) {
+  currentTime = Number(currentTime);
+  var minutes = Math.floor(currentTime % 3600 / 60);
+  var seconds = Math.floor(currentTime % 3600 % 60);
+  if (seconds < 10) {
+    seconds = "0" + seconds;
+  }
+  return minutes + ":" + seconds;
+}
+
+function initProgressBar() {
+  var audio = getElementById("audio");
+  var percentComplete = (audio.currentTime / audio.duration) * 100;
+  //Do something with upload progress
+  var filePercentageBar = getElementById("audioFilePercentageBar");
+  filePercentageBar.style.width = percentComplete + "%";
+  getElementById("audioTime").innerText = timeToString(audio.currentTime) + " / " + timeToString(audio.duration);
+}

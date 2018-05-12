@@ -1,12 +1,11 @@
-var bands = [];
 var CURRENT_USER = {}; // This is the current user that is logged in
-var sqlUser = {}; // This is the user that will be checked against when signing up/in
 var CURRENT_BAND = {};
 var CURRENT_BANDS = [];
 var CURRENT_FOLDERS = "";
 var CURRENT_FOLDER = "";
 var CURRENT_FILES = "";
 var CURRENT_FILE = {};
+var REQUESTED_URL = "";
 var loggedIn = false;
 var signedOut = false;
 var lastUrl = window.location.href;
@@ -102,7 +101,15 @@ function openJoinBandForm() {
   displayElementById("startBandForm");
   hideElementById("startBand");
   hideElementById("signInForm");
-  displayElementById("startSignIn");
+  //displayElementById("startSignIn");
+}
+
+function openSignInForm() {
+  displayElementById("signInForm");
+  //displayElementById("startBandForm");
+  //hideElementById("startBand");
+  hideElementById("signUpForm");
+  hideElementById("startBandForm");
 }
 
 function checkEmail(email, userEmail) {
@@ -144,6 +151,7 @@ function inputEmpty(input, inputId) {
 
 function isLoggedIn() {
   if (!loggedIn) {
+    REQUESTED_URL = window.location.href;
     navigateToURL("/#/");
   }
   return loggedIn;

@@ -88,11 +88,13 @@
   box-sizing: border-box;
   border-radius: 10px;
   background-color: #265a88;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.5);
 }
 
 .form input {
   padding: 8px;
   text-align: center;
+  font-size: 12px;
 }
 
 .form input:focus {
@@ -100,8 +102,10 @@
 }
 
 #authentication {
-  left: 10%;
+  margin: 0 auto;
+  margin-top: 30px;
+  min-width: 300px;
+  max-width: 400px;
   width: 80%;
-  margin-top: 8%;
   display: none;
 }

@@ -1,0 +1,120 @@
+<div id="filesView">
+  <!-- Files Section - Displayed when a folder is opened -->
+  <div id="fileSection">
+    <!-- Start of File buttons and Details -->
+    <div class="filePage">
+      <!-- Go Back, Details, and Upload Buttons -->
+      <div class="btn-group-justified">
+        <div id="previousFolder" class="btn btn-primary" ng-click="openPreviousFolder()">Go Back</div>
+        <div id="uploadFiles" class="btn btn-success" ng-click="uploadFiles()">Upload</div>
+        <div id="folderDetailsButton" class="btn btn-primary" ng-click="showFolderDetails()">Details</div>
+      </div>
+      <!-- End of Buttons -->
+      <!-- Folder Details Modal -->
+      <div id="folderDetails">
+        <div class="col-md-12 col-xs-12 userInfo">
+          <div class="col-xs-12 col-sm-4">
+            <h4>Band Name: </h4><p>{{ band.name }}</p>
+          </div>
+          <div class="col-xs-12 col-sm-4">
+            <h4>Folder Name: </h4><p>{{ folder.name }}</p>
+          </div>
+          <div class="col-xs-12 col-sm-4">
+            <h4>Number of Files: </h4><p>{{ numberOfFiles }}</p>
+          </div>
+        </div>
+
+      </div>
+      <!-- End of Folder Details Modal -->
+      <!-- Upload Modal -->
+      <div id="upload" class="col-sm-12 col-xs-12">
+        <form id="fileForm" action="../php/upload.php" method="POST" enctype="multipart/form-data">
+          <input type="file" id="fileSelector" name="files[]" multiple/>
+          <button type="submit" id="uploadButton">Upload</button>
+        </form>
+        <h3>Upload Progress:
+          <div id="uploadPercentage">
+            <div id="uploadPercentageBar"></div>
+          </div>
+        </h3>
+        <h3>Status: </h3><p id="uploadStatus"></p>
+        <h3>Results: </h3><p id="uploadResult"></p>
+        <h3>File Status: </h3><p id="fileStatus"></p>
+      </div>
+      <!-- End of Upload Modal -->
+    </div>
+    <!-- End of Buttons and Details -->
+    <!-- Band Name | Folder Name -->
+    <p id="folderName" class="col-xs-12">{{ band.name }} | {{ folder.name }}</p>
+    <div class="col-xs-4"></div>
+    <div class="btn btn-default btn-sm col-xs-4" ng-click="showFilter()">Show Filter</div>
+    <div class="col-xs-4"></div>
+    <!-- File Filter: Sorted By, Number of Files on Page -->
+    <div id="filesFilter" class="col-sm-12 col-xs-12 fileFilter">
+      <p class="col-xs-3 filterTitles">Sort By:</p>
+      <p class="col-xs-6"></p>
+      <p class="col-xs-3 filterTitles">Files per Page:</p>
+      <div class="col-xs-3 filters">
+        <select ng-model="sortBy" id="fileOrder" class="form-control">
+          <option value="name">Name</option>
+          <option value="bytes">Size</option>
+          <option value="-likes">Likes</option>
+          <option value="-views">Views</option>
+        </select>
+      </div>
+      <div class="col-xs-6 filters">
+        <input ng-model="search" id="search" class="form-control" placeholder="Search Files">
+      </div>
+      <div class="col-xs-3 filters">
+        <select ng-model="pageSize" id="pageSize" class="form-control">
+          <option value="4">4</option>
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="30">30</option>
+        </select>
+      </div>
+
+    </div>
+    <!-- End of File Filter -->
+    <!-- Container that holds all files -->
+    <div id="files" class="col-xs-12">
+      <hr>
+      <div ng-animate="{enter: 'animate-enter', leave: 'animate-leave'}" ng-repeat="song in files |
+      filter:{name: search } | startFrom:currentPage*pageSize
+      | limitTo:pageSize | orderBy:sortBy" class="col-md-3 col-sm-4 col-xs-12">
+        <!-- This is a Single File -->
+        <div id="file-{{song.id}}" class="thumbnail file" data-index="{{ song.fileIndex }}" ng-click="stopPropogation($event); openFile(song)">
+          <div class="fileInfo col-xs-9">
+            <p class="deleteButton" ng-click="deleteFile($index)"> x </p>
+            <p class="title col-xs">{{ song.name }}</p>
+            <p class="fileData">{{ song.likes }} <img src="../img/black-metal.png"/> - {{ song.views }} <img src="../img/music.png"/></p>
+            <p class="fileData">{{ song.comments.length }} <img src="../img/commentButton.png"/> - {{ song.highlights.length }} <img src="../img/timeButton.png"/></p>
+          </div>
+        </div>
+        <!-- Section that contains file buttons: like, download -->
+        <div class="fileButtons">
+          <div id="likeButton-{{song.id}}" class="likes" ng-click="stopPropogation($event); plusOne(song)" ng-init="checkIfFilesAreLiked(song)">{{ song.likes }}<img src="../img/black-metal.png"/></div>
+          <div id="likedButton-{{song.id}}" class="likedButton" ng-click="stopPropogation($event); showLikes(song); ">{{ song.likes }}<img src="../img/metal.png"/></div>
+          <div class="download" ng-click="stopPropogation(); openMiniAudioPlayer(song)"><img src="img/playButton.png"></div>
+        </div>
+        <!-- End of Section -->
+        <div id="fileDetails-{{song.id}}" class="thumbnail col-md-7 col-sm-12 col-xs-7"></div>
+      </div>
+      <!-- End of Single File -->
+    </div>
+    <!-- File Navigation -->
+    <div class="fileNavigation col-xs-12">
+      <button class="col-xs-3 btn btn-md btn-default" ng-disabled="currentPage == 0 || search != ''" ng-click="currentPage=currentPage-1">
+        Previous
+      </button>
+      <p class="col-xs-6">Page {{currentPage+1}}/{{numberOfPages()}}</p>
+      <button class="col-xs-3 btn btn-md btn-default" ng-disabled="currentPage >= getData().length/pageSize - 1 || search != ''" ng-click="currentPage=currentPage+1">
+        Next
+      </button>
+    </div>
+    <!-- End of File Navigation -->
+  </div>
+  <!-- End of Files -->
+</div>
+
+<script src="js/managers/uploader.js" type="text/javascript"></script>
