@@ -1,28 +1,23 @@
 <?php
   header('Content-Type: application/json');
-  $sqlUser = "kylevanderhoof";
-  $sqlPW = "ashdrum10";
-  $sqlDB = "IdeaBand";
-  $conn = mysqli_connect("localhost", $sqlUser, $sqlPW, $sqlDB);
-  $email = $_GET['email'];
+  require 'data/dataHelper.php';
+
+  $conn = connectToDatabase();
+
+  $username = $_GET['username'];
   $login = $_GET['login'];
   $data = "";
 
-
-  if($conn->connect_error) {
-    echo "Failed to connect." . $conn->connect_error;
-  }
-
   if(mysqli_ping($conn)) {
     // Check in Database to see if user is logged in.
-    if ($email == "") {
-      if (rememberMe($email, $conn)) {
-        echo getUser($email, $login, $conn);
+    if ($username == "") {
+      if (rememberMe($username, $conn)) {
+        echo getUser($username, $login, $conn);
       } else {
         echo "false";
       }
     } else {
-      echo getUser($email, $login, $conn);
+      echo getUser($username, $login, $conn);
     }
   } else {
     echo "Error: " . msqli_error($conn);
@@ -31,14 +26,15 @@
 
   mysqli_close($conn);
 
-  function getUser($email, $login, $conn) {
-    $query = "SELECT * FROM Users WHERE email = '" . $email . "'";
+  function getUser($username, $login, $conn) {
+    $query = "SELECT * FROM Users WHERE username = '" . $username . "'";
 
     if ($result = mysqli_query($conn, $query)) {
       if ($row = mysqli_fetch_assoc($result)) {
         $bands = getBands($row["bandIds"], $conn);
         $data = ['id' => $row["id"],
              'name' => $row["name"],
+             'username' => $row["username"],
              'email' => $row["email"],
              'password' => $row["password"],
              'bands' => $bands];
@@ -61,11 +57,16 @@
       $query = "SELECT * FROM Bands WHERE id = '" . $id . "'";
       if ($result = mysqli_query($conn, $query)) {
         if ($row = mysqli_fetch_assoc($result)) {
+          $numFiles;
+          if ($result = mysqli_query($conn, "SELECT id FROM Files WHERE bandId = '" . $id . "'")) {
+            $numFiles = $result->num_rows;
+          }
           $band = ['id' => $row["id"],
                   'name' => $row["name"],
                   'metaName' => $row["metaName"],
                   'memberIds' => getMembers($row["memberIds"], $conn),
-                  'code' => $row["code"]];
+                  'code' => $row["code"],
+                  'numFiles' => $numFiles];
           $bands[] = $band;
         }
       }
@@ -82,6 +83,7 @@
         if ($row = mysqli_fetch_assoc($result)) {
           $user = ['id' => $row["id"],
                   'name' => $row["name"],
+                  'username' => $row["username"],
                   'email' => $row["email"]];
           $users[] = $user;
         }
@@ -107,7 +109,7 @@
 
   }
 
-  function rememberMe(&$email, $conn) {
+  function rememberMe(&$username, $conn) {
     $SECRET_KEY = "BandOfIdeas";
 
     $cookie = isset($_COOKIE['rememberme']) ? $_COOKIE['rememberme'] : '';
@@ -121,7 +123,7 @@
       $userToken = "";
       if ($result = mysqli_query($conn, $query)) {
         if ($row = mysqli_fetch_assoc($result)) {
-          $email = $row["email"];
+          $username = $row["username"];
           $userToken = $row["token"];
         }
       }

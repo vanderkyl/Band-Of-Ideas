@@ -1,15 +1,11 @@
 <?php
   header('Content-Type: application/json');
-  $sqlUser = "kylevanderhoof";
-  $sqlPW = "ashdrum10";
-  $sqlDB = "IdeaBand";
-  $conn = mysqli_connect("localhost", $sqlUser, $sqlPW, $sqlDB);
+  require 'data/dataHelper.php';
+
+  $conn = connectToDatabase();
   $band = $_GET['bandName'];
   $bandId = "";
 
-  if($conn->connect_error) {
-    echo "Failed to connect." . $conn->connect_error;
-  }
 
   if(mysqli_ping($conn)) {
     // Find band id
@@ -28,11 +24,35 @@
       if ($result->num_rows > 0) {
         // Get current row as an array
         while ($row = mysqli_fetch_assoc($result)) {
+          $numFiles;
+          $numHighlights;
+          $numFavorites;
+          if ($fileResult = mysqli_query($conn, "SELECT id FROM Files WHERE folderId = '" . $row["id"] . "';")) {
+            $numFiles = $fileResult->num_rows;
+            if ($fileResult->num_rows > 0) {
+
+            }
+          }
+          if ($fileResult = mysqli_query($conn, "SELECT t1.fileId FROM (SELECT fileId FROM UserLikes) t1 INNER JOIN (SELECT id FROM Files WHERE folderId = '" . $row["id"] . "') t2 on t1.fileId = t2.id")) {
+            $numFavorites = $fileResult->num_rows;
+            if ($fileResult->num_rows > 0) {
+
+            }
+          }
+          if ($fileResult = mysqli_query($conn, "SELECT t1.fileId FROM (SELECT fileId FROM Highlights) t1 INNER JOIN (SELECT id FROM Files WHERE folderId = '" . $row["id"] . "') t2 on t1.fileId = t2.id")) {
+            $numHighlights = $fileResult->num_rows;
+            if ($fileResult->num_rows > 0) {
+
+            }
+          }
           $data = ['id' => $row["id"],
                    'name' => $row["name"],
                    'metaName' => $row["metaName"],
                    'bandId' => $row["bandId"],
-                   'parentId' => $row["parentId"]];
+                   'parentId' => $row["parentId"],
+                   'numFiles' => $numFiles,
+                   'numFavorites' => $numFavorites,
+                   'numHighlights' => $numHighlights];
           // Only add the folder if it isn't archived
           if ($row["archived"] == "false") {
             $folders[] = $data;

@@ -26,6 +26,7 @@ function($scope, $sce, $http, $filter) {
   $scope.duration = "";
 
   $scope.user = {};
+  $scope.sourceVideoLink = "";
 
   //TODO Create functionality for a recent file selection
 
@@ -39,6 +40,20 @@ function playNext() {
     if (nextFile) {
         $scope.openFile(nextFile);
     }
+}
+
+function playPrev() {
+  var audio = getElementById("audio");
+  if (audio.currentTime < 2) {
+      var prevFile = $scope.files[$scope.file.fileIndex-1];
+      console.log(prevFile);
+      if (prevFile) {
+          $scope.openFile(prevFile);
+      }
+  } else {
+    audio.currentTime = 0;
+  }
+
 }
 
   audioPlayer.addEventListener("ended", playNext);
@@ -56,6 +71,33 @@ function playNext() {
     hideElementById("pause-btn");
     displayElementInlineById("play-btn");
   }
+
+  $scope.rewind = function() {
+    var audio = getElementById("audio");
+    if (audio.currentTime <= 5) {
+      audio.currentTime = 0;
+    } else {
+        audio.currentTime = audio.currentTime - 5;
+    }
+  }
+
+  $scope.fastForward = function() {
+    var audio = getElementById("audio");
+    if (audio.currentTime >= audio.duration - 5) {
+        audio.currentTime = audio.duration;
+    } else {
+        audio.currentTime = audio.currentTime + 5;
+    }
+  }
+
+  $scope.playNext = function() {
+    playNext();
+  };
+
+  $scope.playPrev = function() {
+    playPrev();
+  };
+
   //Files Section
   $scope.openPrevious = function() {
     var previousUrl = "/#/band/" + CURRENT_BAND.metaName + "/" + CURRENT_FOLDER.metaName;
@@ -81,10 +123,13 @@ function playNext() {
 
 
   $scope.openFile = function(file) {
+    CURRENT_FILE = file;
+    $(".playListFile").removeClass("playListFileSelected");
+    $("#file-" + file.id).addClass("playListFileSelected");
     hideElementById("play-btn");
-    displayElementById("pause-btn");
+    displayElementInlineById("pause-btn");
     getElementById("audio").pause();
-    hideElementById("footer");
+    displayElementById("commentContainer");
     console.log("Opening file:");
     console.log(file);
     file.views++;
@@ -208,31 +253,24 @@ function playNext() {
   };
 
   $scope.switchToComments = function() {
+    showElementById("commentContainer");
     hideElementById("highlights");
     showElementById("comments");
   };
 
   $scope.switchToHighlights = function() {
+    showElementById("commentContainer");
     hideElementById("comments");
     showElementById("highlights");
+      var currentTime = getElementById("audio").currentTime;
+      $scope.currentTime = currentTime;
+
   };
 
   $scope.highlightMoment = function(event) {
     stopPropogation(event);
     var currentTime = getElementById("audio").currentTime;
     $scope.currentTime = currentTime;
-    var highlightDetails = getElementById("highlightDetails");
-    var highlightButton = getElementById("highlightButton");
-    var momentIndicator = getElementById("momentIndicator");
-
-    if (highlightDetails.style.display === "block") {
-      hideElementById("highlightDetails");
-      highlightButton.innerHTML = "+ Highlight";
-    } else  {
-      highlightButton.innerHTML = "Cancel";
-
-      displayElementById("highlightDetails");
-    }
   };
 
   $scope.currentTimeToString = function(currentTime) {
@@ -276,12 +314,27 @@ function playNext() {
       function (response) {
         console.log(response.data);
         $scope.addComment(comment, user.name);
-        hideElementByIdWithAnimation("commentInput");
-        commentButton.innerHTML = "Comment";
+        hideElementById("commentInput");
+        commentButton.innerHTML = "+ Comment";
+        getElementById("commentText").value = "";
       },
       function (response) {
         console.log(response.data);
       });
+  };
+
+  $scope.highlight = function(event) {
+      stopPropogation(event);
+      var highlightContainer = getElementById("highlightInputContainer");
+      var highlightButton = getElementById("highlightButton");
+      if (highlightContainer.style.display === "block") {
+          hideElementById("highlightInputContainer");
+          highlightButton.innerHTML = "+ Highlight";
+      } else  {
+          highlightButton.innerHTML = "Cancel"
+          displayElementById("highlightInputContainer");
+      }
+
   };
 
   $scope.addHighlight = function(commentText, highlightTime, user) {
@@ -289,11 +342,12 @@ function playNext() {
                          userName: user,
                          commentTime: "Just Now",
                          highlightTime: highlightTime};
+    highlightObject.position = ((highlightObject.highlightTime / audio.duration)) * 100;
     $scope.file.highlights.push(highlightObject);
   }
 
   $scope.submitHighlight = function(file) {
-    var highlightSubmitButton = getElementById("highlightSubmitButton")
+    var highlightSubmitButton = getElementById("highlightSubmitButton");
     highlightSubmitButton.disabled = true;
     var highlight = $scope.currentTime;
     var comment = getElementById("highlightText").value;
@@ -312,12 +366,12 @@ function playNext() {
       function (response) {
         console.log(response.data);
         $scope.addHighlight(comment, highlight, user.name);
-        hideElementById("highlightDetails");
-        highlightButton.innerHTML = "Highlight";
+        getElementById("highlightText").value = "";
         highlightSubmitButton.disabled = false;
       },
       function (response) {
         console.log(response.data);
+        highlightSubmitButton.disabled = false;
       });
   };
 
@@ -345,16 +399,15 @@ function playNext() {
     displayElementById("showHighlightsButton");
   };
 
-  $scope.playHighlightFromComment = function(time) {
+  $scope.playHighlight = function(event, time) {
+    stopPropogation(event);
     var audio = getElementById("audio");
     audio.currentTime = time;
-    scrollToElementById("fileSection");
   };
 
-  $scope.playHighlight = function() {
+  $scope.playNewHighlight = function() {
     var audio = getElementById("audio");
     audio.currentTime = $scope.currentTime;
-    scrollToElementById("fileSection");
   };
 
   $scope.rewindHighlight = function() {
@@ -417,7 +470,7 @@ function playNext() {
     var userLikes = file.userLikes;
     for (var i = 0; i < userLikes.length; i++) {
       console.log(userLikes[i]);
-      if (userId === userLikes[i]) {
+      if (userId === userLikes[i].id) {
         file.liked = true;
         hideElementById("likeButton");
         displayElementInlineById("likedButton");
@@ -425,6 +478,56 @@ function playNext() {
     }
   };
 
+  $scope.getHighlightPositions = function() {
+      var audio = getElementById("audio");
+      var duration = Math.floor(audio.duration);
+      for (var i = 0; i < $scope.file.highlights.length; i++) {
+          $scope.safeApply(function() {
+              $scope.file.highlights[i].position = (($scope.file.highlights[i].highlightTime / audio.duration)) * 100;
+              console.log($scope.file.highlights[i].position);
+          });
+      }
+  };
+
+  $scope.openSourceVideo = function() {
+    console.log($scope.file);
+    if ($scope.file.source === "") {
+      $("#addVideoModal").modal();
+    } else {
+      var video = getElementById("sourceVideoDiv");
+      if (video.style.display === "none") {
+          showElementById("sourceVideoDiv");
+          getElementById("sourceVideoButtonText").innerText = "Close Video";
+          getElementById("sourceVideo").src = $scope.trustSrc($scope.file.source);
+      } else {
+          hideElementById("sourceVideoDiv");
+          getElementById("sourceVideoButtonText").innerText = "Video";
+          getElementById("sourceVideo").src = "";
+      }
+
+    }
+  };
+
+  $scope.addSourceVideo = function() {
+    if ($scope.sourceVideoLink !== "") {
+      $scope.file.source = $scope.sourceVideoLink;
+      $http.post("/php/updateFile.php?type=video", $scope.file)
+        .then(
+          function (response) {
+              console.log(response.data);
+              $scope.sourceVideoLink = "";
+              getElementById("sourceVideoButtonText").innerText = "Video";
+              $("#addVideoModal").modal("hide");
+          },
+          function (response) {
+              console.log(response.data);
+          });
+    }
+  };
+
+  $scope.trustSrc = function(src) {
+      return $sce.trustAsResourceUrl(src);
+  }
 
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -453,59 +556,105 @@ function playNext() {
 
 
 
-  var audioTrack = getElementById("audioFilePercentageBar");
-  var audio = getElementById("audio");
-  audioTimeline.addEventListener("click", function (event) {
-    moveplayhead(event);
-    audio.currentTime = audio.duration * clickPercent(event);
-  }, false);
 
-  audio.addEventListener("loadstart", function(event) {
-    hideElementById("idea");
-    displayElementById("ideaLoading");
-  }, false);
-  audio.addEventListener("durationchange", function (event) {
-    showElementById("idea");
-    hideElementById("ideaLoading");
-  }, false);
+    $scope.goBackToBandPage = function() {
+        CURRENT_BAND = $scope.band;
+        navigateToURL("/#/band/" + CURRENT_BAND.metaName);
+    };
 
+    $scope.goBackToFolderPage = function() {
+        CURRENT_FOLDER = $scope.folder;
+        navigateToURL("/#/band/" + CURRENT_BAND.metaName + "/" + CURRENT_FOLDER.metaName);
+    };
 
-  // Start of Audio Track Code //
+    // Start of Audio Track Code //
 
 
 
-  // returns click as decimal (.77) of the total timelineWidth
-  function clickPercent(event) {
-    var audioTimeline = getElementById("audioTimeline");
-    var timelineWidth = window.getComputedStyle(audioTimeline, null).width;
-    timelineWidth = timelineWidth.substring(0, timelineWidth.length - 2);
-    timelineWidth = parseInt(timelineWidth) ;
-    var value = (event.clientX - getPosition(audioTimeline)) / timelineWidth;
-    return value;
-  }
-
-  function moveplayhead(event) {
-    var audioTimeline = getElementById("audioTimeline");
-    var newMargLeft = event.clientX - getPosition(audioTrack);
-    var timelineWidth = getElementById("audioTimeline").style.width;
-    if (newMargLeft >= 0 && newMargLeft < timelineWidth) {
-      audioTrack.style.width = newMargLeft + "px";
-    }
-    if (newMargLeft < 0) {
-      audioTrack.style.width = "0px";
-    }
-    if (newMargLeft == timelineWidth) {
-      audioTrack.style.width = timelineWidth + "px";
+// returns click as decimal (.77) of the total timelineWidth
+    function clickPercent(event) {
+        var audioTimeline = getElementById("audioTimeline");
+        var timelineWidth = window.getComputedStyle(audioTimeline, null).width;
+        timelineWidth = timelineWidth.substring(0, timelineWidth.length - 2);
+        timelineWidth = parseInt(timelineWidth) ;
+        var value = (event.clientX - getPosition(audioTimeline)) / timelineWidth;
+        return value;
     }
 
-  }
-  // Returns elements left position relative to top-left of viewport
-  function getPosition(el) {
-      return el.getBoundingClientRect().left;
-  }
+    function moveplayhead(event) {
+        var audioTimeline = getElementById("audioTimeline");
+        var newMargLeft = event.clientX - getPosition(audioTrack);
+        var timelineWidth = getElementById("audioTimeline").style.width;
+        if (newMargLeft >= 0 && newMargLeft < timelineWidth) {
+            audioTrack.style.width = newMargLeft + "px";
+        }
+        if (newMargLeft < 0) {
+            audioTrack.style.width = "0px";
+        }
+        if (newMargLeft == timelineWidth) {
+            audioTrack.style.width = timelineWidth + "px";
+        }
 
-  // End of Audio Track Code //
+    }
+// Returns elements left position relative to top-left of viewport
+    function getPosition(el) {
+        return el.getBoundingClientRect().left;
+    }
 
+// End of Audio Track Code //
+    var audioTrack = getElementById("audioFilePercentageBar");
+    var audio = getElementById("audio");
+    audioTimeline.addEventListener("click", function (event) {
+        hideElementById("play-btn");
+        displayElementInlineById("pause-btn");
+        moveplayhead(event);
+        audio.currentTime = audio.duration * clickPercent(event);
+    }, false);
+
+    audio.addEventListener("loadstart", function(event) {
+        hideElementById("idea");
+        displayElementById("ideaLoading");
+    }, false);
+    audio.addEventListener("durationchange", function (event) {
+        $scope.getHighlightPositions();
+        displayElementById("idea");
+        hideElementById("ideaLoading");
+    }, false);
+    audio.addEventListener("play", function(event) {
+        hideElementById("play-btn");
+        displayElementInlineById("pause-btn");
+    }, false);
+    audio.addEventListener("pause", function (event) {
+        hideElementById("pause-btn");
+        displayElementInlineById("play-btn");
+    }, false);
+
+    var likeButton = getElementById("likeButton");
+    var likedButton = getElementById("likedButton");
+    likeButton.addEventListener("mouseover", function() {
+        var details = $(".likeDetails");
+        details.fadeIn(300);
+        details.addClass("likeDetailsOpen");
+
+    });
+    likeButton.addEventListener("mouseleave", function() {
+        var details = $(".likeDetails");
+        details.fadeOut(300);
+        details.removeClass("likeDetailsOpen")
+
+    });
+    likedButton.addEventListener("mouseover", function() {
+        var details = $(".likeDetails");
+        details.fadeIn(300);
+        details.addClass("likeDetailsOpen");
+
+    });
+    likedButton.addEventListener("mouseleave", function() {
+        var details = $(".likeDetails");
+        details.fadeOut(300);
+        details.removeClass("likeDetailsOpen")
+
+    });
 
   // Do this if logged in
   if (isLoggedIn()) {
@@ -519,26 +668,19 @@ function playNext() {
 
     $scope.checkIfFileIsLiked($scope.file);
     var fileUrl = "/#/band/" + CURRENT_BAND.metaName + "/" + CURRENT_FOLDER.metaName + "/" + CURRENT_FILE.metaName;
-    var audio = getElementById("audio");
-    /*
-    audio.addEventListener("progress", function(evt){
-      console.log(evt);
-      if (evt.lengthComputable) {
-        var percentComplete = (evt.loaded / evt.total) * 100;
-
-        percentComplete = 100 - percentComplete;
-        console.log(percentComplete);
-        var audioFilePercentageBar = getElementById("audioFilePercentageBar");
-        //Do something with upload progress
-        audioFilePercentageBar.style.marginRight = percentComplete + "%";
-      }
-    }, false);
-    */
+      $('document').ready(function() {
+          $(window).scrollTop(0);
+      });
     loadFileLinkList();
     loadFile(CURRENT_FILE);
+    if (CURRENT_FILE.source === "") {
+      getElementById("sourceVideoButtonText").innerText = "Add Video";
+    }
     removeNavLink("fileLink");
     addNavLink("fileLink", CURRENT_FILE.name, fileUrl);
-    console.log("#file-" + CURRENT_FILE.id);
+
+    $scope.sourceVideoLink = $sce.trustAsResourceUrl($scope.file.source);
+    console.log($scope.file);
 
   }
 }]);
@@ -577,12 +719,7 @@ app.directive('ngFileModel', ['$parse', function ($parse) {
 }]);
 
 
-app.filter('startFrom', function() {
-    return function(input, start) {
-        start = +start; //parse to int
-        return input.slice(start);
-    }
-});
+
 
 app.filter('reverse', function() {
   return function(items) {

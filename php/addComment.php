@@ -1,5 +1,5 @@
 <?php
-  include 'dataHelper.php';
+  include 'data/dataHelper.php';
   $conn = connectToDatabase();
   // Retrieve Post data
   $postData = file_get_contents("php://input");

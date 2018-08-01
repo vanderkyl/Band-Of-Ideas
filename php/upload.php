@@ -1,14 +1,11 @@
 <?php
-/*
-set_time_limit(0);
-ini_set('upload_max_filesize', '500M');
-ini_set('post_max_size', '500M');
-ini_set('max_input_time', 4000); // Play with the values
-ini_set('max_execution_time', 4000); // Play with the values
-*/
-  $sqlUser = "kylevanderhoof";
-  $sqlPW = "ashdrum10";
-  $sqlDB = "IdeaBand";
+  set_time_limit(200);
+  ini_set('memory_limit','256M');
+  ini_set('post_max_size','100M');
+  ini_set('upload_max_filesize','100M');
+  require 'data/dataHelper.php';
+  require 'data/bandMembers.php';
+
   $bandName = $_GET['bandName'];
   $folderName = $_GET['folderName'];
   $bandDir = "../uploads/band/" . $bandName . "/";
@@ -33,16 +30,9 @@ ini_set('max_execution_time', 4000); // Play with the values
           echo "Sorry, your file is too large.";
       // if everything is ok, try to upload file
       } else {
-        if (!file_exists($bandDir)) {
-          echo "Band Dir: " . $bandDir . "\n";
-          mkdir($bandDir, 0777, true);
-        }
-        if (!file_exists($targetDir)) {
-          echo "Target Dir: " . $targetDir . "\n";
-          mkdir($targetDir, 0777, true);
-        }
+        checkTargetDirectory($bandDir, $targetDir);
         if (move_uploaded_file($file["tmp_name"], $targetFile)) {
-          $conn = mysqli_connect("localhost", $sqlUser, $sqlPW, $sqlDB);
+          $conn = connectToDatabase();
 
           if($conn->connect_error) {
             echo "Failed to connect." . $conn->connect_error;
@@ -70,8 +60,8 @@ ini_set('max_execution_time', 4000); // Play with the values
             //$source = $file["source"];
             $source = "";
             echo "File Info: " . $name . "\n Type: " . $type . "\n Size: " . $size . "\n Link: " . $link;
-            $query = "INSERT INTO Files (name, metaName, type, size, link, source, folderId)
-                      VALUES ('" . $name . "','" . $name . "','" . $type . "','" . $size . "','" . $link . "','" . $source . "','" . $folderId . "')";
+            $query = "INSERT INTO Files (name, metaName, type, size, link, source, folderId, bandId)
+                      VALUES ('" . $name . "','" . $name . "','" . $type . "','" . $size . "','" . $link . "','" . $source . "','" . $folderId . "','" . $bandId . "')";
             if (!$conn->query($query) === TRUE) {
               echo "Query: " . $query . "\n";
               echo "Error: " . $query . "<br>" . $conn->error;
@@ -91,6 +81,17 @@ ini_set('max_execution_time', 4000); // Play with the values
       } else {
          die("Upload failed with error code " . $_FILES['files']['error']);
       }
+    }
+  }
+
+  function checkTargetDirectory($bandDir, $targetDir) {
+    if (!file_exists($bandDir)) {
+      echo "Band Dir: " . $bandDir . "\n";
+      mkdir($bandDir, 0777, true);
+    }
+    if (!file_exists($targetDir)) {
+      echo "Target Dir: " . $targetDir . "\n";
+      mkdir($targetDir, 0777, true);
     }
   }
 

@@ -1,86 +1,123 @@
-<div id="foldersView">
+<div id="foldersView" ng-controller="folderController">
   <!-- Folders View -->
   <div id="folderSection">
-    <!-- Folder Buttons and Details -->
-    <div>
-      <!-- Folder Buttons -->
-      <div class="btn-group-justified ">
-        <div class="btn btn-primary" ng-click="goToUserInfo()">Go Back</div>
-        <div id="addFolder" class="btn btn-success" ng-click="ToggleAddFolderInput()">Add Folder</div>
-        <div class="btn btn-primary" ng-click="showBandDetails()">Band Info</div>
-        <!-- Optional Folder Buttons
-        <div class="col-xs-4">
-          <p id="showButtonsButton" class="folderButton1 folderButton" ng-click="showFolderButtons()">More</p>
-          <p id="hideButtonsButton" class="folderButton2 folderButton" ng-click="hideFolderButtons()">Less</p>
-        </div>
 
-        <div id="hiddenFolderButtons">
-
-          <div class="addFolderButtons col-xs-4">
-            <p class="folderButton" ng-click="">All Files</p>
-          </div>
-          <div class="addFolderButtons col-xs-4">
-            <p class="folderButton" ng-click="">Playlists</p>
-          </div>
-          <div class="addFolderButtons col-xs-4">
-            <p class="folderButton" ng-click="showBandDetails()">Band Info</p>
-          </div>
-        </div>
-         End of Optional Folder Buttons -->
-      </div>
-      <!-- End of Buttons -->
-      <!-- Folder Details -->
-      <div id="bandDetails">
-        <div class="col-xs-12 userInfo">
-          <div class="col-md-6">
-            <h3>Name: </h3><p>{{ band.name }}</p>
-          </div>
-          <div class="col-md-6">
-            <h3>Code: </h3><p>{{ band.code}}</p>
-          </div>
-        </div>
-      </div>
-      <!-- End of Folder Details -->
-      <!-- Add Folder Modal -->
-      <div id="addFolderInput" class="col-xs-12">
-        <div id="addFolderModal" class="thumbnail buttons col-md-12">
-          <p class="col-md-4">{{ addFolderMessage }}</p>
-          <div class="col-md-8">
-            <input type="text" name="folderName" placeholder="Folder Name" ng-model="newFolder" required/>
-            <input type="button" value="Add Folder" ng-click="addFolder()">
-          </div>
-        </div>
-      </div>
-      <!-- End of Folder Modal -->
-    </div>
-    <!-- End of Buttons and Details -->
     <!-- Band Name -->
-    <h3 id="bandName" class="col-xs-12 userInfoTitles">{{ band.name }}</h3>
-    <!-- Container that holds all folders -->
     <div class="col-xs-12">
-      <h3 class="folderLoadingMessage">{{ folderMessage }}</h3>
-      <!-- Single Folder -->
-      <div id="{{ 'folder-' + $index }}" ng-animate="'animate'" ng-repeat="folder in folders |
-      filter:{name: search } | startFrom:currentPage*pageSize
-      | limitTo:pageSize | orderBy:sortBy" class="col-xs-12 col-sm-6 col-md-3 folders">
-        <p class="deleteFolderButton" ng-click="archiveFolder(folder)"> x </p>
-        <div class="thumbnail folder" ng-click="openFolder(folder)">
-          <p class="folderTitle">{{ folder.name }}</p>
+      <h3 id="bandName" class="titles" data-toggle="modal" data-target="#bandDetails">{{ band.name }}</h3>
+    </div>
+    <!-- Band Buttons -->
+    <div class="containers  col-xs-12 col-sm-2">
+      <!--<h5 class="col-xs-12 text-center">The Band</h5>-->
+      <div class="buttonPadding col-xs-4 col-sm-12">
+        <div class="mainButton" data-toggle="modal" data-target="#setListModal" ng-click=""><i style="font-size: 18px" class="far fa-list-alt"></i><br>Set Lists</div>
+      </div>
+      <div class="buttonPadding col-xs-4 col-sm-12">
+        <div class="mainButton" ng-click="openHighlightsFolder()"><img style="width: 20px; height: 20px; padding: 2px" src="../img/timeButton.png"/><br>Highlights</div>
+      </div>
+      <div class="buttonPadding col-xs-4 col-sm-12">
+        <div class="mainButton" ng-click="openFavoritesFolder()"><img style="width: 20px; height: 20px;" src="../img/black-metal.png"/><br>Favorites</div>
+      </div>
+      <div class="buttonPadding col-xs-4 col-sm-12">
+        <div class="mainButton" data-toggle="modal" data-target="#memberModal"><i style="font-size: 18px" class="fas fa-users"></i></br>Members</div>
+      </div>
+
+    </div>
+    <div class="col-xs-12 col-sm-10">
+      <!-- File Filter: Sorted By, Number of Files on Page -->
+      <div class="containers col-xs-12">
+        <i class="glyphicon glyphicon-search" style="position: absolute; top: 22px; left: 3%; font-size: 18px; cursor: pointer" ng-click="showFilters()"></i>
+
+        <div id="addFolder" class="button homeButton" style="margin: -5px auto; width: 80%" data-toggle="modal" data-target="#addFolderModal">Add Folder</div>
+        <div id="folderFilters" style="display:none; margin-top: 15px">
+          <div class="col-xs-12 filters">
+            <input ng-model="search" class="form-control" placeholder="Search Folders">
+          </div>
+
         </div>
       </div>
-      <!-- End of Single Folder -->
+      <!-- Container that holds all folders -->
+      <div class="containers folders col-xs-12">
+        <!--<h4 style="text-align: center; margin-left: 30px;">Folders  <button class="button homeButton" style="height: 30px; line-height: 10px; margin-left: 5px;" data-toggle="modal" data-target="#addFolderModal">+</button></h4>-->
+        <div id="foldersContainer" class="col-xs-12">
+          <!-- Single Folder -->
+          <div id="{{ 'folder-' + $index }}" ng-animate="'animate'" ng-repeat="folder in folders |
+          filter:{name: search } " class=" col-xs-12 col-sm-4 col-md-3" style="padding-left: 2px; padding-right: 2px;" ng-click="openFolder(folder)">
+            <!-- <p class="deleteFolderButton" ng-click="archiveFolder(folder)"> x </p> -->
+            <div class="folder">
+              <p class="folderTitle">{{ folder.name }}</p>
+
+              <div class="text-center">
+                <span class="" style="font-size:10px">{{ folder.numFiles }} <i class="far fa-file-audio" style="font-size: 12px; top: 2px; position: relative;"></i></span>
+                <span class="" style="font-size:10px;">{{ folder.numFavorites }}<img style="width: 15px; height: 15px;" src="../img/black-metal.png"/></span>
+                <span class="" style="font-size:10px">{{ folder.numHighlights }} <img style="width: 12px; height: 12px;" src="../img/timeButton.png"/></span>
+              </div>
+            </div>
+
+          </div>
+          <!-- End of Single Folder -->
+        </div>
+        <!--
+        <div id="pagination" class="col-xs-12" data-pagination="" data-num-pages="numberOfPages()"
+             data-current-page="currentPage" data-max-size="maxSize"
+             data-boundary-links="true"></div> -->
+      </div>
+
+      <!-- End of folder container -->
     </div>
-    <!-- End of folder container -->
-    <!-- Folder Navigation -->
-    <div class="container fileNavigation">
-      <button class="col-sm-4 col-xs-4" ng-disabled="currentPage == 0 || search != ''" ng-click="currentPage=currentPage-1">
-        Previous
-      </button>
-      <p class="col-sm-4 col-xs-4">Page {{currentPage+1}}/{{numberOfPages()}}</p>
-      <button class="col-sm-4 col-xs-4" ng-disabled="currentPage >= getData().length/pageSize - 1 || search != ''" ng-click="currentPage=currentPage+1">
-        Next
-      </button>
-    </div>
-    <!-- End of Folder Navigation -->
   </div>
+
+  <!-- Member Modal -->
+  <div id="memberModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Band Members</h4>
+        </div>
+        <div class="modal-body">
+          <div id="{{ 'member-' + $index }}" ng-animate="'animate'" ng-repeat="member in members" class="col-xs-12 memberButton">
+
+            <div class="col-xs-12">
+              <p class="folderTitle">{{ member.name }}</p>
+            </div>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End of Member Modal -->
+  <!-- Member Modal -->
+  <div id="setListModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Set Lists</h4>
+        </div>
+        <div class="modal-body">
+          <input type="text" class="col-xs-6" ng-model="setListName" placeholder="Name"/>
+          <div id="addSetList" class="button homeButton col-xs-6" >Add Set List</div>
+
+          <div id="{{ 'setList-' + $index }}" ng-animate="'animate'" ng-repeat="set in setlists" class="col-xs-12 memberButton">
+
+            <div class="col-xs-12">
+              <p class="folderTitle">{{ set.name }}</p>
+            </div>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End of Folder Modal -->
+  <band-details-modal></band-details-modal>
+  <add-folder-modal></add-folder-modal>
 </div>

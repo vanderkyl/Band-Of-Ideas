@@ -1,0 +1,32 @@
+<!-- Add Band Modal -->
+<div id="addBandModal" class="modal fade" role="dialog">
+  <div id="addBandInput" class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add Band</h4>
+      </div>
+
+      <div class="modal-body mainForm">
+
+        <input type="text" style="text-align:center" name="bandName" placeholder="Band Name" ng-model="newBandName" required/>
+        <input type="text" style="text-align:center" name="bandCode" placeholder="Band Code" ng-model="bandCode" required/>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="joinBand()">Add Band</button>
+      </div>
+    </div>
+    <!--
+    <div class="col-md-6 col-xs-12">
+      <p class="col-md-12 col-xs-12">{{ joinBandMessage }}</p>
+      <div class="col-md-12 col-xs-12 form">
+        <input type="text" class="col-md-12 col-xs-12" name="bandName" placeholder="Band Name" ng-model="joinBandName" required/>
+        <input type="text" class="col-md-12 col-xs-12" name="bandCode" placeholder="Band Code" ng-model="bandCode" required/>
+        <input type="button" class="col-md-12 col-xs-12 btn btn-default" value="Join Band" ng-click="joinBand()">
+      </div>
+    </div>
+  -->
+  </div>
+</div>
+<!-- End of Add Band Modal -->

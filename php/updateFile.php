@@ -1,22 +1,15 @@
 <?php
-  $sqlUser = "kylevanderhoof";
-  $sqlPW = "ashdrum10";
-  $sqlDB = "IdeaBand";
-  $conn = mysqli_connect("localhost", $sqlUser, $sqlPW, $sqlDB);
-  $postData = file_get_contents("php://input");
-  $data = json_decode($postData);
+  require 'data/dataHelper.php';
+  $conn = connectToDatabase();
+  $data = getPostData();
   $id = $data->id;
-  $views = $data->views;
-  $likes = $data->likes;
-  $updateType = $_GET['type'];
 
-  if($conn->connect_error) {
-    echo "Failed to connect." . $conn->connect_error;
-  }
+  $updateType = $_GET['type'];
 
   if(mysqli_ping($conn)) {
 
     if ($updateType == "views") {
+      $views = $data->views;
       $query = "UPDATE Files SET views='" . $views . "' WHERE id='" . $id . "';";
       if ($result = mysqli_query($conn, $query)) {
         echo "File updated successfully";
@@ -25,6 +18,7 @@
         echo $query;
       }
     } else if ($updateType == "likes") {
+      $likes = $data->likes;
       $user= $_GET['user'];
       $userId = "";
       // Find user id
@@ -34,11 +28,17 @@
         }
       }
 
-      if ($likes == 0) { // If this was the first like
-        $query = "UPDATE Files SET likes = '" . ($likes+1) . "', userLikes = '" . $userId . "' WHERE id='" . $id . "';";
+
+      $query = "INSERT INTO UserLikes (userId, fileId) VALUES ('" . $userId . "', '" . $id . "');";
+      if ($result = mysqli_query($conn, $query)) {
+        echo "File updated successfully";
       } else {
-        $query = "UPDATE Files SET likes = '" . ($likes+1) . "', userLikes = CONCAT(userLikes, '," . $userId . "') WHERE id = '" . $id. "';";
+        echo "Update unsuccessful";
+        echo $query;
       }
+    } else if ($updateType == "video") {
+      $link = $data->source;
+      $query = "UPDATE Files SET source='" . $link . "' WHERE id='" . $id . "';";
       if ($result = mysqli_query($conn, $query)) {
         echo "File updated successfully";
       } else {

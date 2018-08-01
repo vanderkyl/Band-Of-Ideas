@@ -1,8 +1,6 @@
 <?php
-  $sqlUser = "kylevanderhoof";
-  $sqlPW = "ashdrum10";
-  $sqlDB = "IdeaBand";
-  $conn = mysqli_connect("localhost", $sqlUser, $sqlPW, $sqlDB);
+  require "data/dataHelper.php";
+  $conn = connectToDatabase();
   $postData = file_get_contents("php://input");
   $data = json_decode($postData);
   $name = $data->name;
@@ -10,10 +8,6 @@
   $band = $data->band;
   $folderId = "";
   $bandId = "";
-
-  if($conn->connect_error) {
-    echo "Failed to connect." . $conn->connect_error;
-  }
 
   if(mysqli_ping($conn)) {
     // Find band id

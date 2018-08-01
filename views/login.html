@@ -9,8 +9,8 @@
           <form>
             <input id="bandNameInput" type="text" name="bandName" placeholder="Band Name" ng-model="user.bands[0].name" autocomplete="off" required/>
             <input type="submit" ng-click="checkBandAvailability()" value="Check Band"/>
-            <input type="reset" value="Cancel"/>
           </form>
+          <br>
         </div>
         <!-- End of Band Name Form -->
 
@@ -39,7 +39,8 @@
           </h3>
           <form>
             <input id="name" type="text" name="name" placeholder="Name" class="col-md-6" ng-model="user.name"/>
-            <input id="signUpEmail" type="text" name="email" placeholder="Username" ng-model="user.email" required/>
+            <input id="signUpEmail" type="text" name="email" placeholder="Email Address" ng-model="user.email" required/>
+            <input id="signUpUsername" type="text" name="username" placeholder="Username" ng-model="user.username" required/>
             <input id="signUpPassword" type="password" name="password" placeholder="Password" ng-model="user.password" required/>
             <input id="passwordAgain" type="password" name="passwordAgain" placeholder="Password Again" ng-model="user.passwordAgain" required/>
             <input type="submit" ng-click="joinTheBand()" value="Join The Band"/>
@@ -53,23 +54,23 @@
 
   <!-- Sign In Forms -->
   <div id="startSignIn" class="mainForm form col-sm-12" ng-click="openSignInForm()">
-      <h3>or<br>Log In</h3>
+      <h3>Log In</h3>
   </div>
   <div id="signInForm" class="mainForm form col-sm-12">
     <form name="signIn">
       <h3>Log In</h3>
-      <input id="signInEmail" type="text" name="email" placeholder="Username" ng-model="user.email" required/>
+      <input id="signInUsername" type="text" name="username" placeholder="Username" ng-model="user.username" required/>
       <input id="signInPassword" type="password" name="password" placeholder="Password" ng-model="user.password" required/>
       <input id="signInSubmitButton" type="submit" ng-click="login()" value="{{ loginMessage }}"/>
-      <input type="reset" value="Cancel"/>
     </form>
     <!-- Test Login Button and Start Band Button -->
     <a ng-click="testLogin()">Test</a>
-    <div id="startBand" class="mainForm form col-sm-12" ng-click="openBandForm()">
-      <h3>Start a<br>
-        Band of Ideas
-      </h3>
-    </div>
+    <br>
+  </div>
+  <div id="startBand" class="mainForm form col-sm-12" ng-click="openBandForm()">
+    <h3>Start a<br>
+      Band of Ideas
+    </h3>
   </div>
 </div>
 <!-- End of Authentication Form -->

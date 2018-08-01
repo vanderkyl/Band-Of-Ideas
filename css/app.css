@@ -1,40 +1,17 @@
 html, body {
-  background: rgb(160, 169, 175);//rgb(37, 46, 53);//rgb(234, 233, 233);
+  background: rgb(208, 213, 216);//rgb(208, 208, 216);//rgb(160, 169, 175);//rgb(37, 46, 53);//rgb(234, 233, 233);
   margin: 0;
   padding: 0;
+  padding-top: 35px;
   height: 100%;
   font-family: 'Century Gothic', sans-serif;
 }
 
 .appContainer {
   padding-bottom: 70px;
-}
-
-.container .navbar-header, .container .navbar-collapse {
-  text-align: center;
-  margin-left: 0px;
-  margin-right: 0px;
-}
-
-.navbar>.container .navbar-brand {
-  margin-left: 0px;
-}
-.navbar>.container .navbar-brand:hover {
-  background: #444;
-}
-
-.navbar-inverse .navbar-nav>li>a, .navbar-default .navbar-brand {
-  color: white;
-}
-
-.navButtons:hover {
-  background: #444;
-  text-decoration: none;
-}
-
-.main #disqus_thread {
-  margin-left: 30px;
-  margin-right: 30px;
+  padding-left: 15px;
+  padding-right: 15px;
+  transition: margin-left .5s;
 }
 
 .main {
@@ -60,25 +37,30 @@ html, body {
   margin-bottom: 40px;
 }
 
-.buttons {
-  font-size: 12px;
-  margin: 10px 0 0 0;
-  text-align: center;
+.buttonShadow {
+  box-shadow: 0 2px 5px rgba(0,0,0,.5)
 }
 
 .thumbnail {
-  border: 0px;
   position: relative;
-  padding-top: 50px;
-  padding-bottom: 50px;
+  padding-top: 40px;
+  padding-bottom: 40px;
   border-radius: 5px;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
+  text-align: center;
 }
 
 #loading {
   display: none;
   margin-left: 50px;
   margin-right: 50px;
+}
+
+.bandLoader {
+  left: 48%;
+  top: 33%;
+  font-size: 22px;
+  position: relative;
 }
 
 #loadTestButton {
@@ -124,12 +106,25 @@ html, body {
   font-size: 16px;
 }
 
-.userInfoTitles {
-  color: #FFF;
+.titles {
+  cursor: pointer;
+  cursor: hand;
+  box-shadow: 0 2px 2px rgba(0,0,0,.3);
+  border: 1px solid #8a8a8a;
+  background: rgba(255, 255, 255, .7);
+  color: #444;
   text-align: center;
   margin-top: 10px;
-  padding: 10px;
-  font-size: 20px;
+  margin-bottom: 20px;
+  padding: 15px;
+  font-size: 16px;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+.titles:hover {
+  box-shadow: 0 2px 10px rgba(0,0,0,.5);
+  transition: all .5s;
 }
 
 .userInfo {
@@ -141,36 +136,89 @@ html, body {
 }
 
 .folder {
-  padding: 20px;
+  padding: 5px;
+  background: #fff;
+  margin: 5px;
+  border-radius: 2px;
+  border: 1px solid green;
+  transition: all .3s ease-in;
 }
 
-.button {
+.folder:hover {
+  color: #444;
+  box-shadow: 0 2px 10px rgba(0,0,0,.5);
 
 }
+
+.folder:hover .folderDetails {
+  font-size: 12px;
+  height: 100px;
+  padding-top: 5px;
+  transition: all 0.3s ease-in-out;
+}
+
+.folderDetails {
+  z-index: 1000;
+  padding: 0;
+  border: 1px #ccc solid;
+  font-size: 0;
+  width: auto;
+  height: 0px ;
+  background: #FFF;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.folders {
+  padding: 0 4px 0 4px;
+}
+
+.addButton {
+  background: green;
+}
+
+
 
 .homeButton {
-  margin-bottom: 15px;
-  color: #444;
-  font-size: 14px;
+  color: #FFF;
+  font-size: 12px;
   text-align: center;
-  border: 0px;
-  border-radius: 10px;
-  box-shadow: 0 1px 2px rgba(0,0,0,.075);
-  background: #FFF;
-  width: 200px;
-  height: 150px;
+  border-radius: 5px;
+  box-shadow: 0 1px 2px rgba(0,0,0,.5);
+  background: rgb(75, 164, 76);
+  border: 1px solid #777;
+  padding: 10px;
+}
+
+.mainButton {
+  cursor: pointer;
+  background-color: #FFF;
+  font-size: 0.8em;
+  text-align: center;
+  border-radius: 5px;
+  border: 1px solid #777;
+  padding: 20px;
+  transition: all 0.3s ease-in-out;
+}
+
+.mainButton:hover {
+  box-shadow: rgb(140, 145, 154) 0px 4px 8px 0px;
+}
+
+.buttonPadding {
+  padding: 2px;
 }
 
 .bandTitle {
   color: #444;
-  line-height: 0px;
+  line-height: 70px;
   text-align: center;
 }
 
 .folderTitle {
   color: #444;
-  margin: 0;
-  font-size: 18px;
+  margin: 4px;
+  font-size: 14px;
   text-align: center;
 }
 
@@ -178,15 +226,15 @@ html, body {
   color: #FFF;
 }
 
-.folder:hover .folderTitle, .homeButton:hover .folderTitle, .filesButton:hover, .button:hover .bandTitle {
+.homeButton:hover .folderTitle, .filesButton:hover, .button:hover .bandTitle {
   color: white;
-  text-shadow: 0px 1px #0f0f0f;
+
 }
 
 .button:hover {
   cursor: pointer;
   cursor: hand;
-  color: white;
+  color: #FFF;
   background-color: #265a88;
   transition: background 500ms;
 }
@@ -194,13 +242,14 @@ html, body {
 
 .folder:active, .homeButton:active, .filesButton:active, .button:active {
   background-color: rgba(20, 54, 81, 0.66);
+  transition: background-color 0ms;
 }
 
 .folder:active .folderTitle {
   color: white;
 }
 
-.homeButton:active .folderTitle, .homeButton:hover {
+.homeButton:active .folderTitle {
   color: white;
 }
 
@@ -234,26 +283,47 @@ html, body {
 }
 
 .bandButton {
-  color: #fff;
-  background: #4c4c4c;
+  color: #444;
+  background: #FFF;
   cursor: pointer;
-  font-size: 14px;
-  line-height: 30px;
   min-width: 50px;
-  height: 30px;
-  border-radius: 5%;
-  text-align: center;
-  font-weight: 200;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  transition: background 500ms;
+  height: 90px;
+  border: 1px solid #777;
+  border-radius: 5px;
+  box-shadow: rgb(122, 134, 154) 0px 0px 0.5px;
+  transition: box-shadow 0.3s ease-in-out;
 }
 
 .bandButton:hover {
-  color: #3CB371;
-  transition: background 500ms;
+  box-shadow: rgb(140, 145, 154) 0px 4px 8px 0px;
+
 }
 
+.backToButton {
+  cursor: pointer;
+  padding: 10px;
+  transition: all .3s ease-in-out;
+}
 
+.backToButton:hover {
+  box-shadow: 0 2px 10px rgba(0,0,0,.5);
+}
+
+.hiddenButton {
+  cursor: pointer;
+  padding: 10px;
+  box-shadow: 0 2px 2px rgba(0,0,0,.5);
+  transition: all .3s ease-in-out;
+}
+
+.hiddenButton img {
+  width: 12px;
+  height: 12px;
+}
+
+.hiddenButton:hover {
+  box-shadow: 0 2px 10px rgba(0,0,0,.5);
+}
 
 .folderLoadingMessage {
   text-align: center;
@@ -266,11 +336,6 @@ html, body {
 
 .folderButton2, #hiddenFolderButtons {
   display: none;
-}
-
-#bandName {
-  border: 1px solid white;
-  padding: 20px;
 }
 
 #addBand {
@@ -330,6 +395,43 @@ html, body {
   width: 100%;
 }
 
+.containers {
+  padding: 15px;
+  margin: 10px auto;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.5);
+  background: #e7eaeb;
+}
+
+.members {
+
+  border: 1px solid #444;
+}
+
+
+
+.navigation {
+
+}
+
+.pagination {
+  text-align: center;
+  font-size: 12px;
+}
+
+.pagination a, .pagination button {
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+.pagination a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}
+
 #footer {
   display: none;
   text-align: center;
@@ -353,32 +455,30 @@ html, body {
 }
 
 #addFolderInput, #accountInfoLink,
-#navLinks, #folderIndex, #upload, #loading,
-#userDetails, #bandDetails {
+#navLinks, #folderIndex, #upload, #loading, #bandDetails {
   display: none;
 }
 
-#addFolderModal {
-  border: 2px solid #851a8a;
-}
-
 .modal {
-  text-align: center;
-  padding: 0!important;
-  margin: 0 auto;
+  padding: 10% 0;
 }
 
-.modal:before {
-  content: '';
-  display: inline-block;
-  height: 100%;
-  vertical-align: middle;
-  margin-right: -4px; /* Adjusts for spacing */
+.memberButton {
+  cursor: pointer;
+  border: 1px solid #8e8e8e;
+  background-color: #FFF;
+  border-radius: 2px;
+
+  margin-bottom: 10px;
+  transition: all .3s ease-in-out;
 }
 
-.modal-dialog {
-  display: inline-block;
-  vertical-align: middle;
+.memberButton:hover {
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.memberInfo {
+  bottom: 10px;
 }
 
 .animate-enter,
@@ -405,4 +505,86 @@ html, body {
   opacity: 0;
   top: -50px;
   height: 0px;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+#livesearch {
+  position: absolute;
+  max-width: 400px;
+  min-width: 131px;
+  z-index: 1000;
+  background-color: #FFF;
+  word-wrap: break-word;
+  text-align: left;
+}
+
+.fileSearchButton {
+  cursor: pointer;
+  padding: 15px;
+  font-size: 11px;
+}
+
+.fileSearchButton:hover {
+  color: #FFF;
+  background-color: #3CB371;
+  transition: background 500ms;
+}
+
+.searchResultSubText {
+  color: #CCC;
+  font-size: 10px;
+}
+
+#search {
+  display: none;
+  margin-right: 10px;
+  height: 30px;
+  bottom: 3px;
+  position: relative;
+  margin-bottom: 9px;
+}
+
+#activityHeader {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #444;
+  margin-bottom: 5px;
+}
+
+#activityHeader .btn {
+  float: right;
+  margin-left: 5px;
+}
+
+.recentComments {
+  font-size: 10px;
+  border-bottom: 1px solid #CCC;
+  padding: 5px 0px 5px 0px !important;
+  transition: all 0.3s ease-in-out;
+}
+
+.recentComments:hover {
+  box-shadow: rgb(140, 145, 154) 0px 4px 8px 0px;
+}
+
+.videoWrapper {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 */
+  padding-top: 25px;
+  height: 0;
+}
+.videoWrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }

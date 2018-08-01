@@ -1,0 +1,109 @@
+<!-- User Info -->
+<div id="accountInformation">
+
+
+  <div class="col-xs-12">
+    <h3 class="titles" data-toggle="modal" data-target="#userDetails">Hello {{ user.name }}</h3>
+  </div>
+
+  <!-- Buttons -->
+  <div class="containers col-xs-12">
+    <div class="buttonPadding col-xs-4">
+      <div class="mainButton" ng-click="openHighlightsFolder()">
+        <img style="width: 20px; height: 20px;" src="../img/timeButton.png"/>
+        <br><span style="font-size: 0.9em">Your Highlights</span>
+      </div>
+    </div>
+    <div class="buttonPadding col-xs-4">
+      <div class="mainButton" ng-click="openFavoritesFolder()">
+        <img style="width: 20px; height: 20px;" src="../img/black-metal.png"/>
+        <br><span style="font-size: 0.9em">Your Favorites</span>
+      </div>
+    </div>
+    <div class="buttonPadding col-xs-4">
+      <div id="userDetailsButton" class="mainButton" data-toggle="modal" data-target="#userDetails" >
+        <i style="font-size: 18px;" class="far fa-user"></i>
+        <br><span style="font-size: 0.9em">User Details</span>
+      </div>
+    </div>
+  </div>
+  <!-- Band Section -->
+  <div class="col-xs-12 col-sm-6">
+    
+    <!-- Bands -->
+    <div class="containers col-xs-">
+      <div class="button homeButton" style="width: 80%; margin: 0 auto;" data-toggle="modal" data-target="#addBandModal">Add Band</div>
+        <!--<h2 id="bandName" class="userInfoTitles">Bands</h2>-->
+      <div id="bands" class="bandButton" ng-repeat="band in user.bands">
+        <div id="bandLoader-{{ band.id }}" class="bandLoader" style="display: none"><i class="fa fa-spinner fa-spin"></i></div>
+        <div id="{{ 'band-' + band.id }}"  class="col-xs-12" style="padding: 0" ng-click="enterBand(band)">
+          <h4 id="bandTitle" class="bandTitle col-xs-8">{{ band.name }}</h4>
+          <div class="col-xs-4" style="font-size:12px; height: 100%; text-align: center; border-left: 1px solid #cacaca;">
+            <div class="button" style="padding: 10px; margin-bottom: 5px; margin-top: 4px;">{{ band.numFiles }} Ideas</div>
+            <div class="button" style="padding: 10px;" onclick="stopPropogation(event); $('#bandDetails').modal()" >Details</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- End of Bands -->
+
+  </div>
+  <!-- End of band Section -->
+  <div class="containers col-xs-12 col-sm-6">
+    <div id="activityHeader">
+      <span id="activityTitle">Recent Comments</span>
+
+      <div class="btn btn-xs btn-default" ng-click="showRecentHighlights()"><img style="width: 10px; height: 10px;" src="../img/timeButton.png"/></div>
+      <div class="btn btn-xs btn-default" ng-click="showRecentComments()"><img style="width: 10px; height: 10px;" src="../img/commentButton.png"/></div>
+
+      <select ng-model="bandFilter" id="bandFilter" style="float: right">
+        <option ng-selected="true" value="">All</option>
+        <option ng-selected="{{band.name == bandFilter}}"
+                ng-repeat="band in user.bands"
+                value="{{ band.name }}">
+          {{band.name}}
+        </option>
+      </select>
+    </div>
+    <div id="recentActivity">
+      <div id="loadContainer" style="padding: 20px; text-align: center">
+        <i class="fa fa-spinner fa-spin" style="font-size: 20px"></i>
+      </div>
+      <div id="commentContainer" style="display:none">
+        <div class="recentComments fileComments col-xs-12" ng-repeat="comment in recentComments.slice().reverse() | limitTo:pageSize | filter:(!!bandFilter || undefined) && {bandName: bandFilter}" ng-click="openFile(comment.file.id)" style="cursor: pointer">
+          <div class="col-xs-12" >
+            <div class="col-xs-7" style="padding: 0px"><strong>{{ comment.file.name }}</strong> - {{ comment.band.name }} - {{ comment.file.folder.name }}</div>
+            <div class="col-xs-5" style="font-size: 8px; text-align: right; padding: 0">{{ comment.commentTime }}</div>
+          </div>
+          <div class="col-xs-12" style="padding: 5px">
+            <div class="col-xs-10">{{ comment.comment }}</div>
+            <div class="col-xs-2">{{ comment.userName }}</div>
+          </div>
+
+        </div>
+        <div class="col-xs-12 text-center" style="cursor: pointer; font-size: 12px" ng-click="showAllRecentActivity(recentComments.length)">Show All ({{ (recentComments | filter: {bandName: bandFilter}).length }})</div>
+      </div>
+      <div id="highlightContainer" style="display: none">
+        <div class="recentComments col-xs-12" ng-repeat="highlight in recentHighlights.slice().reverse() | limitTo:pageSize | filter:(!!bandFilter || undefined) && {bandName: bandFilter}" ng-click="openFile(highlight.file.id)" style="cursor: pointer">
+          <div class="col-xs-12" >
+            <div class="col-xs-7" style="padding: 0px"><strong>{{ highlight.file.name }}</strong> - {{ highlight.band.name }} - {{ highlight.file.folder.name }}</div>
+            <div class="col-xs-5" style="font-size: 8px; text-align: right; padding: 0">{{ highlight.commentTime }}</div>
+          </div>
+          <div class="col-xs-12" style="padding: 5px">
+            <div class="col-xs-2">{{ highlight.highlightTime }}</div>
+            <div class="col-xs-8">{{ highlight.comment }}</div>
+            <div class="col-xs-2">{{ highlight.userName }}</div>
+          </div>
+
+        </div>
+        <div class="col-xs-12 text-center" style="cursor: pointer; font-size: 12px" ng-click="showAllRecentActivity(recentHighlights.length)">Show All ({{ (recentHighlights | filter: {bandName: bandFilter}).length }})</div>
+      </div>
+
+    </div>
+  </div>
+  <!-- Modals -->
+  <add-band-modal></add-band-modal>
+  <user-details-modal></user-details-modal>
+  <band-details-modal></band-details-modal>
+</div>

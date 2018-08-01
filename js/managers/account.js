@@ -5,19 +5,24 @@ var CURRENT_FOLDERS = "";
 var CURRENT_FOLDER = "";
 var CURRENT_FILES = "";
 var CURRENT_FILE = {};
+var CURRENT_MEMBERS = [];
 var REQUESTED_URL = "";
+
+var testLogin = false;
 var loggedIn = false;
 var signedOut = false;
 var lastUrl = window.location.href;
 
 function loginUser() {
-  //saveItemToLocalStorage("*loggedIn*", JSON.stringify(user));
-  //hideAuthenticationUI();
   loggedIn = true;
   displayElementById("navLinks");
-  hideElementById("signInButton");
+  displayElementById("showSearch");
+  displayElementById("sideNavButton");
+  //hideElementById("signInButton");
   displayElementById("signOutButton");
+  //displayElementById("footer");
   navigateToURL("/#/user");
+
 }
 
 function hideAuthenticationUI() {
@@ -32,6 +37,11 @@ function signOut() {
   clearAccountData();
   removeNavLink("folderLink");
   removeNavLink("bandLink");
+  hideElementById("search");
+  hideElementById("showSearch");
+  hideElementById("closeSearch");
+  getElementById("sideNav").style.width = 0;
+  hideElementById("sideNavButton");
   hideElementById("navLinks");
   hideElementById("signOutButton");
   displayElementById("signInButton");
@@ -101,7 +111,7 @@ function openJoinBandForm() {
   displayElementById("startBandForm");
   hideElementById("startBand");
   hideElementById("signInForm");
-  //displayElementById("startSignIn");
+  displayElementById("startSignIn");
 }
 
 function openSignInForm() {
@@ -112,12 +122,12 @@ function openSignInForm() {
   hideElementById("startBandForm");
 }
 
-function checkEmail(email, userEmail) {
-  if (email === userEmail) {
+function checkUsername(username, userUsername) {
+  if (username === userUsername) {
     return true;
   } else {
     console.log("User does not exist");
-    showInvalidInput("signUpEmail");
+    showInvalidInput("signUpUsername");
     return false;
   }
 }
@@ -151,7 +161,6 @@ function inputEmpty(input, inputId) {
 
 function isLoggedIn() {
   if (!loggedIn) {
-    REQUESTED_URL = window.location.href;
     navigateToURL("/#/");
   }
   return loggedIn;

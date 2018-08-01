@@ -2,18 +2,24 @@ app.controller('folderController', ['$scope', '$sce', '$http', '$filter',
 function($scope, $sce, $http, $filter) {
   // Folders
   $scope.folders = [];
+  $scope.visibleFolders = [];
   $scope.folder = {};
   $scope.newFolder = "";
   $scope.band = {};
+  $scope.members = [];
 
   $scope.addFolderMessage = "New Folder";
   $scope.folderMessage = "";
 
-  $scope.currentPage = 0;
+  $scope.currentPage = 1;
   $scope.numberOfFolders = 0;
   $scope.sortBy = "-likes";
-  $scope.pageSize = "20";
+  $scope.pageSize = 20;
+  $scope.maxSize = 5
   $scope.search = "";
+
+  $scope.setListName = "";
+  $scope.setLists = [];
 
   //TODO Create functionality for a recent file selection
   $scope.addFolder = function() {
@@ -29,10 +35,9 @@ function($scope, $sce, $http, $filter) {
         if (response.data === "New record created successfully!") {
           $scope.addFolderMessage = "Success!";
           $scope.folderMessage = "";
+
           $scope.folders.push(folder);
-          hideElementById('addFolderInput');
-          hideElementById('cancelNewFolder');
-          displayElementById('addFolder');
+          console.log($scope.folders);
         } else {
           $scope.addFolderMessage = "Failed to add folder.";
         }
@@ -40,11 +45,10 @@ function($scope, $sce, $http, $filter) {
       function (response) {
         console.log(response.data);
       });
+
   };
 
   $scope.openFolder = function(folder) {
-    console.log("open folder");
-    console.log(folder);
     var folderUrl = "/#/band/" + CURRENT_BAND.metaName + "/";
     var folderName = folder.name;
     folder.name = "Loading...";
@@ -73,8 +77,19 @@ function($scope, $sce, $http, $filter) {
     }
   };
 
+    $scope.showFilters = function() {
+        var filters = getElementById("folderFilters");
+        console.log(filters.style.display);
+        if (filters.style.display === "none") {
+            showElementById("folderFilters");
+        } else {
+            hideElementByIdWithAnimation("folderFilters");
+        }
+
+    };
+
   $scope.getFiles = function(folderName, bandId, folder, callback) {
-    $http.get("/php/getFiles.php?folderName=" + folder.metaName + "&bandId=" + CURRENT_BAND.id)
+    $http.get("/php/getFiles.php?type=folder&folderName=" + folder.metaName + "&bandId=" + CURRENT_BAND.id)
     .then(function (response) {
       console.log(response.data);
       CURRENT_FILES = response.data;
@@ -97,6 +112,69 @@ function($scope, $sce, $http, $filter) {
     }
   };
 
+    $scope.addSetList = function() {
+        var data = {
+            name: $scope.setListName,
+            userId: CURRENT_USER.id,
+            bandId: CURRENT_BAND.id
+        };
+        $http.post("/php/addSetList.php?userId=" + userId + "&type=" + type, data)
+            .then(function (response) {
+                    console.log("Updated user successfully.");
+                    callback(true);
+                },
+                function (response) {
+                    console.log("The update failed: " + response.data);
+                    callback(false);
+                });
+    }
+
+    $scope.openFavoritesFolder = function() {
+        $scope.getFavoriteFiles(CURRENT_USER.id, CURRENT_BAND.id, function(success) {
+            if (success) {
+                CURRENT_FOLDER = {
+                    name: "Favorites",
+                    metaName: "favorites",
+                };
+                navigateToURL("/#/files");
+            } else {
+                console.log("Getting files failed.");
+            }
+        });
+    };
+
+    $scope.getFavoriteFiles = function(userId, bandId, callback) {
+        $http.get("/php/getFiles.php?type=bandFavorites&userId=" + userId + "&bandId=" + bandId)
+            .then(function (response) {
+                console.log(response.data);
+                CURRENT_FILES = response.data;
+                callback(response.data);
+            });
+    };
+
+    $scope.openHighlightsFolder = function() {
+        $scope.getHighlightedFiles(CURRENT_USER.id, CURRENT_BAND.id, function(success) {
+            if (success) {
+                CURRENT_FOLDER = {
+                    name: "Highlights",
+                    metaName: "highlights",
+                };
+                navigateToURL("/#/files");
+            } else {
+                console.log("Getting files failed.");
+            }
+        });
+    };
+
+    $scope.getHighlightedFiles = function(userId, bandId, callback) {
+        $http.get("/php/getFiles.php?type=bandHighlights&userId=" + userId + "&bandId=" + bandId)
+            .then(function (response) {
+                console.log(response.data);
+                CURRENT_FILES = response.data;
+                callback(response.data);
+            });
+    };
+
   $scope.goToUserInfo = function() {
     navigateToURL("/#/");
   };
@@ -112,6 +190,18 @@ function($scope, $sce, $http, $filter) {
       this.$apply(fn);
     }
   };
+
+  /*
+  $scope.$watch('currentPage + pageSize', function() {
+    var begin = (($scope.currentPage - 1) * $scope.pageSize);
+    var end = begin + $scope.pageSize;
+
+    $scope.visibleFolders = $scope.folders.slice(begin, end);
+    console.log($scope.visibleFolders);
+    var elements = document.getElementById("pagination").getElementsByTagName("ul");
+    elements[0].classList.add("pagination");
+  });
+*/
 
   $scope.getData = function () {
       // needed for the pagination calc
@@ -142,18 +232,6 @@ function($scope, $sce, $http, $filter) {
     }
   };
 
-  $scope.ToggleAddFolderInput = function() {
-    var button = getElementById("addFolder");
-    if (button.innerText == "Add Folder") {
-      button.innerText = "Cancel";
-      displayElementById("addFolderInput");
-    } else {
-      button.innerText = "Add Folder";
-      hideElementById("addFolderInput");
-    }
-
-  }
-
   $scope.showFolderButtons = function() {
     hideElementById("showButtonsButton");
     displayElementById("hideButtonsButton");
@@ -169,15 +247,22 @@ function($scope, $sce, $http, $filter) {
     displayElementById("bandName");
   }
 
+
+
   // Do this if logged in
   if (isLoggedIn()) {
+    console.log("Folder Controller");
+    if (CURRENT_BAND.name === "My Bands") {
+      navigateToURL("/#/user")
+    }
     $scope.band = CURRENT_BAND;
     $scope.files = CURRENT_FILES;
     $scope.folder = CURRENT_FOLDER;
-    console.log(CURRENT_FOLDERS);
+    $scope.members = CURRENT_MEMBERS;
 
     if (CURRENT_FOLDERS === "") {
       $scope.folderMessage = "Click the green button to Add a Folder!";
+
     } else {
       $scope.folders = CURRENT_FOLDERS;
     }

@@ -1,3 +1,5 @@
+
+
 function playAudio() {
     getElementById("audio").play();
 }
@@ -49,3 +51,7 @@ function initProgressBar() {
   filePercentageBar.style.width = percentComplete + "%";
   getElementById("audioTime").innerText = timeToString(audio.currentTime) + " / " + timeToString(audio.duration);
 }
+
+
+
+

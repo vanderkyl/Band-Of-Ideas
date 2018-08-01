@@ -1,35 +1,34 @@
 //TODO Change more than just the body background
 
-function useDarkTheme() {
-    console.log("Using Dark Theme");
-    var html = document.getElementsByTagName("HTML")[0];
-    var body = document.getElementsByTagName("BODY")[0];
-    html.style.background="#28363d";
-    body.style.background="#28363d";
-    hideElementById("navTool1");
-    displayElementById("navTool2");
+function openSideNav() {
+    getElementById("sideNav").style.width = "250px";
+
 }
 
-function useLightTheme() {
-    console.log("Using Light Theme");
-    var html = document.getElementsByTagName("HTML")[0];
-    var body = document.getElementsByTagName("BODY")[0];
-    body.style.background="#F5F5F5";
-    html.style.background="#F5F5F5";
-    hideElementById("navTool2");
-    displayElementById("navTool1");
+function closeSideNav() {
+    getElementById("sideNav").style.width = "0";
+
 }
 
-function useImageNavTheme() {
-    hideElementById("navRoutes");
-    hideElementById("navTool1");
-    displayElementById("imageNavRoutes");
-    displayElementById("navTool2");
+function showSearchForm() {
+    if ($(document).width() < 505) {
+        hideElementById("brand");
+    }
+    hideElementById("showSearch");
+    displayElementInlineById("search");
+    displayElementInlineById("closeSearch");
 }
 
-function useTextNavTheme() {
-    hideElementById("imageNavRoutes");
-    hideElementById("navTool2");
-    displayElementById("navRoutes");
-    displayElementById("navTool1");
+function closeSearchForm() {
+    hideElementById("closeSearch");
+    hideElementById("search");
+    displayElementInlineById("showSearch");
+    displayElementById("brand");
 }
+
+function changeBackgroundColor(color) {
+    getElementByTag("body").style.backgroundColor = color;
+    getElementByTag("html").style.backgroundColor = color;
+    localStorage['background-color'] = color;
+}
+

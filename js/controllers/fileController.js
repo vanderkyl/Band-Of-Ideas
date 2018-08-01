@@ -7,6 +7,7 @@ function($scope, $sce, $http, $filter, fileUpload) {
   $scope.band = {};
   // Files
   $scope.files = [];
+  $scope.visibleFiles = [];
   $scope.file = {};
   $scope.fileLinks = [];
   $scope.currentFileIndex = 0;
@@ -14,16 +15,21 @@ function($scope, $sce, $http, $filter, fileUpload) {
   $scope.addFolderMessage = "New Folder";
   $scope.folderMessage = "";
 
-  $scope.currentPage = 0;
+  $scope.currentPage = 1;
   $scope.numberOfFiles = 0;
   $scope.sortBy = "-likes";
   $scope.pageSize = "10";
+  $scope.maxSize = 5;
   $scope.search = "";
+
+  $scope.wavesurfers = [];
 
   $scope.maxComments = "5";
   $scope.fileIcon = "/img/music.png";
 
   $scope.user = {};
+  $scope.userLikes = [];
+  $scope.members = [];
 
   //TODO Create functionality for a recent file selection
 
@@ -68,7 +74,7 @@ function playNext() {
 
   $scope.openFile = function(file) {
     getElementById("audioPlayerAudio").pause();
-    hideElementById("footer");
+
     console.log("Opening file:");
     console.log(file);
     CURRENT_FILE = file;
@@ -154,26 +160,26 @@ function playNext() {
       });
   };
 
-  $scope.showLikes = async function(file) {
+  $scope.showLikes = function() {
     // Fill out like data if it hasn't been done yet
-    if (getElementById("fileDetails-" + file.id).childElementCount === 0) {
-      for (var i = 0; i < file.userLikes.length; i++) {
-        var result = $scope.band.memberIds.filter(function( user ) {
-          return user.id == file.userLikes[i];
-        });
-        if (result) {
-          var user = result[0].email;
-          if (result[0].id === CURRENT_USER.id) {
-            user = "Me";
-          }
-          $("#fileDetails-" + file.id).append('<p class="fileData">' + user + ' <img src="/img/black-metal.png"/></p>');
+    for (var j = 0; i < $scope.files.length; i++) {
+        for (var i = 0; i < $scope.files[j].userLikes.length; i++) {
+            var result = $scope.members.filter(function( user ) {
+                return user.id == file.userLikes[i];
+            });
+            if (result) {
+                var user = result[0].name;
+                if (result[0].id === CURRENT_USER.id) {
+                    user = "Me";
+                }
+                document.getElementById("playListFileDetails-" + $scope.files[j].id).innerText += user;
+            }
         }
-      }
     }
 
-    displayElementById("fileDetails-" + file.id);
-    await sleep(3000);
-    hideElementById("fileDetails-" + file.id);
+
+
+
   };
 
   $scope.showLikesOnFile = async function(file) {
@@ -336,6 +342,16 @@ function playNext() {
 
 
 
+  $scope.goBackToBandPage = function() {
+    CURRENT_BAND = $scope.band;
+    navigateToURL("/#/band/" + CURRENT_BAND.metaName);
+  };
+
+  $scope.goBackToFolderPage = function() {
+      CURRENT_FOLDER = $scope.folder;
+      navigateToURL("/#/band/" + CURRENT_BAND.metaName + "/" + CURRENT_FOLDER.metaName);
+  };
+
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
@@ -352,6 +368,28 @@ function playNext() {
     }
   };
 
+  $scope.$watch('currentPage + pageSize', function() {
+    var begin = (($scope.currentPage - 1) * $scope.pageSize);
+    var end = begin + $scope.pageSize;
+
+    $scope.visibleFiles = $scope.files.slice(begin, end);
+    console.log($scope.visibleFolders);
+    var elements = document.getElementById("pagination").getElementsByTagName("ul");
+    elements[0].classList.add("pagination");
+  });
+
+  $scope.showFilters = function() {
+    var filters = getElementById("fileFilters");
+    console.log(filters.style.display);
+    if (filters.style.display === "none") {
+        showElementById("fileFilters");
+    } else {
+        hideElementByIdWithAnimation("fileFilters");
+    }
+
+  };
+
+
   /*
   $scope.upload = function() {
     alert($scope.uploadFiles.length+" files selected ... Write your Upload Code");
@@ -364,82 +402,52 @@ function playNext() {
   };
   */
   //Start of Upload Functionality
-  var fileSelect = document.getElementById('fileSelector');
-  var uploadButton = document.getElementById('uploadButton');
-  var uploadState = document.getElementById('uploadState');
-  var uploadStatus = document.getElementById('uploadStatus');
-  var uploadResult = document.getElementById('uploadResult');
-  var uploadPercentage = document.getElementById('uploadPercentage');
-  var form = document.getElementById('fileForm');
-
 
   form.onsubmit = function(event) {
-    uploadStatus.innerHTML = "Upload Started...";
-    event.preventDefault();
-    uploadButton.innerHTML = 'Uploading...';
-    var uploadedFiles = fileSelect.files;
+    performUpload();
 
-    var formData = new FormData();
-    for (var i = 0; i < uploadedFiles.length; i++) {
-      var file = uploadedFiles[i];
-      console.log("Uploaded file: ");
-      console.log(file);
-      // Add the file to the request.
-      formData.append('files[]', file, file.name);
-    }
+  }
 
-    // Set up the request.
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', "/php/upload.php?folderName=" + CURRENT_FOLDER.metaName + "&bandName=" + CURRENT_BAND.metaName, true);
-    xhr.withCredentials = true;
-    xhr.upload.addEventListener("progress", function(evt){
-      if (evt.lengthComputable) {
-        var percentComplete = (evt.loaded / evt.total) * 100;
-        fileStatus.innerHTML = roundToTwoDecimals(percentComplete) + "%";
-        percentComplete = 100 - percentComplete;
-        //Do something with upload progress
-        uploadPercentageBar.style.marginRight = percentComplete + "%";
-      }
-    }, false);
     xhr.onload = function () {
-      if (xhr.status === 200) {
-        // File(s) uploaded.
-        uploadButton.innerHTML = 'Upload';
-      } else {
-        alert('An error occurred!');
-      }
-      if (xhr.status == "200") {
-        uploadStatus.innerHTML = "Success!";
-      } else {
-        uploadStatus.innerHTML = "Failure.";
-      }
+        var success;
+        if (xhr.status === 200) {
+            // File(s) uploaded.
+            uploadButton.innerHTML = 'Upload';
+        } else {
+            alert('An error occurred!');
+        }
+        if (xhr.status == "200") {
+            uploadStatus.innerHTML = "Success!";
+            success = true;
+        } else {
+            uploadStatus.innerHTML = "Failure.";
+            success = false;
+        }
 
-      uploadResult.innerHTML = xhr.responseText;
+        uploadResult.innerHTML = xhr.responseText;
 
-      fileStatus.innerHTML = "Loading file: " + file.name;
-      $http.get("/php/getFiles.php?folderName=" + CURRENT_FOLDER.metaName + "&bandId=" + CURRENT_BAND.id)
-        .then(function (response) {
-          console.log(response.data);
-          CURRENT_FILES = response.data;
-          $scope.files = CURRENT_FILES;
-          //resetUploadModal();
-          //hideElementById("upload");
-        });
+        fileStatus.innerHTML = "Loading files";
+        if (success) {
+            $http.get("/php/files.php?type=getFiles&folderName=" + CURRENT_FOLDER.metaName + "&bandId=" + CURRENT_BAND.id)
+                .then(function (response) {
+                    console.log(response.data);
+                    CURRENT_FILES = response.data;
+                    $scope.files = CURRENT_FILES;
+                    $scope.visibleFiles = CURRENT_FILES;
+                    fileStatus.innerHTML = "Upload Complete";
+                    fileSelect.value = "";
+                    uploadPercentageBar.style.marginRight = "100%";
+
+                });
+        } else {
+            fileStatus.innerHTML = "Upload Failed";
+            console.log("Failed Upload");
+        }
+        $scope.$apply()
     };
-    // Send the Data.
-    xhr.send(formData);
-    console.log(formData);
-  }
-
-  function resetUploadModal() {
-    form.reset();
-    uploadStatus.innerHTML = "";
-    uploadResult.innerHTML = "";
-    fileStatus.innerHTML = "";
-  }
 
   function loadFileLinkList() {
-    console.log("Load file Index");
+
     for (var i = 0; i < $scope.files.length; i++) {
       $scope.files[i].fileIndex = i;
       console.log($scope.files[i]);
@@ -447,18 +455,51 @@ function playNext() {
     }
   }
 
+  var wavesurfer;
+
+    $scope.playFile = function(song) {
+        wavesurfer = WaveSurfer.create({
+            container: '#waveform-' + song.id,
+            responsive: true
+        });
+        showElementById("filePlayer-" + song.id);
+        displayElementById("stop-" + song.id);
+        hideElementById("play-" + song.id);
+        wavesurfer.load(song.link);
+        wavesurfer.on('ready', function () {
+            wavesurfer.play();
+        });
+
+    };
+
+    $scope.stopFile = function(song) {
+        wavesurfer.stop();
+        wavesurfer.destroy();
+        hideElementByIdWithAnimation("filePlayer-" + song.id);
+        hideElementById("stop-" + song.id);
+        displayElementById("play-" + song.id);
+    };
+
   // Do this if logged in
   if (isLoggedIn()) {
+
     $scope.band = CURRENT_BAND;
     $scope.user = CURRENT_USER;
     $scope.files = CURRENT_FILES;
     $scope.folder = CURRENT_FOLDER;
+    $scope.members = CURRENT_MEMBERS;
     $scope.numberOfFiles = CURRENT_FILES.length;
     document.title = CURRENT_FOLDER.name;
+
     var folderUrl = "/#/band/" + CURRENT_BAND.metaName + "/" + CURRENT_FOLDER.metaName;
     loadFileLinkList();
+    $scope.showLikes();
     removeNavLink("folderLink");
     addNavLink("folderLink", CURRENT_FOLDER.name, folderUrl);
+
+
+
+
   }
 }]);
 
@@ -516,12 +557,7 @@ app.service('fileUpload', ['$http', function ($http) {
            }
         }]);
 
-app.filter('startFrom', function() {
-    return function(input, start) {
-        start = +start; //parse to int
-        return input.slice(start);
-    }
-});
+
 
 app.filter('reverse', function() {
   return function(items) {

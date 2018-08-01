@@ -2,10 +2,6 @@
   margin-top: 8px;
 }
 
-#signOutButton {
-  display: none;
-}
-
 #chooseUser, #joinBand {
   display: none;
 }
@@ -41,8 +37,6 @@
 }
 
 .mainForm {
-  /*background-color: #265a88;*/
-
   background-size: cover;
   position: relative;
   margin: 0 auto;
@@ -82,11 +76,10 @@
 
 .form {
   width: 100%;
-  padding: 20px 35px;
-  margin: 8px 0;
-  border: 1px solid #ccc;
+  margin: 20px 0;
+  border: 1px solid #333;
   box-sizing: border-box;
-  border-radius: 10px;
+  border-radius: 4px;
   background-color: #265a88;
   box-shadow: 0 5px 15px rgba(0,0,0,0.5);
 }

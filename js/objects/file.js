@@ -56,7 +56,6 @@ function hidePreviousFile() {
   console.log("Hiding previous file.");
   hideElementById("file");
   hideElementById("audio");
-  hideElementById("video");
 }
 
 // Check if the "file" is a true file or a folder

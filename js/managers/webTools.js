@@ -6,6 +6,10 @@ function hideElementById(id) {
     document.getElementById(id).style.display = "none";
 }
 
+function getElementByTag(tag) {
+    return document.getElementsByTagName(tag)[0];
+}
+
 function hideElementByIdWithAnimation(id) {
     $("#"+id).hide(250);
 }
@@ -101,11 +105,11 @@ function httpPost(url, callback) {
 
 function addNavLink(id, name, link) {
   if (id === "bandLink") {
-    $("#bandLinks").append("<li id='" + id + '" class="navButtons"><a href="' + link + '">' + name + '</a></li>');
+    $("#bandLinks").append('<div id="' + id + '" class="navButtons"><a href="' + link + '">' + name + '</a></div>');
   } else if (id === "folderLink") {
-    $("#folderLinks").append('<li id="' + id + '" class="navButtons"><a href="' + link + '">' + name + '</a></li>');
+    $("#folderLinks").append('<div id="' + id + '" class="navButtons"><a href="' + link + '">' + name + '</a></div>');
   } else if (id === "fileLink") {
-    $("#fileLinks").append('<li id="' + id + '" class="navButtons"><a href="' + link + '">' + name + '</a></li>');
+    $("#fileLinks").append('<div id="' + id + '" class="navButtons"><a href="' + link + '">' + name + '</a></div>');
   } else {
     console.log("Can't add this link: " + id);
   }
@@ -117,3 +121,4 @@ function removeNavLink(id) {
     link.remove();
   }
 }
+

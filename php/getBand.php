@@ -1,14 +1,10 @@
 <?php
   header('Content-Type: application/json');
-  $sqlUser = "kylevanderhoof";
-  $sqlPW = "ashdrum10";
-  $sqlDB = "IdeaBand";
-  $conn = mysqli_connect("localhost", $sqlUser, $sqlPW, $sqlDB);
-  $name = $_GET['bandName'];
+  require 'data/dataHelper.php';
+  require 'data/bandMembers.php';
+  $conn = connectToDatabase();
 
-  if($conn->connect_error) {
-    echo "Failed to connect." . $conn->connect_error;
-  }
+  $name = $_GET['bandName'];
 
   if(mysqli_ping($conn)) {
     $query = "SELECT * FROM Bands WHERE name = '" . $name . "'";
@@ -18,11 +14,20 @@
       if ($result->num_rows > 0) {
         // Get current row as an array
         while($row = mysqli_fetch_assoc($result)) {
-          $data = ['id' => $row["id"],
-                   'name' => $row["name"],
-                   'metaName' => $row["metaName"],
-                   'memberIds' => explode(',', $row["memberIds"]),
-                   'code' => $row["code"]];
+          $bandId = $row["id"];
+          $numFiles;
+          if ($result = mysqli_query($conn, "SELECT id FROM Files WHERE bandId = '" . $bandId . "'")) {
+
+            $numFiles = $result->num_rows;
+
+          }
+          $data = ['id' => $bandId,
+               'name' => $row["name"],
+               'metaName' => $row["metaName"],
+               'memberIds' => explode(',', $row["memberIds"]),
+               'members' => getBandMembersByBandId($conn, $bandId),
+               'code' => $row["code"],
+               'numFiles' => $numFiles];
         }
       } else {
         $data = new stdClass();

@@ -1,14 +1,14 @@
 <?php
-  include 'dataHelper.php';
-  $postData = file_get_contents("php://input");
-  $data = json_decode($postData);
-  $userId = $_GET['userId'];
-  $type = $_GET['type'];
-  $bandId = "";
 
-  if($conn->connect_error) {
-    echo "Failed to connect." . $conn->connect_error;
-  }
+  require 'data/dataHelper.php';
+  require 'data/bandMembers.php';
+  $conn = connectToDatabase();
+
+  $postData = file_get_contents("php://input");
+    $data = json_decode($postData);
+    $userId = $_GET['userId'];
+    $type = $_GET['type'];
+    $bandId = "";
 
   if(mysqli_ping($conn)) {
     if ($type == "tokenUpdate") {
@@ -46,7 +46,35 @@
           }
         }
       } else {
-        echo "Could not find band id";
+        echo "Adding new band";
+        if ($result = mysqli_query($conn, "SELECT MAX(id) AS `maxid` FROM Bands;")){
+            // Find the new band id
+            if($row = mysqli_fetch_assoc($result)) {
+              $bandId = $row["maxid"] + 1;
+            } else {
+              // First Band
+              $bandId = 1;
+            }
+         }
+
+        $bandQuery = "INSERT INTO Bands (name, memberIds, code)
+                    VALUES ('" . $band . "','" . $userId . "','1234')";
+        echo "Inserting the new band...";
+
+        if ($result = mysqli_query($conn, $bandQuery)) {
+          echo "Success!";
+        } else {
+          echo "Sorry, it didn't work.";
+          echo $bandQuery;
+        }
+
+        $userQuery = "UPDATE Users SET bandIds = CONCAT(bandIds, '," . $bandId . "') WHERE id = '" . $userId . "';";
+        if ($result = mysqli_query($conn, $userQuery)) {
+                  echo "Success!";
+                } else {
+                  echo "Sorry, it didn't work.";
+                  echo $userQuery;
+                }
       }
     }
   }

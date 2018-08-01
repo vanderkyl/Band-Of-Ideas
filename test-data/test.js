@@ -1,5 +1,11 @@
 // TEST DATA //
 
+var members = [
+    {id: "1", name: "kyle", email: "vanderfry", password: "1234", bands: [], email: "vanderfry"},
+    {id: "1", name: "kyle", email: "vanderfry", password: "1234", bands: [], email: "vanderfry"}
+    ];
+
+
 // Test User Object
 var testUser = {
   id: "1",
@@ -8,7 +14,12 @@ var testUser = {
      name: "Test Band",
      metaName: "test_band",
      memberIds: ["1"],
-     code: "1234"}
+     code: "1234"},
+      {id: "1",
+          name: "Test Band 2",
+          metaName: "test_band_2",
+          memberIds: ["1"],
+          code: "1234"}
   ],
   name: "Test User",
   email: "test@test.com",
@@ -32,18 +43,99 @@ var testFolders = [{
   metaName: "test_folder2",
   parentId: "0",
   archived: "true"
-}];
+},
+    {
+        bandId: "0",
+        id: "1",
+        name: "Test Folder2",
+        metaName: "test_folder2",
+        parentId: "0",
+        archived: "true"
+    },
+    {
+        bandId: "0",
+        id: "1",
+        name: "Test Folder2",
+        metaName: "test_folder2",
+        parentId: "0",
+        archived: "true"
+    },
+    {
+        bandId: "0",
+        id: "1",
+        name: "Test Folder2",
+        metaName: "test_folder2",
+        parentId: "0",
+        archived: "true"
+    },
+    {
+        bandId: "0",
+        id: "1",
+        name: "Test Folder2",
+        metaName: "test_folder2",
+        parentId: "0",
+        archived: "true"
+    },
+    {
+        bandId: "0",
+        id: "1",
+        name: "Test Folder2",
+        metaName: "test_folder2",
+        parentId: "0",
+        archived: "true"
+    },
+    {
+        bandId: "0",
+        id: "1",
+        name: "Test Folder2",
+        metaName: "test_folder2",
+        parentId: "0",
+        archived: "true"
+    },
+    {
+        bandId: "0",
+        id: "1",
+        name: "Test Folder2",
+        metaName: "test_folder2",
+        parentId: "0",
+        archived: "true"
+    },
+    {
+        bandId: "0",
+        id: "1",
+        name: "Test Folder2",
+        metaName: "test_folder2",
+        parentId: "0",
+        archived: "true"
+    },
+    {
+        bandId: "0",
+        id: "1",
+        name: "Test Folder2",
+        metaName: "test_folder2",
+        parentId: "0",
+        archived: "true"
+    },
+    {
+        bandId: "0",
+        id: "1",
+        name: "Test Folder2",
+        metaName: "test_folder2",
+        parentId: "0",
+        archived: "true"
+    }];
 
 // Test File Objects
 var testFiles = [{
     folderId: "0",
     id: "0",
     likes: "1",
-    userLikes: ["1"],
+    userLikes: [{id: 6,name: "user"}],
     link: "/test-data/Lazer.m4a",
     name: "Test File",
     metaName: "test_file",
     size: "34637",
+    source: "https://drive.google.com/file/d/1DSXuOn0pjdwjxPMaR8QeR7dUWfGX_Moh/preview",
     type: "audio/x-m4a",
     views: "0",
     comments: [{id:1, comment:"laskjdflk", userName:"user", commentTime: "Nov 14th"}, {id:2, comment:"asdffasd", userName:"user2", commentTime: "Nov 14th"},
@@ -60,14 +152,16 @@ var testFiles = [{
     folderId: "0",
     id: "1",
     likes: "0",
-    userLikes: ["1"],
+    userLikes: [],
     link: "/test-data/Lazer.m4a",
     name: "Test File2",
     metaName: "test_file",
+      source: "",
     size: "34637",
     type: "audio/x-m4a",
     views: "0",
-    comments: []
+    comments: [],
+    highlights: []
   },
   {
     folderId: "0",
@@ -77,11 +171,12 @@ var testFiles = [{
     link: "/test-data/Lazer.m4a",
     name: "Test File3",
     metaName: "test_file",
+      source: "",
     size: "34637",
     type: "audio/x-m4a",
     views: "0",
     comments: [],
-    comments: []
+    highlights: []
   },
   {
     folderId: "0",
@@ -94,7 +189,8 @@ var testFiles = [{
     size: "34637",
     type: "audio/x-m4a",
     views: "0",
-    comments: []
+    comments: [],
+      highlights: []
   },
   {
     folderId: "0",
@@ -108,7 +204,7 @@ var testFiles = [{
     type: "audio/x-m4a",
     views: "0",
     comments: [],
-    comments: []
+      highlights: []
   },
   {
     folderId: "0",
@@ -121,7 +217,8 @@ var testFiles = [{
     size: "34637",
     type: "audio/x-m4a",
     views: "0",
-    comments: []
+    comments: [],
+      highlights: []
   },
   {
     folderId: "0",
@@ -134,7 +231,8 @@ var testFiles = [{
     size: "34637",
     type: "audio/x-m4a",
     views: "0",
-    comments: []
+    comments: [],
+      highlights: []
   },
   {
     folderId: "0",
@@ -147,7 +245,8 @@ var testFiles = [{
     size: "34637",
     type: "audio/x-m4a",
     views: "0",
-    comments: []
+    comments: [],
+      highlights: []
   },
   {
     folderId: "0",
@@ -173,7 +272,8 @@ var testFiles = [{
     size: "34637",
     type: "audio/x-m4a",
     views: "0",
-    comments: []
+    comments: [],
+      highlights: []
   },
   {
     folderId: "0",
@@ -186,7 +286,8 @@ var testFiles = [{
     size: "34637",
     type: "audio/x-m4a",
     views: "0",
-    comments: [{id:1, comment:"laskjdflk", userName:"user"}]
+    comments: [{id:1, comment:"laskjdflk", userName:"user"}],
+      highlights: []
   }
 ];
 // END OF TEST DATA

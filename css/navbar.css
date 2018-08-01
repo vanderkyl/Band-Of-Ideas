@@ -1,0 +1,130 @@
+.nav-header {
+  margin-left: 20px;
+}
+
+.navbar>.container .navbar-brand {
+  margin-left: 10px;
+}
+.navbar>.container .navbar-brand:hover {
+  background: #444;
+}
+
+.navbar-inverse .navbar-nav>li>a, .navbar-default .navbar-brand {
+  color: white;
+}
+
+.navButtons:hover {
+  background: #444;
+  text-decoration: none;
+}
+
+.navbar-fixed-top {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+#navContainer {
+  min-height: 50px;
+}
+
+.navbar-fixed-top,
+.navbar-fixed-bottom {
+  position: fixed; /* <-- Look here */
+  right: 0;
+  left: 0;
+  z-index: 1030;
+}
+
+.sideNavToggle {
+  position: relative;
+  float: left;
+  padding: 9px 10px;
+  margin-top: 8px;
+  margin-right: 15px;
+  margin-bottom: 8px;
+  background-color: transparent;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+a.nav-link {
+  border-radius: 50px;
+  background-color: #444;
+}
+
+a.nav-link:hover {
+  background-color: #232323 !important;
+}
+
+.sideNav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 100000;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sideNav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #818181;
+  display: block;
+  min-width: 250px;
+  transition: 0.3s;
+}
+
+.sideNav a:hover {
+  color: #f1f1f1;
+}
+
+.sideNav .closeSideNav {
+  position: absolute;
+  top: 0;
+  left: 170px;
+  font-size: 36px;
+  z-index: 11111;
+}
+
+.sideNavButton {
+  float: left;
+  font-size: 20px;
+  padding-top: 11px;
+  cursor: pointer;
+  filter: invert(100%);
+}
+
+.sideNavFooter {
+  border-top: 1px solid #444;
+  padding-top: 5px;
+  margin-top: 10px;
+}
+
+#showSearch, #closeSearch {
+  filter: invert(100%);
+  cursor: pointer;
+  font-size: 20px;
+  padding-top: 10px;
+  margin-right: 20px;
+}
+
+.sideNavHeader {
+  position: absolute;
+  top: 13px;
+  border-bottom: 1px #444 solid;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+}
+
+
+
+@media screen and (max-height: 450px) {
+  .sideNav {padding-top: 15px;}
+  .sideNav a {font-size: 18px;}
+}

@@ -1,5 +1,5 @@
 <?php
-  include 'dataHelper.php';
+  include 'data/dataHelper.php';
   // Get database connection
   $conn = connectToDatabase();
   // Retrieve Post Data
@@ -7,6 +7,7 @@
   $data = json_decode($postData);
   $band = $data->bands[0]->name;
   $bandMetaName = $data->bands[0]->metaName;
+  $username = $data->username;
   $email = $data->email;
   $name = $data->name;
   $metaName = $data->metaName;
@@ -33,8 +34,8 @@
       $bandId = null;
       echo "There was an error when trying to find user and band.";
     }
-    $userQuery = "INSERT INTO Users (id, name, email, password, bandIds, token)
-              VALUES ('" . $userId . "','" . $name . "','" . $email . "','" . $password . "','" . $bandId . "','true')";
+    $userQuery = "INSERT INTO Users (id, name, username, email, password, bandIds, token)
+              VALUES ('" . $userId . "','" . $name . "','" . $username . "','" . $email . "','" . $password . "','" . $bandId . "','true')";
     runMySQLInsertQuery($conn, $userQuery);
 
     $bandQuery = "";
