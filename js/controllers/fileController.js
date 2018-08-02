@@ -458,6 +458,7 @@ function playNext() {
   var wavesurfer;
 
     $scope.playFile = function(song) {
+        //stopPropogation(event);
         wavesurfer = WaveSurfer.create({
             container: '#waveform-' + song.id,
             responsive: true
@@ -473,6 +474,7 @@ function playNext() {
     };
 
     $scope.stopFile = function(song) {
+        //stopPropogation(event);
         wavesurfer.stop();
         wavesurfer.destroy();
         hideElementByIdWithAnimation("filePlayer-" + song.id);
