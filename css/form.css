@@ -102,3 +102,11 @@
   width: 80%;
   display: none;
 }
+
+#userMessage {
+  background: white;
+  height: 0px;
+  width: 200px;
+  transition: all 0.5s ease-in-out;
+  font-size: 0px;
+}

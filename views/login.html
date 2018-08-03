@@ -1,6 +1,29 @@
 <!-- Authentication Form -->
 <div id="authentication">
-  <!-- Sign Up Forms -->
+  <!-- Sign In Form -->
+  <div id="signInForm" class="mainForm form col-sm-12">
+    <form name="signIn">
+      <h3>Log In</h3>
+      <input id="signInUsername" type="text" name="username" placeholder="Username" ng-model="user.username" required/>
+      <div id="userMessage">
+        <p>The user, {{ user.username }}, doesn't exist...</p>
+      </div>
+      <input id="signInPassword" type="password" name="password" placeholder="Password" ng-model="user.password" required/>
+      <input id="signInSubmitButton" type="submit" ng-click="login()" value="{{ loginMessage }}"/>
+    </form>
+    <!-- Test Login Button and Start Band Button -->
+    <a ng-click="testLogin()">Test</a>
+    <br>
+  </div>
+  <!-- End of Sign In Form -->
+  <!-- Sign Up Button -->
+  <div id="startBand" class="mainForm form col-sm-12" ng-click="openBandForm()">
+    <h3>Start a<br>
+      Band of Ideas
+    </h3>
+  </div>
+  <!-- End of Sign Up Button -->
+  <!-- Sign Up Form -->
   <div id="signUpForm" class="mainForm form col-sm-12">
     <h3>Start a<br>Band of Ideas</h3>
     <div id="startBandForm">
@@ -50,27 +73,13 @@
         <!-- End of Create Account Form -->
     </div>
   </div>
-  <!-- End of Sign Up Forms -->
-
-  <!-- Sign In Forms -->
+  <!-- End of Sign Up Form -->
+  <!-- Log In Button -->
   <div id="startSignIn" class="mainForm form col-sm-12" ng-click="openSignInForm()">
       <h3>Log In</h3>
   </div>
-  <div id="signInForm" class="mainForm form col-sm-12">
-    <form name="signIn">
-      <h3>Log In</h3>
-      <input id="signInUsername" type="text" name="username" placeholder="Username" ng-model="user.username" required/>
-      <input id="signInPassword" type="password" name="password" placeholder="Password" ng-model="user.password" required/>
-      <input id="signInSubmitButton" type="submit" ng-click="login()" value="{{ loginMessage }}"/>
-    </form>
-    <!-- Test Login Button and Start Band Button -->
-    <a ng-click="testLogin()">Test</a>
-    <br>
-  </div>
-  <div id="startBand" class="mainForm form col-sm-12" ng-click="openBandForm()">
-    <h3>Start a<br>
-      Band of Ideas
-    </h3>
-  </div>
+  <!-- End of Log In Button -->
+
+
 </div>
 <!-- End of Authentication Form -->

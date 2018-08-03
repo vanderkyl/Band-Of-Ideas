@@ -149,6 +149,12 @@ function showInvalidInput(id) {
   input.style = "box-shadow: 0 0 10px red; border-color: red;";
 }
 
+function showInvalidUserNotification() {
+  var message = getElementById('userMessage');
+  message.style.height = "100px";
+  message.style.fontSize = "12px";
+}
+
 function inputEmpty(input, inputId) {
   if (input === "") {
     console.log("Please try again.");
