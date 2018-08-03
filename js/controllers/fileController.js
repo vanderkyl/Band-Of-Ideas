@@ -473,11 +473,14 @@ function playNext() {
     };
 
     $scope.stopFile = function(song) {
-        wavesurfer.stop();
-        wavesurfer.destroy();
-        hideElementByIdWithAnimation("filePlayer-" + song.id);
-        hideElementById("stop-" + song.id);
-        displayElementById("play-" + song.id);
+        if (typeof wavesurfer != "undefined") {
+            wavesurfer.stop();
+            wavesurfer.destroy();
+            hideElementByIdWithAnimation("filePlayer-" + song.id);
+            hideElementById("stop-" + song.id);
+            displayElementById("play-" + song.id);
+        }
+
     };
 
   // Do this if logged in
@@ -496,9 +499,6 @@ function playNext() {
     $scope.showLikes();
     removeNavLink("folderLink");
     addNavLink("folderLink", CURRENT_FOLDER.name, folderUrl);
-
-
-
 
   }
 }]);
