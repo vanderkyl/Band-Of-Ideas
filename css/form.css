@@ -105,8 +105,13 @@
 
 #userMessage {
   background: white;
-  height: 0px;
-  width: 200px;
-  transition: all 0.5s ease-in-out;
-  font-size: 0px;
+      height: 71px;
+      transition: all 0.5s cubic-bezier(1, -0.12, 0, 0.93);
+      font-size: 0px;
+      position: absolute;
+      text-align: center;
+      margin: 0 auto;
+      right: 4%;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+      width: 92%;
 }
