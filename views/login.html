@@ -9,6 +9,9 @@
         <p>The user, {{ user.username }}, doesn't exist...</p>
       </div>
       <input id="signInPassword" type="password" name="password" placeholder="Password" ng-model="user.password" required/>
+      <div id="passwordMessage">
+        <p>Entered Invalid Password</p>
+      </div>
       <input id="signInSubmitButton" type="submit" ng-click="login()" value="{{ loginMessage }}"/>
     </form>
     <!-- Test Login Button and Start Band Button -->

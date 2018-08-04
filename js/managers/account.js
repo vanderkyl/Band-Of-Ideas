@@ -155,6 +155,13 @@ function showInvalidUserNotification() {
   message.style.fontSize = "12px";
 }
 
+// TODO: Create function for popup in password area
+function showInvalidPwdNotification() {
+  var message = getElementById('passwordMessage');
+  message.style.height = "100px";
+  message.style.fontSize = "12px";
+}
+
 function inputEmpty(input, inputId) {
   if (input === "") {
     console.log("Please try again.");
