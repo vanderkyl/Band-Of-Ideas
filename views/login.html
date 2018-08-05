@@ -4,8 +4,19 @@
   <div id="signInForm" class="mainForm form col-sm-12">
     <form name="signIn">
       <h3>Log In</h3>
+<<<<<<< HEAD
       <input id="signInUsername" type="text" name="username" placeholder="Username" onfocus="closeUserMessage()" ng-model="user.username" required/>
       <input id="signInPassword" type="password" name="password" placeholder="Password" onfocus="closeUserMessage()" ng-model="user.password" required/>
+=======
+      <input id="signInUsername" type="text" name="username" placeholder="Username" ng-model="user.username" required/>
+      <div id="userMessage">
+        <p>The user, {{ user.username }}, doesn't exist...</p>
+      </div>
+      <input id="signInPassword" type="password" name="password" placeholder="Password" ng-model="user.password" required/>
+      <div id="passwordMessage">
+        <p>Entered Invalid Password</p>
+      </div>
+>>>>>>> 0b7dc9e7f9399a94c4aaaf8b49a3aadbc86c50d6
       <input id="signInSubmitButton" type="submit" ng-click="login()" value="{{ loginMessage }}"/>
     </form>
     <!-- Test Login Button and Start Band Button -->
