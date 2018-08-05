@@ -147,6 +147,41 @@ function showInvalidInput(id) {
   var input = getElementById(id);
   input.value = "";
   input.style = "box-shadow: 0 0 10px red; border-color: red;";
+  if (id === "signInUsername") {
+    showInvalidUsernameMessage();
+  } else if (id === "signInPassword") {
+    showInvalidPasswordMessage();
+  }
+}
+
+function showInvalidUsernameMessage() {
+  var message = getElementById('userMessageText');
+  message.innerText = "Invalid Username"
+  openUserMessage();
+}
+
+function showInvalidPasswordMessage() {
+  var message = getElementById('userMessageText');
+  message.innerText = "Invalid Password"
+  openUserMessage();
+}
+
+function showInvalidUserMessage(user) {
+  var message = getElementById('userMessageText');
+  message.innerText = "The user, " + user + ", doesn't exist..."
+  openUserMessage();
+}
+
+function closeUserMessage() {
+  var message = getElementById('userMessage');
+  message.style.height = "0px";
+  message.style.fontSize = "0px";
+}
+
+function openUserMessage() {
+  var message = getElementById('userMessage');
+  message.style.height = "70px";
+  message.style.fontSize = "12px";
 }
 
 function inputEmpty(input, inputId) {

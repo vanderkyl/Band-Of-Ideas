@@ -88,6 +88,7 @@ function($scope, $http) {
       if (objectIsEmpty(response.data)) {
         console.log("Sorry, " + username + " doesn't exist.");
         showInvalidInput("signInUsername");
+        showInvalidUserMessage(username);
         $scope.loginMessage = "Log In";
         callback(false);
       } else {
