@@ -115,7 +115,6 @@
   font-size: 0;
   padding: 0;
   font-size: 0;
-  border: 1px solid white;
   transition: all 0.3s ease-in-out;
 }
 
@@ -554,6 +553,18 @@
   margin: 0 auto;
   display: none;
   transition: all .3s ease-in-out;
+}
+
+.wavesurferButton {
+  position: absolute;
+  top: 15px;
+}
+
+.fileDetailsButton {
+  position: absolute;
+  left: 93%;
+  top: 20px;
+  color: white;
 }
 
 

@@ -23,6 +23,8 @@ function($scope, $sce, $http, $filter, fileUpload) {
   $scope.search = "";
 
   $scope.wavesurfers = [];
+  $scope.wavesurferName = "";
+  $scope.wavesurferId = "";
 
   $scope.maxComments = "5";
   $scope.fileIcon = "/img/music.png";
@@ -458,11 +460,19 @@ function playNext() {
   var wavesurfer;
 
     $scope.playFile = function(song) {
+        if (typeof wavesurfer != "undefined") {
+            wavesurfer.stop();
+            wavesurfer.destroy();
+            hideElementById("stop-" + $scope.wavesurferId);
+            displayElementById("play-" + $scope.wavesurferId);
+        }
         wavesurfer = WaveSurfer.create({
-            container: '#waveform-' + song.id,
+            container: '#waveform',
             responsive: true
         });
-        showElementById("filePlayer-" + song.id);
+        $scope.wavesurferName = song.name;
+        $scope.wavesurferId = song.id;
+        showElementById("filePlayer");
         displayElementById("stop-" + song.id);
         hideElementById("play-" + song.id);
         wavesurfer.load(song.link);
@@ -476,7 +486,7 @@ function playNext() {
         if (typeof wavesurfer != "undefined") {
             wavesurfer.stop();
             wavesurfer.destroy();
-            hideElementByIdWithAnimation("filePlayer-" + song.id);
+            hideElementByIdWithAnimation("filePlayer");
             hideElementById("stop-" + song.id);
             displayElementById("play-" + song.id);
         }
