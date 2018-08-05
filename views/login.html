@@ -1,7 +1,7 @@
 <!-- Authentication Form -->
 <div id="authentication">
   <!-- Sign In Form -->
-  <div id="signInForm" class="mainForm form col-sm-12">
+  <div id="signInForm" class="mainForm form col-xs-12">
     <form name="signIn">
       <h3>Log In</h3>
       <input id="signInUsername" type="text" name="username" placeholder="Username" onfocus="closeUserMessage()" ng-model="user.username" required/>
@@ -13,12 +13,12 @@
     <br>
   </div>
   <!-- End of Sign In Form -->
-  <div id="userMessage">
+  <div id="userMessage" class="col-xs-12">
     <i id="closeUserMessage" class="far fa-times-circle" onclick="closeUserMessage()"></i>
     <p id="userMessageText" class="col-xs-12"></p>
   </div>
   <!-- Sign Up Button -->
-  <div id="startBand" class="mainForm form col-sm-12" ng-click="openBandForm()">
+  <div id="startBand" class="mainForm form col-xs-12" ng-click="openBandForm()">
     <h3>Start a<br>
       Band of Ideas
     </h3>
@@ -76,7 +76,7 @@
   </div>
   <!-- End of Sign Up Form -->
   <!-- Log In Button -->
-  <div id="startSignIn" class="mainForm form col-sm-12" ng-click="openSignInForm()">
+  <div id="startSignIn" class="mainForm form col-xs-12" ng-click="openSignInForm()">
       <h3>Log In</h3>
   </div>
   <!-- End of Log In Button -->
