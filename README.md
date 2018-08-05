@@ -21,7 +21,7 @@ artists who have the right voice and taste." - _Suga_
 6. [Contributing]()
 
 ---
-
+We want to know more about you, your previous work and what Band Of Ideas moto represents to you?
 ## Description
 Band Of Ideas is an interactive intuitive environment for like-minded artists and musicians to meet, inspire, create and collaborate on eachother's unique ideas and abilities.
 
@@ -58,18 +58,17 @@ Send an email to youremail@email.com with the **'Subject'** as _"Collaborate? I'
 ### Downloading 
 - Download Band of Ideas repository: [Band of Ideas](https://github.com/vanderkyl/Band-Of-Ideas.git)
 - Download node.js and npm. *Downloading node.js will download npm as well*: [Download](https://www.npmjs.com/get-npm) 
--   **OR** Use apt in command line:
+
+**OR**
+* Use `apt` in command line:
 
         sudo apt install nodejs
         sudo apt install npm
 
 - Download npm http-server: 
-    
+        
         sudo npm install http-server -g
 
 - To start local server, type in command: 
-    
-          http-server [PATH TO BOI FOLDER]
-
-
-
+        
+        http-server [PATH TO BOI FOLDER]
