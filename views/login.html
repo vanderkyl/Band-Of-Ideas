@@ -4,11 +4,8 @@
   <div id="signInForm" class="mainForm form col-sm-12">
     <form name="signIn">
       <h3>Log In</h3>
-      <input id="signInUsername" type="text" name="username" placeholder="Username" ng-model="user.username" required/>
-      <div id="userMessage">
-        <p>The user, {{ user.username }}, doesn't exist...</p>
-      </div>
-      <input id="signInPassword" type="password" name="password" placeholder="Password" ng-model="user.password" required/>
+      <input id="signInUsername" type="text" name="username" placeholder="Username" onfocus="closeUserMessage()" ng-model="user.username" required/>
+      <input id="signInPassword" type="password" name="password" placeholder="Password" onfocus="closeUserMessage()" ng-model="user.password" required/>
       <input id="signInSubmitButton" type="submit" ng-click="login()" value="{{ loginMessage }}"/>
     </form>
     <!-- Test Login Button and Start Band Button -->
@@ -16,6 +13,10 @@
     <br>
   </div>
   <!-- End of Sign In Form -->
+  <div id="userMessage">
+    <i id="closeUserMessage" class="far fa-times-circle" onclick="closeUserMessage()"></i>
+    <p id="userMessageText" class="col-xs-12"></p>
+  </div>
   <!-- Sign Up Button -->
   <div id="startBand" class="mainForm form col-sm-12" ng-click="openBandForm()">
     <h3>Start a<br>
