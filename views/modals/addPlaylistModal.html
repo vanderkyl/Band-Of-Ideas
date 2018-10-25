@@ -1,0 +1,21 @@
+<!-- Add Playlist Modal -->
+<div id="addPlaylistModal" class="modal fade" role="dialog">
+  <div id="addPlaylistInput" class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add Band</h4>
+      </div>
+
+      <div class="modal-body mainForm">
+
+        <input type="text" style="text-align:center" name="playlistName" placeholder="Playlist Name" ng-model="newPlaylistName" required/>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="addPlaylist()">Add Playlist</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of Add Playlist Modal -->

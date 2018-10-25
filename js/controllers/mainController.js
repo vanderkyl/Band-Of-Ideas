@@ -19,6 +19,8 @@ function($scope, $http) {
   $scope.recentHighlights = [];
   $scope.pageSize = 10;
   $scope.bandFilter = "";
+  $scope.setlists = [];
+  $scope.setListName = "";
 
   // -- MAIN METHODS -- // ----------------------------------------
 
@@ -33,15 +35,18 @@ function($scope, $http) {
       }
     }
 
+    $scope.getSetLists(function() {
+        $scope.getFolders(band, function() {
 
-    $scope.getFolders(band, function() {
-      $scope.getBandMembers(function(members) {
-        console.log(members);
-        CURRENT_MEMBERS = members;
-        navigateToURL("/#/band/" + CURRENT_BAND.metaName);
-      });
+            $scope.getBandMembers(function(members) {
+                console.log(members);
+                CURRENT_MEMBERS = members;
+                navigateToURL("/#/band/" + CURRENT_BAND.metaName);
+            });
 
+        });
     });
+
   };
 
   $scope.getBandMembers = function(callback) {
@@ -336,6 +341,15 @@ function($scope, $http) {
       console.log(item);
       return item.band.name === bandFilter;
   };
+
+    $scope.getSetLists = function(callback) {
+        $http.get("/php/getSetLists.php?bandId=" + CURRENT_BAND.id + "&userId=" + CURRENT_USER.id)
+            .then(function (response) {
+                CURRENT_SETLISTS = response.data;
+                $scope.setlists = response.data;
+                callback();
+            });
+    };
 
   $scope.loadController = function() {
       // Check if user is logged in. Show user information instead of authentication forms.

@@ -15,11 +15,11 @@ function($scope, $sce, $http, $filter) {
   $scope.numberOfFolders = 0;
   $scope.sortBy = "-likes";
   $scope.pageSize = 20;
-  $scope.maxSize = 5
+  $scope.maxSize = 5;
   $scope.search = "";
 
   $scope.setListName = "";
-  $scope.setLists = [];
+  $scope.setlists = [];
 
   //TODO Create functionality for a recent file selection
   $scope.addFolder = function() {
@@ -111,23 +111,6 @@ function($scope, $sce, $http, $filter) {
       });
     }
   };
-
-    $scope.addSetList = function() {
-        var data = {
-            name: $scope.setListName,
-            userId: CURRENT_USER.id,
-            bandId: CURRENT_BAND.id
-        };
-        $http.post("/php/addSetList.php?userId=" + userId + "&type=" + type, data)
-            .then(function (response) {
-                    console.log("Updated user successfully.");
-                    callback(true);
-                },
-                function (response) {
-                    console.log("The update failed: " + response.data);
-                    callback(false);
-                });
-    }
 
     $scope.openFavoritesFolder = function() {
         $scope.getFavoriteFiles(CURRENT_USER.id, CURRENT_BAND.id, function(success) {
@@ -247,6 +230,38 @@ function($scope, $sce, $http, $filter) {
     displayElementById("bandName");
   }
 
+    $scope.addSetList = function() {
+        if ($scope.setListName != "") {
+            var setList = {
+                name: $scope.setListName,
+                bandId: CURRENT_BAND.id,
+                userId: CURRENT_USER.id
+            };
+
+            $http.post("/php/addSetList.php", setList)
+                .then(function (response) {
+                    console.log(response.data);
+                    $scope.setlists.push(setList);
+                },
+                 function (response) {
+                    console.log(response.data);
+                 });
+
+        } else {
+            console.log("No Set List");
+        }
+
+    };
+
+  $scope.getSetLists = function() {
+      console.log("Getting SetLists...");
+      $http.get("/php/getSetLists.php?bandId=" + CURRENT_BAND.id + "&userId=" + CURRENT_USER.id)
+          .then(function (response) {
+              console.log(response.data);
+              $scope.setlists = response.data;
+
+          });
+  };
 
 
   // Do this if logged in
@@ -259,6 +274,9 @@ function($scope, $sce, $http, $filter) {
     $scope.files = CURRENT_FILES;
     $scope.folder = CURRENT_FOLDER;
     $scope.members = CURRENT_MEMBERS;
+    $scope.setlists = CURRENT_SETLISTS;
+      console.log("SETLISTS");
+    console.log(CURRENT_SETLISTS);
 
     if (CURRENT_FOLDERS === "") {
       $scope.folderMessage = "Click the green button to Add a Folder!";
@@ -266,6 +284,7 @@ function($scope, $sce, $http, $filter) {
     } else {
       $scope.folders = CURRENT_FOLDERS;
     }
+    //$scope.getSetLists();
     var urlPaths = window.location.hash.split('/');
     document.title = CURRENT_BAND.name;
     var bandUrl = "/#/band/" + CURRENT_BAND.metaName;

@@ -460,23 +460,21 @@ function playNext() {
   var wavesurfer;
 
     $scope.playFile = function(song) {
-        if (typeof wavesurfer != "undefined") {
-            wavesurfer.stop();
-            wavesurfer.destroy();
-            hideElementById("stop-" + $scope.wavesurferId);
-            displayElementById("play-" + $scope.wavesurferId);
-        }
+        $scope.stopFile(song);
         wavesurfer = WaveSurfer.create({
             container: '#waveform',
             responsive: true
         });
+        displayElementById("filePlayerLoader");
         $scope.wavesurferName = song.name;
         $scope.wavesurferId = song.id;
-        showElementById("filePlayer");
+
         displayElementById("stop-" + song.id);
         hideElementById("play-" + song.id);
         wavesurfer.load(song.link);
         wavesurfer.on('ready', function () {
+            displayElementById("filePlayer");
+            hideElementById("filePlayerLoader");
             wavesurfer.play();
         });
 
@@ -487,8 +485,8 @@ function playNext() {
             wavesurfer.stop();
             wavesurfer.destroy();
             hideElementByIdWithAnimation("filePlayer");
-            hideElementById("stop-" + song.id);
-            displayElementById("play-" + song.id);
+            hideElementById("stop-" + $scope.wavesurferId);
+            displayElementById("play-" + $scope.wavesurferId);
         }
 
     };

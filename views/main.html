@@ -8,27 +8,33 @@
 
   <!-- Buttons -->
   <div class="containers col-xs-12">
-    <div class="buttonPadding col-xs-4">
+    <div class="buttonPadding col-xs-3">
       <div class="mainButton" ng-click="openHighlightsFolder()">
         <img style="width: 20px; height: 20px;" src="../img/timeButton.png"/>
         <br><span style="font-size: 0.9em">Your Highlights</span>
       </div>
     </div>
-    <div class="buttonPadding col-xs-4">
+    <div class="buttonPadding col-xs-3">
       <div class="mainButton" ng-click="openFavoritesFolder()">
         <img style="width: 20px; height: 20px;" src="../img/black-metal.png"/>
         <br><span style="font-size: 0.9em">Your Favorites</span>
       </div>
     </div>
-    <div class="buttonPadding col-xs-4">
+    <div class="buttonPadding col-xs-3">
       <div id="userDetailsButton" class="mainButton" data-toggle="modal" data-target="#userDetails" >
         <i style="font-size: 18px;" class="far fa-user"></i>
         <br><span style="font-size: 0.9em">User Details</span>
       </div>
     </div>
+    <div class="buttonPadding col-xs-3">
+      <div class="mainButton" data-toggle="modal" data-target="#setListModal" ng-click="">
+        <i style="font-size: 18px" class="far fa-list-alt"></i>
+        <br><span style="font-size: 0.9em">Playlists</span>
+      </div>
+    </div>
   </div>
   <!-- Band Section -->
-  <div class="col-xs-12 col-sm-6">
+  <div class="col-xs-12 col-sm-6" style="padding: 5px">
     
     <!-- Bands -->
     <div class="containers col-xs-12">
@@ -48,23 +54,24 @@
 
   </div>
   <!-- End of band Section -->
-  <div class="containers col-xs-12 col-sm-6">
-    <div id="activityHeader">
-      <span id="activityTitle">Recent Comments</span>
+  <div class="col-xs-12 col-sm-6" style="padding: 5px">
+    <div class="containers col-xs-12">
+      <div id="activityHeader">
+        <span id="activityTitle">Recent Comments</span>
 
-      <div class="btn btn-xs btn-default" ng-click="showRecentHighlights()"><img style="width: 10px; height: 10px;" src="../img/timeButton.png"/></div>
-      <div class="btn btn-xs btn-default" ng-click="showRecentComments()"><img style="width: 10px; height: 10px;" src="../img/commentButton.png"/></div>
+        <div class="btn btn-xs btn-default" ng-click="showRecentHighlights()"><img style="width: 10px; height: 10px;" src="../img/timeButton.png"/></div>
+        <div class="btn btn-xs btn-default" ng-click="showRecentComments()"><img style="width: 10px; height: 10px;" src="../img/commentButton.png"/></div>
 
-      <select ng-model="bandFilter" id="bandFilter" style="float: right">
-        <option ng-selected="true" value="">All</option>
-        <option ng-selected="{{band.name == bandFilter}}"
-                ng-repeat="band in user.bands"
-                value="{{ band.name }}">
-          {{band.name}}
-        </option>
-      </select>
-    </div>
-    <div id="recentActivity">
+        <select ng-model="bandFilter" id="bandFilter" style="float: right">
+          <option ng-selected="true" value="">All</option>
+          <option ng-selected="{{band.name == bandFilter}}"
+                  ng-repeat="band in user.bands"
+                  value="{{ band.name }}">
+            {{band.name}}
+          </option>
+        </select>
+      </div>
+      <div id="recentActivity">
       <div id="loadContainer" style="padding: 20px; text-align: center">
         <i class="fa fa-spinner fa-spin" style="font-size: 20px"></i>
       </div>
@@ -99,9 +106,69 @@
       </div>
 
     </div>
+    </div>
   </div>
   <!-- Modals -->
+  <!-- Set List Modal -->
+  <div id="setListModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Your Playlists</h4>
+        </div>
+        <div class="modal-body">
+          <div style="padding: 15px">
+            <div class="buttonPadding">
+              <div class="mainButton" ng-click="openHighlightsFolder()">
+                <img style="width: 20px; height: 20px;" src="../img/timeButton.png"/>
+                <br><span style="font-size: 0.9em">Your Highlights</span>
+              </div>
+            </div>
+            <div class="buttonPadding">
+              <div class="mainButton" ng-click="openFavoritesFolder()">
+                <img style="width: 20px; height: 20px;" src="../img/black-metal.png"/>
+                <br><span style="font-size: 0.9em">Your Favorites</span>
+              </div>
+            </div>
+          </div>
+          <div style="padding: 15px">
+            <div id="{{ 'setList-' + $index }}" ng-animate="'animate'" ng-repeat="set in setlists" class="setListButton">
+
+              <div class="setListDetails">
+                <div>{{ set.name }}</div>
+              </div>
+
+            </div>
+            <div class="button homeButton" style="width: 80%; margin: 0 auto;" data-toggle="modal" data-target="#addPlaylistModal">Add Playlist</div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End of Set List Modal -->
+  <!-- Add Playlist Modal -->
+  <div id="setListModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Your Playlists</h4>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End of Add Playlist Modal -->
   <add-band-modal></add-band-modal>
   <user-details-modal></user-details-modal>
   <band-details-modal></band-details-modal>
+  <add-playlist-modal></add-playlist-modal>
 </div>

@@ -10,16 +10,16 @@
     <div class="containers  col-xs-12 col-sm-2">
       <!--<h5 class="col-xs-12 text-center">The Band</h5>-->
       <div class="buttonPadding col-xs-4 col-sm-12">
-        <div class="mainButton" data-toggle="modal" data-target="#setListModal" ng-click=""><i style="font-size: 18px" class="far fa-list-alt"></i><br>Set Lists</div>
+        <div id="setListButton" class="mainButton" data-toggle="modal" data-target="#setListModal" ng-click=""><i style="font-size: 18px" class="far fa-list-alt"></i><br>Set Lists</div>
       </div>
       <div class="buttonPadding col-xs-4 col-sm-12">
-        <div class="mainButton" ng-click="openHighlightsFolder()"><img style="width: 20px; height: 20px; padding: 2px" src="../img/timeButton.png"/><br>Highlights</div>
+        <div id="highlightButton" class="mainButton" ng-click="openHighlightsFolder()"><img style="width: 20px; height: 20px; padding: 2px" src="../img/timeButton.png"/><br>Highlights</div>
       </div>
       <div class="buttonPadding col-xs-4 col-sm-12">
-        <div class="mainButton" ng-click="openFavoritesFolder()"><img style="width: 20px; height: 20px;" src="../img/black-metal.png"/><br>Favorites</div>
+        <div id="favoritesButton" class="mainButton" ng-click="openFavoritesFolder()"><img style="width: 20px; height: 20px;" src="../img/black-metal.png"/><br>Favorites</div>
       </div>
       <div class="buttonPadding col-xs-4 col-sm-12">
-        <div class="mainButton" data-toggle="modal" data-target="#memberModal"><i style="font-size: 18px" class="fas fa-users"></i></br>Members</div>
+        <div id="membersButton" class="mainButton" data-toggle="modal" data-target="#memberModal"><i style="font-size: 18px" class="fas fa-users"></i></br>Members</div>
       </div>
 
     </div>
@@ -91,7 +91,7 @@
     </div>
   </div>
   <!-- End of Member Modal -->
-  <!-- Member Modal -->
+  <!-- Set List Modal -->
   <div id="setListModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -100,15 +100,18 @@
           <h4 class="modal-title">Set Lists</h4>
         </div>
         <div class="modal-body">
-          <input type="text" class="col-xs-6" ng-model="setListName" placeholder="Name"/>
-          <div id="addSetList" class="button homeButton col-xs-6" >Add Set List</div>
+          <div style="padding: 20px">
+            <input type="text" class="form-control" ng-model="setListName" placeholder="Name"/>
+            <div id="addSetList" class="button homeButton" ng-click="addSetList()">Add Set List</div>
+          </div>
+          <div style="padding: 15px">
+            <div id="{{ 'setList-' + $index }}" ng-animate="'animate'" ng-repeat="set in setlists" class="setListButton">
 
-          <div id="{{ 'setList-' + $index }}" ng-animate="'animate'" ng-repeat="set in setlists" class="col-xs-12 memberButton">
+              <div class="setListDetails">
+                <div>{{ set.name }}</div>
+              </div>
 
-            <div class="col-xs-12">
-              <p class="folderTitle">{{ set.name }}</p>
             </div>
-
           </div>
         </div>
         <div class="modal-footer">
@@ -117,7 +120,7 @@
       </div>
     </div>
   </div>
-  <!-- End of Folder Modal -->
+  <!-- End of Set List Modal -->
   <band-details-modal></band-details-modal>
   <add-folder-modal></add-folder-modal>
 </div>

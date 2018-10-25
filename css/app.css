@@ -10,6 +10,8 @@ html, body {
 .appContainer {
   padding-bottom: 70px;
   padding-left: 15px;
+  margin: 0 auto;
+  max-width: 1000px;
   padding-right: 15px;
   transition: margin-left .5s;
 }
@@ -484,6 +486,25 @@ html, body {
 
 .memberButton:hover {
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.setListButton {
+  cursor: pointer;
+  border: 1px solid #8e8e8e;
+  background-color: #FFF;
+  border-radius: 2px;
+  text-align: center;
+  margin-bottom: 10px;
+  padding: 20px;
+  transition: all .3s ease-in-out;
+}
+
+.setListButton:hover {
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.setListDetails {
+  font-size: 14px;
 }
 
 .memberInfo {

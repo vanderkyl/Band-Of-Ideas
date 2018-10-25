@@ -6,6 +6,7 @@ var CURRENT_FOLDER = "";
 var CURRENT_FILES = "";
 var CURRENT_FILE = {};
 var CURRENT_MEMBERS = [];
+var CURRENT_SETLISTS = [];
 var REQUESTED_URL = "";
 
 var testLogin = false;

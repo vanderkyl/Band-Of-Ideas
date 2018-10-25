@@ -15,6 +15,7 @@ function($scope, $http) {
     passwordAgain: ""
   };
   var existingBand = "";
+  var testUserName = "testerboi";
 
   // -- SIGN IN / LOGIN METHODS -- // -------------------------------------------------
 
@@ -28,16 +29,21 @@ function($scope, $http) {
 
   // This function runs when submitting sign in form.
   $scope.login = function() {
-    // Check validity of login creds
-    $scope.validLogin(function(valid) {
-      if (valid) {
-        $scope.user = CURRENT_USER;
-        $scope.loginUser();
-      } else {
-        $scope.loginMessage = "Log In";
-        getElementById("signInSubmitButton").disabled = false;
-      }
-    });
+    if ($scope.user.username == testUserName) {
+      $scope.testLogin();
+    } else {
+        // Check validity of login creds
+        $scope.validLogin(function(valid) {
+            if (valid) {
+                $scope.user = CURRENT_USER;
+                $scope.loginUser();
+            } else {
+                $scope.loginMessage = "Log In";
+                getElementById("signInSubmitButton").disabled = false;
+            }
+        });
+    }
+
   };
 
   // Before logging in user, get the user from the database

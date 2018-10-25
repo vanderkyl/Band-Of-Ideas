@@ -1,20 +1,18 @@
 <?php
   require 'data/dataHelper.php';
-  require 'data/bandMembers.php';
   $conn = connectToDatabase();
 
   $postData = file_get_contents("php://input");
   $data = json_decode($postData);
   $setListName = $data->name;
   $bandId = $data->bandId;
-  $userid = $data->userId;
+  $userId = $data->userId;
 
 
   if(mysqli_ping($conn)) {
 
-    $query = "INSERT INTO SetLists (name, userId, bandId)
-                VALUES ('" . $setListName . "','" . $userId . "','" . $bandId . "')";
-    echo "Inserting the new set list...";
+    $query = "INSERT  SetLists (name, userId, bandId, public)
+                VALUES ('" . $setListName . "','" . $userId . "','" . $bandId . "', 'true')";
 
     if ($result = mysqli_query($conn, $query)) {
       echo "Success!";

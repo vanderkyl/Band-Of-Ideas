@@ -41,8 +41,14 @@ app.directive('uploadFileModal', function() {
     };
 });
 // Folder Details Modal Directive
-app.directive('folderDetailssModal', function() {
+app.directive('folderDetailsModal', function() {
     return {
         templateUrl: 'views/modals/folderDetailsModal.html'
+    };
+});
+// Add Playlist Modal Directive
+app.directive('addPlaylistModal', function() {
+    return {
+        templateUrl: 'views/modals/addPlaylistModal.html'
     };
 });
