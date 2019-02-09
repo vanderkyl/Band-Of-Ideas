@@ -7,13 +7,28 @@
       <div id="file">
 
         <!-- Band Name | Folder Name -->
-        <div class="containers">
+        <div class="containers col-xs-12">
           <span class="backToButton" ng-click="goBackToBandPage()">{{ band.name }}</span> | <span class="backToButton" ng-click="goBackToFolderPage()">{{ folder.name }}</span>
+          <div style="position: absolute; top: -3px; right: 5%;">
+            <div class="ideaButtons" >
+              <div id="likeButton-{{file.id}}"  class="ideaButton mainButton" ng-click="favoriteFile()">
+                <span class="ideaButtonText">{{ file.likes }}</span>
+                <img src="../img/black-metal.png"/>
+                <p class="ideaButtonText">Favorite</p>
+              </div>
+              <div id="likedButton-{{file.id}}" class="likedButton ideaButton mainButton" ng-click="stopPropogation($event); showLikesOnFile(file); ">
+                <span class="ideaButtonText">{{ file.likes }}</span>
+                <img src="../img/metal.png"/>
+                <p class="ideaButtonText">Favorited</p>
+              </div>
+            </div>
+          </div>
         </div>
+
 
         <div id="ideaContainer">
           <div id="ideaLoading" class="loader"></div>
-          <div id="idea" class="containers col-xs-12">
+          <div id="idea" class="containers col-xs-12 col-sm-10">
             <a href="javascript:void(0)" id="ideaInfoButton" class="glyphicon glyphicon-info-sign" data-toggle="modal" data-target="#ideaDetailsModal"></a>
             <p id="fileTitle" class="fileTitle col-xs-12">{{ file.name }}</p>
             <div class="col-xs-12 noselect">
@@ -57,39 +72,43 @@
 
           <br>
         </div>
+        <!-- Buttons -->
+        <div class="col-xs-12 col-sm-2">
+          <div class="containers ideaButtons">
+
+            <div class="buttonPadding col-xs-3 col-sm-12">
+              <div class="ideaButton mainButton" ng-click="openAddToPlaylistModal()">
+                + <i class="far fa-list-alt"></i>
+                <p class="ideaButtonText">Playlist</p>
+              </div>
+            </div>
+            <div class="buttonPadding col-xs-3 col-sm-12">
+              <div class="ideaButton mainButton" ng-click="openSourceVideo()">
+                <i class="fas fa-film"></i>
+                <p id="sourceVideoButtonText" class="ideaButtonText">Video</p>
+              </div>
+            </div>
+            <div class="buttonPadding col-xs-3 col-sm-12">
+              <div class="ideaButton mainButton" ng-click="openMiniPlayer()">
+                <img src="img/playButton.png">
+                <p class="ideaButtonText">Mini Player</p>
+              </div>
+            </div>
+            <div class="buttonPadding col-xs-3 col-sm-12">
+              <div class="ideaButton mainButton" ng-click="downloadFromFile()">
+                <img src="img/black-downloadButton.png">
+                <p class="ideaButtonText">Download</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
         <div id="sourceVideoDiv" class="videoWrapper col-xs-12" style="display: none">
           <iframe id="sourceVideo" width="560" height="349" scrolling="no" style="overflow: hidden;" src=""></iframe>
         </div>
-        <!-- Buttons -->
-        <div class="containers ideaButtons">
-          <div id="likeButton-{{file.id}}"  class="likes ideaButton" ng-click="favoriteFile()">
-            <span class="ideaButtonText">{{ file.likes }}</span>
-            <img src="../img/black-metal.png"/>
-            <p class="ideaButtonText">Favorite</p>
-          </div>
-          <div id="likedButton-{{file.id}}" class="likedButton ideaButton" ng-click="stopPropogation($event); showLikesOnFile(file); ">
-            <span class="ideaButtonText">{{ file.likes }}</span>
-            <img src="../img/metal.png"/>
-            <p class="ideaButtonText">Favorited</p>
-          </div>
-          <div class="ideaButton" ng-click="openAddToPlaylistModal()">
-            + <i class="far fa-list-alt"></i>
-            <p class="ideaButtonText">Playlist</p>
-          </div>
-          <div class="ideaButton" ng-click="openSourceVideo()">
-            <i class="fas fa-film"></i>
-            <p id="sourceVideoButtonText" class="ideaButtonText">Video</p>
-          </div>
-          <div class="ideaButton" ng-click="openMiniPlayer()">
-            <img src="img/playButton.png">
-            <p class="ideaButtonText">Mini Player</p>
-          </div>
-          <div class="ideaButton" ng-click="downloadFromFile()">
-            <img src="img/black-downloadButton.png">
-            <p class="ideaButtonText">Download</p>
-          </div>
-        </div>
-        <div id="commentContainer" class="containers col-xs-12 col-sm-6">
+
+        <div id="commentContainer" class="containers col-xs-12">
           <!-- File Data, Buttons, Comments, and Highlights -->
           <div class="col-xs-12 ideaButtons commentHeader">
 
@@ -182,7 +201,7 @@
           <!-- End of Comments -->
         </div>
         <!-- Container that holds all files playlist -->
-        <div id="fileList" class="col-xs-12 col-sm-6">
+        <div id="fileList" class="col-xs-12 containers">
           <div id="fileScroller" class="col-xs-12">
             <div ng-animate="'animate'" ng-repeat="song in files |
             filter:{name: search }
@@ -191,9 +210,10 @@
               <div id="file-{{ song.id }}" class="playListFile col-xs-12" data-index="{{ song.fileIndex }}" ng-click="openFile(song)">
                 <div class="playListFileInfo col-xs-12">
                   <!-- <p class="deleteButton" ng-click="deleteFile($index)"> x </p>-->
-                  <p class="col-sm-4 col-xs-12">{{ song.name }}</p>
-                  <p class="col-sm-8 col-xs-12">{{ song.likes }} <img src="../img/black-metal.png"/> | {{ song.views }} <img src="../img/music.png"/> | {{ song.comments.length }} <img src="../img/commentButton.png"/> | {{ song.highlights.length }} <img src="../img/timeButton.png"/></p>
-                </div>
+                  <p class="col-xs-1">{{ $index + 1 }}</p>
+                    <p class="col-xs-4">{{ song.name }}</p>
+                    <p class="col-xs-6" style="text-align: right">{{ song.likes }} <img src="../img/black-metal.png"/> | {{ song.views }} <img src="../img/music.png"/> | {{ song.highlights.length }} <img src="../img/commentButton.png"/> </p>
+                  </div>
               </div>
               <!-- End of Single File -->
             </div>
