@@ -29,25 +29,6 @@ function loadAudio(file) {
   //audio.play();
 }
 
-function openMiniAudioPlayer(id, name) {
-  getElementById("trackName").innerHTML = name;
-  displayElementById("audioPlayer");
-  displayElementById("footer");
-  hideElementById("playButton");
-  displayElementInlineById("pauseButton");
-  getElementById("audioPlayerAudio").load();
-}
-
-function openMiniPlayer(id, name, source, time) {
-  var audio = getElementById("audio");
-  if (audio != null) {
-    audio.pause();
-  }
-  getElementById("audioPlayerSource").src = source;
-  getElementById("audioPlayerAudio").currentTime = time;
-  openMiniAudioPlayer(id, name);
-}
-
 function closeFile(id) {
   hidePreviousFile();
 }
@@ -107,3 +88,16 @@ function isTrashed(file) {
 function isFolder(file) {
   return file.mimeType == "application/vnd.google-apps.folder";
 }
+
+function showAddCommentButton() {
+  displayElementById("addCommentButton");
+}
+
+function hideAddCommentButton() {
+  var input = document.getElementById('commentInput');
+  if (input.value.length == 0) {
+    hideElementById("addCommentButton");
+  }
+
+}
+

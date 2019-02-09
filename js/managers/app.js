@@ -1,3 +1,4 @@
+
 var app = angular.module('myApp', ['ngRoute', 'ngResource', 'ui.bootstrap']);
 
 app.factory('folders', function () {
@@ -13,9 +14,13 @@ app.config(function ($routeProvider) {
     controller: 'accountController',
     templateUrl: 'views/login.html'
   })
-  .when('/user', {
+  .when('/dashboard', {
     controller: 'mainController',
     templateUrl: 'views/main.html'
+  })
+  .when('/user', {
+    controller: 'userController',
+    templateUrl: 'views/user.html'
   })
   .when('/band/:name?', {
     controller: 'folderController',
@@ -38,8 +43,8 @@ app.config(function ($routeProvider) {
       templateUrl: 'views/idea.html'
   })
   .when('/files', {
-    controller: 'fileController',
-    templateUrl: 'views/files.html'
+    controller: 'playlistController',
+    templateUrl: 'views/playlist.html'
   })
   .when('/logout', {
     controller: 'accountController',

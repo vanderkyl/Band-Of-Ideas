@@ -41,6 +41,9 @@
     } else if ($type == "search") {
       $str = $_GET['str'];
       $files = getSearchResults($conn, $str);
+    } else if ($type == "playlist") {
+      $playlistId = $_GET['playlistId'];
+      $files = getPlaylistFiles($conn, $playlistId);
     }
 
 
@@ -66,6 +69,7 @@
             $comments = getFileComments($conn, $row);
             $highlights = getFileHighlights($conn, $row);
             $userLikes = getUserLikes($conn, $row["id"]);
+            $folder = getFolder($conn, $row["folderId"]);
             $data = ['id' => $row["id"],
                      'name' => getFriendlyTitle($row["name"]),
                      'metaName' => $row["metaName"],
@@ -75,6 +79,7 @@
                      'link' => $row["link"],
                      'source' => $row["source"],
                      'folderId' => $row["folderId"],
+                     'folder' => $folder,
                      'bandId' => $row["bandId"],
                      'views' => intval($row["views"]),
                      'likes' => count($userLikes),
@@ -140,6 +145,11 @@
     return getFilesById($conn, $fileIds);
   }
 
+  function getPlaylistFiles($conn, $playlistId) {
+    $fileIds = getPlaylistFileIds($conn, $playlistId);
+    return getFilesById($conn, $fileIds);
+  }
+
   function getFilesById($conn, $fileIds) {
     if (empty($fileIds)) {
       return $fileIds;
@@ -161,6 +171,7 @@
             $comments = getFileComments($conn, $row);
             $highlights = getFileHighlights($conn, $row);
             $userLikes = getUserLikes($conn, $row["id"]);
+            $folder = getFolder($conn, $row["folderId"]);
             // Fill out file data
             $fileData = ['id' => $row["id"],
                      'name' => getFriendlyTitle($row["name"]),
@@ -171,6 +182,7 @@
                      'link' => $row["link"],
                      'source' => $row["source"],
                      'folderId' => $row["folderId"],
+                     'folder' => $folder,
                      'bandId' => $row["bandId"],
                      'views' => intval($row["views"]),
                      'likes' => count($userLikes),
@@ -198,6 +210,7 @@
           $comments = getFileComments($conn, $row);
           $highlights = getFileHighlights($conn, $row);
           $userLikes = getUserLikes($conn, $row["id"]);
+          $folder = getFolder($conn, $row["folderId"]);
           // Fill out file data
           $fileData = ['id' => $row["id"],
                    'name' => getFriendlyTitle($row["name"]),
@@ -208,6 +221,7 @@
                    'link' => $row["link"],
                    'source' => $row["source"],
                    'folderId' => $row["folderId"],
+                   'folder' => $folder,
                    'views' => intval($row["views"]),
                    'likes' => count($userLikes),
                    'userLikes' => $userLikes,
@@ -267,6 +281,23 @@
     } else {
       $query = "SELECT fileId FROM Highlights WHERE userId='" . $userId . "' AND bandId='" . $bandId . "';";
     }
+
+    if ($result = mysqli_query($conn, $query)) {
+
+      if ($result->num_rows > 0) {
+        // Get current row as an array
+        while ($row = mysqli_fetch_assoc($result)) {
+          $fileIds[] = $row["fileId"];
+        }
+      }
+    }
+
+    return $fileIds;
+  }
+
+  function getPlaylistFileIds($conn, $playlistId) {
+    $fileIds = [];
+    $query = "SELECT fileId FROM PlaylistFiles WHERE playlistId='" . $playlistId . "';";
 
     if ($result = mysqli_query($conn, $query)) {
 

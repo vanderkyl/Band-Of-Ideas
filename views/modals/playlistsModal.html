@@ -1,0 +1,33 @@
+<!-- Playlist Modal -->
+<div id="playlistsModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title col-xs-6">{{ playlists.length }} Playlists</h4>
+        <div class="btn btn-success btn-sm addButton" style="margin-right: 30px;" data-toggle="modal" data-target="#addPlaylistModal">+</div>
+      </div>
+      <div class="modal-body">
+
+        <div id="playlistLoader" class="loader"></div>
+        <div id="playlists" class="scroller" style="padding: 15px; display: none;">
+          <div id="{{ 'playlist-' + $index }}" ng-animate="'animate'" ng-repeat="playlist in playlists" class="playlistButton col-xs-12" data-dismiss="modal" ng-click="openPlaylist(playlist)">
+
+            <div class="playlistDetails col-xs-8">
+              <div>{{ playlist.name }}</div>
+            </div>
+            <div class="col-xs-4">
+              <div>{{ playlist.numFiles }} Ideas</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of Playlist Modal -->
+<add-playlist-modal></add-playlist-modal>

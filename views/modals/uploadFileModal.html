@@ -7,21 +7,21 @@
         <h4 class="modal-title">Upload File</h4>
       </div>
       <div class="modal-body">
-        <form id="fileForm" action="../php/upload.php" method="POST" enctype="multipart/form-data">
-          <input type="file" id="fileSelector" name="files[]" multiple/>
-          <button type="submit" id="uploadButton">Upload</button>
+        <form id="fileForm" class="col-xs-12" method="POST" enctype="multipart/form-data">
+          <input type="file" id="fileSelector" class="col-xs-6" name="files[]" multiple/>
+          <button type="submit" id="uploadButton" class="col-xs-6 btn btn-success">Upload</button>
         </form>
-        <h4>Upload Progress:
+        <h4 class="col-xs-12">Upload Progress:
           <div id="uploadPercentage">
             <div id="uploadPercentageBar"></div>
           </div>
         </h4>
-        <h4>Status: </h4><p id="uploadStatus"></p>
-        <h4>Results: </h4><p id="uploadResult"></p>
-        <h4>File Status: </h4><p id="fileStatus"></p>
+        <div class="col-xs-12"><h4>Status: </h4><p id="uploadStatus"></p></div>
+        <div class="col-xs-12"><h4>Results: </h4><p id="uploadResult"></p></div>
+        <div class="col-xs-12"><h4>File Status: </h4><p id="fileStatus"></p></div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn" data-dismiss="modal">Close</button>
+        <button type="button" class="btn" data-dismiss="modal" onclick="resetUploadModal()">Close</button>
       </div>
     </div>
   </div>

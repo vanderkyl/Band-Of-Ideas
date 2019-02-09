@@ -16,15 +16,14 @@
         while($row = mysqli_fetch_assoc($result)) {
           $bandId = $row["id"];
           $numFiles;
-          if ($result = mysqli_query($conn, "SELECT id FROM Files WHERE bandId = '" . $bandId . "'")) {
+          if ($numFilesResult = mysqli_query($conn, "SELECT id FROM Files WHERE bandId = '" . $bandId . "'")) {
 
-            $numFiles = $result->num_rows;
+            $numFiles = $numFilesResult->num_rows;
 
           }
           $data = ['id' => $bandId,
                'name' => $row["name"],
                'metaName' => $row["metaName"],
-               'memberIds' => explode(',', $row["memberIds"]),
                'members' => getBandMembersByBandId($conn, $bandId),
                'code' => $row["code"],
                'numFiles' => $numFiles];

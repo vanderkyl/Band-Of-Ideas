@@ -72,6 +72,12 @@
   font-size: 12px;
 }
 
+#markHighlightButton {
+  padding-bottom: 15px;
+  padding-top: 15px;
+  margin-top: 4px;
+}
+
 .commentUserName {
   color: #2c6344;
   font-size: 12px;
@@ -99,15 +105,15 @@
 
 .playListFile {
   border: 1px solid green;
-  background: #333;
+  background: #424242;
+  transition: box-shadow .3s ease-in;
 }
 
 .playListFile:hover {
   border-color: #3CB371;
   background-color: #2E5379;
+  box-shadow: 0 2px 10px rgba(0,0,0,.5)
 }
-
-
 
 .playListFileDetails {
   height: 0;
@@ -128,6 +134,7 @@
   text-align: center;
   margin-top: 10px;
   font-size: 11px;
+  padding: 0;
 }
 
 .fileButtons {
@@ -138,7 +145,7 @@
 }
 
 .ideaButtonText {
-  font-size: 10px;
+  font-size: 9px;
 }
 
 .ideaButton {
@@ -149,9 +156,19 @@
   cursor: pointer;
   display: inline-block;
   font-size: 14px;
-  min-width: 65px;
+  min-width: 56px;
   height: 45px;
   padding-top: 2px;
+  background: #FFF;
+  border: 1px solid #444;
+}
+
+#ideaInfoButton , #closeInfoButton {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  z-index: 1000;
+  font-size: 16px;
 }
 
 .likes {
@@ -230,6 +247,7 @@
 
 #fileList {
   margin-top: 15px;
+  padding: 0;
 }
 
 .commentMetaData {
@@ -237,6 +255,15 @@
 }
 
 #comments {
+  max-height: 400px;
+}
+
+#addCommentButton {
+  float: left;
+  margin-top: 2px;
+  margin-left: 15px;
+  width: 34px;
+  display: none;
 }
 
 #highlights {
@@ -265,12 +292,14 @@
 }
 
 #commentInput input, #highlightInput input {
-  width: 100%;
-  font-size: 12px;
+
 }
 
 #highlightInput, #commentInput {
   margin-bottom: 10px;
+  width: 65%;
+  float: left;
+  margin-right: -10px;
 }
 
 .comment {
@@ -291,25 +320,25 @@
 }
 
 #commentContainer {
-
+  max-height: 492px;
 }
 
 .commentHeader {
-  text-align: center;
-  padding-bottom: 10px;
-  top: -3px;
+  top: -6px;
   border-bottom: 1px solid #444;
-  margin-bottom: 10px;
 }
 
 #commentContainer .ideaButton {
-  height: 30px;
-  width: 45%;
 }
 
 .highlight {
   background: #FFF;
   border: 1px solid red;
+  min-width: 35px;
+  height: 30px;
+  float: right;
+  margin-right: -10px;
+  margin-top: 2px;
 }
 
 .highlight:hover {
@@ -326,16 +355,18 @@
 .highlightPlayButton {
   background: #FFF;
   border: 1px solid red;
+  right: 5px;
+  top: 15px !important;
+  position: absolute;
   cursor: pointer;
   display: inline-block;
   font-size: 10px;
-  line-height: 35px;
+  line-height: 20px;
   min-width: 50px;
-  height: 35px;
+  height: 23px;
   border-radius: 10%;
   padding-left: 5px;
   padding-right: 5px;
-  margin-left: -10px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
   transition: background 500ms;
 }
@@ -409,6 +440,7 @@
   margin-bottom: 10px;
   width: 100%;
   display: inline-block;
+
 }
 
 .fileButtons img, .ideaButtons img {
@@ -562,11 +594,20 @@
 
 .fileDetailsButton {
   position: absolute;
-  left: 93%;
-  top: 20px;
+  left: 90%;
+  padding: 20px;
+  top: -22px;
   color: white;
+  z-index: 1000;
 }
 
+#fileScroller, .scroller {
+  max-height: 700px;
+  overflow-y: scroll;
+  padding-bottom: 20px;
+  box-shadow: 1px 1px 5px #555 inset;
+  padding-top: 10px;
+}
 
 .animate-enter {
     -webkit-animation: enter 600ms cubic-bezier(0.445, 0.050, 0.550, 0.950);

@@ -12,7 +12,8 @@
   $name = $data->name;
   $metaName = $data->metaName;
   $password = $data->password;
-  $existingBand = $data->existingBand;
+  $existingBand = false;
+
   // Set temp Ids
   $userId = "";
   $bandId = "";
@@ -26,6 +27,7 @@
       // Check if the band already exists
       if($row = mysqli_fetch_assoc($result)) {
         $bandId = $row["id"];
+        $existingBand = true;
       } else {
         $bandId = findIdForNewRow($conn, "Bands");
       }
@@ -39,15 +41,26 @@
     runMySQLInsertQuery($conn, $userQuery);
 
     $bandQuery = "";
-    if ($existingBand == "") {
-      $bandQuery = "INSERT INTO Bands (id, name, metaName, memberIds, code)
-                VALUES ('" . $bandId . "','" . $band . "','" . $bandMetaName . "','" . $userId . "','1234')";
+    if ($existingBand == false) {
+      $bandQuery = "INSERT INTO Bands (id, name, metaName, code)
+                VALUES ('" . $bandId . "','" . $band . "','" . $bandMetaName . "','1234')";
       echo "Inserting the new band...";
+      runMySQLInsertQuery($conn, $bandQuery);
+
+      $bandMemberId = findIdForNewRow($conn, "BandMembers");
+      $bandMemberQuery = "INSERT INTO BandMembers (id, userId, bandId)
+                  VALUES ('" . $bandMemberId . "','" . $userId . "','" . $bandId . "')";
+      echo "Updating band members...";
+      runMySQLInsertQuery($conn, $bandMemberQuery);
+
     } else {
-      $bandQuery = "UPDATE Bands SET memberIds = CONCAT(memberIds, '," . $userId . "') WHERE name = '" . $band . "';";
-      echo "Updating existing band...";
+      $bandMemberId = findIdForNewRow($conn, "BandMembers");
+      $bandQuery = "INSERT INTO BandMembers (id, userId, bandId)
+                VALUES ('" . $bandMemberId . "','" . $userId . "','" . $bandId . "')";
+      echo "Updating band members...";
+      runMySQLInsertQuery($conn, $bandQuery);
     }
-    runMySQLInsertQuery($conn, $bandQuery);
+
   }
 
   mysqli_close($conn);

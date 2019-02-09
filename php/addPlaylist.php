@@ -11,7 +11,7 @@
 
   if(mysqli_ping($conn)) {
 
-    $query = "INSERT  SetLists (name, userId, bandId, public)
+    $query = "INSERT INTO Playlists (name, userId, bandId, public)
                 VALUES ('" . $setListName . "','" . $userId . "','" . $bandId . "', 'true')";
 
     if ($result = mysqli_query($conn, $query)) {

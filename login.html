@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Band Of Ideas</title>
+    <!-- Meta tags -->
+    <meta charset="UTF-8">
+    <meta name="description" content="Band of Ideas">
+    <meta name="keywords" content="music,ideas,bands,collaboration,share,message,videos,audio,band,of,ideas,bandofideas">
+    <meta name="author" content="KHOOF">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- TODO: Change to relevant favicon "logo" -->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Optional theme-->
+    <link rel="stylesheet" href="css/bootstrap/bootstrap-theme-3.3.7.min.css">
+    <link rel="stylesheet" href="css/bootstrap/bootstrap-responsive.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" />
+    <!-- App Styling -->
+    <link rel="stylesheet" href="css/app.css"/>
+    <link rel="stylesheet" href="css/navbar.css"/>
+    <link rel="stylesheet" href="css/player.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/files.css"/>
+    <link rel="stylesheet" href="css/login.css"/>
+    <link rel="stylesheet" href="css/form.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+
+    <!-- Dependencies - Latest compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="../js/dependencies/jquery/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script src="../js/dependencies/bootstrap/bootstrap-3.3.7.min.js" type="text/javascript"></script>
+    <script src="../js/dependencies/angular/angular-1.5.8.min.js" type="text/javascript"></script>
+    <script src="../js/dependencies/angular/angular-route-1.5.8.min.js" type="text/javascript"></script>
+    <script src="../js/dependencies/angular/angular-mocks-1.5.8.js" type="text/javascript"></script>
+    <script src="../js/dependencies/angular/angular-resource-1.5.8.min.js" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script data-require="angular-ui-bootstrap@0.3.0" data-semver="0.3.0" src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.3.0.min.js"></script>
+  </head>
+  <body ng-app="loginApp">
+
+
+    <!-- Container of Angular views -->
+    <div id="appContainer" class="appContainer" ng-view></div>
+
+
+    <!-- Managers - JS -->
+    <script src="js/managers/app.js" type="text/javascript"></script>
+    <script src="js/managers/settings.js" type="text/javascript"></script>
+    <script src="js/managers/account.js" type="text/javascript"></script>
+    <script src="js/managers/webTools.js" type="text/javascript"></script>
+    <script src="js/managers/search.js" type="text/javascript"></script>
+
+    <!-- Objects - JS -->
+    <script src="js/objects/folder.js" type="text/javascript"></script>
+    <script src="js/objects/file.js" type="text/javascript"></script>
+    <script src="js/objects/audio.js" type="text/javascript"></script>
+    <script src="test-data/test.js" type="text/javascript"></script>
+
+    <!-- Controllers - JS -->
+    <script src="js/controllers/mainController.js" type="text/javascript"></script>
+    <script src="js/controllers/accountController.js" type="text/javascript"></script>
+    <script src="js/controllers/folderController.js" type="text/javascript"></script>
+    <script src="js/controllers/fileController.js" type="text/javascript"></script>
+    <script src="js/controllers/playlistController.js" type="text/javascript"></script>
+    <script src="js/controllers/ideaController.js" type="text/javascript"></script>
+    <script src="js/controllers/routeController.js" type="text/javascript"></script>
+    <script src="js/controllers/settingsController.js" type="text/javascript"></script>
+
+    <!-- Disqus
+    <script src="js/managers/disqus.js" type="text/javascript"></script>
+    <script id="dsq-count-scr" src="//idea-app.disqus.com/count.js" async></script>
+    -->
+
+    <!-- Directives - JS -->
+    <script src="js/directives/fileLikes.js" type="text/javascript"></script>
+    <script src="js/directives/modals.js" type="text/javascript"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/2.0.5/wavesurfer.min.js"></script>
+  </body>
+</html>

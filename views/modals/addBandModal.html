@@ -3,30 +3,46 @@
   <div id="addBandInput" class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <button type="button" class="close" data-dismiss="modal" ng-click="closeAddBandModal()">&times;</button>
         <h4 class="modal-title">Add Band</h4>
       </div>
 
-      <div class="modal-body mainForm">
-
-        <input type="text" style="text-align:center" name="bandName" placeholder="Band Name" ng-model="newBandName" required/>
-        <input type="text" style="text-align:center" name="bandCode" placeholder="Band Code" ng-model="bandCode" required/>
+      <div class="modal-body modalForm">
+        <!-- Choose Band Name Form -->
+        <div id="chooseBand">
+          <h3>Enter a Band Name</h3>
+          <form>
+            <input id="bandNameInput" type="text" name="bandName" placeholder="Band Name" ng-model="newBandName" autocomplete="off" required/>
+            <input type="submit" class="btn btn-default" ng-click="checkBandAvailability()" value="Check Band"/>
+          </form>
+          <br>
+        </div>
+        <!-- End of Band Name Form -->
+        <!-- Join Existing Band Form -->
+        <div id="checkBandCode" style="display: none">
+          <h3><strong>{{ newBandName }}</strong><br><br>
+            This band already exists.<br>
+            If you want to join, enter the band code
+          </h3>
+          <form>
+            <input id="bandCodeInput" type="text" name="bandCode" placeholder="Band Code" maxlength="4" ng-model="bandCode" autocomplete="off" required/>
+            <input type="submit" class="btn btn-default" ng-click="checkBandCode()" value="Check Code"/>
+            <br>
+            <input type="button" class="btn btn-default" ng-click="backToChooseBand()" value="Go Back"/>
+          </form>
+        </div>
+        <div id="joinBand" style="display: none">
+          <h3>Ready to add new band</h3>
+          <h3><strong>{{ newBandName }}</strong></h3>
+          </div>
+        <!-- End of Existing Band Form -->
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="joinBand()">Add Band</button>
+        <button type="button" class="btn" data-dismiss="modal" ng-click="closeAddBandModal()">Close</button>
+        <button id="addBandButton" type="button" class="btn btn-success" style="display: none" ng-click="joinBand()">Add Band</button>
       </div>
     </div>
-    <!--
-    <div class="col-md-6 col-xs-12">
-      <p class="col-md-12 col-xs-12">{{ joinBandMessage }}</p>
-      <div class="col-md-12 col-xs-12 form">
-        <input type="text" class="col-md-12 col-xs-12" name="bandName" placeholder="Band Name" ng-model="joinBandName" required/>
-        <input type="text" class="col-md-12 col-xs-12" name="bandCode" placeholder="Band Code" ng-model="bandCode" required/>
-        <input type="button" class="col-md-12 col-xs-12 btn btn-default" value="Join Band" ng-click="joinBand()">
-      </div>
-    </div>
-  -->
+
   </div>
 </div>
 <!-- End of Add Band Modal -->

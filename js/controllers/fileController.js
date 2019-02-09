@@ -80,6 +80,7 @@ function playNext() {
     console.log("Opening file:");
     console.log(file);
     CURRENT_FILE = file;
+    quitPlayer();
     navigateToURL("/#/band/" + CURRENT_BAND.metaName + "/" + CURRENT_FOLDER.metaName
                 + "/" + CURRENT_FILE.metaName);
 /*
@@ -370,15 +371,6 @@ function playNext() {
     }
   };
 
-  $scope.$watch('currentPage + pageSize', function() {
-    var begin = (($scope.currentPage - 1) * $scope.pageSize);
-    var end = begin + $scope.pageSize;
-
-    $scope.visibleFiles = $scope.files.slice(begin, end);
-    console.log($scope.visibleFolders);
-    var elements = document.getElementById("pagination").getElementsByTagName("ul");
-    elements[0].classList.add("pagination");
-  });
 
   $scope.showFilters = function() {
     var filters = getElementById("fileFilters");
@@ -415,20 +407,20 @@ function playNext() {
         if (xhr.status === 200) {
             // File(s) uploaded.
             uploadButton.innerHTML = 'Upload';
-        } else {
-            alert('An error occurred!');
-        }
-        if (xhr.status == "200") {
-            uploadStatus.innerHTML = "Success!";
+            uploadStatus.innerHTML = "Upload Complete";
             success = true;
         } else {
-            uploadStatus.innerHTML = "Failure.";
             success = false;
+            alert('An error occurred!');
         }
 
-        uploadResult.innerHTML = xhr.responseText;
+        var result = "<p><strong>Successfully uploaded:</strong></p>";
+        var uploadedFiles = fileSelect.files;
+        for (var i = 0; i < uploadedFiles.length; i++) {
+            result += "<p>" + uploadedFiles[i].name + ": " + calculateFileSize(uploadedFiles[i].size) + "</p>";
+        }
+        uploadResult.innerHTML = result;
 
-        fileStatus.innerHTML = "Loading files";
         if (success) {
             $http.get("/php/files.php?type=getFiles&folderName=" + CURRENT_FOLDER.metaName + "&bandId=" + CURRENT_BAND.id)
                 .then(function (response) {
@@ -436,14 +428,13 @@ function playNext() {
                     CURRENT_FILES = response.data;
                     $scope.files = CURRENT_FILES;
                     $scope.visibleFiles = CURRENT_FILES;
-                    fileStatus.innerHTML = "Upload Complete";
+                    uploadStatus.innerHTML = "Upload Complete: New ideas are ready!";
                     fileSelect.value = "";
                     uploadPercentageBar.style.marginRight = "100%";
-
                 });
         } else {
-            fileStatus.innerHTML = "Upload Failed";
-            console.log("Failed Upload");
+            uploadStatus.innerHTML = "Upload Complete: Failed to load new ideas";
+            console.log("Failed File Reload");
         }
         $scope.$apply()
     };
@@ -491,6 +482,7 @@ function playNext() {
 
     };
 
+  showAppLoader();
   // Do this if logged in
   if (isLoggedIn()) {
 
@@ -509,6 +501,7 @@ function playNext() {
     addNavLink("folderLink", CURRENT_FOLDER.name, folderUrl);
 
   }
+  hideAppLoader();
 }]);
 
 app.directive('ngFileModel', ['$parse', function ($parse) {

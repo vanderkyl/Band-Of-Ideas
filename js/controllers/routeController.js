@@ -5,7 +5,8 @@ function($scope, $sce, $http) {
         $http.get("/php/getFiles.php?type=singleFile&fileId=" + id)
             .then(function (response) {
 
-                hideResult();
+                hideResult("livesearch");
+                hideResult("largeLivesearch");
                 CURRENT_FILES = response.data.folderFiles;
                 CURRENT_FILE = response.data.file;
                 CURRENT_FOLDER = response.data.folder;

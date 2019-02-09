@@ -7,10 +7,16 @@
         <h4 class="modal-title">Details</h4>
       </div>
       <div class="modal-body">
-        <h4>Username: </h4><p>{{ user.email }}</p>
-        <h4>Password: </h4><p>*******</p>
+        <h4>Username: </h4><p>{{ user.username }}</p>
+        <h4>Password: </h4><p>{{ user.password }}</p>
+        <h4>Email: </h4><p>{{ user.email }}</p>
+        <h4>Bands ({{ user.bands.length }}): </h4>
+        <div ng-repeat="band in user.bands">
+          <p>{{ band.name }}</p>
+        </div>
       </div>
       <div class="modal-footer">
+        <button type="button" class="btn" onclick="$('.modal-backdrop').remove(); navigateToURL('/#/user')" >Edit</button>
         <button type="button" class="btn" data-dismiss="modal">Close</button>
       </div>
     </div>

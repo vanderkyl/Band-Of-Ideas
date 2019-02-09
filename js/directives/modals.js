@@ -52,3 +52,15 @@ app.directive('addPlaylistModal', function() {
         templateUrl: 'views/modals/addPlaylistModal.html'
     };
 });
+// Playlist Modal Directive
+app.directive('playlistsModal', function() {
+    return {
+        templateUrl: 'views/modals/playlistsModal.html'
+    };
+});
+// Member Modal Directive
+app.directive('memberModal', function() {
+    return {
+        templateUrl: 'views/modals/memberModal.html'
+    };
+});

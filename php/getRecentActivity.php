@@ -7,8 +7,15 @@
   $bandIds = json_decode($_GET['bandIds']);
 
   if(mysqli_ping($conn)) {
-    $data = ['comments' => getRecentComments($conn, $bandIds),
-             'highlights' => getRecentHighlights($conn, $bandIds)];
+    $data = [];
+    if (empty($bandIds)) {
+        $data = ['comments' => [],
+                 'highlights' => []];
+    } else {
+        $data = ['comments' => getRecentComments($conn, $bandIds),
+                 'highlights' => getRecentHighlights($conn, $bandIds)];
+    }
+
     echo json_encode($data);
   } else {
     echo "Error: " . msqli_error($conn);

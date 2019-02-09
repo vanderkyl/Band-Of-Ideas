@@ -1,9 +1,9 @@
 var results = [];
 var resultClicked = false;
 
-function showResult(str) {
+function showResult(str, searchId) {
   if (str.length==0) {
-    hideResult();
+    hideResult(searchId);
     results = "";
     return;
   }
@@ -23,8 +23,8 @@ function showResult(str) {
         var bandHtml = "<span class='searchResultSubText'>" + files[i].bandName + " - </span>";
         fileHtml += "<div class='fileSearchButton' onclick='openFile(" + files[i].id + ")'>" + files[i].name + "  " + bandHtml + folderHtml + "</div>";
       }
-      document.getElementById("livesearch").innerHTML= fileHtml;
-      document.getElementById("livesearch").style.border="1px solid #A5ACB2";
+      document.getElementById(searchId).innerHTML= fileHtml;
+      document.getElementById(searchId).style.border="1px solid #A5ACB2";
     }
   }
   xmlhttp.open("GET","/php/livesearch.php?q=" + str + "&bandId=" + CURRENT_BAND.id, true);
@@ -66,10 +66,10 @@ function openFile(id) {
     navigateToURL("/#/idea?id=" + id);
 }
 
-function hideResult() {
+function hideResult(searchId) {
     //results = document.getElementById("livesearch").innerHTML;
-    document.getElementById("livesearch").innerHTML = "";
-    document.getElementById("livesearch").style.border = "0px";
+    document.getElementById(searchId).innerHTML = "";
+    document.getElementById(searchId).style.border = "0px";
 }
 
 function showResults() {

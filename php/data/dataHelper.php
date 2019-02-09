@@ -48,7 +48,11 @@
     // Helper Methods //
 
     function roundToTwoDecimals($num) {
-      return round($num, 2);
+      if (empty($num)) {
+        return $num;
+      } else {
+        return round($num, 2);
+      }
     }
 
     function calculateFileSize($bytes) {
@@ -78,5 +82,6 @@
       }
       return $title;
     }
+    
 
  ?>

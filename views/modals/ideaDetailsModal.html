@@ -7,14 +7,25 @@
                 <h4 class="modal-title">Details</h4>
             </div>
             <div class="modal-body">
-                <h4>Band Name: </h4><p>{{ band.name }}</p>
-                <h4>Folder Name: </h4><p>{{ folder.name }}</p>
-                <h4>File Name: </h4><p>{{ file.name }}</p>
+                <h4>Name: </h4><p>{{ file.name }}</p>
+                <hr>
+                <h4>Band Name: </h4><p class="backToButton" ng-click="goBackToBandPage()">{{ band.name }}</p>
+                <h4>Folder Name: </h4><p class="backToButton" ng-click="goBackToFolderPage()">{{ folder.name }}</p>
                 <hr>
                 <h4>Views: </h4><p>{{ file.views }}</p>
                 <h4>Size: </h4><p>{{ file.size }}</p>
                 <h4>Comments: </h4><p>{{ file.comments.length }}</p>
                 <h4>Highlights: </h4><p>{{ file.highlights.length }}</p>
+                <hr>
+                <div ng-if="file.userLikes.length > 0">
+                    <strong>Favorited By:</strong>
+                    <div ng-repeat="like in file.userLikes">
+                        {{ like.name }}
+                    </div>
+                </div>
+                <div ng-if="file.userLikes.length === 0">
+                    <strong>No Favorites</strong>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn" data-dismiss="modal">Close</button>

@@ -2,6 +2,7 @@
 
   require 'data/dataHelper.php';
   require 'data/bandMembers.php';
+  header('Content-Type: text/plain');
   $conn = connectToDatabase();
 
   $postData = file_get_contents("php://input");
@@ -11,6 +12,7 @@
     $bandId = "";
 
   if(mysqli_ping($conn)) {
+
     if ($type == "tokenUpdate") {
       $token = $data;
       echo $userId;
@@ -21,6 +23,15 @@
         echo "Sorry, it didn't work.";
         echo $query;
       }
+    } else if ($type == "userImage") {
+        $img = $data->icon;
+        $query = "UPDATE Users SET userIcon = '" . $img . "' WHERE id = '" . $userId . "';";
+        if ($result = mysqli_query($conn, $query)) {
+          echo "User update successful!";
+        } else {
+          echo "Sorry, it didn't work.";
+          echo $query;
+        }
     } else if ($type == "bandUpdate") {
       $band = $data->metaName;
       // Find band id
@@ -45,6 +56,7 @@
             echo $userQuery;
           }
         }
+
       } else {
         echo "Adding new band";
         if ($result = mysqli_query($conn, "SELECT MAX(id) AS `maxid` FROM Bands;")){

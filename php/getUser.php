@@ -1,6 +1,7 @@
 <?php
   header('Content-Type: application/json');
   require 'data/dataHelper.php';
+  require 'data/bandMembers.php';
 
   $conn = connectToDatabase();
 
@@ -31,13 +32,14 @@
 
     if ($result = mysqli_query($conn, $query)) {
       if ($row = mysqli_fetch_assoc($result)) {
-        $bands = getBands($row["bandIds"], $conn);
+        $bands = getBands($row["id"], $conn);
         $data = ['id' => $row["id"],
              'name' => $row["name"],
              'username' => $row["username"],
              'email' => $row["email"],
              'password' => $row["password"],
-             'bands' => $bands];
+             'bands' => $bands,
+             'userIcon' => $row["userIcon"]];
       } else {
         $data = new stdClass();
       }
@@ -50,10 +52,10 @@
     }
   }
 
-  function getBands($bandIds, $conn) {
-    $bandArray = explode(',', $bandIds);
+  function getBands($userId, $conn) {
+    $bandIds = getBandIds($userId, $conn);
     $bands = [];
-    foreach ($bandArray as $id) {
+    foreach ($bandIds as $id) {
       $query = "SELECT * FROM Bands WHERE id = '" . $id . "'";
       if ($result = mysqli_query($conn, $query)) {
         if ($row = mysqli_fetch_assoc($result)) {
@@ -64,7 +66,7 @@
           $band = ['id' => $row["id"],
                   'name' => $row["name"],
                   'metaName' => $row["metaName"],
-                  'memberIds' => getMembers($row["memberIds"], $conn),
+                  'members' => getBandMembersByBandId($conn, $id),
                   'code' => $row["code"],
                   'numFiles' => $numFiles];
           $bands[] = $band;
@@ -72,6 +74,18 @@
       }
     }
     return $bands;
+  }
+
+  function getBandIds($userId, $conn) {
+    $bandIds = [];
+    $query = "SELECT bandId FROM BandMembers WHERE userId = '" . $userId . "'";
+    if ($result = mysqli_query($conn, $query)) {
+      while ($row = mysqli_fetch_assoc($result)) {
+        $bandId = $row["bandId"];
+        $bandIds[] = $bandId;
+      }
+    }
+    return $bandIds;
   }
 
   function getMembers($userIds, $conn) {

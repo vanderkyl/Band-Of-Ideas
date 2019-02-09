@@ -16,16 +16,16 @@
 
     </div>
     <!-- End of Buttons and Details -->
-    <!-- Band Name | Folder Name -->
-    <div class="titles">
+    <!-- Band Name | Folder Name
+    <div class="containers">
 
       <span class="backToButton" ng-click="goBackToBandPage()">{{ band.name }}</span> | <span class="backToButton" ng-click="goBackToFolderPage()">{{ folder.name }}</span></div>
+    -->
     <!-- File Filter: Sorted By, Number of Files on Page -->
     <div class="containers col-xs-12">
-      <i class="glyphicon glyphicon-search" style="position: absolute; top: 22px; left: 3%; font-size: 18px; cursor: pointer" ng-click="showFilters()"></i>
+      <!--<i class="glyphicon glyphicon-search" style="position: absolute; top: 22px; left: 3%; font-size: 18px; cursor: pointer" ng-click="showFilters()"></i>-->
 
-      <div id="uploadFiles" class="button homeButton" style="margin: -5px auto; width: 85%" data-toggle="modal" data-target="#uploadFileModal">Upload<div id="uploadPercentageButton"></div></div>
-      <div id="fileFilters" style="display:none; margin-top: 15px">
+      <div id="fileFilters">
         <div class="col-xs-6 filters">
           <input ng-model="search" class="form-control" placeholder="Search Files">
         </div>
@@ -50,7 +50,11 @@
     </div>
     <!-- End of File Filter -->
     <div id="files" class="containers col-xs-12">
-      <div class="text-center" style="font-size:12px">{{ files.length }} Ideas</div>
+      <div id="fileHeader">
+        <span class="backToButton" ng-click="goBackToBandPage()">{{ band.name }}</span> | <span class="backToButton" ng-click="goBackToFolderPage()">{{ folder.name }}</span>
+        <div id="uploadFiles" class="btn btn-success btn-xs addButton" data-toggle="modal" data-target="#uploadFileModal">Upload<div id="uploadPercentageButton"></div></div>
+      </div>
+      <div class="text-center" style="margin-top: 10px">{{ files.length }} Ideas</div>
       <div id="filePlayerLoader" style="display: none;font-size: 20px;text-align: center;margin-top: 50px;margin-bottom: 30px"><i class="fa fa-spinner fa-spin"></i></div>
       <div id="filePlayer" style="display:none; height: 100px">
         <h4 class="col-xs-12" style="text-align: center">{{ wavesurferName }}</h4>
@@ -59,13 +63,14 @@
       <div id="playListFileDetails-{{ song.id }}" class="playListFileDetails"></div>
       <!-- Container that holds all files playlist -->
       <div id="fileList" class="col-xs-12">
-        <div class="col-xs-12">
-          <div ng-animate="'animate'" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 song" style="padding:0" ng-repeat="song in visibleFiles |
+        <div id="fileScroller" class="col-xs-12">
+          <div ng-animate="'animate'" class="col-xs-12 col-sm-6 song" style="padding: 5px" ng-repeat="song in files |
           filter:{name: search }
-          | limitTo:pageSize | orderBy:sortBy" >
+          | orderBy:sortBy" >
             <!-- This is a Single File -->
 
             <div id="file-{{ song.id }}" class="playListFile col-xs-12" data-index="{{ song.fileIndex }}" ng-click="stopFile(song); openFile(song); ">
+              <!--
               <div class="wavesurferButton">
                 <div id="play-{{ song.id }}" class="playListButton" ng-click="playFile(song)" onclick="stopPropogation(event)">
                   <i  class="glyphicon glyphicon-play" ></i>
@@ -74,29 +79,27 @@
                   <i  class="glyphicon glyphicon-stop" ></i>
                 </div>
               </div>
-
+              -->
               <div class="playListFileInfo col-xs-12" >
 
                 <!-- <p class="deleteButton" ng-click="deleteFile($index)"> x </p>-->
-                <p class="col-xs-12">{{ song.name }}</p>
+                <p class="col-xs-12" style="border-bottom: 1px solid #CCC; padding-bottom: 10px">{{ song.name }}</p>
+
                 <!--<p id="ideaDuration-{{ song.id }}" class="col-xs-12"></p>-->
-                <p class="col-xs-12" >{{ song.likes }} <img src="../img/black-metal.png"/> {{ song.views }} <img src="../img/music.png"/> {{ song.comments.length }} <img src="../img/commentButton.png"/> {{ song.highlights.length }} <img src="../img/timeButton.png"/></p>
+                <p class="col-xs-6" style="">{{ song.views }} Views</p>
+                <p class="col-xs-6" style="border-left: 1px solid #CCC">{{ song.likes }} <img src="../img/black-metal.png"/> {{ song.comments.length }} <img src="../img/commentButton.png"/> {{ song.highlights.length }} <img src="../img/timeButton.png"/></p>
+                <div class="fileDetailsButton" style="">
+                  <i class="fas fa-ellipsis-h"></i>
+                </div>
               </div>
-              <div class="fileDetailsButton">
-                <i class="fas fa-ellipsis-v"></i>
-              </div>
-
-
 
             </div>
-
-
             <!-- End of Single File -->
           </div>
         </div>
 
 
-      <!-- File Navigation -->
+      <!-- File Navigation
       <div id="pagination" class="col-xs-12" data-pagination="" data-num-pages="numberOfPages()"
         data-current-page="currentPage" data-max-size="maxSize"
         data-boundary-links="true"></div>
@@ -128,6 +131,7 @@
   </div>
 </div>
 <!-- End of User Likes Modal -->
+
 <!-- Upload File Modal -->
 <div id="uploadFileModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
@@ -136,27 +140,24 @@
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Upload File</h4>
       </div>
-      <div class="modal-body">
-        <form id="fileForm" action="../php/upload.php" method="POST" enctype="multipart/form-data">
-          <input type="hidden" name="MAX_FILE_SIZE" value="84000000" /> <!-- loosely 80 MB -->
-          <input type="file" id="fileSelector" name="files[]" multiple/>
-          <button type="submit" id="uploadButton">Upload</button>
+      <div class="modal-body col-xs-12">
+        <form id="fileForm" class="col-xs-12" method="POST" enctype="multipart/form-data">
+          <input type="file" id="fileSelector" class="col-xs-8" style="padding-top: 10px" name="files[]" multiple/>
+          <button type="submit" id="uploadButton" class="col-xs-4 btn btn-success">Upload</button>
         </form>
-        <h4>Upload Progress:
+        <h4 class="col-xs-12">
           <div id="uploadPercentage">
             <div id="uploadPercentageBar"></div>
           </div>
         </h4>
-        <h4>Status: </h4><p id="uploadStatus"></p>
-        <h4>Results: </h4><p id="uploadResult"></p>
-        <h4>File Status: </h4><p id="fileStatus"></p>
+        <div class="col-xs-12"><h4>Status: </h4><p id="uploadStatus"></p></div>
+        <div class="col-xs-12"><h4>Results: </h4><p id="uploadResult"></p></div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn" data-dismiss="modal">Close</button>
+        <button type="button" class="btn" data-dismiss="modal" onclick="resetUploadModal()">Close</button>
       </div>
     </div>
   </div>
 </div>
 <!-- End of Upload File Modal -->
-
 <script src="js/managers/uploader.js" type="text/javascript"></script>

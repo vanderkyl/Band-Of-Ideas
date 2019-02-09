@@ -18,8 +18,8 @@ function($scope, $sce, $http, $filter) {
   $scope.maxSize = 5;
   $scope.search = "";
 
-  $scope.setListName = "";
-  $scope.setlists = [];
+  $scope.playlistName = "";
+  $scope.playlists = [];
 
   //TODO Create functionality for a recent file selection
   $scope.addFolder = function() {
@@ -230,40 +230,77 @@ function($scope, $sce, $http, $filter) {
     displayElementById("bandName");
   }
 
-    $scope.addSetList = function() {
-        if ($scope.setListName != "") {
-            var setList = {
-                name: $scope.setListName,
+    $scope.addPlaylist = function() {
+        if ($scope.playlistName != "") {
+            var playlist = {
+                name: $scope.playlistName,
                 bandId: CURRENT_BAND.id,
                 userId: CURRENT_USER.id
             };
 
-            $http.post("/php/addSetList.php", setList)
+            $http.post("/php/addPlaylist.php", playlist)
                 .then(function (response) {
                     console.log(response.data);
-                    $scope.setlists.push(setList);
+                    $scope.playlists.push(playlist);
                 },
                  function (response) {
                     console.log(response.data);
                  });
 
         } else {
-            console.log("No Set List");
+            console.log("No Playlist");
         }
 
     };
 
-  $scope.getSetLists = function() {
-      console.log("Getting SetLists...");
-      $http.get("/php/getSetLists.php?bandId=" + CURRENT_BAND.id + "&userId=" + CURRENT_USER.id)
+  $scope.getPlaylists = function() {
+      console.log("Getting Playlists...");
+      $http.get("/php/getPlaylists.php?bandId=" + CURRENT_BAND.id + "&userId=" + CURRENT_USER.id)
           .then(function (response) {
               console.log(response.data);
-              $scope.setlists = response.data;
+              $scope.playlists = response.data;
 
           });
   };
 
+    $scope.openPlaylist = function(playlist) {
+        $scope.getPlaylistFiles(playlist.id, function(success) {
+            if (success) {
+                /*
+                CURRENT_PLAYLIST = {
+                    name: playlist.name,
+                    metaName: generateMetaName((playlist.name)),
+                    userId: playlist.userId,
+                    bandId: playlist.bandId,
+                    public: playlist.public
+                };
+                */
+                CURRENT_FOLDER = {
+                    name: playlist.name,
+                    metaName: generateMetaName(playlist.name)
+                };
+                CURRENT_BAND = {
+                    name: "Playlist",
+                    metaName: "playlist"
+                };
+                navigateToURL("/#/files");
+            } else {
+                console.log("Getting files failed.");
+            }
+        });
+    };
 
+    // Http request to get favorited files
+    $scope.getPlaylistFiles = function(playlistId, callback) {
+        $http.get("/php/getFiles.php?type=playlist&playlistId=" + playlistId)
+            .then(function (response) {
+                console.log(response.data);
+                CURRENT_FILES = response.data;
+                callback(response.data);
+            });
+    };
+
+    showAppLoader();
   // Do this if logged in
   if (isLoggedIn()) {
     console.log("Folder Controller");
@@ -274,9 +311,7 @@ function($scope, $sce, $http, $filter) {
     $scope.files = CURRENT_FILES;
     $scope.folder = CURRENT_FOLDER;
     $scope.members = CURRENT_MEMBERS;
-    $scope.setlists = CURRENT_SETLISTS;
-      console.log("SETLISTS");
-    console.log(CURRENT_SETLISTS);
+    //$scope.playlists = CURRENT_SETLISTS;
 
     if (CURRENT_FOLDERS === "") {
       $scope.folderMessage = "Click the green button to Add a Folder!";
@@ -293,4 +328,5 @@ function($scope, $sce, $http, $filter) {
     console.log(CURRENT_BAND.name);
     addNavLink("bandLink", CURRENT_BAND.name, bandUrl)
   }
+  hideAppLoader();
 }]);

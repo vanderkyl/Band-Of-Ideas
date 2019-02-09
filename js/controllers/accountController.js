@@ -295,6 +295,20 @@ function($scope, $http) {
     .then(
       function (response) {
         console.log("The user was added successfully!");
+        var email = {
+          email: newUser.email,
+            subject: "Subject",
+            body: "You just created a new account!"
+        };
+          $http.post("/php/sendEmail.php", email)
+              .then(function (response) {
+                      console.log(response.data);
+                      callback(true);
+                  },
+                  function (response) {
+                      console.log(response.data);
+                      callback(false);
+                  });
         callback(true);
       },
       function (response) {
@@ -346,10 +360,11 @@ function($scope, $http) {
   };
 
   $scope.loadController = function() {
+      showAppLoader();
       // Check if user is logged in. Show user information instead of authentication forms.
       if (isLoggedIn()) {
           $scope.loadUserData();
-          navigateToURL("/#/user");
+          navigateToURL("/#/dashboard");
       } else {
           if (signedOut) {
               // change token
@@ -374,6 +389,7 @@ function($scope, $http) {
       }
       removeNavLink("#bandLink");
       removeNavLink("#folderLink");
+      hideAppLoader();
   };
 
   // Main load method

@@ -24,7 +24,8 @@ var testUser = {
   name: "Test User",
   email: "test@test.com",
   password: "1234",
-  passwordAgain: "1234"
+  passwordAgain: "1234",
+  userIcon: "../img/vocal-profile.png"
 };
 
 // Test Folder Objects

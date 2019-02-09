@@ -1,9 +1,6 @@
 app.controller('mainController', ['$scope', '$http',
 function($scope, $http) {
-  $scope.sqlUser = "";
-  $scope.sqlBand = {};
-  $scope.newBandName = "";
-  $scope.joinBandName = "";
+  $scope.newBand = {};
   $scope.bandCode = "";
   $scope.user = {
     id: "",
@@ -14,13 +11,12 @@ function($scope, $http) {
     password: "",
     passwordAgain: ""
   };
-  var existingBand = "";
   $scope.recentComments = [];
   $scope.recentHighlights = [];
   $scope.pageSize = 10;
   $scope.bandFilter = "";
-  $scope.setlists = [];
-  $scope.setListName = "";
+  $scope.playlists = [];
+  $scope.playlistName = "";
 
   // -- MAIN METHODS -- // ----------------------------------------
 
@@ -35,16 +31,14 @@ function($scope, $http) {
       }
     }
 
-    $scope.getSetLists(function() {
-        $scope.getFolders(band, function() {
+    $scope.getFolders(band, function() {
 
-            $scope.getBandMembers(function(members) {
-                console.log(members);
-                CURRENT_MEMBERS = members;
-                navigateToURL("/#/band/" + CURRENT_BAND.metaName);
-            });
-
+        $scope.getBandMembers(function(members) {
+            console.log(members);
+            CURRENT_MEMBERS = members;
+            navigateToURL("/#/band/" + CURRENT_BAND.metaName);
         });
+
     });
 
   };
@@ -55,6 +49,19 @@ function($scope, $http) {
       callback(response.data);
     });
   };
+
+    // HTTP GET Request - Get User data
+    // userName [String] - use username to find user TODO change this in php file
+    // login [boolean] - true if getting a logged in user, false if just looking up user
+    // callback [function] - return the response data
+    $scope.getUser = function(userName, login, callback) {
+        $http.get("/php/getUser.php?username=" + userName + "&login=" + login)
+            .then(function (response) {
+                CURRENT_USER = response.data;
+                $scope.user = response.data;
+                callback();
+            });
+    }
 
   $scope.getFolders = function(band, callback) {
     var bandName = band.name;
@@ -72,38 +79,25 @@ function($scope, $http) {
     }
   };
 
-  // Open the Sign Up form
-  $scope.openBandForm = function() {
-    openJoinBandForm();
+
+  $scope.addBand = function(callback) {
+      var newBand = {
+          band: $scope.newBand,
+          userId: $scope.user.id
+      };
+      $http.post("/php/addBand.php", newBand)
+          .then(function (response) {
+                  console.log(response.data);
+                  callback(true);
+              },
+              function (response) {
+                  console.log(response);
+                  console.log(response.data);
+                  callback(false);
+              });
   };
 
-  // Open the Sign Up form
-  $scope.openSignInForm = function() {
-    displayElementById("signInForm");
-    displayElementById("startBand");
-    hideElementById("signUpForm");
-    hideElementById("startSignIn");
-  };
-
-
-  $scope.backToChooseBand = function() {
-    $scope.user.bands[0].name = "";
-    hideElementById("joinBand");
-    displayElementById("chooseBand");
-  }
-
-  // Show add band input
-  $scope.addBand = function() {
-    var bandName = $scope.newBandName;
-    $scope.user.bands.push({name: bandName,
-                            metaName: generateMetaName(bandName),
-                            memberIds: [$scope.user.id],
-                            code: "1234"});
-    //TODO check availability of band
-    $scope.hideAddBandInput;
-
-  };
-
+  // Open user favorites playlist/folder
   $scope.openFavoritesFolder = function() {
     $scope.getFavoriteFiles(CURRENT_USER.id, function(success) {
       if (success) {
@@ -121,7 +115,7 @@ function($scope, $http) {
       }
     });
   };
-
+  // Http request to get favorited files
   $scope.getFavoriteFiles = function(userId, callback) {
     $http.get("/php/getFiles.php?type=allFavorites&userId=" + userId)
     .then(function (response) {
@@ -131,6 +125,7 @@ function($scope, $http) {
     });
   };
 
+  // Open user highlights playlist/folder
   $scope.openHighlightsFolder = function() {
     $scope.getHighlightedFiles(CURRENT_USER.id, function(success) {
         if (success) {
@@ -175,30 +170,36 @@ function($scope, $http) {
     }
   };
 
+  $scope.showBandDetails = function(event, band) {
+    event.stopPropagation();
+    $('#bandDetails-' + band.id).modal();
+  };
+
   // -- JOIN NEW BAND METHODS -- // ----------------------------------------
 
   // Checks if the band name given already exists
   $scope.checkBandAvailability = function() {
-      var bandName = $scope.user.bands[0].name;
+      var bandName = $scope.newBandName;
       $scope.getBand(bandName, function(band) {
           hideElementById("chooseBand");
           // If the response is an empty object, the band does not exist yet.
           if (objectIsEmpty(band)) {
-              $scope.user.bands = [
-                  {id: "",
-                      name: bandName,
-                      metaName: generateMetaName(bandName),
-                      memberIds: "",
-                      code: generateBandCode()}
-              ];
-
-              displayElementById("chooseUser");
+              $scope.newBand = {
+                  id: "",
+                  name: bandName,
+                  metaName: generateMetaName(bandName),
+                  memberIds: "",
+                  code: generateBandCode(),
+                  joiningBand: false
+              };
+              displayElementInlineById("addBandButton");
+              displayElementById("joinBand");
               // Else the band does exist already, so load the band data and prompt user for band code
           } else {
-              $scope.user.bands = [band];
-              console.log($scope.user.bands[0].code);
-              $scope.sqlBand = band;
-              displayElementById("joinBand");
+              $scope.newBand = band;
+              $scope.newBand.joiningBand = true;
+              //$scope.sqlBand = band;
+              displayElementById("checkBandCode");
           }
       });
   };
@@ -214,12 +215,10 @@ function($scope, $http) {
   // Make sure the given code matches the band code in the database
   $scope.checkBandCode = function() {
       if (!inputEmpty($scope.bandCode, "bandCodeInput")) {
-          console.log($scope.user.bands[0].code);
-          console.log($scope.bandCode);
-          if ($scope.user.bands[0].code === $scope.bandCode) {
-              existingBand = $scope.user.bands[0].name;
-              hideElementById("joinBand");
-              displayElementById("chooseUser");
+          if ($scope.newBand.code === $scope.bandCode) {
+              hideElementById("checkBandCode");
+              displayElementInlineById("addBandButton");
+              displayElementById("joinBand");
           } else {
               console.log("Please try again.");
               showInvalidInput("bandCodeInput");
@@ -228,44 +227,18 @@ function($scope, $http) {
   }
 
   $scope.joinBand = function() {
-      var bandName = $scope.newBandName;
+      var bandName = $scope.newBand.name;
       if (bandName === CURRENT_BAND.name){
           console.log("Don't add your own band dummy.");
       }
-      $scope.getBand(bandName, function(band) {
-          // If the response is an empty object, the band does not exist yet.
-          if (objectIsEmpty(band)) {
-              console.log("Band does not exist.");
-
-              if ($scope.bandCode === "") {
-                  $scope.updateUser($scope.user.id, band, function(success) {
-                      if (success) {
-                          $scope.user.bands.push(band);
-                          CURRENT_BANDS = $scope.user.bands;
-                          location.href = "/#/user";
-                      }
-                  });
-              }
-              $scope.newBandName = "";
-              $scope.bandCode = "";
-              // Else the band does exist already, so load the band data and prompt user for band code
-          } else {
-              if (band.code === $scope.bandCode) {
-                  console.log($scope.user.id);
-                  $scope.updateUser($scope.user.id, band, function(success) {
-                      if (success) {
-                          $scope.user.bands.push(band);
-                          CURRENT_BANDS = $scope.user.bands;
-                          $scope.newBandName = "";
-                          $scope.bandCode = "";
-                      }
-                  });
-              } else {
-                  console.log("Incorrect Band Code.");
-                  $scope.bandCode = "";
-              }
-          }
+      $scope.addBand(function (success) {
+          console.log(success);
+          $scope.getUser($scope.user.username, false, function() {
+              closeModal("addBandModal");
+              $scope.closeAddBandModal();
+          });
       });
+      $
   };
 
   $scope.updateUser = function(userId, band, callback) {
@@ -281,25 +254,22 @@ function($scope, $http) {
               });
   };
 
-  $scope.joinTheBand = function() {
-      $scope.checkValidity(function(valid) {
-          if (valid) {
-              console.log("Adding new user.");
-              $scope.user.metaName = generateMetaName($scope.user.name);
-              CURRENT_USER = $scope.user;
-              $scope.saveUser(function(saved) {
-                  if (saved) {
-                      $scope.loginUser();
-                      console.log("Success!");
-                  } else {
-                      console.log("The user was not added to the database");
-                  }
-              });
-          } else {
-              console.log("Please try again.");
-          }
-      });
-  };
+    // Go back to the band name input form
+    $scope.backToChooseBand = function() {
+        $scope.newBandName = "";
+        $scope.newBand = {};
+        hideElementById("checkBandCode");
+        displayElementById("chooseBand");
+    }
+
+    // Go back to the band name input form
+    $scope.closeAddBandModal = function() {
+        $scope.newBandName = "";
+        $scope.newBand = {};
+        hideElementById("checkBandCode");
+        hideElementById("joinBand");
+        displayElementById("chooseBand");
+    }
 
   $scope.getRecentActivity = function(bands) {
       var bandIds = [];
@@ -310,10 +280,11 @@ function($scope, $http) {
       console.log(bandIds);
       $http.get("/php/getRecentActivity.php?bandIds=" + JSON.stringify(bandIds))
           .then(function (response) {
-              hideElementById("loadContainer");
+              hideElementById("loadCommentsContainer");
               displayElementById("commentContainer");
               $scope.recentComments = response.data.comments;
               $scope.recentHighlights = response.data.highlights;
+              console.log($scope.recentHighlights);
           });
   };
 
@@ -333,6 +304,11 @@ function($scope, $http) {
       console.log($scope.pageSize);
   };
 
+  $scope.currentTimeToString = function(currentTime) {
+    return timeToString(parseInt(currentTime));
+  };
+
+
   $scope.showAllRecentActivity = function(newPageSize) {
       $scope.pageSize = newPageSize;
   };
@@ -342,21 +318,91 @@ function($scope, $http) {
       return item.band.name === bandFilter;
   };
 
-    $scope.getSetLists = function(callback) {
-        $http.get("/php/getSetLists.php?bandId=" + CURRENT_BAND.id + "&userId=" + CURRENT_USER.id)
+    $scope.addPlaylist = function() {
+        if ($scope.playlistName != "") {
+            var playlist = {
+                name: $scope.playlistName,
+                bandId: 0,
+                userId: CURRENT_USER.id
+            };
+            showPlaylistLoader();
+            $http.post("/php/addPlaylist.php", playlist)
             .then(function (response) {
-                CURRENT_SETLISTS = response.data;
-                $scope.setlists = response.data;
-                callback();
+                    console.log(response.data);
+                    $scope.playlists.push(playlist);
+                    hidePlaylistLoader();
+                },
+                function (response) {
+                    console.log(response.data);
+                    hidePlaylistLoader();
+                });
+
+        } else {
+            console.log("No Playlist");
+        }
+
+    };
+
+    $scope.getPlaylists = function() {
+        showPlaylistLoader();
+        $http.get("/php/getPlaylists.php?userId=" + CURRENT_USER.id)
+            .then(function (response) {
+                CURRENT_PLAYLISTS = response.data;
+                $scope.playlists = response.data;
+                hidePlaylistLoader();
+            });
+    };
+
+    $scope.openPlaylist = function(playlist) {
+        $scope.getPlaylistFiles(playlist.id, function(success) {
+            if (success) {
+                /*
+                CURRENT_PLAYLIST = {
+                    name: playlist.name,
+                    metaName: generateMetaName((playlist.name)),
+                    userId: playlist.userId,
+                    bandId: playlist.bandId,
+                    public: playlist.public
+                };
+                */
+                CURRENT_FOLDER = {
+                   name: playlist.name,
+                   metaName: generateMetaName(playlist.name)
+                };
+                CURRENT_BAND = {
+                    name: "Playlist",
+                    metaName: "playlist"
+                };
+                navigateToURL("/#/files");
+            } else {
+                console.log("Getting files failed.");
+            }
+        });
+    };
+
+    // Http request to get favorited files
+    $scope.getPlaylistFiles = function(playlistId, callback) {
+        $http.get("/php/getFiles.php?type=playlist&playlistId=" + playlistId)
+            .then(function (response) {
+                console.log(response.data);
+                CURRENT_FILES = response.data;
+                callback(response.data);
             });
     };
 
   $scope.loadController = function() {
+      showAppLoader();
       // Check if user is logged in. Show user information instead of authentication forms.
       if (isLoggedIn()) {
           $('document').ready(function() {
               $(window).scrollTop(0);
           });
+          if (!testLogin) {
+            $scope.getUser(CURRENT_USER.username, true, function() {
+              console.log("Getting user");
+            });
+          }
+
           $scope.getRecentActivity(CURRENT_BANDS);
           console.log(CURRENT_USER);
           console.log(CURRENT_BANDS);
@@ -374,6 +420,7 @@ function($scope, $http) {
       }
       removeNavLink("#bandLink");
       removeNavLink("#folderLink");
+      hideAppLoader();
   };
 
   // Main load method

@@ -1,16 +1,26 @@
-.nav-header {
-  margin-left: 20px;
+#navBar {
+  display: none;
 }
 
-.navbar>.container .navbar-brand {
+.nav-header {
   margin-left: 10px;
+  text-align: center;
+  width: 100%;
 }
+
+
 .navbar>.container .navbar-brand:hover {
   background: #444;
 }
 
 .navbar-inverse .navbar-nav>li>a, .navbar-default .navbar-brand {
   color: white;
+}
+
+img.navbar-brand {
+  padding: 10px;
+  padding-left: 18px;
+  float: none;
 }
 
 .navButtons:hover {
@@ -23,8 +33,24 @@
   margin-right: 0;
 }
 
-#navContainer {
+#navContainer, #searchNavContainer {
   min-height: 50px;
+}
+
+#searchNavContainer {
+  display: none;
+  margin-right: 5px;
+}
+
+.search {
+  margin-top: 8px;
+  height: 40px;
+  float: right;
+}
+
+#largeSearchInput {
+  padding: 6px;
+  width: 400px;
 }
 
 .navbar-fixed-top,
@@ -57,24 +83,33 @@ a.nav-link:hover {
   background-color: #232323 !important;
 }
 
+@media screen and (min-width: 1000px) {
+  .sideNav { width: 250px !important; }
+  .appContainer { margin-left: 250px !important; }
+  #searchNavContainer { display: block; }
+  #navContainer { display: none; }
+}
+
 .sideNav {
+  display: none;
   height: 100%;
   width: 0;
   position: fixed;
-  z-index: 100000;
+  z-index: 1000;
   top: 0;
   left: 0;
-  background-color: #111;
+  background-color: #222;
   overflow-x: hidden;
   transition: 0.5s;
-  padding-top: 60px;
+  padding-top: 13px;
+  margin-top: 51px;
 }
 
 .sideNav a {
   padding: 8px 8px 8px 32px;
   text-decoration: none;
   font-size: 18px;
-  color: #818181;
+  color: #b3b3b3;
   display: block;
   min-width: 250px;
   transition: 0.3s;
@@ -92,7 +127,7 @@ a.nav-link:hover {
   z-index: 11111;
 }
 
-.sideNavButton {
+.sideNavButton, .closeSideNav {
   float: left;
   font-size: 20px;
   padding-top: 11px;
@@ -100,10 +135,33 @@ a.nav-link:hover {
   filter: invert(100%);
 }
 
+.sideNavHeader .profileImage {
+  width: 40px;
+  float: left;
+  height: 40px;
+  margin: 0px 0px 5px -30px;
+  min-width: 40px;
+}
+
+#userLink {
+  margin-top: 8px;
+  margin-left: 25px;
+}
+
+#bandLinks , #folderLinks, #fileLinks {
+  font-size: 15px;
+}
+
 .sideNavFooter {
   border-top: 1px solid #444;
   padding-top: 5px;
   margin-top: 10px;
+}
+
+#sideNavBrand {
+  position: absolute;
+  top: 15px;
+  left: -12px;
 }
 
 #showSearch, #closeSearch {
@@ -115,16 +173,10 @@ a.nav-link:hover {
 }
 
 .sideNavHeader {
-  position: absolute;
-  top: 13px;
+
   border-bottom: 1px #444 solid;
   padding-bottom: 5px;
   margin-bottom: 5px;
 }
 
 
-
-@media screen and (max-height: 450px) {
-  .sideNav {padding-top: 15px;}
-  .sideNav a {font-size: 18px;}
-}

@@ -6,7 +6,7 @@ var CURRENT_FOLDER = "";
 var CURRENT_FILES = "";
 var CURRENT_FILE = {};
 var CURRENT_MEMBERS = [];
-var CURRENT_SETLISTS = [];
+var CURRENT_PLAYLISTS = [];
 var REQUESTED_URL = "";
 
 var testLogin = false;
@@ -16,14 +16,15 @@ var lastUrl = window.location.href;
 
 function loginUser() {
   loggedIn = true;
+  hideBody();
+  navigateToURL("/#/dashboard");
+  displayElementById("sideNav");
   displayElementById("navLinks");
   displayElementById("showSearch");
   displayElementById("sideNavButton");
-  //hideElementById("signInButton");
+  displayElementById("navBar");
   displayElementById("signOutButton");
-  //displayElementById("footer");
-  navigateToURL("/#/user");
-
+  showBody();
 }
 
 function hideAuthenticationUI() {
@@ -38,14 +39,19 @@ function signOut() {
   clearAccountData();
   removeNavLink("folderLink");
   removeNavLink("bandLink");
+  hideElementById("footer");
+  hideElementById("sideNav");
+  hideElementById("navBar");
+  hideElementById("searchNavContainer");
+  displayElementById("navContainer");
   hideElementById("search");
   hideElementById("showSearch");
   hideElementById("closeSearch");
   getElementById("sideNav").style.width = 0;
+  console.log("Changing side nav");
   hideElementById("sideNavButton");
   hideElementById("navLinks");
   hideElementById("signOutButton");
-  displayElementById("signInButton");
   navigateToURL("/#/logout");
 };
 

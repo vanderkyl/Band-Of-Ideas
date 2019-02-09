@@ -82,6 +82,12 @@ $.fn.scrollView = function () {
     });
 }
 
+function scrollToTop() {
+  $('document').ready(function() {
+    $(window).scrollTop(0);
+  });
+}
+
 function httpGet(url, callback) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
@@ -122,3 +128,14 @@ function removeNavLink(id) {
   }
 }
 
+function closeModal(id) {
+    $('#' + id).modal('hide');
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function updateTitle(title) {
+  document.title = title;
+}

@@ -7,12 +7,21 @@ html, body {
   font-family: 'Century Gothic', sans-serif;
 }
 
+@media screen and (min-width: 1000px) {
+  .appContainer { padding-right: 2% !important; padding-left: 2% !important; }
+}
+
+@media screen and (min-width: 1200px) {
+  .appContainer { padding-right: 10% !important; padding-left: 10% !important; }
+}
+
 .appContainer {
-  padding-bottom: 70px;
+  overflow: auto;
+  padding-bottom: 170px;
   padding-left: 15px;
   margin: 0 auto;
-  max-width: 1000px;
   padding-right: 15px;
+  margin-left: 0px;
   transition: margin-left .5s;
 }
 
@@ -58,11 +67,17 @@ html, body {
   margin-right: 50px;
 }
 
+#loadContainer, #playlistLoader {
+  margin: 100px auto;
+}
+
 .bandLoader {
   left: 48%;
   top: 33%;
   font-size: 22px;
   position: relative;
+  padding-top: 30px;
+  padding-bottom: 30px;
 }
 
 #loadTestButton {
@@ -109,8 +124,6 @@ html, body {
 }
 
 .titles {
-  cursor: pointer;
-  cursor: hand;
   box-shadow: 0 2px 2px rgba(0,0,0,.3);
   border: 1px solid #8a8a8a;
   background: rgba(255, 255, 255, .7);
@@ -124,11 +137,6 @@ html, body {
   margin-right: 10%;
 }
 
-.titles:hover {
-  box-shadow: 0 2px 10px rgba(0,0,0,.5);
-  transition: all .5s;
-}
-
 .userInfo {
   color: #FFF;
   background: #265a88;
@@ -140,7 +148,8 @@ html, body {
 .folder {
   padding: 5px;
   background: #fff;
-  margin: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   border-radius: 2px;
   border: 1px solid green;
   transition: all .3s ease-in;
@@ -176,7 +185,10 @@ html, body {
 }
 
 .addButton {
-  background: green;
+  width: 18%;
+  float: right;
+  margin-right: 0px;
+  font-size: 12px;
 }
 
 
@@ -214,23 +226,43 @@ html, body {
 .bandTitle {
   color: #444;
   font-size: 16px;
-  line-height: 50px;
+  line-height: 30px;
   text-align: center;
 }
 
 .bandDetails {
   text-align: center;
   height: 100%;
-  padding-top: 28px;
+  padding-top: 18px;
+  padding-bottom: 18px;
   font-size: 10px;
-  border-left: 1px solid #CCC;
+  border-top: 1px solid #CCC;
+}
+
+.bandDetailsButton {
+  font-size: 14px;
+  position: absolute;
+  right: -4%;
+  width: 14%;
+  height: 100%;
+  z-index: 1000;
+}
+
+.bandDetailsButton i {
+  top: 45%;
+  position: absolute;
+  right: 50%;
+  left: 48%;
 }
 
 .folderTitle {
   color: #444;
-  margin: 4px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   font-size: 14px;
   text-align: center;
+  padding: 0;
+
 }
 
 .folderTitle h2 {
@@ -289,7 +321,7 @@ html, body {
   margin-right: 15%;
 }
 
-#bands {
+.bands {
   margin-top: 20px;
 }
 
@@ -298,16 +330,15 @@ html, body {
   background: #FFF;
   cursor: pointer;
   min-width: 50px;
-  height: 70px;
   border: 1px solid #777;
   border-radius: 5px;
   box-shadow: rgb(122, 134, 154) 0px 0px 0.5px;
   transition: box-shadow 0.3s ease-in-out;
 }
 
+
 .bandButton:hover {
   box-shadow: rgb(140, 145, 154) 0px 4px 8px 0px;
-
 }
 
 .backToButton {
@@ -325,6 +356,8 @@ html, body {
   padding: 10px;
   box-shadow: 0 2px 2px rgba(0,0,0,.5);
   transition: all .3s ease-in-out;
+  border: 1px solid #CCC;
+  border-radius: 10px;
 }
 
 .hiddenButton img {
@@ -444,15 +477,15 @@ html, body {
 .pagination a:hover:not(.active) {background-color: #ddd;}
 
 #footer {
-  display: none;
   text-align: center;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.9);
   position: fixed;
   left: 0px;
   bottom: 0px;
   width: 100%;
-  height: 70px;
-  z-index: 9999;
+  height: 0;
+  z-index: 999999;
+  transition: 0.3s;
 }
 
 .footer h2 {
@@ -465,13 +498,28 @@ html, body {
    margin: 0 10px;
 }
 
+#closePlayerButton {
+  position: absolute;
+  top: -15%;
+  right: -15%;
+  font-size: 36px;
+  z-index: 1000;
+  color: #CCC;
+  transition: 0.3s;
+  text-decoration: none;
+}
+
+#closePlayerButton:hover {
+  color: #f1f1f1;
+}
+
 #addFolderInput, #accountInfoLink,
 #navLinks, #folderIndex, #upload, #loading, #bandDetails {
   display: none;
 }
 
 .modal {
-  padding: 10% 0;
+  padding: 5% 0;
 }
 
 .memberButton {
@@ -488,7 +536,7 @@ html, body {
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-.setListButton {
+.playlistButton {
   cursor: pointer;
   border: 1px solid #8e8e8e;
   background-color: #FFF;
@@ -499,12 +547,17 @@ html, body {
   transition: all .3s ease-in-out;
 }
 
-.setListButton:hover {
+.playlistButton:hover {
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-.setListDetails {
+.playlistDetails {
   font-size: 14px;
+  padding-top: 5px;
+}
+
+.playlistDetailsButton {
+  font-size: 10px;
 }
 
 .memberInfo {
@@ -547,7 +600,7 @@ html, body {
                                   supported by Chrome and Opera */
 }
 
-#livesearch {
+#livesearch, #largeLivesearch {
   position: absolute;
   max-width: 400px;
   min-width: 131px;
@@ -583,7 +636,7 @@ html, body {
   margin-bottom: 9px;
 }
 
-#activityHeader {
+#activityHeader, #bandHeader, #folderHeader, #fileHeader {
   padding-bottom: 10px;
   border-bottom: 1px solid #444;
   margin-bottom: 5px;
@@ -596,9 +649,10 @@ html, body {
 
 .recentComments {
   font-size: 10px;
-  border-bottom: 1px solid #CCC;
+  border: 1px solid #CCC;
   padding: 5px 0px 5px 0px !important;
   transition: all 0.3s ease-in-out;
+  margin-bottom: 5px;
 }
 
 .recentComments:hover {
@@ -617,4 +671,54 @@ html, body {
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+.profileImage, .profileImageButton, .commentImage {
+  width: 200px;
+  margin: 0 auto;
+  background-color: white;
+  background-image: url('../img/default-profile1.png');
+  height: 200px;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  cursor: pointer;
+  cursor: hand;
+  border: 1px solid #444;
+}
+
+.commentImage {
+  width: 25px;
+  height: 25px;
+  margin: 3px 7px 0px -10px;
+}
+
+#userCommentName {
+  margin-left: -65px;
+  font-size: 12px;
+  color: #444;
+}
+
+.profileImage:hover p {
+  display: block;
+}
+
+.profileImage img {
+  height: auto;
+  width: 100%;
+}
+
+.profileImageButton {
+  width: 100px;
+  height: 100px;
+  border: 1px solid black;
+  margin-bottom: 20px;
+}
+
+.changeImageMessage {
+  display: none;
+  text-align: center;
+  margin-top: 145px;
+  font-size: 12px;
 }
