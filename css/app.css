@@ -1,17 +1,19 @@
 html, body {
-  /*background: rgb(208, 213, 216);//rgb(208, 208, 216);//rgb(160, 169, 175);//rgb(37, 46, 53);//rgb(234, 233, 233);*/
-  margin: 0;
-  padding: 0;
-  padding-top: 35px;
-  height: 100%;
-  /*font-family: 'Century Gothic', sans-serif;*/
-  font-family: 'Open Sans';
-  font-weight: 300;
-  background: linear-gradient(-45deg, #ec5121, #0e71ec, #3c763d, #23D5AB);
-  background-size: 600% 600%;
-  -webkit-animation: Gradient 30s ease infinite;
-  -moz-animation: Gradient 30s ease infinite;
-  animation: Gradient 30s ease infinite;
+    background: linear-gradient(-45deg, #ec5121, #0e71ec, #3c763d, #23D5AB);
+    background-size: 400% 400%;
+    -webkit-animation: Gradient 30s ease infinite;
+    -moz-animation: Gradient 30s ease infinite;
+    animation: Gradient 30s ease infinite;
+    margin: 0;
+    padding: 0;
+    padding-top: 35px;
+    height: 100%;
+    font-family: 'Open Sans';
+    font-weight: 300;
+}
+
+body {
+    background: transparent !important;
 }
 
 
@@ -229,10 +231,12 @@ html, body {
 }
 
 .addButton {
-  width: 18%;
-  float: right;
-  margin-right: 0px;
-  font-size: 12px;
+    width: 18%;
+    float: right;
+    margin-right: 5px;
+    font-size: 12px;
+    max-width: 40px;
+    margin-top: 5px;
 }
 
 
@@ -552,8 +556,7 @@ html, body {
 
 #closePlayerButton {
   position: absolute;
-  top: -15%;
-  right: -15%;
+  right: 20px;
   font-size: 36px;
   z-index: 1000;
   color: #CCC;
@@ -570,17 +573,11 @@ html, body {
   display: none;
 }
 
-.modal {
-  padding: 5% 0;
-}
-
 .memberButton {
   cursor: pointer;
-  border: 1px solid #8e8e8e;
-  background-color: #FFF;
+  border-bottom: 1px solid #757575;
   border-radius: 2px;
-
-  margin-bottom: 10px;
+  padding-top: 5px;
   transition: all .3s ease-in-out;
 }
 
@@ -688,9 +685,8 @@ html, body {
   margin-bottom: 9px;
 }
 
-#activityHeader, #bandHeader, #folderHeader, #fileHeader {
-  padding-bottom: 10px;
-  border-bottom: 1px solid #444;
+#activityHeader, #bandHeader, #folderHeader, #fileHeader, #playlistHeader {
+  padding: 10px;
   margin-bottom: 5px;
 }
 
@@ -731,19 +727,19 @@ html, body {
   background-color: white;
   background-image: url('../img/default-profile1.png');
   height: 200px;
-  border-radius: 50%;
+  border-radius: 15px;
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
   cursor: pointer;
   cursor: hand;
-  border: 1px solid #444;
 }
 
 .commentImage {
-  width: 25px;
-  height: 25px;
-  margin: 3px 7px 0px -10px;
+  width: 30px;
+  height: 30px;
+  margin: 2px 2px 0px -10px;
+  border-radius: 5px;
 }
 
 #userCommentName {
@@ -774,3 +770,41 @@ html, body {
   margin-top: 145px;
   font-size: 12px;
 }
+
+.dropbtn {
+    background-color: #4b4b4b;
+    color: white;
+    padding: 16px;
+    font-size: 14px;
+    border: none;
+    width: 100%;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    width: 100%;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {background-color: #ddd;}
+
+.dropdown:hover .dropdown-content {display: block;}
+
+.dropdown:hover .dropbtn {background-color: #3e8e41;}

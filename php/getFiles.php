@@ -172,6 +172,7 @@
             $highlights = getFileHighlights($conn, $row);
             $userLikes = getUserLikes($conn, $row["id"]);
             $folder = getFolder($conn, $row["folderId"]);
+            $band = getBand($conn, $row["bandId"]);
             // Fill out file data
             $fileData = ['id' => $row["id"],
                      'name' => getFriendlyTitle($row["name"]),
@@ -184,6 +185,7 @@
                      'folderId' => $row["folderId"],
                      'folder' => $folder,
                      'bandId' => $row["bandId"],
+                     'band' => $band,
                      'views' => intval($row["views"]),
                      'likes' => count($userLikes),
                      'userLikes' => $userLikes,

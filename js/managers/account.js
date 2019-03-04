@@ -1,42 +1,50 @@
 var CURRENT_USER = {}; // This is the current user that is logged in
 var CURRENT_BAND = {};
 var CURRENT_BANDS = [];
-var CURRENT_FOLDERS = "";
-var CURRENT_FOLDER = "";
-var CURRENT_FILES = "";
+var CURRENT_FOLDERS = [];
+var CURRENT_FOLDER = {};
+var CURRENT_FILES = [];
 var CURRENT_FILE = {};
 var CURRENT_MEMBERS = [];
 var CURRENT_PLAYLISTS = [];
+var CURRENT_PLAYLIST = {};
 var REQUESTED_URL = "";
+var LAST_URL = "";
+var LAST_PATHNAME = "";
 
+var testUserName = "testerboi";
 var testLogin = false;
 var loggedIn = false;
 var signedOut = false;
-var lastUrl = window.location.href;
 
 function loginUser() {
   loggedIn = true;
   hideBody();
   navigateToURL("/#/dashboard");
+  showNavs();
+  showBody();
+}
+
+function goToLastURL() {
+  loggedIn = true;
+  hideBody();
+  navigateToURL(LAST_URL);
+  showNavs();
+  showBody();
+}
+
+function showNavs() {
   displayElementById("sideNav");
   displayElementById("navLinks");
   displayElementById("showSearch");
   displayElementById("sideNavButton");
   displayElementById("navBar");
   displayElementById("signOutButton");
-  showBody();
-}
-
-function hideAuthenticationUI() {
-  hideElementById("authentication");
-  displayElementById("accountInformation");
-
 }
 
 function signOut() {
   loggedIn = false;
   signedOut = true;
-  clearAccountData();
   removeNavLink("folderLink");
   removeNavLink("bandLink");
   hideElementById("footer");
@@ -48,7 +56,6 @@ function signOut() {
   hideElementById("showSearch");
   hideElementById("closeSearch");
   getElementById("sideNav").style.width = 0;
-  console.log("Changing side nav");
   hideElementById("sideNavButton");
   hideElementById("navLinks");
   hideElementById("signOutButton");
@@ -56,12 +63,19 @@ function signOut() {
 };
 
 function clearAccountData() {
-  CURRENT_FILE = "";
-  CURRENT_FILES = "";
-  CURRENT_FOLDER = "";
-  CURRENT_FOLDERS = "";
-  CURRENT_BANDS = "";
-  CURRENT_BAND = "";
+  CURRENT_USER = {}; // This is the current user that is logged in
+  CURRENT_BAND = {};
+  CURRENT_BANDS = [];
+  CURRENT_FOLDERS = [];
+  CURRENT_FOLDER = {};
+  CURRENT_FILES = [];
+  CURRENT_FILE = {};
+  CURRENT_MEMBERS = [];
+  CURRENT_PLAYLISTS = [];
+  CURRENT_PLAYLIST = {};
+  REQUESTED_URL = "";
+  LAST_URL = "";
+  LAST_PATHNAME = "";
 }
 
 function passwordsMatch(password, passwordAgain) {
@@ -96,37 +110,12 @@ function checkName(name) {
   return valid;
 }
 
-function bandIsValid(bandName) {
-  if (bandName == "") {
-    console.log("Please give a band name.");
-    showInvalidInput("bandName");
-    return false;
-  }
-  var bandList = getBandList();
-  for (band in bandList) {
-    if (band === bandName) {
-      console.log("Sorry, " + bandName + " has already been taken.");
-      showInvalidInput("bandName");
-      return false;
-    }
-  }
-  return true;
-}
-
 function openJoinBandForm() {
   displayElementById("signUpForm");
   displayElementById("startBandForm");
   hideElementById("startBand");
   hideElementById("signInForm");
   displayElementById("startSignIn");
-}
-
-function openSignInForm() {
-  displayElementById("signInForm");
-  //displayElementById("startBandForm");
-  //hideElementById("startBand");
-  hideElementById("signUpForm");
-  hideElementById("startBandForm");
 }
 
 function checkUsername(username, userUsername) {
@@ -203,7 +192,9 @@ function inputEmpty(input, inputId) {
 
 function isLoggedIn() {
   if (!loggedIn) {
-    navigateToURL("/#/");
+    LAST_URL = window.location.href;
+    LAST_PATHNAME = window.location.pathname;
+    navigateToURL("/#/login");
   }
   return loggedIn;
 }

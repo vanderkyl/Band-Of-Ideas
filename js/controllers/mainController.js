@@ -27,19 +27,12 @@ function($scope, $http) {
     CURRENT_BAND = band;
     if (CURRENT_FOLDERS.length > 0) {
       if (CURRENT_FOLDERS[0].bandId === band.id) {
-        navigateToURL("/#/band/" + CURRENT_BAND.metaName);
+
       }
     }
+    navigateToURL("/#/band?id=" + band.id);
 
-    $scope.getFolders(band, function() {
 
-        $scope.getBandMembers(function(members) {
-            console.log(members);
-            CURRENT_MEMBERS = members;
-            navigateToURL("/#/band/" + CURRENT_BAND.metaName);
-        });
-
-    });
 
   };
 
@@ -61,23 +54,7 @@ function($scope, $http) {
                 $scope.user = response.data;
                 callback();
             });
-    }
-
-  $scope.getFolders = function(band, callback) {
-    var bandName = band.name;
-    if (bandName === "Test Band") {
-      CURRENT_FOLDERS = testFolders;
-      CURRENT_MEMBERS = members;
-      navigateToURL("/#/band/" + CURRENT_BAND.metaName);
-    } else {
-      $http.get("/php/getFolders.php?bandName=" + bandName)
-      .then(function (response) {
-        console.log(response.data);
-        CURRENT_FOLDERS = response.data;
-        callback();
-      });
-    }
-  };
+    };
 
 
   $scope.addBand = function(callback) {
@@ -99,62 +76,16 @@ function($scope, $http) {
 
   // Open user favorites playlist/folder
   $scope.openFavoritesFolder = function() {
-    $scope.getFavoriteFiles(CURRENT_USER.id, function(success) {
-      if (success) {
-          CURRENT_FOLDER = {
-              name: "All Favorites",
-              metaName: "all-favorites",
-          };
-          CURRENT_BAND = {
-              name: "My Bands",
-              metaName: "my-bands"
-          }
-        navigateToURL("/#/files");
-      } else {
-        console.log("Getting files failed.");
-      }
-    });
-  };
-  // Http request to get favorited files
-  $scope.getFavoriteFiles = function(userId, callback) {
-    $http.get("/php/getFiles.php?type=allFavorites&userId=" + userId)
-    .then(function (response) {
-      console.log(response.data);
-      CURRENT_FILES = response.data;
-      callback(response.data);
-    });
+    navigateToURL("/#//playlist?id=allFavorites");
   };
 
   // Open user highlights playlist/folder
   $scope.openHighlightsFolder = function() {
-    $scope.getHighlightedFiles(CURRENT_USER.id, function(success) {
-        if (success) {
-            CURRENT_FOLDER = {
-                name: "All Highlights",
-                metaName: "all-highlights",
-            };
-            CURRENT_BAND = {
-                name: "My Bands",
-                metaName: "my-bands"
-            };
-            navigateToURL("/#/files");
-        } else {
-            console.log("Getting files failed.");
-        }
-    });
+    navigateToURL("/#//playlist?id=allHighlights");
   };
 
-    $scope.getHighlightedFiles = function(userId, callback) {
-        $http.get("/php/getFiles.php?type=allHighlights&userId=" + userId)
-            .then(function (response) {
-                console.log(response.data);
-                CURRENT_FILES = response.data;
-                callback(response.data);
-            });
-    };
-
-    $scope.openFile = function(id) {
-        openFile(id);
+    $scope.openFile = function(id, time) {
+        openFile(id, time);
     };
 
   // Open User Details
@@ -356,47 +287,45 @@ function($scope, $http) {
     $scope.openPlaylist = function(playlist) {
         $scope.getPlaylistFiles(playlist.id, function(success) {
             if (success) {
-                /*
                 CURRENT_PLAYLIST = {
+                    id: playlist.id,
                     name: playlist.name,
                     metaName: generateMetaName((playlist.name)),
                     userId: playlist.userId,
                     bandId: playlist.bandId,
                     public: playlist.public
                 };
-                */
-                CURRENT_FOLDER = {
-                   name: playlist.name,
-                   metaName: generateMetaName(playlist.name)
-                };
-                CURRENT_BAND = {
-                    name: "Playlist",
-                    metaName: "playlist"
-                };
-                navigateToURL("/#/files");
+                navigateToURL("/#/playlist?id=" + playlist.id);
             } else {
                 console.log("Getting files failed.");
             }
         });
     };
 
-    // Http request to get favorited files
-    $scope.getPlaylistFiles = function(playlistId, callback) {
-        $http.get("/php/getFiles.php?type=playlist&playlistId=" + playlistId)
-            .then(function (response) {
-                console.log(response.data);
-                CURRENT_FILES = response.data;
-                callback(response.data);
-            });
-    };
+  // Http request to get favorited files
+  $scope.getPlaylistFiles = function(playlistId, callback) {
+      $http.get("/php/getFiles.php?type=playlist&playlistId=" + playlistId)
+          .then(function (response) {
+              console.log(response.data);
+              CURRENT_FILES = response.data;
+              callback(response.data);
+          });
+  };
+
+  $scope.loadUIObjects = function() {
+    $scope.user = CURRENT_USER;
+    $scope.user.bands = CURRENT_BANDS;
+    removeNavLink("#bandLink");
+    removeNavLink("#folderLink");
+    displayElementById("mainView");
+    finishControllerSetup();
+  };
 
   $scope.loadController = function() {
-      showAppLoader();
+      setupController();
       // Check if user is logged in. Show user information instead of authentication forms.
       if (isLoggedIn()) {
-          $('document').ready(function() {
-              $(window).scrollTop(0);
-          });
+
           if (!testLogin) {
             $scope.getUser(CURRENT_USER.username, true, function() {
               console.log("Getting user");
@@ -404,23 +333,8 @@ function($scope, $http) {
           }
 
           $scope.getRecentActivity(CURRENT_BANDS);
-          console.log(CURRENT_USER);
-          console.log(CURRENT_BANDS);
-          $scope.user = CURRENT_USER;
-          $scope.user.bands = CURRENT_BANDS;
-          getElementById("userLink").innerText = CURRENT_USER.name;
-      } else {
-          CURRENT_FILE = "";
-          CURRENT_FILES = "";
-          CURRENT_FOLDER = "";
-          CURRENT_FOLDERS = "";
-          CURRENT_BANDS = "";
-          CURRENT_BAND = "";
-          navigateToURL("/#/");
+          $scope.loadUIObjects();
       }
-      removeNavLink("#bandLink");
-      removeNavLink("#folderLink");
-      hideAppLoader();
   };
 
   // Main load method

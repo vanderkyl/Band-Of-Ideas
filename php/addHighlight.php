@@ -1,4 +1,4 @@
-<?php
+ <?php
   include 'data/dataHelper.php';
   $conn = connectToDatabase();
   // Retrieve Post data
@@ -6,6 +6,7 @@
   $data = json_decode($postData);
   $comment = $data->comment;
   $highlight = $data->highlight;
+  $endTime = $data->endTime;
   $userId = $data->userId;
   $fileId = $data->fileId;
   $bandId = $data->bandId;
@@ -17,8 +18,8 @@
 
   if(mysqli_ping($conn)) {
     if ($userId != "" && $fileId != "" && $bandId != "") {
-      $query = "INSERT INTO Highlights (comment, userId, fileId, bandId, commentTime, highlightTime)
-                VALUES ('" . $comment . "','" . $userId . "','" . $fileId . "','" . $bandId . "','" . $dateTime . "','" . $highlight . "');";
+      $query = "INSERT INTO Highlights (comment, userId, fileId, bandId, commentTime, highlightTime, endTime)
+                VALUES ('" . $comment . "','" . $userId . "','" . $fileId . "','" . $bandId . "','" . $dateTime . "','" . $highlight . "','" . $endTime ."');";
       runMySQLInsertQuery($conn, $query);
     } else {
       echo "Sorry, the highlight failed to upload.";

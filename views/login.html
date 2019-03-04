@@ -1,7 +1,6 @@
 <!-- Authentication Form -->
-<img id="loginBrand" src="img/bandofideas-logo-white.png" />
 <div id="authentication">
-
+  <img id="loginBrand" src="img/bandofideas-logo-white.png" />
   <!-- Sign In Form -->
   <div id="signInForm" class="loginForm form col-xs-12">
     <form name="signIn">
@@ -9,6 +8,7 @@
       <input id="signInUsername" type="text" name="username" placeholder="Username" onfocus="closeUserMessage()" ng-model="user.username" required/>
       <input id="signInPassword" type="password" name="password" placeholder="Password" onfocus="closeUserMessage()" ng-model="user.password" required/>
       <input id="signInSubmitButton" type="submit" ng-click="login()" value="{{ loginMessage }}"/>
+      <div id="forgotPasswordButton" style="text-align: right; font-size: 12px"><a href="/#/forgot-password" style="color: #e6e6e6">Forgot Password?</a></div>
     </form>
 
     <br>

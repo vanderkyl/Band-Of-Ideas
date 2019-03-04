@@ -33,6 +33,7 @@
   border-radius: 4px;
 }
 
+
 #file .fileData {
   margin-top: 15px;
   margin-left: 15px;
@@ -156,6 +157,10 @@
   font-size: 9px;
 }
 
+@media (min-width: 768px) {
+
+}
+
 .ideaButton {
   display: inline-block;
   font-size: 14px;
@@ -164,12 +169,32 @@
   padding-top: 0px;
 }
 
+.ideaButton:hover {
+  box-shadow: rgb(84, 84, 84) 0px 4px 8px 0px;
+}
+
 #ideaInfoButton , #closeInfoButton {
   position: absolute;
   top: 15px;
   right: 20px;
   z-index: 1000;
   font-size: 16px;
+}
+
+#ideaInfoContainer {
+  margin-bottom: 10px;
+  border-top: 1px #4e4e4e solid;
+  border-bottom: 1px #4e4e4e solid;
+  padding: 0;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  font-size: 12px;
+  text-align: center;
+}
+
+#ideaInfoContainer img {
+  height: 15px;
+  width: 15px;
 }
 
 .likedButton {
@@ -291,7 +316,7 @@
 
 #highlightInput, #commentInput {
   margin-bottom: 10px;
-  width: 65%;
+  width: 55%;
   float: left;
   margin-right: -10px;
 }
@@ -313,16 +338,26 @@
   filter: invert(100%);
 }
 
-#commentContainer {
+#recentActivity #commentContainer {
   max-height: 492px;
+}
+
+#file #commentContainer {
+  padding: 0;
+  margin-top: 10px;
 }
 
 .commentHeader {
   top: -6px;
-  border-bottom: 1px solid #444;
+  padding-top: 10px;
+  border-top: 1px solid #444;
 }
 
-#commentContainer .ideaButton {
+#highlightButton {
+  padding-top: 7px;
+  float: right;
+  min-width: 40px;
+  height: 34px;
 }
 
 .highlight {
@@ -430,8 +465,6 @@
 
 #file .ideaButtons {
   text-align: center;
-  margin-top: 10px;
-  margin-bottom: 10px;
   display: inline-block;
 
 }
@@ -441,12 +474,20 @@
   height: 15px;
 }
 
+.fileName {
+  text-align: left;
+  word-wrap: break-word;
+}
+
 .highlightPlayButton img {
   width: 10px;
   height: 10px;
 }
 
-
+#fileButtons {
+  padding-left: 10px;
+  padding-right: 10px;
+}
 
 #openFileDetails {
   float: right;
@@ -587,10 +628,9 @@
 
 .fileDetailsButton {
   position: absolute;
-  left: 90%;
+  right: 0px;
   padding: 20px;
-  top: -22px;
-  color: white;
+  top: -15px;
   z-index: 1000;
 }
 

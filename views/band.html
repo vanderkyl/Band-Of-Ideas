@@ -1,0 +1,84 @@
+<div id="bandView" style="display: none">
+  <!-- Folders View -->
+  <div id="folderSection">
+    <div class="col-xs-12">
+      <h3 style="color: white">{{ band.name }}</h3>
+    </div>
+    <!-- Band Buttons -->
+    <div class="containers col-xs-12">
+      <a href="javascript:void(0)" style="font-size: 14px; position: absolute; right: 8px; top: 5px; z-index: 1000;"><i  class="fas fa-info-circle" data-toggle="modal" data-target="#bandDetails"></i></a>
+
+      <div class="col-xs-12 col-sm-8" style="padding: 10px;">
+        <div class="col-xs-4">
+          <div class="mainButton" ng-click="openAllFiles()">
+            <span>{{ band.numFiles }}</span><br>
+            <span style="font-size: 0.9em">Ideas</span>
+          </div>
+        </div>
+        <div class="col-xs-4">
+          <div class="mainButton"  ng-click="openHighlightsFolder()">
+            <img style="width: 15px; height: 15px; padding: 2px" src="../img/timeButton.png"/><br>
+            <span style="font-size: 0.9em">Highlights</span>
+          </div>
+        </div>
+        <div class="col-xs-4">
+          <div class="mainButton"  ng-click="openFavoritesFolder()">
+            <img style="width: 18px; height: 18px;" src="../img/black-metal.png"/><br>
+            <span style="font-size: 0.9em">Favorites</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-xs-12 col-sm-4" style="padding: 10px;">
+        <div class="dropdown">
+          <button class="dropbtn"><span style="padding-right: 15px">Band Members</span> <i class="fas fa-chevron-down"></i></button>
+          <div class="dropdown-content">
+            <a href="javascript:void(0)" id="{{ 'member-' + $index }}" ng-animate="'animate'" ng-repeat="member in members" class="memberButton">{{ member.name }}</a>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+    <div class="col-xs-12" style="padding: 0;">
+
+      <!-- Container that holds all folders -->
+      <div class="containers folders col-xs-12" style="padding: 0;">
+        <div id="folderHeader">
+            <input ng-model="search" class="searchBar" placeholder="Search Folders">
+            <div id="addFolder" class="btn btn-success btn-xs addButton" data-toggle="modal" data-target="#addFolderModal">+</div>
+
+
+        </div>
+        <!--<h4 style="text-align: center; margin-left: 30px;">Folders  <button class="button homeButton" style="height: 30px; line-height: 10px; margin-left: 5px;" data-toggle="modal" data-target="#addFolderModal">+</button></h4>-->
+        <div id="foldersContainer" class="col-xs-12 scroller">
+
+          <!-- Single Folder -->
+          <div id="{{ 'folder-' + $index }}" ng-animate="'animate'" ng-repeat="folder in folders | reverse |
+          filter:{name: search } " class=" col-xs-6 col-sm-4" style="padding-left: 2px; padding-right: 2px;" ng-click="openFolder(folder)">
+            <!-- <p class="deleteFolderButton" ng-click="archiveFolder(folder)"> x </p> -->
+            <div class="folder col-xs-12">
+              <div class="col-xs-12" style="padding-bottom: 4px; padding-left: 0; padding-right: 0; border-bottom: 1px solid #CCC;">
+                <p class="folderTitle col-xs-12">{{ folder.name }}</p>
+                </div>
+              <div class="col-xs-12 text-center" style="padding: 0">
+                <span class="col-xs-6" style="font-size:10px; padding: 0; margin-top: 5px; border-right: 1px solid #CCC;">{{ folder.numFiles }} Ideas<!--<i class="far fa-file-audio" style="font-size: 12px; top: 2px; position: relative;"></i> --></span>
+                <span class="col-xs-3" style="font-size:10px; padding: 0; margin-top: 5px; text-align: right">{{ folder.numFavorites }}<img style="width: 13px; height: 13px;" src="../img/black-metal.png"/></span>
+                <span class="col-xs-3" style="font-size:10px; padding: 0; margin-top: 5px;">{{ folder.numHighlights }} <img style="width: 10px; height: 10px;" src="../img/commentButton.png"/></span>
+              </div>
+            </div>
+
+          </div>
+          <!-- End of Single Folder -->
+        </div>
+      </div>
+
+      <!-- End of folder container -->
+    </div>
+  </div>
+
+  <member-modal></member-modal>
+  <playlists-modal></playlists-modal>
+  <band-details-modal></band-details-modal>
+  <add-folder-modal></add-folder-modal>
+</div>

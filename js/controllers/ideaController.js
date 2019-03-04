@@ -27,30 +27,28 @@ function($scope, $sce, $http, $filter) {
   $scope.duration = "";
   $scope.sourceVideoLink = "";
 
-  // Page Elements
-  var audioTrack = getElementById("audioFilePercentageBar");
-  var audioTimeline = getElementById("audioTimeline");
-  var audio = getElementById("audio");
-  var miniAudioPlayer = getElementById("audioPlayer");
+
 
   //TODO Create functionality for a recent file selection
 
   // -- BUTTON METHODS -- // ----------------------------------------
 
   $scope.goBackToBandPage = function() {
-    if (!audio.paused) {
+    if (wavesurfer.isPlaying()) {
       $scope.openMiniPlayer();
     }
+    destroyWave();
     CURRENT_BAND = $scope.band;
-    navigateToURL("/#/band/" + CURRENT_BAND.metaName);
+    navigateToURL("/#/band?id" + CURRENT_BAND.id);
   };
 
   $scope.goBackToFolderPage = function() {
-    if (!audio.paused) {
+    if (wavesurfer.isPlaying()) {
       $scope.openMiniPlayer();
     }
+    destroyWave();
     CURRENT_FOLDER = $scope.folder;
-    navigateToURL("/#/band/" + CURRENT_BAND.metaName + "/" + CURRENT_FOLDER.metaName);
+    navigateToURL("/#/folder?id=" + CURRENT_FOLDER.id);
   };
 
   $scope.showIdeaInfo = function() {
@@ -63,31 +61,27 @@ function($scope, $sce, $http, $filter) {
     displayElementById("idea");
   };
 
+
+
   // -- END OF BUTTON METHODS -- // ----------------------------------------
 
   // -- AUDIO PLAYER METHODS -- // ----------------------------------------
 
   // Audio buttons
   $scope.play = function() {
-    getElementById("audio").play();
-    hideElementById("play-btn");
-    displayElementInlineById("pause-btn");
+    playWave();
   };
 
   $scope.pause = function() {
-    getElementById("audio").pause();
-    hideElementById("pause-btn");
-    displayElementInlineById("play-btn");
+    pauseWave();
   };
 
   $scope.rewind = function() {
-    var audio = getElementById("audio");
-    rewind(audio);
+    rewindWave();
   };
 
   $scope.fastForward = function() {
-    var audio = getElementById("audio");
-    fastForward(audio);
+    skipWave();
   };
 
   $scope.playNext = function() {
@@ -157,7 +151,7 @@ function($scope, $sce, $http, $filter) {
   $scope.updateFileViews = function() {
     $scope.file.views++;
     CURRENT_FILE.views++;
-    $http.post("/php/updateFile.php?type=views", file)
+    $http.post("/php/updateFile.php?type=views", $scope.file)
         .then(
             function (response) {
               console.log(response.data);
@@ -327,24 +321,25 @@ function($scope, $sce, $http, $filter) {
   };
 
   $scope.currentTimeToString = function(currentTime) {
-    console.log(currentTime);
     return timeToString(parseInt(currentTime));
   };
 
 
 
   $scope.highlight = function() {
-      var highlightContainer = getElementById("highlightInputContainer");
       var highlightButton = getElementById("highlightButton");
-      if (highlightContainer.style.display === "block") {
-          hideElementById("highlightInputContainer");
-          $scope.currentTime = "";
-          highlightButton.innerHTML = "<img width=\"15px\" height=\"15px\" src=\"../img/timeButton.png\"/>";
-      } else  {
-          var currentTime = getElementById("audio").currentTime;
-          $scope.currentTime = currentTime;
-          highlightButton.innerHTML = "x"
-          displayElementById("highlightInputContainer");
+      var highlightContainer = getElementById("highlighter");
+      if (highlightContainer.style.display !== "block") {
+          //var currentTime = getElementById("audio").currentTime;
+          $scope.currentTime = getCurrentWaveTime();
+          setRegionStart($scope.currentTime);
+          setRegionEnd($scope.currentTime + 10);
+          createNewRegion();
+          highlightButton.innerHTML = "x";
+          displayElementById("highlighter");
+      } else {
+          highlightButton.innerHTML = "<i class='far fa-bookmark'></i>";
+          closeHighlighter();
       }
 
   };
@@ -362,30 +357,37 @@ function($scope, $sce, $http, $filter) {
   }
 
   $scope.submitComment = function(file) {
-    var highlight = $scope.currentTime;
-    var comment = getElementById("commentInput").value;
-    var user = CURRENT_USER;
-    var band = CURRENT_BAND;
-    var postData = {
-      userId: user.id,
-      bandId: band.id,
-      fileId: file.id,
-      highlight: highlight,
-      comment: comment
-    };
+    if (selectedRegion.data.isNew) {
+      var highlight = getRegionStartValue();
+      var highlight = getRegionStartValue();
+      var comment = getRegionCommentValue();
+      var user = CURRENT_USER;
+      var band = CURRENT_BAND;
+      var postData = {
+        userId: user.id,
+        bandId: band.id,
+        fileId: file.id,
+        highlight: highlight,
+        endTime: endTime,
+        comment: comment,
+        waveformId: getRegionIdValue()
+      };
 
-    $http.post("/php/addHighlight.php", postData)
-    .then(
-      function (response) {
-        console.log(response.data);
-        $scope.addHighlight(comment, highlight, user.name);
-        getElementById("commentInput").value = "";
-        $scope.highlight();
-      },
-      function (response) {
-        console.log(response.data);
+      $http.post("/php/addHighlight.php", postData)
+          .then(
+              function (response) {
+                console.log(response.data);
+                //$scope.addHighlight(comment, highlight, user.name);
+                getElementById("commentInput").value = "";
+                //$scope.highlight();
+                hideElementById("highlighter");
+              },
+              function (response) {
+                console.log(response.data);
 
-      });
+              });
+    }
+
   };
 
   $scope.showAllHighlights = function() {
@@ -402,8 +404,10 @@ function($scope, $sce, $http, $filter) {
 
   $scope.playHighlight = function(event, time) {
     stopPropogation(event);
-    var audio = getElementById("audio");
-    audio.currentTime = time;
+    if (time !== "") {
+      playWave(parseInt(time));
+    }
+
   };
 
   $scope.playNewHighlight = function() {
@@ -429,7 +433,6 @@ function($scope, $sce, $http, $filter) {
     for (var i = 0; i < $scope.file.highlights.length; i++) {
       $scope.safeApply(function() {
         $scope.file.highlights[i].position = (($scope.file.highlights[i].highlightTime / audio.duration)) * 100;
-        console.log($scope.file.highlights[i].position);
       });
     }
   };
@@ -606,7 +609,6 @@ function($scope, $sce, $http, $filter) {
     console.log("Load file Index");
     for (var i = 0; i < $scope.files.length; i++) {
       $scope.files[i].fileIndex = i;
-      console.log($scope.files[i]);
       $scope.fileLinks[i] = $scope.files[i].link;
     }
   }
@@ -634,69 +636,78 @@ function($scope, $sce, $http, $filter) {
 
   // -- END OF HELPER METHODS -- // ----------------------------------------
 
-  $scope.loadController = function() {
-    showAppLoader();
-    // Do this if logged in
-    if (isLoggedIn()) {
-      quitPlayer();
-      $scope.band = CURRENT_BAND;
-      $scope.user = CURRENT_USER;
-      $scope.files = CURRENT_FILES;
-      $scope.folder = CURRENT_FOLDER;
-      $scope.file = CURRENT_FILE;
-      $scope.numberOfFiles = CURRENT_FILES.length;
-      updateTitle(CURRENT_FOLDER.name + " | " + CURRENT_FILE.name);
+  $scope.loadFileById = function(id, callback) {
+    $http.get("/php/getFiles.php?type=singleFile&fileId=" + id)
+        .then(function (response) {
 
-      $scope.file.size = calculateFileSize($scope.file.size);
-      $scope.checkIfFileIsLiked($scope.file);
-      var fileUrl = "/#/band/" + CURRENT_BAND.metaName + "/" + CURRENT_FOLDER.metaName + "/" + CURRENT_FILE.metaName;
-      scrollToTop();
-      loadFileLinkList();
-      loadFile(CURRENT_FILE);
-      if (CURRENT_FILE.source === "") {
-        getElementById("sourceVideoButtonText").innerText = "Add Video";
-      }
-      removeNavLink("fileLink");
-      addNavLink("fileLink", CURRENT_FILE.name, fileUrl);
-      $scope.updateFileViews();
-      $scope.sourceVideoLink = $sce.trustAsResourceUrl($scope.file.source);
-      console.log($scope.file);
-
-    }
-    hideAppLoader();
+          hideResult("livesearch");
+          hideResult("largeLivesearch");
+          CURRENT_FILES = response.data.folderFiles;
+          CURRENT_FILE = response.data.file;
+          CURRENT_FOLDER = response.data.folder;
+          CURRENT_BAND = response.data.band;
+          callback();
+        });
   };
 
-  // -- EVENT LISTENERS -- // ----------------------------------------
+  $scope.loadFile = function(time) {
+    quitPlayer();
+    $scope.band = CURRENT_BAND;
+    $scope.user = CURRENT_USER;
+    $scope.files = CURRENT_FILES;
+    $scope.folder = CURRENT_FOLDER;
+    $scope.file = CURRENT_FILE;
+    $scope.numberOfFiles = CURRENT_FILES.length;
+    updateTitle(CURRENT_FOLDER.name + " | " + CURRENT_FILE.name);
+    loadFileWaveSurfer(time, function () {
+      loadWaveSurferEvents();
+      $scope.updateFileViews();
+    });
 
-  audioTimeline.addEventListener("click", function (event) {
-    hideElementById("play-btn");
-    displayElementInlineById("pause-btn");
-    moveplayhead(event, audioTimeline, audioTrack);
-    audio.currentTime = audio.duration * clickPercent(event, audioTimeline);
-  }, false);
+    $scope.checkIfFileIsLiked($scope.file);
 
-  audio.addEventListener("loadstart", function(event) {
-    hideElementById("idea");
-    displayElementById("ideaLoading");
-  }, false);
-  audio.addEventListener("durationchange", function (event) {
-    $scope.getHighlightPositions();
-    displayElementById("idea");
-    hideElementById("ideaLoading");
-  }, false);
-  audio.addEventListener("play", function(event) {
-    hideElementById("play-btn");
-    displayElementInlineById("pause-btn");
-  }, false);
-  audio.addEventListener("pause", function (event) {
-    hideElementById("pause-btn");
-    displayElementInlineById("play-btn");
-  }, false);
+    scrollToTop();
+    loadFileLinkList();
 
-  audio.addEventListener("ended", playNext);
-  miniAudioPlayer.addEventListener("ended", playNext);
+    $scope.loadUIObjects();
 
-  // -- END OF EVENT LISTENERS -- // ----------------------------------------
+    $scope.sourceVideoLink = $sce.trustAsResourceUrl($scope.file.source);
+    console.log($scope.file);
+  };
+
+  $scope.loadUIObjects = function() {
+    $("#file-" + CURRENT_FILE.id).addClass("playListFileSelected");
+    var fileUrl = "/#/idea?id=" + CURRENT_FILE.id;
+    removeNavLink("fileLink");
+    addNavLink("fileLink", CURRENT_FILE.name, fileUrl);
+    displayElementById("ideaView");
+    finishControllerSetup();
+  };
+
+  $scope.loadController = function() {
+    setupController();
+    // Do this if logged in
+    if (isLoggedIn()) {
+      var id = getParameterByName("id");
+      var time = getParameterByName("time");
+      console.log(id);
+      if (id) {
+        $scope.loadFileById(id, function() {
+          if (time) {
+            $scope.loadFile(time);
+          } else {
+            $scope.loadFile(0);
+          }
+        });
+      } else {
+        if (time) {
+          $scope.loadFile(time);
+        } else {
+          $scope.loadFile(0);
+        }
+      }
+    }
+  };
 
   // -- CONTROLLER STARTUP METHOD CALL -- // ----------------------------------------
   $scope.loadController();

@@ -1,195 +1,308 @@
-app.controller('folderController', ['$scope', '$sce', '$http', '$filter',
-function($scope, $sce, $http, $filter) {
+app.controller('folderController', ['$scope', '$sce', '$http', '$filter', 'fileUpload',
+function($scope, $sce, $http, $filter, fileUpload) {
   // Folders
   $scope.folders = [];
-  $scope.visibleFolders = [];
   $scope.folder = {};
   $scope.newFolder = "";
   $scope.band = {};
-  $scope.members = [];
-
+  // Files
+  $scope.files = [];
+  $scope.visibleFiles = [];
+  $scope.file = {};
+  $scope.fileLinks = [];
+  $scope.currentFileIndex = 0;
+  $scope.uploadFiles = [];
   $scope.addFolderMessage = "New Folder";
   $scope.folderMessage = "";
 
   $scope.currentPage = 1;
-  $scope.numberOfFolders = 0;
+  $scope.numberOfFiles = 0;
   $scope.sortBy = "-likes";
-  $scope.pageSize = 20;
+  $scope.pageSize = "10";
   $scope.maxSize = 5;
   $scope.search = "";
 
-  $scope.playlistName = "";
-  $scope.playlists = [];
+  $scope.wavesurfers = [];
+  $scope.wavesurferName = "";
+  $scope.wavesurferId = "";
+
+  $scope.maxComments = "5";
+  $scope.fileIcon = "/img/music.png";
+
+  $scope.user = {};
+  $scope.userLikes = [];
+  $scope.members = [];
 
   //TODO Create functionality for a recent file selection
-  $scope.addFolder = function() {
-    var folder = {
-      name: $scope.newFolder,
-      metaName: generateMetaName($scope.newFolder),
-      band: $scope.band.name
-    };
-    // TODO verify that the right data is there
-    $http.post("/php/addFolder.php", folder)
+
+  // globals
+var miniAudioPlayer = getElementById("audioPlayer");
+
+function playNext() {
+  console.log("Play next");
+  console.log($scope.file);
+  console.log($scope.file.fileIndex);
+  var nextFile = $scope.files[$scope.file.fileIndex+1];
+  console.log(nextFile);
+    if (nextFile) {
+        $scope.openFile(nextFile);
+    }
+}
+
+  miniAudioPlayer.addEventListener("ended", playNext);
+
+  //Files Section
+  $scope.openPreviousFolder = function() {
+    var previousUrl = "/#/band/" + CURRENT_BAND.metaName;
+    navigateToURL(previousUrl);
+  };
+
+  $scope.uploadFiles = function() {
+    console.log(getElementById("upload").style.display);
+    var uploadDisplay = getElementById("upload").style.display;
+    if (uploadDisplay == "none" || uploadDisplay == "") {
+      displayElementById("upload");
+    } else {
+      hideElementById("upload");
+    }
+  };
+
+  $scope.goToLink = function() {
+    var source = $scope.file.source;
+    if (source != "") {
+      openLinkInNewTab($scope.file.source);
+    }
+  };
+
+  $scope.openFile = function(file, event) {
+    stopPropogation(event);
+    getElementById("audioPlayerAudio").pause();
+
+    console.log("Opening file:");
+    console.log(file);
+    CURRENT_FILE = file;
+    quitPlayer();
+    navigateToURL("/#/idea?id=" + file.id);
+/*
+    $scope.safeApply(function() {
+      file.views++;
+      if (file.liked) {
+        hideElementById("likeButton");
+        displayElementInlineById("likedButton");
+      }
+      $scope.file = file;
+    });
+    hidePreviousFile();
+    document.title = file.name;
+    loadFile(file);
+    //scrollToElementById("fileSection");
+    $http.post("/php/updateFile.php?type=views", file)
     .then(
       function (response) {
-        if (response.data === "New record created successfully!") {
-          $scope.addFolderMessage = "Success!";
-          $scope.folderMessage = "";
-
-          $scope.folders.push(folder);
-          console.log($scope.folders);
-        } else {
-          $scope.addFolderMessage = "Failed to add folder.";
-        }
+        console.log(response.data);
       },
       function (response) {
         console.log(response.data);
       });
-
+      */
   };
 
-  $scope.openFolder = function(folder) {
-    var folderUrl = "/#/band/" + CURRENT_BAND.metaName + "/";
-    var folderName = folder.name;
-    folder.name = "Loading...";
-    // Open Test Files
-    if (folder.metaName == "test_folder") {
-      CURRENT_FILES = testFiles;
-      CURRENT_FOLDERS = $scope.folders;
-      CURRENT_FOLDER = folder;
-      folderUrl += CURRENT_FOLDER.metaName;
-      console.log("folder link: " + folderUrl);
-      folder.name = folderName;
-      navigateToURL(folderUrl);
-    } else {
-      var folderMetaName = folder.metaName;
-      var bandId = CURRENT_BAND.id;
-      $scope.getFiles(folderMetaName, bandId, folder, function(success) {
-        folder.name = folderName;
-        if (success) {
-          folderUrl += CURRENT_FOLDER.metaName;
-          navigateToURL(folderUrl);
-        } else {
-          console.log("Getting files failed.");
-        }
-      });
+  $scope.closeFile = function() {
+    getElementById("audio").pause();
+    document.title = CURRENT_FOLDER.name;
+    closeFile($scope.file.id);
+  };
 
+  $scope.openMiniPlayer = function() {
+    var source = getElementById("m4aSource").src;
+    var currentTime = getElementById("audio").currentTime;
+    openMiniPlayer($scope.file.id, $scope.file.name, source, currentTime);
+  };
+
+  $scope.openMiniAudioPlayer = function(file) {
+    openMiniPlayer(file.id, file.name, file.link, 0);
+  };
+
+  $scope.showFolderDetails = function() {
+    var detailsDisplay = getElementById("folderDetails").style.display;
+    if (detailsDisplay === "none" || detailsDisplay === "") {
+      displayElementById("folderDetails");
+    } else {
+      hideElementById("folderDetails");
     }
   };
 
-    $scope.showFilters = function() {
-        var filters = getElementById("folderFilters");
-        console.log(filters.style.display);
-        if (filters.style.display === "none") {
-            showElementById("folderFilters");
-        } else {
-            hideElementByIdWithAnimation("folderFilters");
-        }
-
-    };
-
-  $scope.getFiles = function(folderName, bandId, folder, callback) {
-    $http.get("/php/getFiles.php?type=folder&folderName=" + folder.metaName + "&bandId=" + CURRENT_BAND.id)
-    .then(function (response) {
-      console.log(response.data);
-      CURRENT_FILES = response.data;
-      CURRENT_FOLDERS = $scope.folders;
-      CURRENT_FOLDER = folder;
-      callback(response.data);
-    });
+  $scope.deleteFile = function() {
+    var prompt = confirm("Are you sure you want to delete this file?");
+    //deleteFile($scope.file.id);
   };
 
-  $scope.archiveFolder = function(folder) {
-    console.log("Archiving folder");
-    var confirmDelete = confirm("Are you sure you want to delete this folder?");
-    if (confirmDelete) {
-      $http.get("/php/archiveFolder.php?folderName=" + folder.metaName + "&bandName=" + $scope.band.metaName)
-      .then(function (response) {
+  // Add like on file when opened
+  $scope.plusOneOnFile = function() {
+    $scope.plusOne($scope.file);
+  };
+
+  // Add like on file button
+  $scope.plusOne = function(file) {
+    // Keeps this from adding twice
+    var index = file.id;
+
+    displayElementInlineById("likedButton-" + index);
+    hideElementById("likeButton-" + index);
+    console.log(CURRENT_USER);
+    $http.post("/php/updateFile.php?type=likes&user=" + CURRENT_USER.email, file)
+    .then(
+      function (response) {
         console.log(response.data);
-        $scope.folders = response.data;
-        CURRENT_FOLDERS = response.data;
+        file.likes++;
+        console.log(file.likes);
+      },
+      function (response) {
+        console.log(response.data);
+        console.log("Sorry, that didn't work.");
       });
+  };
+
+  $scope.showLikes = function() {
+    // Fill out like data if it hasn't been done yet
+    for (var j = 0; i < $scope.files.length; i++) {
+        for (var i = 0; i < $scope.files[j].userLikes.length; i++) {
+            var result = $scope.members.filter(function( user ) {
+                return user.id == file.userLikes[i];
+            });
+            if (result) {
+                var user = result[0].name;
+                if (result[0].id === CURRENT_USER.id) {
+                    user = "Me";
+                }
+                document.getElementById("playListFileDetails-" + $scope.files[j].id).innerText += user;
+            }
+        }
     }
+
+
+
+
   };
 
-    $scope.openFavoritesFolder = function() {
-        $scope.getFavoriteFiles(CURRENT_USER.id, CURRENT_BAND.id, function(success) {
-            if (success) {
-                CURRENT_FOLDER = {
-                    name: "Favorites",
-                    metaName: "favorites",
-                };
-                navigateToURL("/#/files");
-            } else {
-                console.log("Getting files failed.");
-            }
+  $scope.showLikesOnFile = async function(file) {
+    // Fill out like data if it hasn't been done yet
+    if (getElementById("openFileDetails").childElementCount === 0) {
+      for (var i = 0; i < file.userLikes.length; i++) {
+        var result = $scope.band.memberIds.filter(function( user ) {
+          return user.id == file.userLikes[i];
         });
-    };
-
-    $scope.getFavoriteFiles = function(userId, bandId, callback) {
-        $http.get("/php/getFiles.php?type=bandFavorites&userId=" + userId + "&bandId=" + bandId)
-            .then(function (response) {
-                console.log(response.data);
-                CURRENT_FILES = response.data;
-                callback(response.data);
-            });
-    };
-
-    $scope.openHighlightsFolder = function() {
-        $scope.getHighlightedFiles(CURRENT_USER.id, CURRENT_BAND.id, function(success) {
-            if (success) {
-                CURRENT_FOLDER = {
-                    name: "Highlights",
-                    metaName: "highlights",
-                };
-                navigateToURL("/#/files");
-            } else {
-                console.log("Getting files failed.");
-            }
-        });
-    };
-
-    $scope.getHighlightedFiles = function(userId, bandId, callback) {
-        $http.get("/php/getFiles.php?type=bandHighlights&userId=" + userId + "&bandId=" + bandId)
-            .then(function (response) {
-                console.log(response.data);
-                CURRENT_FILES = response.data;
-                callback(response.data);
-            });
-    };
-
-  $scope.goToUserInfo = function() {
-    navigateToURL("/#/");
-  };
-
-  // Safely wait until the digest is finished before applying the ui change
-  $scope.safeApply = function(fn) {
-    var phase = this.$root.$$phase;
-    if(phase == '$apply' || phase == '$digest') {
-      if(fn && (typeof(fn) === 'function')) {
-        fn();
+        if (result) {
+          var user = result[0].email;
+          if (result[0].id === CURRENT_USER.id) {
+            user = "Me";
+          }
+          $("#openFileDetails").append('<p class="fileData">' + user + ' <img src="/img/black-metal.png"/></p>');
+        }
       }
+    }
+
+    displayElementById("openFileDetails");
+    await sleep(3000);
+    hideElementById("openFileDetails");
+  };
+
+  $scope.showFilter = function() {
+    var filterDisplay = getElementById("filesFilter").style.display;
+    if (filterDisplay == "none" || filterDisplay == "") {
+      displayElementById("filesFilter");
     } else {
-      this.$apply(fn);
+      hideElementById("filesFilter");
     }
   };
 
-  /*
-  $scope.$watch('currentPage + pageSize', function() {
-    var begin = (($scope.currentPage - 1) * $scope.pageSize);
-    var end = begin + $scope.pageSize;
+  $scope.markMoment = function(event) {
+    stopPropogation(event);
+    var commentInput = getElementById("commentInput");
+    var momentButton = getElementById("momentButton");
+    var momentIndicator = getElementById("momentIndicator");
+    if (commentInput.style.display === "block") {
 
-    $scope.visibleFolders = $scope.folders.slice(begin, end);
-    console.log($scope.visibleFolders);
-    var elements = document.getElementById("pagination").getElementsByTagName("ul");
-    elements[0].classList.add("pagination");
-  });
-*/
+      hideElementById("commentInput");
+      hideElementById("momentIndicator");
+      momentButton.innerHTML = "Mark a Moment";
+    } else  {
+      momentButton.innerHTML = "Cancel"
+      displayElementById("commentInput");
+      displayElementById("momentIndicator");
+    }
+  };
+
+  $scope.comment = function(event) {
+    stopPropogation(event);
+    var commentInput = getElementById("commentInput");
+    var commentButton = getElementById("commentButton");
+    if (commentInput.style.display === "block") {
+
+      hideElementById("commentInput");
+      commentButton.innerHTML = "Comment";
+    } else  {
+      commentButton.innerHTML = "Cancel"
+      displayElementById("commentInput");
+    }
+
+  };
+
+  $scope.addComment = function(commentText, user) {
+    var commentObject = {comment: commentText,
+                         userName: user,
+                         commentTime: "Just Now"};
+    $scope.file.comments.push(commentObject);
+  }
+
+  $scope.submitComment = function(file) {
+    var comment = getElementById("commentText").value;
+    var user = CURRENT_USER;
+    var band = CURRENT_BAND;
+
+    $http.post("/php/addComment.php?userId=" + user.id + "&bandId=" + band.id + "&fileId=" + file.id, comment)
+    .then(
+      function (response) {
+        console.log(response.data);
+        $scope.addComment(comment, user.name);
+        hideElementById("commentInput");
+        commentButton.innerHTML = "Comment";
+        momentButton.innerHTML = "Mark a Moment";
+      },
+      function (response) {
+        console.log(response.data);
+      });
+  };
+
+  $scope.showAllComments = function() {
+    $scope.maxComments = $scope.file.comments.length;
+    hideElementById("showCommentsButton");
+    displayElementById("hideCommentsButton");
+  };
+
+  $scope.hideComments = function() {
+    $scope.maxComments = 5;
+    hideElementById("hideCommentsButton");
+    displayElementById("showCommentsButton");
+  };
+
+  $scope.download = function(file) {
+    // Keeps this from downloading twice.
+    $scope.downloadFile(file);
+  };
+
+  $scope.downloadFromFile = function() {
+    $scope.downloadFile($scope.file);
+  };
+
+  $scope.downloadFile = function(file) {
+    openLinkInNewTab(file.link);
+  };
 
   $scope.getData = function () {
       // needed for the pagination calc
       // https://docs.angularjs.org/api/ng/filter/filter
-      return $filter('filter')($scope.folders, $scope.search);
+      return $filter('filter')($scope.files, $scope.search);
     };
 
   $scope.numberOfPages = function() {
@@ -205,128 +318,205 @@ function($scope, $sce, $http, $filter) {
     }
   };
 
-  // Open User Details
-  $scope.showBandDetails = function() {
-    var detailsDisplay = getElementById("bandDetails").style.display;
-    if (detailsDisplay == "none" || detailsDisplay === "") {
-      displayElementById("bandDetails");
-    } else {
-      hideElementById("bandDetails");
+  $scope.formatFileData = function() {
+    for (var i = 0; i < CURRENT_FILES.length; i++) {
+      CURRENT_FILES[i].name = getFriendlyTitle(CURRENT_FILES[i]);
+      CURRENT_FILES[i].size = calculateFileSize(CURRENT_FILES.size);
     }
   };
 
-  $scope.showFolderButtons = function() {
-    hideElementById("showButtonsButton");
-    displayElementById("hideButtonsButton");
-    displayElementById("hiddenFolderButtons");
-    hideElementById("bandName");
+  $scope.checkIfFilesAreLiked = async function(file) {
+    //TODO figure out better way to do this.
+    await sleep(10);
+    console.log("Checking files");
+    file.liked = false;
+    var userId = CURRENT_USER.id;
+    var index = file.id;
+    var userLikes = file.userLikes;
+    for (var i = 0; i < userLikes.length; i++) {
+      console.log(userLikes[i]);
+      if (userId === userLikes[i]) {
+        file.liked = true;
+        hideElementById("likeButton-" + index);
+        displayElementInlineById("likedButton-" + index);
+      }
+    }
+  };
+
+
+
+  $scope.goBackToBandPage = function() {
+    CURRENT_BAND = $scope.band;
+    navigateToURL("/#/band/" + CURRENT_BAND.metaName);
+  };
+
+  $scope.goBackToFolderPage = function() {
+      CURRENT_FOLDER = $scope.folder;
+      navigateToURL("/#/band/" + CURRENT_BAND.metaName + "/" + CURRENT_FOLDER.metaName);
+  };
+
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  $scope.hideFolderButtons = function() {
-    hideElementById("hideButtonsButton");
-    displayElementById("showButtonsButton");
-    hideElementById("hiddenFolderButtons");
-    hideElementById("bandDetails");
-    displayElementById("bandName");
+  // Safely wait until the digest is finished before applying the ui change
+  $scope.safeApply = function(fn) {
+    var phase = this.$root.$$phase;
+    if(phase == '$apply' || phase == '$digest') {
+      if(fn && (typeof(fn) === 'function')) {
+        fn();
+      }
+    } else {
+      this.$apply(fn);
+    }
+  };
+
+
+  $scope.showFilters = function() {
+    var filters = getElementById("fileFilters");
+    console.log(filters.style.display);
+    if (filters.style.display === "none") {
+        showElementById("fileFilters");
+    } else {
+        hideElementByIdWithAnimation("fileFilters");
+    }
+
+  };
+
+  function loadFileLinkList() {
+
+    for (var i = 0; i < $scope.files.length; i++) {
+      $scope.files[i].fileIndex = i;
+      console.log($scope.files[i]);
+      $scope.fileLinks[i] = $scope.files[i].link;
+    }
   }
 
-    $scope.addPlaylist = function() {
-        if ($scope.playlistName != "") {
-            var playlist = {
-                name: $scope.playlistName,
-                bandId: CURRENT_BAND.id,
-                userId: CURRENT_USER.id
-            };
+  $scope.getFolder = function(id, callback) {
+    // Open Test Files
+    if (id === "-1") {
+      CURRENT_FOLDER = testFolder;
+      callback(CURRENT_FOLDER);
+    } else {
+      $http.get("/php/getFolders.php?id=" + id)
+          .then(function (response) {
+            console.log(response.data);
+            CURRENT_FOLDER = response.data;
+            callback(response.data);
+          });
+    }
+  };
 
-            $http.post("/php/addPlaylist.php", playlist)
-                .then(function (response) {
-                    console.log(response.data);
-                    $scope.playlists.push(playlist);
-                },
-                 function (response) {
-                    console.log(response.data);
-                 });
+  $scope.getFiles = function(folderName, bandId, folder, callback) {
+    if (folder.id === "-1") {
+      CURRENT_FILES = testFiles;
+      callback(CURRENT_FILES);
+    } else {
+      $http.get("/php/getFiles.php?type=folder&folderName=" + folder.metaName + "&bandId=" + CURRENT_BAND.id)
+          .then(function (response) {
+            console.log(response.data);
+            CURRENT_FILES = response.data;
+            callback(response.data);
+          });
+    }
 
+  };
+
+    $scope.loadUIObjects = function() {
+      $scope.band = CURRENT_BAND;
+      $scope.user = CURRENT_USER;
+      $scope.files = CURRENT_FILES;
+      $scope.folder = CURRENT_FOLDER;
+      $scope.members = CURRENT_MEMBERS;
+      $scope.numberOfFiles = CURRENT_FILES.length;
+      displayElementById("folderView");
+      var folderUrl = "/#/folder?id=" + CURRENT_FOLDER.id;
+      removeNavLink("folderLink");
+      addNavLink("folderLink", CURRENT_FOLDER.name, folderUrl);
+      finishControllerSetup();
+    };
+
+    $scope.loadController = function() {
+      setupController();
+      // Do this if logged in
+      if (isLoggedIn()) {
+        var id = getParameterByName("id");
+        var bandId = getParameterByName("bandId");
+        console.log(id);
+        if (id) {
+          if (!bandId) {
+            bandId = CURRENT_BAND.id;
+          }
+          $scope.getFolder(id, function(folder) {
+            $scope.getFiles(id, bandId, folder, function(files) {
+              CURRENT_FILES = files;
+              updateTitle(CURRENT_FOLDER.name);
+              loadFileLinkList();
+              $scope.showLikes();
+              $scope.loadUIObjects();
+            });
+          });
         } else {
-            console.log("No Playlist");
+          navigateToURL("/#/dashboard");
         }
 
+      }
     };
 
-  $scope.getPlaylists = function() {
-      console.log("Getting Playlists...");
-      $http.get("/php/getPlaylists.php?bandId=" + CURRENT_BAND.id + "&userId=" + CURRENT_USER.id)
-          .then(function (response) {
-              console.log(response.data);
-              $scope.playlists = response.data;
-
-          });
-  };
-
-    $scope.openPlaylist = function(playlist) {
-        $scope.getPlaylistFiles(playlist.id, function(success) {
-            if (success) {
-                /*
-                CURRENT_PLAYLIST = {
-                    name: playlist.name,
-                    metaName: generateMetaName((playlist.name)),
-                    userId: playlist.userId,
-                    bandId: playlist.bandId,
-                    public: playlist.public
-                };
-                */
-                CURRENT_FOLDER = {
-                    name: playlist.name,
-                    metaName: generateMetaName(playlist.name)
-                };
-                CURRENT_BAND = {
-                    name: "Playlist",
-                    metaName: "playlist"
-                };
-                navigateToURL("/#/files");
-            } else {
-                console.log("Getting files failed.");
-            }
-        });
-    };
-
-    // Http request to get favorited files
-    $scope.getPlaylistFiles = function(playlistId, callback) {
-        $http.get("/php/getFiles.php?type=playlist&playlistId=" + playlistId)
-            .then(function (response) {
-                console.log(response.data);
-                CURRENT_FILES = response.data;
-                callback(response.data);
-            });
-    };
-
-    showAppLoader();
-  // Do this if logged in
-  if (isLoggedIn()) {
-    console.log("Folder Controller");
-    if (CURRENT_BAND.name === "My Bands") {
-      navigateToURL("/#/user")
-    }
-    $scope.band = CURRENT_BAND;
-    $scope.files = CURRENT_FILES;
-    $scope.folder = CURRENT_FOLDER;
-    $scope.members = CURRENT_MEMBERS;
-    //$scope.playlists = CURRENT_SETLISTS;
-
-    if (CURRENT_FOLDERS === "") {
-      $scope.folderMessage = "Click the green button to Add a Folder!";
-
-    } else {
-      $scope.folders = CURRENT_FOLDERS;
-    }
-    //$scope.getSetLists();
-    var urlPaths = window.location.hash.split('/');
-    document.title = CURRENT_BAND.name;
-    var bandUrl = "/#/band/" + CURRENT_BAND.metaName;
-    lastUrl = bandUrl;
-    removeNavLink("bandLink");
-    console.log(CURRENT_BAND.name);
-    addNavLink("bandLink", CURRENT_BAND.name, bandUrl)
-  }
-  hideAppLoader();
+    $scope.loadController();
 }]);
+
+app.directive('ngFileModel', ['$parse', function ($parse) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var model = $parse(attrs.ngFileModel);
+            var isMultiple = attrs.multiple;
+            var modelSetter = model.assign;
+            element.bind('change', function () {
+                var values = [];
+                angular.forEach(element[0].files, function (item) {
+                  console.log(item);
+                    var value = {
+                       // File Name
+                        name: item.name,
+                        //File Size
+                        size: item.size,
+                        // File Input Value
+                        _file: item
+                    };
+                    values.push(value);
+                });
+                scope.$apply(function () {
+                    if (isMultiple) {
+                        modelSetter(scope, values);
+                    } else {
+                        modelSetter(scope, values[0]);
+                    }
+                });
+            });
+        }
+    };
+}]);
+
+app.service('fileUpload', ['$http', function ($http) {
+  console.log("Running fileUpload service");
+           this.uploadFileToUrl = function(file, uploadUrl){
+              var fd = new FormData();
+              fd.append('file', file);
+
+              $http.post(uploadUrl, fd, {
+                 transformRequest: angular.identity,
+                 headers: {'Content-Type': undefined}
+              })
+
+              .success(function(){
+                console.log("Success!");
+              })
+
+              .error(function(){
+                console.log("FAil");
+              });
+           }
+        }]);
+

@@ -74,15 +74,15 @@
 
 
 .playerButton {
-  width: 50px;
+  width: 56px;
   height: 40px;
-  font-size: 12px;
+  font-size: 15px;
   display: inline-block;
   margin-bottom: 10px;
-  border: green 3px solid;
-  border-radius: 50px;
+  border: green 1px solid;
+  border-radius: 10px;
   background: #FFF;
-  line-height: 34px;
+  line-height: 40px;
   text-align: center;
   cursor: pointer;
   cursor: hand;
@@ -97,6 +97,7 @@
 #audioTime {
   text-align: center;
   font-size: 10px;
+  height: 10px;
 }
 
 #audioPlayerTime {
@@ -163,7 +164,7 @@
 }
 
 .highlightTime {
-
+  z-index: 1000;
   margin-top: 18px;
   margin-left: -8px;
   font-size: 0px;
@@ -176,6 +177,7 @@
   box-shadow: 0 2px 5px rgba(0,0,0,0.5);
   border: 1px solid red;
   transition: all .5s;
+  position: relative;
 }
 
 .highlightTime:hover {
@@ -224,6 +226,12 @@
   transition: all .5s;
 }
 
+#highlighter {
+  border-top: 1px #4e4e4e solid;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
 .highlightComment {
   padding: 0px;
   min-width: 0;
@@ -266,12 +274,23 @@
   margin: 100px auto;
 }
 
+#waveformLoader {
+  position: absolute;
+  right: 25%;
+  left: 25%;
+  top: 50px;
+  text-align: center;
+}
+
 .loader {
-  border-top: 5px solid #3498db;
+  border-right: 8px solid #f7f9f7;
+  border-top: 5px solid #272727;
+  border-bottom: 5px solid #294646;
+  border-left: 1px solid white;
   border-radius: 50%;
   width: 120px;
   height: 120px;
-  animation: spin 1.5s cubic-bezier(0.09, 0.82, 1, 1) infinite;
+  animation: spin .7s cubic-bezier(0.44, 0.41, 0.65, 0.62) infinite;
 }
 
 @keyframes spin {
@@ -296,5 +315,56 @@
   height: auto !important;
 }
 
+.slidecontainer {
+  width: 100%;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 0;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #4CAF50;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #4CAF50;
+  cursor: pointer;
+}
+
+#waveform {
+  box-shadow: rgb(84, 84, 84) 0px 4px 8px 0px;
+  padding: 0px;
+  margin-bottom: 10px;
+}
+
+.wavesurfer-region {
+  border: 1px solid #294545;
+}
+
+.wavesurfer-region:hover {
+  box-shadow: rgb(84, 84, 84) 0px 4px 8px 0px;
+}
 
 

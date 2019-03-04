@@ -110,13 +110,18 @@ function httpPost(url, callback) {
 }
 
 function addNavLink(id, name, link) {
+  displayElementById("recentLinks");
   if (id === "bandLink") {
-    $("#bandLinks").append('<div id="' + id + '" class="navButtons"><a href="' + link + '">' + name + '</a></div>');
-  } else if (id === "folderLink") {
-    $("#folderLinks").append('<div id="' + id + '" class="navButtons"><a href="' + link + '">' + name + '</a></div>');
+    $("#bandLinks").append('<div id="' + id + '" class="navButtons"><span>Recent Band</span><a href="' + link + '">' + name + '</a></div>');
+  } else if (id === "playlistLink") {
+    $("#playlistLinks").append('<div id="' + id + '" class="navButtons"><span>Recent Playlist</span><a href="' + link + '">' + name + '</a></div>');
+  }else if (id === "folderLink") {
+    $("#folderLinks").append('<div id="' + id + '" class="navButtons"><span>Recent Folder</span><a href="' + link + '">' + name + '</a></div>');
   } else if (id === "fileLink") {
-    $("#fileLinks").append('<div id="' + id + '" class="navButtons"><a href="' + link + '">' + name + '</a></div>');
-  } else {
+    $("#fileLinks").append('<div id="' + id + '" class="navButtons"><span>Recent Idea</span><a href="' + link + '">' + name + '</a></div>');
+  } else if (id === "playingLink") {
+    $("#fileLinks").append('<div id="' + id + '" class="navButtons"><span>Now Playing</span><a href="' + link + '">' + name + '</a></div>');
+  }else {
     console.log("Can't add this link: " + id);
   }
 }
@@ -138,4 +143,13 @@ function sleep(ms) {
 
 function updateTitle(title) {
   document.title = title;
+}
+
+function copyIdea() {
+  var ideaURLDisplay = document.getElementById("ideaURL").style.display;
+  if (ideaURLDisplay === "inline-block") {
+    hideElementById("ideaURL");
+  } else {
+    displayElementInlineById("ideaURL");
+  }
 }

@@ -60,10 +60,14 @@ function openSearchFolder() {
     xmlhttp.send();
 }
 
-function openFile(id) {
+function openFile(id, time) {
     console.log("Opening File");
+    if (time) {
+      navigateToURL("/#/idea?id=" + id + "&time=" + time);
+    } else {
+      navigateToURL("/#/idea?id=" + id);
+    }
 
-    navigateToURL("/#/idea?id=" + id);
 }
 
 function hideResult(searchId) {

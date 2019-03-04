@@ -1,4 +1,39 @@
+// Page Elements
+var audioTrack = getElementById("audioPlayerPercentageBar");
+var audioTimeline = getElementById("audioPlayerTimeline");
+var audio = getElementById("audioPlayerAudio");
+var miniAudioPlayer = getElementById("audioPlayer");
 
+$(document).ready(function() {
+    // -- EVENT LISTENERS -- // ----------------------------------------
+
+  audioTimeline.addEventListener("click", function (event) {
+    hideElementById("playButton");
+    displayElementInlineById("pauseButton");
+    moveplayhead(event, audioTimeline, audioTrack);
+    audio.currentTime = audio.duration * clickPercent(event, audioTimeline);
+  }, false);
+
+  audio.addEventListener("loadstart", function(event) {
+
+  }, false);
+  audio.addEventListener("durationchange", function (event) {
+
+  }, false);
+  audio.addEventListener("play", function(event) {
+    hideElementById("playButton");
+    displayElementInlineById("pauseButton");
+  }, false);
+  audio.addEventListener("pause", function (event) {
+    hideElementById("pauseButton");
+    displayElementInlineById("playButton");
+  }, false);
+
+  //audio.addEventListener("ended", playNext);
+  //miniAudioPlayer.addEventListener("ended", playNext);
+
+  // -- END OF EVENT LISTENERS -- // ----------------------------------------
+});
 
 function playAudio() {
     getElementById("audio").play();

@@ -30,18 +30,21 @@ function($scope, $http) {
     changeUserIcon(icon);
   };
 
+  $scope.loadUIObjects = function() {
+    displayElementById("userView");
+    finishControllerSetup();
+  };
+
   $scope.loadController = function() {
-      showAppLoader();
+      setupController();
 
       // Check if user is logged in. Show user information instead of authentication forms.
       if (isLoggedIn()) {
         $scope.user = CURRENT_USER;
         $scope.loadProfileImage();
-
-      } else {
-
+        $scope.loadUIObjects();
       }
-      hideAppLoader();
+
   };
 
   // Main load method

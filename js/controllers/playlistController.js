@@ -1,57 +1,22 @@
 app.controller('playlistController', ['$scope', '$sce', '$http', '$filter',
     function($scope, $sce, $http, $filter) {
         // Folders
-        $scope.folders = [];
-        $scope.folder = {};
-        $scope.newFolder = "";
         $scope.band = {};
+        $scope.playlists = [];
+        $scope.playlist = {};
+        $scope.playlistName = "";
         // Files
         $scope.files = [];
-        $scope.visibleFiles = [];
-        $scope.file = {};
         $scope.fileLinks = [];
         $scope.currentFileIndex = 0;
         $scope.uploadFiles = [];
-        $scope.addFolderMessage = "New Folder";
-        $scope.folderMessage = "";
 
-        $scope.currentPage = 1;
         $scope.numberOfFiles = 0;
-        $scope.sortBy = "-likes";
-        $scope.pageSize = "10";
-        $scope.maxSize = 5;
         $scope.search = "";
-
-        $scope.maxComments = "5";
-        $scope.fileIcon = "/img/music.png";
 
         $scope.user = {};
         $scope.userLikes = [];
         $scope.members = [];
-
-        //TODO Create functionality for a recent file selection
-
-        // globals
-        var miniAudioPlayer = getElementById("audioPlayer");
-
-        function playNext() {
-            console.log("Play next");
-            console.log($scope.file);
-            console.log($scope.file.fileIndex);
-            var nextFile = $scope.files[$scope.file.fileIndex+1];
-            console.log(nextFile);
-            if (nextFile) {
-                $scope.openFile(nextFile);
-            }
-        }
-
-        miniAudioPlayer.addEventListener("ended", playNext);
-
-        //Files Section
-        $scope.openPreviousFolder = function() {
-            var previousUrl = "/#/band/" + CURRENT_BAND.metaName;
-            navigateToURL(previousUrl);
-        };
 
 
         $scope.goToLink = function() {
@@ -89,11 +54,6 @@ app.controller('playlistController', ['$scope', '$sce', '$http', '$filter',
 
         };
 
-        $scope.closeFile = function() {
-            getElementById("audio").pause();
-            document.title = CURRENT_FOLDER.name;
-            closeFile($scope.file.id);
-        };
 
         $scope.openMiniPlayer = function() {
             var source = getElementById("m4aSource").src;
@@ -105,45 +65,6 @@ app.controller('playlistController', ['$scope', '$sce', '$http', '$filter',
             openMiniPlayer(file.id, file.name, file.link, 0);
         };
 
-        $scope.showFolderDetails = function() {
-            var detailsDisplay = getElementById("folderDetails").style.display;
-            if (detailsDisplay === "none" || detailsDisplay === "") {
-                displayElementById("folderDetails");
-            } else {
-                hideElementById("folderDetails");
-            }
-        };
-
-        $scope.deleteFile = function() {
-            var prompt = confirm("Are you sure you want to delete this file?");
-            //deleteFile($scope.file.id);
-        };
-
-        // Add like on file when opened
-        $scope.plusOneOnFile = function() {
-            $scope.plusOne($scope.file);
-        };
-
-        // Add like on file button
-        $scope.plusOne = function(file) {
-            // Keeps this from adding twice
-            var index = file.id;
-
-            displayElementInlineById("likedButton-" + index);
-            hideElementById("likeButton-" + index);
-            console.log(CURRENT_USER);
-            $http.post("/php/updateFile.php?type=likes&user=" + CURRENT_USER.email, file)
-                .then(
-                    function (response) {
-                        console.log(response.data);
-                        file.likes++;
-                        console.log(file.likes);
-                    },
-                    function (response) {
-                        console.log(response.data);
-                        console.log("Sorry, that didn't work.");
-                    });
-        };
 
         $scope.showLikes = function() {
             // Fill out like data if it hasn't been done yet
@@ -196,14 +117,6 @@ app.controller('playlistController', ['$scope', '$sce', '$http', '$filter',
             } else {
                 hideElementById("filesFilter");
             }
-        };
-
-        $scope.downloadFromFile = function() {
-            $scope.downloadFile($scope.file);
-        };
-
-        $scope.downloadFile = function(file) {
-            openLinkInNewTab(file.link);
         };
 
         $scope.getData = function () {
@@ -278,16 +191,6 @@ app.controller('playlistController', ['$scope', '$sce', '$http', '$filter',
             }
         };
 
-        $scope.$watch('currentPage + pageSize', function() {
-            var begin = (($scope.currentPage - 1) * $scope.pageSize);
-            var end = begin + $scope.pageSize;
-
-            $scope.visibleFiles = $scope.files.slice(begin, end);
-            console.log($scope.visibleFolders);
-            var elements = document.getElementById("pagination").getElementsByTagName("ul");
-            elements[0].classList.add("pagination");
-        });
-
         $scope.showFilters = function() {
             var filters = getElementById("fileFilters");
             console.log(filters.style.display);
@@ -299,76 +202,197 @@ app.controller('playlistController', ['$scope', '$sce', '$http', '$filter',
 
         };
 
-        function loadFileLinkList() {
+        $scope.getPlaylists = function(callback) {
+            $http.get("/php/getPlaylists.php?userId=" + CURRENT_USER.id)
+                .then(function (response) {
+                  CURRENT_PLAYLISTS = response.data;
+                  callback(response.data);
+                });
+        };
 
-            for (var i = 0; i < $scope.files.length; i++) {
-                $scope.files[i].fileIndex = i;
-                console.log($scope.files[i]);
-                $scope.fileLinks[i] = $scope.files[i].link;
-            }
+      $scope.openPlaylist = function(playlist) {
+        $scope.getPlaylistFiles(playlist, function(files) {
+          if (files) {
+            $scope.files = files;
+            CURRENT_PLAYLIST = {
+                id: playlist.id,
+                name: playlist.name,
+                metaName: generateMetaName(playlist.name),
+                userId: playlist.userId,
+                bandId: playlist.bandId,
+                public: playlist.public,
+                files: $scope.files
+            };
+            $scope.playlist = CURRENT_PLAYLIST;
+            $scope.addPlaylistNavLink();
+            displayElementById("files");
+          } else {
+            console.log("Getting files failed.");
+          }
+        });
+      };
+
+      $scope.addPlaylist = function() {
+        if ($scope.playlistName != "") {
+          var playlist = {
+            name: $scope.playlistName,
+            metaName: generateMetaName($scope.playlistName),
+            bandId: 0,
+            userId: CURRENT_USER.id,
+            public: true
+          };
+          //showPlaylistLoader();
+          $http.post("/php/addPlaylist.php", playlist)
+              .then(function (response) {
+                    console.log(response.data);
+                    $scope.getPlaylists(function(playlists) {
+                      $scope.playlists = playlists;
+                    });
+                    //hidePlaylistLoader();
+                  },
+                  function (response) {
+                    console.log(response.data);
+                    //hidePlaylistLoader();
+                  });
+
+        } else {
+          console.log("No Playlist");
         }
 
+      };
 
-        showAppLoader();
-        // Do this if logged in
-        if (isLoggedIn()) {
-
-            $scope.band = CURRENT_BAND;
-            $scope.user = CURRENT_USER;
-            $scope.files = CURRENT_FILES;
-            $scope.folder = CURRENT_FOLDER;
-            $scope.members = CURRENT_MEMBERS;
-            $scope.numberOfFiles = CURRENT_FILES.length;
-            document.title = CURRENT_FOLDER.name;
-
-            var folderUrl = "/#/band/" + CURRENT_BAND.metaName + "/" + CURRENT_FOLDER.metaName;
-            loadFileLinkList();
-            $scope.showLikes();
-            removeNavLink("folderLink");
-            addNavLink("folderLink", CURRENT_FOLDER.name, folderUrl);
-
-        }
-        hideAppLoader();
-    }]);
-
-app.directive('ngFileModel', ['$parse', function ($parse) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attrs) {
-            var model = $parse(attrs.ngFileModel);
-            var isMultiple = attrs.multiple;
-            var modelSetter = model.assign;
-            element.bind('change', function () {
-                var values = [];
-                angular.forEach(element[0].files, function (item) {
-                    console.log(item);
-                    var value = {
-                        // File Name
-                        name: item.name,
-                        //File Size
-                        size: item.size,
-                        // File Input Value
-                        _file: item
-                    };
-                    values.push(value);
-                });
-                scope.$apply(function () {
-                    if (isMultiple) {
-                        modelSetter(scope, values);
-                    } else {
-                        modelSetter(scope, values[0]);
-                    }
-                });
+      $scope.getPlaylist = function(playlistId, callback) {
+        $http.get("/php/getPlaylists.php?id=" + playlistId)
+            .then(function (response) {
+              CURRENT_PLAYLIST = response.data;
+              callback(response.data);
             });
+      };
+
+      // Http request to get favorited files
+      $scope.getPlaylistFiles = function(playlist, callback) {
+
+        $http.get("/php/getFiles.php?type=playlist&playlistId=" + playlist.id)
+            .then(function (response) {
+              CURRENT_PLAYLIST = {
+                id: playlist.id,
+                name: playlist.name,
+                metaName: playlist.metaName,
+                public: playlist.public,
+                bandId: playlist.bandId,
+                userId: playlist.userId,
+                files: response.data
+              };
+              callback(response.data);
+            });
+      };
+
+        // Http request to get favorited files
+        $scope.getFavoriteFiles = function(userId, callback) {
+            $http.get("/php/getFiles.php?type=allFavorites&userId=" + userId)
+                .then(function (response) {
+                  CURRENT_PLAYLIST = {
+                    id: "allFavorites",
+                    name: "All Favorited Ideas",
+                    metaName: "all-favorites",
+                    files: response.data
+                  };
+                  callback(response.data);
+            });
+        };
+
+      $scope.openFavoritesPlaylist = function() {
+        displayElementById("files");
+        navigateToURL("/#/playlist?id=allFavorites");
+      };
+
+      $scope.getHighlightedFiles = function(userId, callback) {
+        $http.get("/php/getFiles.php?type=allHighlights&userId=" + userId)
+            .then(function (response) {
+              CURRENT_PLAYLIST = {
+                id: "allHighlights",
+                name: "All Highlighted Ideas",
+                metaName: "all-highlights",
+                files: response.data
+              };
+              callback(response.data);
+            });
+      };
+
+      $scope.openHighlightsPlaylist = function() {
+        displayElementById("files");
+        navigateToURL("/#/playlist?id=allHighlights");
+      };
+
+        $scope.loadUIObjects = function() {
+          $scope.band = CURRENT_BAND;
+          $scope.user = CURRENT_USER;
+
+          $scope.files = CURRENT_PLAYLIST.files;
+          $scope.numberOfFiles = CURRENT_PLAYLIST.files.length;
+          $scope.playlist = CURRENT_PLAYLIST;
+          $scope.playlists = CURRENT_PLAYLISTS;
+          document.title = CURRENT_FOLDER.name;
+          $scope.showLikes();
+          displayElementById("playlistsView");
+          finishControllerSetup();
+        };
+
+        $scope.loadPlaylists = function() {
+          $scope.getPlaylists(function(playlists) {
+            displayElementById("files");
+            $scope.addPlaylistNavLink();
+            $scope.loadUIObjects();
+          });
+        };
+
+        $scope.addPlaylistNavLink = function() {
+          var playlistUrl = "/#/playlists?id=" + CURRENT_PLAYLIST.id;
+          removeNavLink("playlistLink");
+          addNavLink("playlistLink", CURRENT_PLAYLIST.name, playlistUrl);
+        };
+
+        $scope.loadController = function() {
+            setupController();
+            // Do this if logged in
+            if (isLoggedIn()) {
+                updateTitle("Playlists");
+                var id = getParameterByName("id");
+                if (id) {
+                    if (id === "allFavorites") {
+                        $scope.getFavoriteFiles(CURRENT_USER.id, function(files) {
+                          $scope.loadPlaylists();
+                        });
+                    } else if (id === "allHighlights") {
+                        $scope.getHighlightedFiles(CURRENT_USER.id, function(files) {
+                            $scope.loadPlaylists();
+                        });
+                    } else {
+                        $scope.getPlaylist(id, function(playlist) {
+                          $scope.getPlaylistFiles(playlist, function(files) {
+                            $scope.loadPlaylists();
+                          });
+                        });
+
+                    }
+
+                } else {
+                  $scope.getPlaylists(function(playlists) {
+                      if (objectIsEmpty(CURRENT_PLAYLIST)) {
+                        CURRENT_PLAYLIST = {
+                          files: []
+                        };
+                      } else {
+                        $scope.addPlaylistNavLink();
+                      }
+                    $scope.loadUIObjects();
+                  });
+                }
+            }
+
         }
-    };
-}]);
 
+        $scope.loadController();
+    }
+]);
 
-
-app.filter('reverse', function() {
-    return function(items) {
-        if (!items || !items.length) { return; }
-        return items.slice().reverse();
-    };
-});

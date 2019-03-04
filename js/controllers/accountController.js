@@ -15,7 +15,6 @@ function($scope, $http) {
     passwordAgain: ""
   };
   var existingBand = "";
-  var testUserName = "testerboi";
 
   // -- SIGN IN / LOGIN METHODS -- // -------------------------------------------------
 
@@ -360,9 +359,9 @@ function($scope, $http) {
   };
 
   $scope.loadController = function() {
-      showAppLoader();
+      setupController();
       // Check if user is logged in. Show user information instead of authentication forms.
-      if (isLoggedIn()) {
+      if (loggedIn) {
           $scope.loadUserData();
           navigateToURL("/#/dashboard");
       } else {
@@ -374,11 +373,15 @@ function($scope, $http) {
               // Check user token to see if the user has already logged in
               $scope.checkDatabaseIfLoggedIn(function(loggedInUser, success) {
                   if (success) {
-                      loggedIn = true;
                       CURRENT_USER = loggedInUser;
                       CURRENT_BANDS = loggedInUser.bands;
-                      $scope.loadUserData();
-                      loginUser();
+                      if (LAST_URL === "") {
+                        $scope.loadUserData();
+                        loginUser();
+                      } else {
+                        goToLastURL();
+                      }
+
                   } else {
                       clearAccountData();
                       displayElementById("authentication");
@@ -389,7 +392,7 @@ function($scope, $http) {
       }
       removeNavLink("#bandLink");
       removeNavLink("#folderLink");
-      hideAppLoader();
+      finishControllerSetup();
   };
 
   // Main load method

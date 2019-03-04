@@ -86,6 +86,7 @@ a.nav-link:hover {
 @media screen and (min-width: 1000px) {
   .sideNav { width: 250px !important; }
   .appContainer { margin-left: 250px !important; }
+  #loadContainer { margin-left: 55% !important; }
   #searchNavContainer { display: block; }
   #navContainer { display: none; }
 }
@@ -108,7 +109,7 @@ a.nav-link:hover {
 .sideNav a {
   padding: 8px 8px 8px 32px;
   text-decoration: none;
-  font-size: 18px;
+  font-size: 16px;
   color: #b3b3b3;
   display: block;
   min-width: 250px;
@@ -118,6 +119,15 @@ a.nav-link:hover {
 .sideNav a:hover {
   color: #f1f1f1;
 }
+
+.sideNav span {
+  color: grey;
+  font-size: 11px;
+  margin-left: 20px;
+  font-style: italic;
+  min-width: 250px;
+}
+
 
 .sideNav .closeSideNav {
   position: absolute;
@@ -179,4 +189,7 @@ a.nav-link:hover {
   margin-bottom: 5px;
 }
 
-
+#recentLinks {
+  border-top: 1px #444 solid;
+  padding-top: 10px;
+}

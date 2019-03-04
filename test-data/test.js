@@ -7,15 +7,28 @@ var members = [
 
 
 // Test User Object
+var testBand = {
+    id: "-1",
+    name: "Test Band",
+    metaName: "test_band",
+    memberIds: ["1"],
+    code: "1234"
+};
+
+var testFolder = {
+  bandId: "-1",
+  id: "-1",
+  name: "Test Folder",
+  metaName: "test_folder",
+  parentId: "0",
+  archived: "true"
+};
+
 var testUser = {
   id: "1",
   bands: [
-    {id: "0",
-     name: "Test Band",
-     metaName: "test_band",
-     memberIds: ["1"],
-     code: "1234"},
-      {id: "1",
+    testBand,
+      {id: "-1",
           name: "Test Band 2",
           metaName: "test_band_2",
           memberIds: ["1"],
@@ -29,14 +42,7 @@ var testUser = {
 };
 
 // Test Folder Objects
-var testFolders = [{
-  bandId: "0",
-  id: "0",
-  name: "Test Folder",
-  metaName: "test_folder",
-  parentId: "0",
-  archived: "true"
-},
+var testFolders = [
 {
   bandId: "0",
   id: "1",
@@ -124,7 +130,7 @@ var testFolders = [{
         metaName: "test_folder2",
         parentId: "0",
         archived: "true"
-    }];
+    },testFolder];
 
 // Test File Objects
 var testFiles = [{
@@ -143,10 +149,13 @@ var testFiles = [{
               {id:3, comment:"laskjdflkdfasdfdf dfdf", userName:"user3", commentTime: "Nov 14th"}, {id:4, comment:"laskjdflk", userName:"user", commentTime: "Nov 14th"},
               {id:4, comment:"laskjdflfdff dffsdfd dfdafsdfasdfasfasdfddf dfdfdasfsdfdsfd df dfdfdk", userName:"user", commentTime: "Nov 14th"},
               {id:5, comment:"laskjdf", userName:"user4", commentTime: "Nov 14th"}, {id:6, comment:"laskjdf", userName:"user4", commentTime: "Nov 14th"}],
-    highlights: [{id:1, comment:"laskjdflk", userName:"user", commentTime: "Nov 14th", highlightTime: "40.12"}, {id:2, comment:"asdffasd", userName:"user2", commentTime: "Nov 14th", highlightTime: "0.12"},
-              {id:3, comment:"laskjdflkdfasdfdf dfdf", userName:"user3", commentTime: "Nov 14th", highlightTime: 60.12}, {id:4, comment:"laskjdflk", userName:"user", commentTime: "Nov 14th", highlightTime: 0.12},
-              {id:4, comment:"laskjdflfdff dffsdfd dfdafsdfasdfasfasdfddf dfdfdasfsdfdsfd df dfdfdk", userName:"user", commentTime: "Nov 14th", highlightTime: 0.12},
-              {id:5, comment:"laskjdf", userName:"user4", commentTime: "Nov 14th",  highlightTime: 0.12}, {id:6, comment:"laskjdf", userName:"user4", commentTime: "Nov 14th", highlightTime: 0.12}]
+    highlights: [{id:1, comment:"laskjdflk", userName:"user", commentTime: "Nov 14th", highlightTime: 40.12, endTime: 115.45},
+                {id:2, comment:"asdffasd", userName:"user2", commentTime: "Nov 14th", highlightTime: 0, endTime: 0},
+                {id:3, comment:"laskjdflkdfasdfdf dfdf", userName:"user3", commentTime: "Nov 14th", highlightTime: 60.12, endTime: 0},
+                {id:4, comment:"laskjdflk", userName:"user", commentTime: "Nov 14th", highlightTime: 5.12, endTime: 15.45},
+                {id:4, comment:"laskjdflfdff dffsdfd dfdafsdfasdfasfasdfddf dfdfdasfsdfdsfd df dfdfdk", userName:"user", commentTime: "Nov 14th", highlightTime: 0.12, endTime: 15.45},
+                {id:5, comment:"laskjdf", userName:"user4", commentTime: "Nov 14th",  highlightTime: 20.12, endTime: 45.45},
+                {id:6, comment:"laskjdf", userName:"user4", commentTime: "Nov 14th", highlightTime: 90.12, endTime: 99.45}]
 
   },
   {

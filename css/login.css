@@ -16,15 +16,15 @@
 
 #loginBrand {
   position: absolute;
-  left: 9%;
-  top: 25px;
+  left: 0%;
+  top: -70px;
   padding-left: 15px;
   right: 9%;
   margin: 0 auto;
   height: auto;
   min-width: 300px;
   max-width: 400px;
-  width: 80%;
+  width: 100%;
 }
 
 #loginButton {

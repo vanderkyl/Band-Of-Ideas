@@ -2,13 +2,18 @@
   require 'data/dataHelper.php';
   $conn = connectToDatabase();
 
-
-  $userId = $_GET['userId'];
+  $id = "";
+  $userId = "";
   $fileId = "";
 
   if(mysqli_ping($conn)) {
     $query = "";
-    if(!empty($_GET['fileId'])) {
+    if(!empty($_GET['id'])) {
+        $id = $_GET['id'];
+        $playlist = getPlaylist($conn, $id);
+        echo json_encode($playlist);
+    } else if(!empty($_GET['fileId'])) {
+        $userId = $_GET['userId'];
         $fileId = $_GET['fileId'];
         $playlists = getFilePlaylists($conn, $fileId, $userId);
         echo json_encode($playlists);
@@ -96,5 +101,32 @@
         }
     }
     return $playlists;
+  }
+
+  function getPlaylist($conn, $id) {
+    $query = "Select * From Playlists Where id = '" . $id . "'";
+    $playlist = [];
+    if ($result = mysqli_query($conn, $query)) {
+
+        if ($result->num_rows > 0) {
+          // Get current row as an array
+          if($row = mysqli_fetch_assoc($result)) {
+
+              $playlist = ['id' => $row["id"],
+                   'name' => $row["name"],
+                   'bandId' => $row["bandId"],
+                   'userId' => $row["userId"],
+                   'public' => $row["public"]
+            ];
+          }
+        } else {
+          $playlist = new stdClass();
+        }
+
+    } else {
+      echo "Sorry, it didn't work.";
+      echo $query;
+    }
+    return $playlist;
   }
 ?>

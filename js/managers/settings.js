@@ -75,6 +75,9 @@ function closeEditUser() {
 
 function showAppLoader() {
     hideElementById("appContainer");
+    $('document').ready(function() {
+    $(window).scrollTop(0);
+    });
     displayElementById("loadContainer");
 }
 
@@ -100,3 +103,4 @@ function hideBody() {
 function showBody() {
   getElementByTag("body").style.display = "block";
 }
+

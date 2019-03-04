@@ -22,27 +22,31 @@ app.config(function ($routeProvider) {
     controller: 'userController',
     templateUrl: 'views/user.html'
   })
-  .when('/band/:name?', {
+  .when('/band', {
+    controller: 'bandController',
+    templateUrl: 'views/band.html'
+  })
+  .when('/folder', {
     controller: 'folderController',
-    templateUrl: 'views/folders.html'
-  })
-  .when('/band/:name?/:folder?', {
-    controller: 'fileController',
-    templateUrl: 'views/files.html'
-  })
-  .when('/band/:name?/:folder?/:file?', {
-    controller: 'ideaController',
-    templateUrl: 'views/idea.html'
+    templateUrl: 'views/folder.html'
   })
   .when('/idea', {
-      controller: 'routeController',
-      templateUrl: 'views/router.html'
+      controller: 'ideaController',
+      templateUrl: 'views/idea.html'
   })
   .when('/idea/:name?', {
       controller: 'ideaController',
       templateUrl: 'views/idea.html'
   })
   .when('/files', {
+    controller: 'playlistController',
+    templateUrl: 'views/playlist.html'
+  })
+  .when('/playlist', {
+    controller: 'playlistController',
+    templateUrl: 'views/playlist.html'
+  })
+  .when('/playlists', {
     controller: 'playlistController',
     templateUrl: 'views/playlist.html'
   })
@@ -54,7 +58,17 @@ app.config(function ($routeProvider) {
       controller: 'settingsController',
       templateUrl: 'views/settings.html'
   })
+  .when("/forgot-password", {
+    controller: 'credentialsController',
+    templateUrl: 'views/forgot-password.html'
+  })
   .otherwise({
     redirectTo: '/'
   });
+});
+
+app.filter('reverse', function() {
+  return function(items) {
+    return items.slice().reverse();
+  };
 });
