@@ -24,7 +24,7 @@
         </div>
 
 
-        <div id="ideaContainer">
+        <div id="ideaContainer" class="col-xs-12 col-sm-6">
           <div id="ideaLoading" class="loader"></div>
           <div id="idea" class="containers col-xs-12">
             <a href="javascript:void(0)" id="ideaInfoButton" class="glyphicon glyphicon-info-sign" data-toggle="modal" data-target="#ideaDetailsModal"></a>
@@ -192,38 +192,39 @@
           <br>
 
         </div>
-        <div id="files" class="containers col-xs-12" style="padding: 0;">
-          <div style="padding-top: 10px;">
-            <div class="col-xs-8" ><span class="backToButton" ng-click="goBackToFolderPage()">{{ folder.name }}</span></div>
-            <div class="col-xs-3" style="font-size:12px; text-align: right">{{ files.length }} Ideas</div>
-          </div>
-          <!-- Container that holds all files playlist -->
-          <div id="fileList" class="col-xs-12">
-            <div id="fileScroller" class="col-xs-12">
-              <div ng-animate="'animate'" ng-repeat="song in files |
-            filter:{name: search }
-            | orderBy:sortBy" class="">
-                <!-- This is a Single File -->
-                <div id="file-{{ song.id }}" class="playListFile col-xs-12" data-index="{{ song.fileIndex }}" ng-click="openFile(song)">
-                  <div class="playListFileInfo col-xs-12">
-                    <!-- <p class="deleteButton" ng-click="deleteFile($index)"> x </p>-->
-                    <p class="col-xs-1">{{ $index + 1 }}</p>
-                    <p class="col-xs-4 fileName" ng-click="openFile(song)">{{ song.name }}</p>
-                    <div class="col-xs-6" style="text-align: right; padding-left: 0; padding-right: 0;">
-                      <p style="min-width: 40px; display: inline-block">{{ song.likes }} <img src="../img/black-metal.png"/></p>
-                      <p style="min-width: 40px; display: inline-block">{{ song.highlights.length }} <img src="../img/commentButton.png"/></p>
-                      <p style="min-width: 40px; display: inline-block">{{ song.views }} <img src="../img/music.png"/></p>
+        <div id="filesContainer" class="col-xs-12 col-sm-6">
+          <div id="files" class="containers col-xs-12">
+            <div style="padding-top: 10px;">
+              <div class="col-xs-8" ><span class="backToButton" ng-click="goBackToFolderPage()">{{ folder.name }}</span></div>
+              <div class="col-xs-3" style="font-size:12px; text-align: right">{{ files.length }} Ideas</div>
+            </div>
+            <!-- Container that holds all files playlist -->
+            <div id="fileList" class="col-xs-12">
+              <div id="fileScroller" class="col-xs-12">
+                <div ng-animate="'animate'" ng-repeat="song in files |
+              filter:{name: search }
+              | orderBy:sortBy" class="">
+                  <!-- This is a Single File -->
+                  <div id="file-{{ song.id }}" class="playListFile col-xs-12" data-index="{{ song.fileIndex }}" ng-click="openFile(song)">
+                    <div class="playListFileInfo col-xs-12">
+                      <!-- <p class="deleteButton" ng-click="deleteFile($index)"> x </p>-->
+                      <p class="col-xs-1">{{ $index + 1 }}</p>
+                      <p class="col-xs-4 fileName" ng-click="openFile(song)">{{ song.name }}</p>
+                      <div class="col-xs-6" style="text-align: right; padding-left: 0; padding-right: 0;">
+                        <p style="min-width: 40px; display: inline-block">{{ song.likes }} <img src="../img/black-metal.png"/></p>
+                        <p style="min-width: 40px; display: inline-block">{{ song.highlights.length }} <img src="../img/commentButton.png"/></p>
+                        <p style="min-width: 40px; display: inline-block">{{ song.views }} <img src="../img/music.png"/></p>
+                      </div>
                     </div>
                   </div>
+                  <!-- End of Single File -->
                 </div>
-                <!-- End of Single File -->
               </div>
+
             </div>
-
+            <!-- End of Playlist -->
           </div>
-          <!-- End of Playlist -->
-        </div>
-
+          </div>
         <!-- File Navigation -->
 
       </div>

@@ -207,9 +207,14 @@ function($scope, $http) {
       for (var i = 0; i < bands.length; i++) {
           console.log(bands[i].id);
           bandIds.push(bands[i].id);
+        $http.get("/php/getRecentActivity.php?type=activityCount&bandId=" + bands[i].id)
+            .then(function (response) {
+              ACTIVITY_COUNTS.push(response);
+            });
       }
-      console.log(bandIds);
-      $http.get("/php/getRecentActivity.php?bandIds=" + JSON.stringify(bandIds))
+
+      console.log(ACTIVITY_COUNTS);
+      $http.get("/php/getRecentActivity.php?type=bandList&bandIds=" + JSON.stringify(bandIds))
           .then(function (response) {
               hideElementById("loadCommentsContainer");
               displayElementById("commentContainer");
@@ -321,11 +326,11 @@ function($scope, $http) {
     finishControllerSetup();
   };
 
+  // Load Main Controller method
   $scope.loadController = function() {
       setupController();
       // Check if user is logged in. Show user information instead of authentication forms.
       if (isLoggedIn()) {
-
           if (!testLogin) {
             $scope.getUser(CURRENT_USER.username, true, function() {
               console.log("Getting user");

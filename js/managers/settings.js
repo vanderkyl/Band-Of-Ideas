@@ -59,6 +59,12 @@ function changeBackgroundColor(color) {
     localStorage['background-color'] = color;
 }
 
+function loadProfileImage() {
+  console.log(CURRENT_USER.userIcon);
+  var icon = CURRENT_USER.userIcon || "../img/default-profile.png";
+  changeUserIcon(icon);
+};
+
 function changeUserIcon(img) {
   getElementById("userLinkImage").style.backgroundImage = "url(" + img + ")";
 }

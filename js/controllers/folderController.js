@@ -407,12 +407,12 @@ function playNext() {
     }
   };
 
-  $scope.getFiles = function(folderName, bandId, folder, callback) {
+  $scope.getFiles = function(folderName, folder, callback) {
     if (folder.id === "-1") {
       CURRENT_FILES = testFiles;
       callback(CURRENT_FILES);
     } else {
-      $http.get("/php/getFiles.php?type=folder&folderName=" + folder.metaName + "&bandId=" + CURRENT_BAND.id)
+      $http.get("/php/getFiles.php?type=folder&folderName=" + folder.metaName + "&bandId=" + folder.bandId)
           .then(function (response) {
             console.log(response.data);
             CURRENT_FILES = response.data;
@@ -441,14 +441,11 @@ function playNext() {
       // Do this if logged in
       if (isLoggedIn()) {
         var id = getParameterByName("id");
-        var bandId = getParameterByName("bandId");
         console.log(id);
         if (id) {
-          if (!bandId) {
-            bandId = CURRENT_BAND.id;
-          }
+
           $scope.getFolder(id, function(folder) {
-            $scope.getFiles(id, bandId, folder, function(files) {
+            $scope.getFiles(id, folder, function(files) {
               CURRENT_FILES = files;
               updateTitle(CURRENT_FOLDER.name);
               loadFileLinkList();
@@ -464,6 +461,7 @@ function playNext() {
     };
 
     $scope.loadController();
+
 }]);
 
 app.directive('ngFileModel', ['$parse', function ($parse) {

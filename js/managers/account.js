@@ -8,6 +8,7 @@ var CURRENT_FILE = {};
 var CURRENT_MEMBERS = [];
 var CURRENT_PLAYLISTS = [];
 var CURRENT_PLAYLIST = {};
+var ACTIVITY_COUNTS =  [];
 var REQUESTED_URL = "";
 var LAST_URL = "";
 var LAST_PATHNAME = "";

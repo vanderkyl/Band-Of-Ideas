@@ -15,7 +15,17 @@ function($scope, $sce, $http) {
             });
     };
 
+    $scope.openFolder = function(id) {
+        navigateToURL("/#/folder?id=" + id);
+    };
+
     var id = getParameterByName("id");
+    var type = getParameterByName("type");
     console.log(id);
-    $scope.openFile(id);
+    if (type === "file") {
+      $scope.openFile(id);
+    } else if (type === "folder") {
+      $scope.openFolder(id);
+    }
+
 }]);

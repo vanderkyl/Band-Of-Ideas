@@ -104,8 +104,7 @@
 }
 
 #fileList .playListFile {
-  margin-top: 5px;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
   padding-top: 5px;
   padding-bottom: 5px;
   padding: 0;
@@ -338,10 +337,6 @@
   filter: invert(100%);
 }
 
-#recentActivity #commentContainer {
-  max-height: 492px;
-}
-
 #file #commentContainer {
   padding: 0;
   margin-top: 10px;
@@ -476,6 +471,7 @@
 
 .fileName {
   text-align: left;
+  font-size: 12px;
   word-wrap: break-word;
 }
 

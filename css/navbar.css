@@ -86,7 +86,6 @@ a.nav-link:hover {
 @media screen and (min-width: 1000px) {
   .sideNav { width: 250px !important; }
   .appContainer { margin-left: 250px !important; }
-  #loadContainer { margin-left: 55% !important; }
   #searchNavContainer { display: block; }
   #navContainer { display: none; }
 }
@@ -107,7 +106,7 @@ a.nav-link:hover {
 }
 
 .sideNav a {
-  padding: 8px 8px 8px 32px;
+  padding: 8px 8px 8px 14px;
   text-decoration: none;
   font-size: 16px;
   color: #b3b3b3;
@@ -149,13 +148,13 @@ a.nav-link:hover {
   width: 40px;
   float: left;
   height: 40px;
-  margin: 0px 0px 5px -30px;
+  margin: 0px 0px 5px -10px;
   min-width: 40px;
 }
 
 #userLink {
   margin-top: 8px;
-  margin-left: 25px;
+  margin-left: 40px;
 }
 
 #bandLinks , #folderLinks, #fileLinks {

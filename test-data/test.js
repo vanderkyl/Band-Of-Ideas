@@ -11,8 +11,9 @@ var testBand = {
     id: "-1",
     name: "Test Band",
     metaName: "test_band",
-    memberIds: ["1"],
-    code: "1234"
+    members: ["1", "2"],
+    code: "1234",
+    numFiles: 23
 };
 
 var testFolder = {
@@ -31,8 +32,10 @@ var testUser = {
       {id: "-1",
           name: "Test Band 2",
           metaName: "test_band_2",
-          memberIds: ["1"],
-          code: "1234"}
+        members: ["1", "2"],
+          code: "1234",
+          numFiles: 30
+      }
   ],
   name: "Test User",
   email: "test@test.com",

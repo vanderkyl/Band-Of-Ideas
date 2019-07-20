@@ -4,17 +4,26 @@
 
   $conn = connectToDatabase();
 
-  $bandIds = json_decode($_GET['bandIds']);
+
 
   if(mysqli_ping($conn)) {
     $data = [];
-    if (empty($bandIds)) {
-        $data = ['comments' => [],
-                 'highlights' => []];
-    } else {
-        $data = ['comments' => getRecentComments($conn, $bandIds),
-                 'highlights' => getRecentHighlights($conn, $bandIds)];
+    $type = $_GET['type'];
+    if ($type == "bandList") {
+        $bandIds = json_decode($_GET['bandIds']);
+        if (empty($bandIds)) {
+                $data = ['comments' => [],
+                         'highlights' => []];
+            } else {
+                $data = ['comments' => getRecentComments($conn, $bandIds),
+                         'highlights' => getRecentHighlights($conn, $bandIds)];
+            }
+    } else if ($type == "activityCount") {
+        $bandId = $_GET['bandId'];
+        $data = ['band' => getBand($conn, $bandId),
+                 'activityCount' => getBandActivityCount($conn, $bandId)];
     }
+
 
     echo json_encode($data);
   } else {
@@ -22,6 +31,21 @@
   }
 
   mysqli_close($conn);
+
+  function getBandActivityCount($conn, $bandId) {
+      $query = "SELECT COUNT(id) FROM Comments WHERE bandId = '" . $bandId . "'";
+
+      if ($result = mysqli_query($conn, $query)) {
+            $count = 0;
+            if ($result->num_rows > 0) {
+              // Get current row as an array
+              if ($row = mysqli_fetch_assoc($result)) {
+                $count = $row["Count(id)"];
+              }
+            }
+            return $count;
+          }
+  }
 
   function getRecentComments($conn, $bandIds) {
 

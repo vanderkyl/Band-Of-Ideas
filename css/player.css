@@ -282,6 +282,7 @@
   text-align: center;
 }
 
+/*
 .loader {
   border-right: 8px solid #f7f9f7;
   border-top: 5px solid #272727;
@@ -292,11 +293,9 @@
   height: 120px;
   animation: spin .7s cubic-bezier(0.44, 0.41, 0.65, 0.62) infinite;
 }
+*/
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
+
 
 #loadSongs {
   cursor: pointer;

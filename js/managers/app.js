@@ -58,6 +58,10 @@ app.config(function ($routeProvider) {
       controller: 'settingsController',
       templateUrl: 'views/settings.html'
   })
+  .when('/router', {
+      controller: 'routeController',
+      templateUrl: 'views/router.html'
+  })
   .when("/forgot-password", {
     controller: 'credentialsController',
     templateUrl: 'views/forgot-password.html'

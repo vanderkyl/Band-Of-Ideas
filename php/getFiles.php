@@ -330,7 +330,8 @@
                               'comment' => $highlight,
                               'userName' => $userName,
                               'commentTime' => $highlightRow["commentTime"],
-                              'highlightTime' => $highlightRow["highlightTime"]];
+                              'highlightTime' => $highlightRow["highlightTime"],
+                              'endTime' => $highlightRow["endTime"]];
             $highlights[] = $highlightObject;
           }
         }

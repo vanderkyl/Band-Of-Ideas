@@ -1,9 +1,10 @@
 html, body {
-    background: linear-gradient(-45deg, #ec5121, #0e71ec, #3c763d, #23D5AB);
+    /*background: linear-gradient(-45deg, #ec5121, #0e71ec, #3c763d, #23D5AB); #225e9e*/
+    background: linear-gradient(-45deg, #ec5121, #0e71ec, #102133, #0e71ec);
     background-size: 400% 400%;
-    -webkit-animation: Gradient 30s ease infinite;
+    /*-webkit-animation: Gradient 30s ease infinite;
     -moz-animation: Gradient 30s ease infinite;
-    animation: Gradient 30s ease infinite;
+    animation: Gradient 30s ease infinite;*/
     margin: 0;
     padding: 0;
     padding-top: 35px;
@@ -53,13 +54,8 @@ body {
   }
 }
 
-
 @media screen and (min-width: 1000px) {
   .appContainer { padding-right: 2% !important; padding-left: 2% !important; }
-}
-
-@media screen and (min-width: 1200px) {
-  .appContainer { padding-right: 10% !important; padding-left: 10% !important; }
 }
 
 .appContainer {
@@ -235,8 +231,7 @@ body {
     float: right;
     margin-right: 5px;
     font-size: 12px;
-    max-width: 40px;
-    margin-top: 5px;
+    max-width: 70px;
 }
 
 
@@ -727,7 +722,7 @@ body {
   background-color: white;
   background-image: url('../img/default-profile1.png');
   height: 200px;
-  border-radius: 15px;
+  border-radius: 50%;
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -808,3 +803,19 @@ body {
 .dropdown:hover .dropdown-content {display: block;}
 
 .dropdown:hover .dropbtn {background-color: #3e8e41;}
+
+.loader {
+  border-right: 20px solid white;
+  border-top: 14px solid white;
+  border-bottom: 14px solid white;
+  border-left: 14px solid white;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin .8s cubic-bezier(0.44, 0.41, 0.65, 0.62) infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

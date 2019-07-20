@@ -23,12 +23,7 @@ function($scope, $http) {
     });
   };
 
-  $scope.loadProfileImage = function() {
-    console.log($scope.user.userIcon);
-    var icon = $scope.user.userIcon || "../img/default-profile.png";
-    getElementById("profileImage").style.backgroundImage = "url(" + icon + ")";
-    changeUserIcon(icon);
-  };
+
 
   $scope.loadUIObjects = function() {
     displayElementById("userView");
@@ -41,7 +36,8 @@ function($scope, $http) {
       // Check if user is logged in. Show user information instead of authentication forms.
       if (isLoggedIn()) {
         $scope.user = CURRENT_USER;
-        $scope.loadProfileImage();
+        var icon = CURRENT_USER.userIcon || "../img/default-profile.png";
+        getElementById("profileImage").style.backgroundImage = "url(" + icon + ")";
         $scope.loadUIObjects();
       }
 

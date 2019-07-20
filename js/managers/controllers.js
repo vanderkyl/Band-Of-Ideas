@@ -1,7 +1,9 @@
 function setupController() {
   console.log("Setting up controller");
+  $('body').removeClass('modal-open');
+  $('.modal-backdrop').remove();
   getElementById("userLink").innerText = CURRENT_USER.name;
-  getElementById("userLinkImage").style += " backgroundImage: url('" + CURRENT_USER.userIcon + "')";
+  loadProfileImage();
   destroyWave();
   showAppLoader();
 }

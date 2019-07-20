@@ -9,8 +9,8 @@ function loadFileWaveSurfer(time, callback) {
   hideElementById("ideaLoading");
   wavesurfer = WaveSurfer.create({
     container: '#waveform',
-    waveColor: 'darkcyan',
-    progressColor: 'darkslategrey',
+    waveColor: 'darkslategrey',
+    progressColor: 'darkcyan',
     autoCenter: true,
     cursorColor: '#444',
     barWidth: 2,
@@ -28,9 +28,10 @@ function loadFileWaveSurfer(time, callback) {
     for (var i = 0; i < CURRENT_FILE.highlights.length; i++) {
       if (CURRENT_FILE.highlights[i].highlightTime !== "0") {
         var highlightTime = parseFloat(CURRENT_FILE.highlights[i].highlightTime);
+        var endTime = parseFloat(CURRENT_FILE.highlights[i].endTime);
         wavesurfer.addRegion({
           start: highlightTime,
-          end: highlightTime + 20,
+          end: endTime,
           data: {comment: CURRENT_FILE.highlights[i].comment,
             user: CURRENT_FILE.highlights[i].userName,
             commentTime: CURRENT_FILE.highlights[i].commentTime,
@@ -56,15 +57,16 @@ function loadWaveSurferEvents() {
   });
 
   wavesurfer.on('region-click', function(region) {
-    closeHighlighter();
-    selectedRegion = region;
+    //closeHighlighter();
+    //selectedRegion = region;
+    updateSelectedRegion(region);
     showUserComment(region);
-    playRegion();
+    //playRegion();
   });
 
   wavesurfer.on('region-dblclick', function(region) {
     updateSelectedRegion(region);
-    region.play();
+    playRegion();
   });
 
   wavesurfer.on('region-in', function(region) {
@@ -279,8 +281,8 @@ function closeHighlighter() {
     if (selectedRegion.data.isNew) {
       removeRegion();
     }
-    setRegionStart("");
-    setRegionEnd("");
+    setRegionStart(0);
+    setRegionEnd(0);
     setRegionComment("");
     setRegionId("");
     hideElementById('highlighter');

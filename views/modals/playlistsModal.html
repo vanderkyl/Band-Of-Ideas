@@ -11,7 +11,7 @@
 
         <div id="playlistLoader" class="loader"></div>
         <div id="playlists" class="scroller" style="padding: 15px; display: none;">
-          <div id="{{ 'playlist-' + $index }}" ng-animate="'animate'" ng-repeat="playlist in playlists" class="playlistButton col-xs-12" data-dismiss="modal" ng-click="openPlaylist(playlist)">
+          <div id="{{ 'playlist-' + playlist.id }}" ng-animate="'animate'" ng-repeat="playlist in playlists" class="playlistButton col-xs-12" data-dismiss="modal" ng-click="openPlaylist(playlist)">
 
             <div class="playlistDetails col-xs-8">
               <div>{{ playlist.name }}</div>

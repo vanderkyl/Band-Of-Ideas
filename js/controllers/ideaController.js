@@ -344,49 +344,56 @@ function($scope, $sce, $http, $filter) {
 
   };
 
-  $scope.addHighlight = function(commentText, highlightTime, user) {
+  $scope.addHighlight = function(commentText, highlightTime, endTime, user) {
     if (highlightTime !== -1) {
       var highlightObject = {comment: commentText,
         userName: user,
         commentTime: "Just Now",
-        highlightTime: highlightTime};
-      highlightObject.position = ((highlightObject.highlightTime / audio.duration)) * 100;
+        highlightTime: highlightTime,
+        endTime: endTime};
+      //highlightObject.position = ((highlightObject.highlightTime / audio.duration)) * 100;
       $scope.file.highlights.push(highlightObject);
+      selectedRegion.data.isNew = false;
     }
 
   }
 
   $scope.submitComment = function(file) {
-    if (selectedRegion.data.isNew) {
-      var highlight = getRegionStartValue();
-      var highlight = getRegionStartValue();
-      var comment = getRegionCommentValue();
-      var user = CURRENT_USER;
-      var band = CURRENT_BAND;
-      var postData = {
-        userId: user.id,
-        bandId: band.id,
-        fileId: file.id,
-        highlight: highlight,
-        endTime: endTime,
-        comment: comment,
-        waveformId: getRegionIdValue()
-      };
+    var highlight = 0;
+    var endTime = 0;
+    if (selectedRegion !== undefined || getElementById("highlighter").style.display != "none") {
 
-      $http.post("/php/addHighlight.php", postData)
-          .then(
-              function (response) {
-                console.log(response.data);
-                //$scope.addHighlight(comment, highlight, user.name);
-                getElementById("commentInput").value = "";
-                //$scope.highlight();
-                hideElementById("highlighter");
-              },
-              function (response) {
-                console.log(response.data);
-
-              });
+      if (selectedRegion.data.isNew) {
+        highlight = getRegionStartValue();
+        endTime = getRegionEndValue();
+      }
     }
+    var comment = getRegionCommentValue();
+    var user = CURRENT_USER;
+    var band = CURRENT_BAND;
+    var postData = {
+      userId: user.id,
+      bandId: band.id,
+      fileId: file.id,
+      highlight: highlight,
+      endTime: endTime,
+      comment: comment
+    };
+
+    $http.post("/php/addHighlight.php", postData)
+        .then(
+            function (response) {
+              console.log(response.data);
+              $scope.addHighlight(comment, highlight, endTime, user.name);
+              closeHighlighter();
+              //$scope.highlight();
+
+            },
+            function (response) {
+              console.log(response.data);
+              alert("Something went wrong");
+            });
+
 
   };
 

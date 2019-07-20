@@ -49,8 +49,7 @@ app.controller('playlistController', ['$scope', '$sce', '$http', '$filter',
             console.log("Opening file:");
             console.log(file);
             CURRENT_FILE = file;
-            navigateToURL("/#/band/" + CURRENT_BAND.metaName + "/" + CURRENT_FOLDER.metaName
-                + "/" + CURRENT_FILE.metaName);
+            navigateToURL("/#/idea?id=" + file.id);
 
         };
 
