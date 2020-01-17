@@ -83,28 +83,6 @@ function playNext() {
     CURRENT_FILE = file;
     quitPlayer();
     navigateToURL("/#/idea?id=" + file.id);
-/*
-    $scope.safeApply(function() {
-      file.views++;
-      if (file.liked) {
-        hideElementById("likeButton");
-        displayElementInlineById("likedButton");
-      }
-      $scope.file = file;
-    });
-    hidePreviousFile();
-    document.title = file.name;
-    loadFile(file);
-    //scrollToElementById("fileSection");
-    $http.post("/php/updateFile.php?type=views", file)
-    .then(
-      function (response) {
-        console.log(response.data);
-      },
-      function (response) {
-        console.log(response.data);
-      });
-      */
   };
 
   $scope.closeFile = function() {
@@ -120,7 +98,21 @@ function playNext() {
   };
 
   $scope.openMiniAudioPlayer = function(file) {
+    $scope.updateFileViews();
     openMiniPlayer(file.id, file.name, file.link, 0);
+  };
+
+  $scope.updateFileViews = function() {
+    $scope.file.views++;
+    CURRENT_FILE.views++;
+    $http.post("/php/updateFile.php?type=views", $scope.file)
+        .then(
+            function (response) {
+              console.log(response.data);
+            },
+            function (response) {
+              console.log(response.data);
+            });
   };
 
   $scope.showFolderDetails = function() {
@@ -179,10 +171,6 @@ function playNext() {
             }
         }
     }
-
-
-
-
   };
 
   $scope.showLikesOnFile = async function(file) {
@@ -214,89 +202,6 @@ function playNext() {
     } else {
       hideElementById("filesFilter");
     }
-  };
-
-  $scope.markMoment = function(event) {
-    stopPropogation(event);
-    var commentInput = getElementById("commentInput");
-    var momentButton = getElementById("momentButton");
-    var momentIndicator = getElementById("momentIndicator");
-    if (commentInput.style.display === "block") {
-
-      hideElementById("commentInput");
-      hideElementById("momentIndicator");
-      momentButton.innerHTML = "Mark a Moment";
-    } else  {
-      momentButton.innerHTML = "Cancel"
-      displayElementById("commentInput");
-      displayElementById("momentIndicator");
-    }
-  };
-
-  $scope.comment = function(event) {
-    stopPropogation(event);
-    var commentInput = getElementById("commentInput");
-    var commentButton = getElementById("commentButton");
-    if (commentInput.style.display === "block") {
-
-      hideElementById("commentInput");
-      commentButton.innerHTML = "Comment";
-    } else  {
-      commentButton.innerHTML = "Cancel"
-      displayElementById("commentInput");
-    }
-
-  };
-
-  $scope.addComment = function(commentText, user) {
-    var commentObject = {comment: commentText,
-                         userName: user,
-                         commentTime: "Just Now"};
-    $scope.file.comments.push(commentObject);
-  }
-
-  $scope.submitComment = function(file) {
-    var comment = getElementById("commentText").value;
-    var user = CURRENT_USER;
-    var band = CURRENT_BAND;
-
-    $http.post("/php/addComment.php?userId=" + user.id + "&bandId=" + band.id + "&fileId=" + file.id, comment)
-    .then(
-      function (response) {
-        console.log(response.data);
-        $scope.addComment(comment, user.name);
-        hideElementById("commentInput");
-        commentButton.innerHTML = "Comment";
-        momentButton.innerHTML = "Mark a Moment";
-      },
-      function (response) {
-        console.log(response.data);
-      });
-  };
-
-  $scope.showAllComments = function() {
-    $scope.maxComments = $scope.file.comments.length;
-    hideElementById("showCommentsButton");
-    displayElementById("hideCommentsButton");
-  };
-
-  $scope.hideComments = function() {
-    $scope.maxComments = 5;
-    hideElementById("hideCommentsButton");
-    displayElementById("showCommentsButton");
-  };
-
-  $scope.download = function(file) {
-    // Keeps this from downloading twice.
-    $scope.downloadFile(file);
-  };
-
-  $scope.downloadFromFile = function() {
-    $scope.downloadFile($scope.file);
-  };
-
-  $scope.downloadFile = function(file) {
-    openLinkInNewTab(file.link);
   };
 
   $scope.getData = function () {
@@ -347,12 +252,12 @@ function playNext() {
 
   $scope.goBackToBandPage = function() {
     CURRENT_BAND = $scope.band;
-    navigateToURL("/#/band/" + CURRENT_BAND.metaName);
+    navigateToURL("/#/band?=" + CURRENT_BAND.id);
   };
 
   $scope.goBackToFolderPage = function() {
       CURRENT_FOLDER = $scope.folder;
-      navigateToURL("/#/band/" + CURRENT_BAND.metaName + "/" + CURRENT_FOLDER.metaName);
+      navigateToURL("/#/folder?=" + CURRENT_FOLDER.id);
   };
 
   function sleep(ms) {
@@ -383,14 +288,48 @@ function playNext() {
 
   };
 
-  function loadFileLinkList() {
-
+  function loadFileList() {
     for (var i = 0; i < $scope.files.length; i++) {
       $scope.files[i].fileIndex = i;
       console.log($scope.files[i]);
       $scope.fileLinks[i] = $scope.files[i].link;
+      $scope.files[i].durationTime = timeToString($scope.files[i].duration);
     }
+    console.log($scope.files);
   }
+
+  $scope.openFileActions = function(file, event) {
+    event.stopPropagation();
+    hideElementById("fileActionsOpen-" + file.id);
+    displayElementById("fileActionsClose-" + file.id);
+    getElementById("fileActions-" + file.id).style.height = "100%";
+    getElementById("fileActions-" + file.id).style.borderTop = "solid 1px #d6d6d6";
+    getElementById("fileActions-" + file.id).style.padding = "10px";
+    displayElementById("actionsDiv-" + file.id);
+  };
+
+  $scope.closeFileActions = function(file, event) {
+    event.stopPropagation();
+    hideElementById("fileActionsClose-" + file.id);
+    displayElementById("fileActionsOpen-" + file.id);
+    getElementById("fileActions-" + file.id).style.height = "0";
+    getElementById("fileActions-" + file.id).style.border = "none";
+    getElementById("fileActions-" + file.id).style.padding = "0";
+    hideElementById("actionsDiv-" + file.id);
+  };
+
+  $scope.openUploadModal = function() {
+    setupUploadModal(function() {
+      $("#UploadBands").val($scope.band.name);
+      setupFoldersDropdown(function() {
+        $("#UploadFolders").val($scope.folder.name);
+        setupFilePond();
+        displayElementById("filepondDiv");
+      });
+    });
+
+
+  };
 
   $scope.getFolder = function(id, callback) {
     // Open Test Files
@@ -402,6 +341,24 @@ function playNext() {
           .then(function (response) {
             console.log(response.data);
             CURRENT_FOLDER = response.data;
+            $scope.getBand(CURRENT_FOLDER.bandId, function(band) {
+              console.log(band);
+              callback(response.data);
+            })
+          });
+    }
+  };
+
+  $scope.getBand = function(id, callback) {
+    // Open Test Files
+    if (id === "-1") {
+      CURRENT_BAND = testBand;
+      callback(CURRENT_BAND);
+    } else {
+      $http.get("/php/getBand.php?id=" + id)
+          .then(function (response) {
+            console.log(response.data);
+            CURRENT_BAND = response.data;
             callback(response.data);
           });
     }
@@ -429,6 +386,7 @@ function playNext() {
       $scope.folder = CURRENT_FOLDER;
       $scope.members = CURRENT_MEMBERS;
       $scope.numberOfFiles = CURRENT_FILES.length;
+      loadFileList();
       displayElementById("folderView");
       var folderUrl = "/#/folder?id=" + CURRENT_FOLDER.id;
       removeNavLink("folderLink");
@@ -448,7 +406,6 @@ function playNext() {
             $scope.getFiles(id, folder, function(files) {
               CURRENT_FILES = files;
               updateTitle(CURRENT_FOLDER.name);
-              loadFileLinkList();
               $scope.showLikes();
               $scope.loadUIObjects();
             });

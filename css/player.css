@@ -29,7 +29,7 @@
   z-index: 1000;
   width: 70%;
   margin-left: 15%;
-  margin-top: 8px;
+  margin-top: 0px;
   display: none;
 }
 
@@ -38,9 +38,8 @@
 }
 
 #audio {
-  display: none;
   float: right;
-  top: 2px;
+  top: 5px;
   right: 5px;
 }
 
@@ -126,15 +125,19 @@
 }
 
 #audioTimeline {
+  cursor: pointer;
+  cursor: hand;
   border: 2px solid #444;
   padding: 0px;
   margin-bottom: 30px;
 }
 
 #audioPlayerTimeline {
-  border: 2px solid #CCC;
+  cursor: pointer;
+  cursor: hand;
+  border: 1px solid #CCC;
+  border-radius: 5px;
   padding: 0px;
-  margin-bottom: 30px;
 }
 
 #audioFilePercentageBar {
@@ -366,4 +369,34 @@
   box-shadow: rgb(84, 84, 84) 0px 4px 8px 0px;
 }
 
+#closePlayerButton {
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  font-size: 36px;
+  z-index: 1000;
+  color: #CCC;
+  transition: 0.3s;
+  text-decoration: none;
+}
+
+#closePlayerButton:hover {
+  color: #f1f1f1;
+}
+
+.playerFooterButton {
+  color: white;
+  padding: 5px;
+  padding-top: 10px;
+  cursor: pointer;
+  cursor: hand;
+}
+
+#audioInfo {
+  color: white;
+  margin-top: 50px;
+  border-top: 1px solid #CCC;
+  text-align: center;
+  padding: 40px;
+}
 

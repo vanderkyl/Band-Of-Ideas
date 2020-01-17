@@ -2,7 +2,7 @@
   // DB creds and connection variable
   $sqlUser = "kylevanderhoof";
   $sqlPW = "ashdrum10";
-  $sqlDB = "IdeaBand";
+  $sqlDB = "BandOfIdeas";
 
   function connectToDatabase() {
     $conn = mysqli_connect("localhost", $GLOBALS['sqlUser'], $GLOBALS['sqlPW'], $GLOBALS['sqlDB']);

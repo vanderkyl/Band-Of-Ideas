@@ -287,18 +287,31 @@ app.controller('playlistController', ['$scope', '$sce', '$http', '$filter',
       };
 
         // Http request to get favorited files
-        $scope.getFavoriteFiles = function(userId, callback) {
-            $http.get("/php/getFiles.php?type=allFavorites&userId=" + userId)
-                .then(function (response) {
-                  CURRENT_PLAYLIST = {
-                    id: "allFavorites",
-                    name: "All Favorited Ideas",
-                    metaName: "all-favorites",
-                    files: response.data
-                  };
-                  callback(response.data);
+      $scope.getFavoriteFiles = function(userId, callback) {
+          $http.get("/php/getFiles.php?type=allFavorites&userId=" + userId)
+              .then(function (response) {
+                CURRENT_PLAYLIST = {
+                  id: "allFavorites",
+                  name: "All Favorited Ideas",
+                  metaName: "all-favorites",
+                  files: response.data
+                };
+                callback(response.data);
+          });
+      };
+
+      $scope.getBandFavoriteFiles = function(userId, bandId, callback) {
+        $http.get("/php/getFiles.php?type=allFavorites&userId=" + userId + "&bandId=" + bandId)
+            .then(function (response) {
+              CURRENT_PLAYLIST = {
+                id: "bandFavorites",
+                name: "Favorited Ideas",
+                metaName: "band-favorites",
+                files: response.data
+              };
+              callback(response.data);
             });
-        };
+      };
 
       $scope.openFavoritesPlaylist = function() {
         displayElementById("files");
@@ -312,6 +325,19 @@ app.controller('playlistController', ['$scope', '$sce', '$http', '$filter',
                 id: "allHighlights",
                 name: "All Highlighted Ideas",
                 metaName: "all-highlights",
+                files: response.data
+              };
+              callback(response.data);
+            });
+      };
+
+      $scope.getBandHighlightedFiles = function(userId, bandId, callback) {
+        $http.get("/php/getFiles.php?type=allHighlights&userId=" + userId + "&bandId=" + bandId)
+            .then(function (response) {
+              CURRENT_PLAYLIST = {
+                id: "bandHighlights",
+                name: "Highlighted Ideas",
+                metaName: "band-highlights",
                 files: response.data
               };
               callback(response.data);
@@ -366,6 +392,14 @@ app.controller('playlistController', ['$scope', '$sce', '$http', '$filter',
                         $scope.getHighlightedFiles(CURRENT_USER.id, function(files) {
                             $scope.loadPlaylists();
                         });
+                    } else if (id === "bandFavorites") {
+                      $scope.getBandFavoriteFiles(CURRENT_USER.id, CURRENT_BAND.id, function(files) {
+                        $scope.loadPlaylists();
+                      });
+                    } else if (id === "bandHighlights") {
+                      $scope.getBandHighlightedFiles(CURRENT_USER.id, CURRENT_BAND.id, function(files) {
+                        $scope.loadPlaylists();
+                      });
                     } else {
                         $scope.getPlaylist(id, function(playlist) {
                           $scope.getPlaylistFiles(playlist, function(files) {

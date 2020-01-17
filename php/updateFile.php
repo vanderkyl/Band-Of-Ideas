@@ -17,7 +17,16 @@
         echo "Update unsuccessful";
         echo $query;
       }
-    } else if ($updateType == "likes") {
+    } else if ($updateType == "duration") {
+     $duration = $data->duration;
+     $query = "UPDATE Files SET duration='" . $duration . "' WHERE id='" . $id . "';";
+     if ($result = mysqli_query($conn, $query)) {
+       echo "File updated successfully";
+     } else {
+       echo "Update unsuccessful";
+       echo $query;
+     }
+   } else if ($updateType == "likes") {
       $likes = $data->likes;
       $user= $_GET['user'];
       $userId = "";

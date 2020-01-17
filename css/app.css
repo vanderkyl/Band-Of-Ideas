@@ -1,7 +1,7 @@
 html, body {
     /*background: linear-gradient(-45deg, #ec5121, #0e71ec, #3c763d, #23D5AB); #225e9e*/
-    background: linear-gradient(-45deg, #ec5121, #0e71ec, #102133, #0e71ec);
-    background-size: 400% 400%;
+    /*background: linear-gradient(-45deg, #ec5121, #0e71ec, #102133, #0e71ec);
+    background-size: 400% 400%;*/
     /*-webkit-animation: Gradient 30s ease infinite;
     -moz-animation: Gradient 30s ease infinite;
     animation: Gradient 30s ease infinite;*/
@@ -65,6 +65,8 @@ body {
   margin: 0 auto;
   padding-right: 15px;
   margin-left: 0px;
+  height: 100%;
+  //opacity: 0;
   transition: margin-left .5s;
 }
 
@@ -188,6 +190,12 @@ body {
   padding: 15px;
 }
 
+.folderDetails {
+  overflow: auto;
+  height: 0;
+  transition: all .2s ease-in;
+}
+
 .folder {
   padding: 15px;
   background: rgba(255, 255, 255, .9);
@@ -201,25 +209,6 @@ body {
   color: #444;
   box-shadow: 0 2px 10px rgba(0,0,0,.5);
 
-}
-
-.folder:hover .folderDetails {
-  font-size: 12px;
-  height: 100px;
-  padding-top: 5px;
-  transition: all 0.3s ease-in-out;
-}
-
-.folderDetails {
-  z-index: 1000;
-  padding: 0;
-  border: 1px #ccc solid;
-  font-size: 0;
-  width: auto;
-  height: 0px ;
-  background: #FFF;
-  text-align: center;
-  transition: all 0.3s ease-in-out;
 }
 
 .folders {
@@ -547,20 +536,6 @@ body {
 
 .footer img {
    margin: 0 10px;
-}
-
-#closePlayerButton {
-  position: absolute;
-  right: 20px;
-  font-size: 36px;
-  z-index: 1000;
-  color: #CCC;
-  transition: 0.3s;
-  text-decoration: none;
-}
-
-#closePlayerButton:hover {
-  color: #f1f1f1;
 }
 
 #addFolderInput, #accountInfoLink,

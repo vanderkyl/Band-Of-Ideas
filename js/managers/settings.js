@@ -15,18 +15,13 @@ $(document).ready(function () {
         e.stopPropagation();
         openSideNav();
     });
-    // Set up User Settings
-
-    var color = localStorage['background-color'] || "rgb(208, 213, 216)";
-    changeBackgroundColor(color);
-
     var icon = localStorage['user-icon'] || "../img/default-profile.png";
     changeUserIcon(icon);
 });
 
 
 function openSideNav() {
-    getElementById("sideNav").style.width = "250px";
+    getElementById("sideNav").style.width = "200px";
     hideElementById("sideNavButton");
     displayElementInlineById("closeSideNavButton");
 }
@@ -54,8 +49,8 @@ function closeSearchForm() {
 }
 
 function changeBackgroundColor(color) {
-    getElementByTag("body").style.backgroundColor = color;
     getElementByTag("html").style.backgroundColor = color;
+    //getElementById("appContainer").style.backgroundColor = color;
     localStorage['background-color'] = color;
 }
 
@@ -79,19 +74,6 @@ function closeEditUser() {
   displayElementById("userInfo");
 }
 
-function showAppLoader() {
-    hideElementById("appContainer");
-    $('document').ready(function() {
-    $(window).scrollTop(0);
-    });
-    displayElementById("loadContainer");
-}
-
-function hideAppLoader() {
-  hideElementById("loadContainer");
-  displayElementById("appContainer");
-}
-
 function showPlaylistLoader() {
     hideElementById("playlists");
     displayElementById("playlistLoader")
@@ -103,10 +85,11 @@ function hidePlaylistLoader() {
 }
 
 function hideBody() {
+    //getElementByTag("body").style.opacity = 0;
     getElementByTag("body").style.display = "none";
 }
 
 function showBody() {
+  //getElementByTag("body").style.opacity = 1;
   getElementByTag("body").style.display = "block";
 }
-

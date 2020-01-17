@@ -38,6 +38,7 @@ function($scope, $sce, $http, $filter) {
 
           $scope.folders.push(folder);
           console.log($scope.folders);
+          location.reload(true);
         } else {
           $scope.addFolderMessage = "Failed to add folder.";
         }
@@ -90,51 +91,13 @@ function($scope, $sce, $http, $filter) {
     }
   };
 
-    $scope.openFavoritesFolder = function() {
-        $scope.getFavoriteFiles(CURRENT_USER.id, CURRENT_BAND.id, function(success) {
-            if (success) {
-                CURRENT_FOLDER = {
-                    name: "Favorites",
-                    metaName: "favorites",
-                };
-                navigateToURL("/#/files");
-            } else {
-                console.log("Getting files failed.");
-            }
-        });
-    };
+  $scope.openFavoritesFolder = function() {
+      navigateToURL("/#/playlist?id=bandFavorites");
+  };
 
-    $scope.getFavoriteFiles = function(userId, bandId, callback) {
-        $http.get("/php/getFiles.php?type=bandFavorites&userId=" + userId + "&bandId=" + bandId)
-            .then(function (response) {
-                console.log(response.data);
-                CURRENT_FILES = response.data;
-                callback(response.data);
-            });
-    };
-
-    $scope.openHighlightsFolder = function() {
-        $scope.getHighlightedFiles(CURRENT_USER.id, CURRENT_BAND.id, function(success) {
-            if (success) {
-                CURRENT_FOLDER = {
-                    name: "Highlights",
-                    metaName: "highlights",
-                };
-                navigateToURL("/#/files");
-            } else {
-                console.log("Getting files failed.");
-            }
-        });
-    };
-
-    $scope.getHighlightedFiles = function(userId, bandId, callback) {
-        $http.get("/php/getFiles.php?type=bandHighlights&userId=" + userId + "&bandId=" + bandId)
-            .then(function (response) {
-                console.log(response.data);
-                CURRENT_FILES = response.data;
-                callback(response.data);
-            });
-    };
+  $scope.openHighlightsFolder = function() {
+      navigateToURL("/#/playlist?id=bandHighlights");
+  };
 
   $scope.goToUserInfo = function() {
     navigateToURL("/#/");
@@ -278,6 +241,26 @@ function($scope, $sce, $http, $filter) {
             });
     };
 
+    $scope.openFolderDetails = function(folder, event) {
+      event.stopPropagation();
+      hideElementById("folderDetailsOpen-" + folder.id);
+      displayElementById("folderDetailsClose-" + folder.id);
+      getElementById("folderDetails-" + folder.id).style.height = "0";
+      getElementById("folderDetails-" + folder.id).style.borderTop = "1px solid #CCC";
+      getElementById("folderDetails-" + folder.id).style.padding = "20px";
+      displayElementById("detailsDiv-" + folder.id);
+    }
+
+    $scope.closeFolderDetails = function(folder, event) {
+      event.stopPropagation();
+      hideElementById("folderDetailsClose-" + folder.id);
+      displayElementById("folderDetailsOpen-" + folder.id);
+      getElementById("folderDetails-" + folder.id).style.height = "0";
+      getElementById("folderDetails-" + folder.id).style.borderTop = "none";
+      getElementById("folderDetails-" + folder.id).style.padding = "0";
+      hideElementById("detailsDiv-" + folder.id);
+    }
+
     $scope.getFolders = function(band, callback) {
       var id = band.id;
       if (id === "-1") {
@@ -361,3 +344,4 @@ function($scope, $sce, $http, $filter) {
     $scope.loadController();
 
 }]);
+

@@ -25,6 +25,30 @@
   margin-left: 5px;
 }
 
+.fileActions {
+  overflow: auto;
+  height: 0;
+  transition: all .2s ease-in;
+}
+
+.fileMetrics {
+  text-align: center;
+  padding-left: 0;
+  padding-right: 0;
+  border: 1px solid rgb(214, 214, 214);
+  padding-top: 7px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+
+.durationTime {
+  font-size: 10px;
+  position: absolute;
+  right: 45px;
+  top: 1px;
+  z-index: 1000;
+}
+
 .fileComments {
   color: #000000;
   font-size: 12px;
@@ -172,7 +196,7 @@
   box-shadow: rgb(84, 84, 84) 0px 4px 8px 0px;
 }
 
-#ideaInfoButton , #closeInfoButton {
+#ideaAddButton , #closeInfoButton {
   position: absolute;
   top: 15px;
   right: 20px;
@@ -344,8 +368,6 @@
 
 .commentHeader {
   top: -6px;
-  padding-top: 10px;
-  border-top: 1px solid #444;
 }
 
 #highlightButton {

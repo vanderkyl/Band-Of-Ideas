@@ -51,13 +51,14 @@
               $name = $file["name"];
               $type = $file["type"];
               $size = $file["size"];
+              $duration = $file["duration"];
 
               $link = "/uploads/band/" . $bandName . "/" . $folderName . "/" . $file["name"];
               //$source = $file["source"];
               $source = "";
-              echo "File Info: " . $name . "\n Type: " . $type . "\n Size: " . $size . "\n Link: " . $link;
-              $query = "INSERT INTO Files (name, metaName, type, size, link, source, folderId, bandId)
-                        VALUES ('" . $name . "','" . $name . "','" . $type . "','" . $size . "','" . $link . "','" . $source . "','" . $folderId . "','" . $bandId . "')";
+              echo "File Info: " . $name . "\n Type: " . $type . "\n Size: " . $size . "\n Link: " . $link . "\n Duration: " . $duration;
+              $query = "INSERT INTO Files (name, metaName, type, size, link, source, folderId, bandId, duration)
+                        VALUES ('" . $name . "','" . $name . "','" . $type . "','" . $size . "','" . $link . "','" . $source . "','" . $folderId . "','" . $bandId . "','" . $duration . "')";
               if (!$conn->query($query) === TRUE) {
                 echo "Query: " . $query . "\n";
                 echo "Error: " . $query . "<br>" . $conn->error;

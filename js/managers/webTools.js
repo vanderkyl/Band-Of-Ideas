@@ -112,15 +112,15 @@ function httpPost(url, callback) {
 function addNavLink(id, name, link) {
   displayElementById("recentLinks");
   if (id === "bandLink") {
-    $("#bandLinks").append('<div id="' + id + '" class="navButtons"><span>Recent Band</span><a href="' + link + '">' + name + '</a></div>');
+    $("#bandLinks").append('<div id="' + id + '" class="navButtons"><a href="' + link + '"><i class="fas fa-sitemap"></i></i><span>' + name + '</span></a></div>');
   } else if (id === "playlistLink") {
-    $("#playlistLinks").append('<div id="' + id + '" class="navButtons"><span>Recent Playlist</span><a href="' + link + '">' + name + '</a></div>');
+    $("#playlistLinks").append('<div id="' + id + '" class="navButtons"><a href="' + link + '"><i class="fas fa-stream"></i><span>' + name + '</span></a></div>');
   }else if (id === "folderLink") {
-    $("#folderLinks").append('<div id="' + id + '" class="navButtons"><span>Recent Folder</span><a href="' + link + '">' + name + '</a></div>');
+    $("#folderLinks").append('<div id="' + id + '" class="navButtons"><a href="' + link + '"><i class="far fa-folder-open"></i><span>' + name + '</span></a></div>');
   } else if (id === "fileLink") {
-    $("#fileLinks").append('<div id="' + id + '" class="navButtons"><span>Recent Idea</span><a href="' + link + '">' + name + '</a></div>');
+    $("#fileLinks").append('<div id="' + id + '" class="navButtons"><a href="' + link + '"><i class="fas fa-wave-square"></i><span>' + name + '</span></a></div>');
   } else if (id === "playingLink") {
-    $("#fileLinks").append('<div id="' + id + '" class="navButtons"><span>Now Playing</span><a href="' + link + '">' + name + '</a></div>');
+    $("#fileLinks").append('<div id="' + id + '" class="navButtons"><a href="' + link + '"><i class="far fa-play"></i><span>' + name + '</span></a></div>');
   }else {
     console.log("Can't add this link: " + id);
   }
@@ -152,4 +152,8 @@ function copyIdea() {
   } else {
     displayElementInlineById("ideaURL");
   }
+}
+
+function getAttribute(id, key) {
+  return getElementById(id).getAttribute(key);
 }

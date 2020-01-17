@@ -84,8 +84,8 @@ a.nav-link:hover {
 }
 
 @media screen and (min-width: 1000px) {
-  .sideNav { width: 250px !important; }
-  .appContainer { margin-left: 250px !important; }
+  .sideNav { width: 200px !important; }
+  .appContainer { margin-left: 200px !important; }
   #searchNavContainer { display: block; }
   #navContainer { display: none; }
 }
@@ -111,11 +111,19 @@ a.nav-link:hover {
   font-size: 16px;
   color: #b3b3b3;
   display: block;
-  min-width: 250px;
+  min-width: 200px;
   transition: 0.3s;
 }
 
-.sideNav a:hover {
+.sideNav a span {
+  margin-left: 10px;
+  color: #b3b3b3;
+  font-size: 14px;
+  font-style: normal;
+  min-width: 200px;
+}
+
+.sideNav a:hover, .sideNav a:hover span {
   color: #f1f1f1;
 }
 
@@ -124,7 +132,7 @@ a.nav-link:hover {
   font-size: 11px;
   margin-left: 20px;
   font-style: italic;
-  min-width: 250px;
+  min-width: 200px;
 }
 
 

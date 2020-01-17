@@ -1,17 +1,29 @@
 // Page Elements
-var audioTrack = getElementById("audioPlayerPercentageBar");
-var audioTimeline = getElementById("audioPlayerTimeline");
+var audioPlayerTrack = getElementById("audioPlayerPercentageBar");
+var audioPlayerTimeline = getElementById("audioPlayerTimeline");
+var audioTimeline = getElementById("audioTimeline");
+var audioTrack = getElementById("audioPercentageBar");
+var audioPlayer = getElementById("audioPlayerAudio");
 var audio = getElementById("audioPlayerAudio");
 var miniAudioPlayer = getElementById("audioPlayer");
+var currentFileId = 0;
 
-$(document).ready(function() {
-    // -- EVENT LISTENERS -- // ----------------------------------------
+function setupAudioEventListeners() {
+  // -- EVENT LISTENERS -- // ----------------------------------------
 
-  audioTimeline.addEventListener("click", function (event) {
-    hideElementById("playButton");
-    displayElementInlineById("pauseButton");
+  /*
+  audioPlayerTimeline.addEventListener("click", function (event) {
+    hideElementById("play-btn");
+    displayElementInlineById("pause-btn");
     moveplayhead(event, audioTimeline, audioTrack);
     audio.currentTime = audio.duration * clickPercent(event, audioTimeline);
+  }, false);
+  */
+  audioPlayerTimeline.addEventListener("click", function (event) {
+    hideElementById("playButton");
+    displayElementInlineById("pauseButton");
+    moveplayhead(event, audioPlayerTimeline, audioPlayerTrack);
+    audioPlayer.currentTime = audioPlayer.duration * clickPercent(event, audioPlayerTimeline);
   }, false);
 
   audio.addEventListener("loadstart", function(event) {
@@ -29,18 +41,22 @@ $(document).ready(function() {
     displayElementInlineById("playButton");
   }, false);
 
-  //audio.addEventListener("ended", playNext);
-  //miniAudioPlayer.addEventListener("ended", playNext);
+  //audio.addEventListener("ended", playNext(true));
+
 
   // -- END OF EVENT LISTENERS -- // ----------------------------------------
-});
+}
 
 function playAudio() {
     getElementById("audio").play();
+    hideElementById("play-btn");
+    displayElementInlineById("pause-btn");
 }
 
 function pauseAudio() {
     getElementById("audio").pause();
+    hideElementById("pause-btn");
+    displayElementInlineById("play-btn");
 }
 
 function playAudioFromPlayer() {
@@ -62,16 +78,29 @@ function checkTime() {
 }
 
 function openMiniAudioPlayer(id, name) {
+    currentFileId = id;
     var trackName = getElementById("trackName");
     trackName.innerHTML = name;
     trackName.href = "/#/idea?id=" + id;
-
-    displayElementById("audioPlayer");
     var footer = getElementById("footer");
-    footer.style.height = "160px";
+    footer.style.height = "180px";
+    var audioPlayer = getElementById("audioPlayerAudio");
+
+    audioPlayer.load();
+
+    audioPlayer.addEventListener("durationchange", function (event) {
+        displayElementById("audioPlayerTime");
+        audioPlayer.addEventListener("ended", function (event) {
+          playNext(true);
+        });
+    }, false);
+    setAudioInfo();
+    displayElementById("audioPlayer");
+
     hideElementById("playButton");
     displayElementInlineById("pauseButton");
-    getElementById("audioPlayerAudio").load();
+
+
 }
 
 function openMiniPlayer(id, name, source, time) {
@@ -87,19 +116,47 @@ function openMiniPlayer(id, name, source, time) {
 function quitPlayer() {
     document.title = "BoI";
     pauseAudioFromPlayer();
+    collapsePlayer();
     hideElementById("audioPlayer");
+    hideElementById("audioPlayerTime");
     var footer = getElementById("footer");
     footer.style.height = 0;
 }
 
+function expandPlayer() {
+    var footer = getElementById("footer");
+    footer.style.height = "100%";
+    displayElementById("audioInfo");
+    hideElementById("expandPlayerButton");
+    displayElementById("collapsePlayerButton");
+}
+
+function collapsePlayer() {
+    var footer = getElementById("footer");
+    footer.style.height = "180px";
+    hideElementById("audioInfo");
+    hideElementById("collapsePlayerButton");
+    displayElementById("expandPlayerButton");
+}
+
+function setAudioInfo() {
+  getElementById("nextSong").innerText = getNextSong(true).name;
+  getElementById("previousSong").innerText = getPreviousSong(true).name;
+}
+
 function timeToString(currentTime) {
-  currentTime = Number(currentTime);
-  var minutes = Math.floor(currentTime % 3600 / 60);
-  var seconds = Math.floor(currentTime % 3600 % 60);
-  if (seconds < 10) {
-    seconds = "0" + seconds;
+  if (currentTime === "0" || currentTime === undefined) {
+    return " - ";
+  } else {
+    currentTime = Number(currentTime);
+    var minutes = Math.floor(currentTime % 3600 / 60);
+    var seconds = Math.floor(currentTime % 3600 % 60);
+    if (seconds < 10) {
+      seconds = "0" + seconds;
+    }
+    return minutes + ":" + seconds;
   }
-  return minutes + ":" + seconds;
+
 }
 
 function initProgressBar() {
@@ -117,7 +174,9 @@ function initPlayerProgressBar() {
     //Do something with upload progress
     var filePercentageBar = getElementById("audioPlayerPercentageBar");
     filePercentageBar.style.width = percentComplete + "%";
-    getElementById("audioPlayerTime").innerText = timeToString(audio.currentTime) + " / " + timeToString(audio.duration);
+    var time = timeToString(audio.currentTime) + " / " + timeToString(audio.duration);
+    getElementById("audioPlayerTime").innerText = time;
+    getElementById("trackName").href = "/#/idea?id=" + currentFileId + "&time=" + audio.currentTime;
 }
 
 // Returns elements left position relative to top-left of viewport
@@ -169,5 +228,46 @@ function fastForward(audio) {
     }
 }
 
+function playNext(loop) {
+    var file = getNextSong(loop);;
+    openMiniAudioPlayer(file.id, file.name);
+}
 
+function getNextSong(loop) {
+  var song;
+  var index = 0;
+  for (var i = 0; i < CURRENT_FILES.length; i++) {
+    if (CURRENT_FILES[i].id === currentFileId) {
+        index = i + 1;
+    }
+  }
+
+  if (index >= CURRENT_FILES.length) {
+    if (loop) {
+      song = CURRENT_FILES[0];
+    }
+  } else {
+    song = CURRENT_FILES[index];
+  }
+  return song;
+}
+
+function getPreviousSong(loop) {
+  var song;
+  var index = 0;
+  for (var i = 0; i < CURRENT_FILES.length; i++) {
+    if (CURRENT_FILES[i].id === currentFileId) {
+      index = i - 1;
+    }
+  }
+
+  if (index < 0) {
+    if (loop) {
+      song = CURRENT_FILES[CURRENT_FILES.length - 1];
+    }
+  } else {
+    song = CURRENT_FILES[index];
+  }
+  return song;
+}
 

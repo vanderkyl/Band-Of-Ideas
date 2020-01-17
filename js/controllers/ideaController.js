@@ -96,7 +96,7 @@ function($scope, $sce, $http, $filter) {
     var nextFile = $scope.files[$scope.file.fileIndex+1];
     console.log(nextFile);
     if (nextFile) {
-      $scope.openFileFromList(nextFile);
+      $scope.openFile(nextFile);
     }
   }
 
@@ -106,7 +106,7 @@ function($scope, $sce, $http, $filter) {
       var prevFile = $scope.files[$scope.file.fileIndex-1];
       console.log(prevFile);
       if (prevFile) {
-        $scope.openFileFromList(prevFile);
+        $scope.openFile(prevFile);
       }
     } else {
       audio.currentTime = 0;
@@ -121,19 +121,6 @@ function($scope, $sce, $http, $filter) {
 
     navigateToURL("/#/idea?id=" + file.id);
 
-  };
-
-  $scope.openFileFromList = function(file) {
-    getElementById("audioPlayerAudio").pause();
-
-    console.log("Opening file:");
-    console.log(file);
-    CURRENT_FILE = file;
-    quitPlayer();
-
-    navigateToURL("/#/band/" + CURRENT_BAND.metaName + "/" + CURRENT_FOLDER.metaName
-        + "/" + CURRENT_FILE.metaName);
-    //navigateToURL("/#/idea?id=" + file.id);
   };
 
   $scope.openMiniPlayer = function() {
@@ -159,6 +146,25 @@ function($scope, $sce, $http, $filter) {
             function (response) {
               console.log(response.data);
             });
+  };
+
+  $scope.updateFileDuration = function() {
+    var file = $scope.file;
+    var audio = getElementById('audio');
+    audio.setAttribute('src', file.link);
+    audio.addEventListener('canplaythrough', function(e) {
+      //add duration
+      file.duration = Math.round(e.currentTarget.duration);
+      $http.post("/php/updateFile.php?type=duration", file)
+          .then(
+              function (response) {
+                console.log(response.data);
+              },
+              function (response) {
+                console.log(response.data);
+              });
+    });
+
   };
 
   $scope.showFolderDetails = function() {
@@ -658,7 +664,7 @@ function($scope, $sce, $http, $filter) {
   };
 
   $scope.loadFile = function(time) {
-    quitPlayer();
+    //quitPlayer();
     $scope.band = CURRENT_BAND;
     $scope.user = CURRENT_USER;
     $scope.files = CURRENT_FILES;
@@ -666,16 +672,23 @@ function($scope, $sce, $http, $filter) {
     $scope.file = CURRENT_FILE;
     $scope.numberOfFiles = CURRENT_FILES.length;
     updateTitle(CURRENT_FOLDER.name + " | " + CURRENT_FILE.name);
+    /*
     loadFileWaveSurfer(time, function () {
       loadWaveSurferEvents();
       $scope.updateFileViews();
     });
-
+  */
+    var audio = getElementById("audio");
+    audio.load();
+    audio.currentTime = time;
+    audio.play();
     $scope.checkIfFileIsLiked($scope.file);
 
     scrollToTop();
     loadFileLinkList();
-
+    if (CURRENT_FILE.duration === "0") {
+      $scope.updateFileDuration();
+    }
     $scope.loadUIObjects();
 
     $scope.sourceVideoLink = $sce.trustAsResourceUrl($scope.file.source);
@@ -698,7 +711,9 @@ function($scope, $sce, $http, $filter) {
       var id = getParameterByName("id");
       var time = getParameterByName("time");
       console.log(id);
-      if (id) {
+      if (id == 0) {
+        $scope.loadFile(0);
+      } else if (id) {
         $scope.loadFileById(id, function() {
           if (time) {
             $scope.loadFile(time);
@@ -719,4 +734,3 @@ function($scope, $sce, $http, $filter) {
   // -- CONTROLLER STARTUP METHOD CALL -- // ----------------------------------------
   $scope.loadController();
 }]);
-

@@ -8,7 +8,7 @@
 
         <!-- Band Name | Folder Name -->
         <div class="containers col-xs-12">
-          <span class="backToButton" ng-click="goBackToBandPage()">{{ band.name }}</span> | <span class="backToButton" ng-click="goBackToFolderPage()">{{ folder.name }}</span>
+          <a class="backToButton" href="/#/band?id={{ band.id }}" style="color: #444">{{ band.name }}</a> | <a class="backToButton" href="/#/folder?id={{ folder.id }}" style="color: #444">{{ folder.name }}</a>
           <div style="position: absolute; top: 6px; right: 5%;">
             <div class="ideaButtons" >
               <div id="likeButton-{{file.id}}"  class="ideaButton mainButton" ng-click="favoriteFile()">
@@ -23,46 +23,46 @@
           </div>
         </div>
 
+        <div class="col-xs-12 col-sm-6" style="padding: 10px">
+          <div id="ideaContainer" class="col-xs-12" style="padding: 0">
+            <div id="idea" class="containers col-xs-12">
+              <a href="javascript:void(0)" id="ideaAddButton" ng-click="openAddToPlaylistModal()" ><i class="fas fa-plus"></i></a>
+              <a href="javascript:void(0)" id="ideaInfoButton" class="glyphicon glyphicon-info-sign" style="margin-right: 10px;" data-toggle="modal" data-target="#ideaDetailsModal"></a>
 
-        <div id="ideaContainer" class="col-xs-12 col-sm-6">
-          <div id="ideaLoading" class="loader"></div>
-          <div id="idea" class="containers col-xs-12">
-            <a href="javascript:void(0)" id="ideaInfoButton" class="glyphicon glyphicon-info-sign" data-toggle="modal" data-target="#ideaDetailsModal"></a>
-            <a href="javascript:void(0)" id="ideaAddButton" ng-click="openAddToPlaylistModal()" style="margin-right: 10px;"><i class="fas fa-plus"></i></a>
-            <a href="javascript:void(0)" id="ideaCopyButton" onclick="copyIdea()"><i class="far fa-copy"></i></a>
-            <input type="text" value="http://bandofideas.com/#/idea?id={{file.id}}" id="ideaURL" style="display:none; position: absolute; font-size: 10px; width: 200px">
-            <p id="fileTitle" class="fileTitle col-xs-12">{{ file.name }}</p>
-            <div id="ideaInfoContainer" class="col-xs-12">
-              <div class="col-xs-3" style="border-right: 1px solid #4e4e4e; padding:0">
-                {{ file.views }} views
+              <a href="javascript:void(0)" id="ideaCopyButton" onclick="copyIdea()"><i class="far fa-copy"></i></a>
+
+              <input type="text" value="http://bandofideas.com/#/idea?id={{file.id}}" id="ideaURL" style="display:none; position: absolute; font-size: 10px; width: 200px">
+              <p id="fileTitle" class="fileTitle col-xs-12">{{ file.name }}</p>
+              <div id="ideaInfoContainer" class="col-xs-12">
+                <div class="col-xs-3" style="border-right: 1px solid #4e4e4e; padding:0">
+                  {{ file.views }} views
+                </div>
+                <div class="col-xs-3" style="border-right: 1px solid #4e4e4e; padding:0">
+                  <i class="fas fa-arrow-up"></i> {{ file.likes }} <img src="../img/black-metal.png"/> <i class="fas fa-arrow-down"></i>
+                </div>
+                <div class="col-xs-3" style="border-right: 1px solid #4e4e4e; padding:0">
+                  {{ file.highlights.length }} <img src="../img/commentButton.png"/>
+                </div>
+                <div class="col-xs-3" style="padding:0" >
+                  <a href="javascript:void(0)" ng-click="downloadFromFile()">{{ file.size }}</a>
+                </div>
               </div>
-              <div class="col-xs-3" style="border-right: 1px solid #4e4e4e; padding:0">
-                <i class="fas fa-arrow-up"></i> {{ file.likes }} <img src="../img/black-metal.png"/> <i class="fas fa-arrow-down"></i>
-              </div>
-              <div class="col-xs-3" style="border-right: 1px solid #4e4e4e; padding:0">
-                {{ file.highlights.length }} <img src="../img/commentButton.png"/>
-              </div>
-              <div class="col-xs-3" style="padding:0" >
-                <a href="javascript:void(0)" ng-click="downloadFromFile()">{{ file.size }}</a>
-              </div>
-            </div>
-            <div class="col-xs-12 noselect" style="padding: 0">
-                <audio id="audio" ontimeupdate="initProgressBar()" style="display:none;" class="col-xs-12" preload="auto" controls>
+              <div class="col-xs-12 noselect" style="padding: 0">
+                <audio id="audio" ontimeupdate="initProgressBar()" style="outline: none" class="col-xs-12" preload="auto" controls>
                   <source id="m4aSource" ng-src="{{ file.link }}" type="audio/mp4"/>
                   <p>Your browser does not support HTML5 audio.</p>
                 </audio>
 
-                <div style="text-align:center">
+                <div style="text-align:center; display: none">
                   <i class="playerButton glyphicon glyphicon-step-backward" ng-click="playPrev()"></i>
-                  <i id="rewindButton" class="playerButton glyphicon glyphicon-backward" onclick="rewindWave()"></i>
-                  <i id="play-btn" class="playerButton glyphicon glyphicon-play" style="display:none;" onclick="playWave()"></i>
-                  <i id="pause-btn" class="playerButton glyphicon glyphicon-pause" style="display:inline-block" onclick="pauseWave()"></i>
-                  <i id="forwardButton" class="playerButton glyphicon glyphicon-forward" onclick="skipWave()"></i>
+                  <i id="rewindButton" class="playerButton glyphicon glyphicon-backward" onclick="rewind(getElementById('audio'))"></i>
+                  <i id="play-btn" class="playerButton glyphicon glyphicon-play" style="display:none;" onclick="playAudio()"></i>
+                  <i id="pause-btn" class="playerButton glyphicon glyphicon-pause" style="display:inline-block" onclick="pauseAudio()"></i>
+                  <i id="forwardButton" class="playerButton glyphicon glyphicon-forward" onclick="fastForward(getElementById('audio'))"></i>
                   <i class="playerButton glyphicon glyphicon-step-forward" ng-click="playNext()"></i>
                 </div>
-              <p id="audioTime" class="col-xs-12"></p>
-              <a href="javascript:void(0)" id="ideaSourceVideo" ng-click="openSourceVideo()" style="position: absolute; top: 48px; right: 10px"><i class="fas fa-film"></i></a>
-                <div id="audioTimeline" class="col-xs-12" style="display: none">
+                <p id="audioTime" style="display: none" class="col-xs-12"></p>
+                <div id="audioTimeline" style="display: none" class="col-xs-12">
                   <div class="slidecontainer">
                     <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
                   </div>
@@ -84,28 +84,41 @@
 
                 </div>
 
-            </div>
-            <div id="waveform" class="col-xs-12">
-              <div id="waveformLoader">
-                <i class="fa fa-spinner fa-spin" style="font-size: 20px"></i>
               </div>
+              <div class="col-xs-12" style="min-height: 20px; margin-top: 5px;">
+                <div id="highlightComment" style="display:none;">
+                  <div id="highlightCommentUser" class="commentUserName" style="display: inline-block; margin-right: 5px"></div>
+                  <div id="highlightCommentText" class="commentText" style="display: inline-block; font-size: 12px"></div>
+                </div>
+              </div>
+              <div class="col-xs-12" style="border-top: 1px #4e4e4e solid; text-align: center; padding: 20px">
+                <a href="javascript:void(0)" id="ideaSourceVideo" ng-click="openSourceVideo()" style="">Add Video</i></a>
+              </div>
+              <!--
+              <div id="waveform" class="col-xs-12">
+                <div id="waveformLoader">
+                  <i class="fa fa-spinner fa-spin" style="font-size: 20px"></i>
+                </div>
+              </div>
+              <div id="waveTimeline" class="col-xs-12"></div>
+              -->
+              <br>
+
+
+              <div id="sourceVideoDiv" class="videoWrapper col-xs-12" style="display: none">
+                <iframe id="sourceVideo" width="560" height="349" scrolling="no" style="overflow: hidden;" src=""></iframe>
+              </div>
+
+              <br>
+
+
+
             </div>
-            <div id="waveTimeline" class="col-xs-12"></div>
+
             <br>
 
-            <div class="col-xs-12" style="min-height: 20px; margin-top: 5px;">
-              <div id="highlightComment" style="display:none;">
-                <div id="highlightCommentUser" class="commentUserName" style="display: inline-block; margin-right: 5px"></div>
-                <div id="highlightCommentText" class="commentText" style="display: inline-block; font-size: 12px"></div>
-              </div>
-            </div>
-            <div id="sourceVideoDiv" class="videoWrapper col-xs-12" style="display: none">
-              <iframe id="sourceVideo" width="560" height="349" scrolling="no" style="overflow: hidden;" src=""></iframe>
-            </div>
-
-            <br>
-
-
+          </div>
+          <div class="col-xs-12 containers">
             <div id="commentContainer" class="col-xs-12">
               <!-- File Data, Buttons, Comments, and Highlights -->
               <div class="col-xs-12 ideaButtons commentHeader">
@@ -149,28 +162,7 @@
 
                 </div>
               </div>
-              <!-- Start of Highlights -->
-              <div id="highlights" class="col-xs-12">
-                <div id="highlightDetails" style="">
-                  <div class="commentButtons">
 
-                  </div>
-
-                </div>
-
-                <!-- List of Highlights -->
-                <div ng-repeat="highlightObject in file.highlights | reverse | limitTo:maxHighlights" class="fileComments col-xs-12">
-                  <div class="userComment col-xs-12">
-                    <p class="highlightUserName col-xs-4"><b>{{ highlightObject.userName }}</b></p>
-                    <p class="commentTime col-xs-8"><i>{{ highlightObject.commentTime }}</i></p>
-                    <p class="commentText col-xs-10">{{ highlightObject.comment }}</p>
-                    <p class="highlightPlayButton" ng-if="highlightObject.highlightTime !== '0'" ng-click="playHighlight($event, highlightObject.highlightTime)">{{ currentTimeToString(highlightObject.highlightTime) }} <i class="far fa-bookmark"></i></p>
-                  </div>
-                </div>
-                <div id="showHighlightsButton" class="commentButton col-xs-12" ng-disabled="file.highlights.length < maxHighlights" ng-click="showAllHighlights()">Show All Highlights ({{file.highlights.length}})</div>
-                <div id="hideHighlightsButton" class="commentButton col-xs-12" ng-click="hideHighlights()">Hide Highlights</div>
-              </div>
-              <!-- End of Highlights -->
               <!-- Start of Comments -->
               <div id="comments" class="col-xs-12 scroller">
                 <!-- List of Comments -->
@@ -188,43 +180,47 @@
               <!-- End of Comments -->
             </div>
           </div>
-
-          <br>
-
         </div>
-        <div id="filesContainer" class="col-xs-12 col-sm-6">
-          <div id="files" class="containers col-xs-12">
-            <div style="padding-top: 10px;">
-              <div class="col-xs-8" ><span class="backToButton" ng-click="goBackToFolderPage()">{{ folder.name }}</span></div>
-              <div class="col-xs-3" style="font-size:12px; text-align: right">{{ files.length }} Ideas</div>
-            </div>
-            <!-- Container that holds all files playlist -->
-            <div id="fileList" class="col-xs-12">
-              <div id="fileScroller" class="col-xs-12">
-                <div ng-animate="'animate'" ng-repeat="song in files |
+
+
+
+        <div class="col-xs-12 col-sm-6" style="padding: 10px">
+          <div id="filesContainer" class="col-xs-12 " style="padding: 0">
+            <div id="files" class="containers col-xs-12">
+              <div style="padding-top: 10px;">
+                <div class="col-xs-8" ><span class="backToButton" ng-click="goBackToFolderPage()">{{ folder.name }}</span></div>
+                <div class="col-xs-3" style="font-size:12px; text-align: right">{{ files.length }} Ideas</div>
+              </div>
+              <!-- Container that holds all files playlist -->
+              <div id="fileList" class="col-xs-12">
+                <div id="fileScroller" class="col-xs-12">
+                  <div ng-animate="'animate'" ng-repeat="song in files |
               filter:{name: search }
               | orderBy:sortBy" class="">
-                  <!-- This is a Single File -->
-                  <div id="file-{{ song.id }}" class="playListFile col-xs-12" data-index="{{ song.fileIndex }}" ng-click="openFile(song)">
-                    <div class="playListFileInfo col-xs-12">
-                      <!-- <p class="deleteButton" ng-click="deleteFile($index)"> x </p>-->
-                      <p class="col-xs-1">{{ $index + 1 }}</p>
-                      <p class="col-xs-4 fileName" ng-click="openFile(song)">{{ song.name }}</p>
-                      <div class="col-xs-6" style="text-align: right; padding-left: 0; padding-right: 0;">
-                        <p style="min-width: 40px; display: inline-block">{{ song.likes }} <img src="../img/black-metal.png"/></p>
-                        <p style="min-width: 40px; display: inline-block">{{ song.highlights.length }} <img src="../img/commentButton.png"/></p>
-                        <p style="min-width: 40px; display: inline-block">{{ song.views }} <img src="../img/music.png"/></p>
+                    <!-- This is a Single File -->
+                    <div id="file-{{ song.id }}" class="playListFile col-xs-12" data-index="{{ song.fileIndex }}" ng-click="openFile(song)">
+                      <div class="playListFileInfo col-xs-12">
+                        <!-- <p class="deleteButton" ng-click="deleteFile($index)"> x </p>-->
+                        <p class="col-xs-1">{{ $index + 1 }}</p>
+                        <p class="col-xs-4 fileName" ng-click="openFile(song)">{{ song.name }}</p>
+                        <div class="col-xs-6" style="text-align: right; padding-left: 0; padding-right: 0;">
+                          <p style="min-width: 40px; display: inline-block">{{ song.likes }} <img src="../img/black-metal.png"/></p>
+                          <p style="min-width: 40px; display: inline-block">{{ song.highlights.length }} <img src="../img/commentButton.png"/></p>
+                          <p style="min-width: 40px; display: inline-block">{{ song.views }} <img src="../img/music.png"/></p>
+                        </div>
                       </div>
                     </div>
+                    <!-- End of Single File -->
                   </div>
-                  <!-- End of Single File -->
                 </div>
-              </div>
 
+              </div>
+              <!-- End of Playlist -->
             </div>
-            <!-- End of Playlist -->
           </div>
-          </div>
+
+        </div>
+
         <!-- File Navigation -->
 
       </div>

@@ -190,7 +190,8 @@
                      'likes' => count($userLikes),
                      'userLikes' => $userLikes,
                      'comments' => $comments,
-                     'highlights' => $highlights];
+                     'highlights' => $highlights,
+                     'duration' => $row["duration"]];
             $files[] = $fileData;
           }
         }
@@ -228,7 +229,8 @@
                    'likes' => count($userLikes),
                    'userLikes' => $userLikes,
                    'comments' => $comments,
-                   'highlights' => $highlights];
+                   'highlights' => $highlights,
+                   'duration' => $row["duration"]];
           $files[] = $fileData;
         }
       }
