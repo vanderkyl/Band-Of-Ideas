@@ -250,6 +250,15 @@ body {
   box-shadow: rgb(140, 145, 154) 0px 4px 8px 0px;
 }
 
+.settingsButtonContainer {
+  padding: 10px;
+}
+
+.settingsButton {
+  height: 50px;
+}
+
+
 .buttonPadding {
   padding: 2px;
   display: inline-block;
@@ -298,10 +307,11 @@ body {
 }
 
 .searchBar {
-  background: transparent;
   border: none;
+  border-radius: 4px;
   width: 30vw;
   margin-left: 10px;
+  margin-top: 2px;
   color: #5f5f5f;
   padding: 5px;
 }

@@ -3,14 +3,14 @@ function setupController() {
   $('body').removeClass('modal-open');
   $('.modal-backdrop').remove();
   getElementById("userLink").innerText = CURRENT_USER.name;
-  showAppLoader();
+  //showAppLoader();
   loadProfileImage();
   scrollToTop();
-  hideAppLoader();
+  //hideAppLoader();
 }
 
 function finishControllerSetup() {
-  hideAppLoader();
+  //hideAppLoader();
 }
 
 

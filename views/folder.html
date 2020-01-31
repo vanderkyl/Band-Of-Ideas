@@ -67,16 +67,25 @@
               <div class="playListFileInfo col-xs-12">
                 <!-- <p class="deleteButton" ng-click="deleteFile($index)"> x </p>-->
                 <p class="col-xs-1 songIndex">{{ $index + 1 }}</p>
-                <p class="col-xs-9 col-sm-10 fileName" >{{ song.name }}</p>
-                <p class="durationTime" style="text-align: right">{{ song.durationTime }}</p>
+                <p class="col-xs-4 fileName" >{{ song.name }}</p>
+                <div class="col-xs-6" style="text-align: right; padding-left: 0; padding-right: 0;">
+                  <p style="min-width: 40px; display: inline-block">{{ song.durationTime }}<img style="height: 12px; width: 12px;" src="../img/timeButton.png"/></p>
+                  <p style="min-width: 40px; display: inline-block">{{ song.views }} <img src="../img/music.png"/></p>
+                  <p style="min-width: 40px; display: inline-block">{{ song.likes }} <img src="../img/black-metal.png"/></p>
 
+                </div>
+
+                <!--
                 <div id="fileActionsOpen-{{ song.id }}" class="fileDetailsButton" style="top: -19px;" ng-click="openFileActions(song, $event)">
                   <i class="fas fa-chevron-down"></i>
                 </div>
                 <div id="fileActionsClose-{{ song.id }}" class="fileDetailsButton" style="top: -19px; display: none;" ng-click="closeFileActions(song, $event)">
                   <i class="fas fa-chevron-up"></i>
                 </div>
+                -->
               </div>
+
+              <!--
               <div id="fileActions-{{ song.id }}" class="fileActions col-xs-12">
                 <div id="actionsDiv-{{ song.id }}" style="display: none">
                   <div id="playFile-{{ song.id }}" class="col-xs-3" style="text-align: center;" ng-click="stopFile(song); openMiniAudioPlayer(song); ">
@@ -91,7 +100,7 @@
                     <div class="btn btn-default"><i class="fas fa-external-link-alt"></i></div>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
 
         <!-- End of Single File -->

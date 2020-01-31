@@ -381,7 +381,7 @@ app.controller('playlistController', ['$scope', '$sce', '$http', '$filter',
             setupController();
             // Do this if logged in
             if (isLoggedIn()) {
-                updateTitle("Playlists");
+
                 var id = getParameterByName("id");
                 if (id) {
                     if (id === "allFavorites") {
@@ -421,6 +421,7 @@ app.controller('playlistController', ['$scope', '$sce', '$http', '$filter',
                     $scope.loadUIObjects();
                   });
                 }
+                updateTitle("Playlists");
             }
 
         }

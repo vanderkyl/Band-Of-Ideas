@@ -73,7 +73,7 @@
 
 
 .playerButton {
-  width: 56px;
+  width: 45px;
   height: 40px;
   font-size: 15px;
   display: inline-block;
@@ -387,7 +387,6 @@
 .playerFooterButton {
   color: white;
   padding: 5px;
-  padding-top: 10px;
   cursor: pointer;
   cursor: hand;
 }
@@ -398,5 +397,12 @@
   border-top: 1px solid #CCC;
   text-align: center;
   padding: 40px;
+  overflow-y: auto;
+  max-height: 450px;
+}
+
+#songList {
+  padding: 10px;
+  border: 1px solid white;
 }
 

@@ -142,6 +142,7 @@ function sleep(ms) {
 }
 
 function updateTitle(title) {
+    console.log("Updating title:" + title);
   document.title = title;
 }
 

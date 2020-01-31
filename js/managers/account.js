@@ -18,6 +18,7 @@ var testUserName = "testerboi";
 var testLogin = false;
 var loggedIn = false;
 var signedOut = false;
+var bandListFilled = false;
 
 function loginUser() {
   loggedIn = true;
@@ -197,6 +198,8 @@ function isLoggedIn() {
     LAST_URL = window.location.href;
     LAST_PATHNAME = window.location.pathname;
     navigateToURL("/#/login");
+  } else {
+    addBandLinks(CURRENT_BANDS);
   }
   return loggedIn;
 }
@@ -214,4 +217,13 @@ function generateBandCode() {
   var code = Math.random().toString(36).substring(2, 6).toUpperCase();
   console.log("Generating code: " + code);
   return code;
+}
+
+function addBandLinks(bands) {
+  if (!bandListFilled) {
+    for (var i = 0; i < bands.length; i++) {
+      $("#bandList").append('<div id="band' + bands[i].id + '" class="navButtons"><a href="/#/band?id=' + bands[i].id + '"><i class="fas fa-sitemap"></i></i><span>' + bands[i].name + '</span></a></div>');
+    }
+    bandListFilled = true;
+  }
 }

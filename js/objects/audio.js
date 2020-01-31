@@ -78,6 +78,7 @@ function checkTime() {
 }
 
 function openMiniAudioPlayer(id, name) {
+    collapsePlayer();
     currentFileId = id;
     var trackName = getElementById("trackName");
     trackName.innerHTML = name;
@@ -114,7 +115,6 @@ function openMiniPlayer(id, name, source, time) {
 }
 
 function quitPlayer() {
-    document.title = "BoI";
     pauseAudioFromPlayer();
     collapsePlayer();
     hideElementById("audioPlayer");
@@ -142,6 +142,10 @@ function collapsePlayer() {
 function setAudioInfo() {
   getElementById("nextSong").innerText = getNextSong(true).name;
   getElementById("previousSong").innerText = getPreviousSong(true).name;
+  var songList = $("#songList");
+  for (var i = 0; i < CURRENT_FILES.length; i++) {
+      songList.append('<p>' + CURRENT_FILES[i].name + '</p>');
+  }
 }
 
 function timeToString(currentTime) {
@@ -226,6 +230,11 @@ function fastForward(audio) {
     } else {
         audio.currentTime = audio.currentTime + 5;
     }
+}
+
+function playPrevious(loop) {
+    var file = getPreviousSong(loop);;
+    openMiniAudioPlayer(file.id, file.name);
 }
 
 function playNext(loop) {
