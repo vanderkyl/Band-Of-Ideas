@@ -123,12 +123,14 @@ function hidePlaylistLoader() {
 
 function hideBody() {
     //getElementByTag("body").style.opacity = 0;
-    getElementByTag("body").style.display = "none";
+    //getElementByTag("body").style.display = "none";
+    getElementById("appContents").style.display = "none";
 }
 
 function showBody() {
   //getElementByTag("body").style.opacity = 1;
-  getElementByTag("body").style.display = "block";
+  //getElementByTag("body").style.display = "block";
+    getElementById("appContents").style.display = "block";
 }
 
 function getBackgroundColor(id) {

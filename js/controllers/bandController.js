@@ -161,7 +161,7 @@ function($scope, $sce, $http, $filter) {
     displayElementById("hideButtonsButton");
     displayElementById("hiddenFolderButtons");
     hideElementById("bandName");
-  }
+  };
 
   $scope.hideFolderButtons = function() {
     hideElementById("hideButtonsButton");
@@ -169,7 +169,12 @@ function($scope, $sce, $http, $filter) {
     hideElementById("hiddenFolderButtons");
     hideElementById("bandDetails");
     displayElementById("bandName");
-  }
+  };
+
+  $scope.showFolderSearchBar= function() {
+    hideElementById("searchFoldersButton");
+    displayElementById("folderSearchBar");
+  };
 
     $scope.addPlaylist = function() {
         if ($scope.playlistName != "") {

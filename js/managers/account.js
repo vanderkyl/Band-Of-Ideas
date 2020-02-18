@@ -5,6 +5,7 @@ var CURRENT_FOLDERS = [];
 var CURRENT_FOLDER = {};
 var CURRENT_FILES = [];
 var CURRENT_FILE = {};
+var CURRENT_SELECTED_FILE = {};
 var CURRENT_FILE_INDEX = 0;
 var CURRENT_MEMBERS = [];
 var CURRENT_PLAYLISTS = [];
@@ -21,11 +22,18 @@ var signedOut = false;
 var bandListFilled = false;
 
 function loginUser() {
+  bandListFilled = false;
   loggedIn = true;
-  hideBody();
+
+  loadApp(function() {
+    hideAppLoader();
+  });
+}
+
+function loadApp(callback) {
+  showAppLoader();
   navigateToURL("/#/dashboard");
-  showNavs();
-  showBody();
+  hideAppLoader();
 }
 
 function goToLastURL() {
@@ -48,6 +56,7 @@ function showNavs() {
 function signOut() {
   loggedIn = false;
   signedOut = true;
+  bandListFilled = false;
   removeNavLink("folderLink");
   removeNavLink("bandLink");
   hideElementById("footer");
@@ -73,6 +82,7 @@ function clearAccountData() {
   CURRENT_FOLDER = {};
   CURRENT_FILES = [];
   CURRENT_FILE = {};
+  CURRENT_SELECTED_FILE = {};
   CURRENT_MEMBERS = [];
   CURRENT_PLAYLISTS = [];
   CURRENT_PLAYLIST = {};

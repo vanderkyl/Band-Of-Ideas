@@ -85,7 +85,12 @@ function($scope, $http) {
   };
 
     $scope.openFile = function(id, time) {
-        openFile(id, time);
+        var numTime = parseInt(time);
+        if (numTime > 0) {
+            openFile(id, time);
+        } else {
+            openFile(id, 0);
+        }
     };
 
   // Open User Details

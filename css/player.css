@@ -78,7 +78,7 @@
   font-size: 15px;
   display: inline-block;
   margin-bottom: 10px;
-  border: green 1px solid;
+  border: black 1px solid;
   border-radius: 10px;
   background: #FFF;
   line-height: 40px;
@@ -95,8 +95,9 @@
 
 #audioTime {
   text-align: center;
-  font-size: 10px;
+  font-size: 12px;
   height: 10px;
+  padding: 0;
 }
 
 #audioPlayerTime {
@@ -129,7 +130,7 @@
   cursor: hand;
   border: 2px solid #444;
   padding: 0px;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
 }
 
 #audioPlayerTimeline {
@@ -159,7 +160,7 @@
 }
 
 .timelineHighlights {
-  width: 4px;
+  width: 2px;
   position: absolute;
   height: 25px;
   background: #FFF;
@@ -169,7 +170,7 @@
 .highlightTime {
   z-index: 1000;
   margin-top: 18px;
-  margin-left: -8px;
+  margin-left: -9px;
   font-size: 0px;
   width: 20px;
   height: 20px;
@@ -230,9 +231,10 @@
 }
 
 #highlighter {
-  border-top: 1px #4e4e4e solid;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  top: -6px;
+  margin-left: 2px;
+  border: 1px solid #ce0000;
+  padding: 5px;
 }
 
 .highlightComment {

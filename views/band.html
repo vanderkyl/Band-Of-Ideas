@@ -4,6 +4,9 @@
     <div class="col-xs-12">
       <h3 style="color: white">{{ band.name }}</h3>
     </div>
+    <div  style="display: none;">
+      <i class="fas fa-share-alt"></i>
+    </div>
     <!-- Band Buttons -->
     <div class="containers col-xs-12">
       <a href="javascript:void(0)" style="font-size: 14px; position: absolute; right: 8px; top: 5px; z-index: 1000;"><i  class="fas fa-info-circle" data-toggle="modal" data-target="#bandDetails"></i></a>
@@ -36,17 +39,21 @@
       </div>
     </div>
     <div class="col-xs-12" style="padding: 0;">
-
+      <h5 style="color: white">Folders</h5>
       <!-- Container that holds all folders -->
       <div class="containers folders col-xs-12" style="padding: 0;">
         <div id="folderHeader">
-            <input ng-model="search" class="searchBar" placeholder="Search Folders">
-            <div id="addFolder" class="btn btn-success btn-xs addButton" data-toggle="modal" data-target="#addFolderModal">+</div>
-
+            <div id="searchFoldersButton" class="searchListButton col-xs-6" ng-click="showFolderSearchBar()">
+              <a href="javascript:void(0)"><i class="fas fa-search"></i></a>
+            </div>
+            <input id="folderSearchBar" ng-model="search" class="searchBar col-xs-6" style="display: none;" placeholder="Search Folders">
+            <div id="addFolder" class="addToListButton col-xs-6" data-toggle="modal" data-target="#addFolderModal">
+              <a href="javascript:void(0)" ng-click="openAddToPlaylistModal()" ><i class="fas fa-plus"></i></a>
+            </div>
 
         </div>
         <!--<h4 style="text-align: center; margin-left: 30px;">Folders  <button class="button homeButton" style="height: 30px; line-height: 10px; margin-left: 5px;" data-toggle="modal" data-target="#addFolderModal">+</button></h4>-->
-        <div id="foldersContainer" class="col-xs-12 scroller">
+        <div id="foldersContainer" class="col-xs-12 buttonList">
 
           <!-- Single Folder -->
           <div id="{{ 'folder-' + $index }}" ng-animate="'animate'" ng-repeat="folder in folders | reverse |

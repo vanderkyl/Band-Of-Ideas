@@ -10,7 +10,7 @@ function($scope, $sce, $http, $filter, fileUpload) {
   $scope.visibleFiles = [];
   $scope.file = {};
   $scope.fileLinks = [];
-  $scope.currentFileIndex = 0;
+  $scope.currentSelectedFileId = -1;
   $scope.uploadFiles = [];
   $scope.addFolderMessage = "New Folder";
   $scope.folderMessage = "";
@@ -37,6 +37,7 @@ function($scope, $sce, $http, $filter, fileUpload) {
 
   // globals
 var miniAudioPlayer = getElementById("audioPlayer");
+var currentSelectedFile = {};
 
 function playNext() {
   console.log("Play next");
@@ -98,21 +99,25 @@ function playNext() {
   };
 
   $scope.openMiniAudioPlayer = function(file) {
-    $scope.updateFileViews();
+    showPauseButton(file);
+    CURRENT_FILE = file;
+    CURRENT_SELECTED_FILE = file;
+    $scope.updateFileViews(file);
     openMiniPlayer(file.id, file.name, file.link, 0);
   };
 
-  $scope.updateFileViews = function() {
-    $scope.file.views++;
-    CURRENT_FILE.views++;
-    $http.post("/php/updateFile.php?type=views", $scope.file)
-        .then(
-            function (response) {
-              console.log(response.data);
-            },
-            function (response) {
-              console.log(response.data);
-            });
+  $scope.playMiniAudioPlayer = function(file) {
+    showPauseButton(file);
+    playAudioFromPlayer();
+  }
+
+  $scope.pauseMiniAudioPlayer = function(file) {
+    showPlayButton(file);
+    pauseAudioFromPlayer();
+  }
+
+  $scope.updateFileViews = function(file) {
+    updateFileViews($http, file);
   };
 
   $scope.showFolderDetails = function() {
@@ -248,6 +253,23 @@ function playNext() {
     }
   };
 
+  // Add like/favorite on file button
+  $scope.favoriteFile = function(file) {
+    var index = $scope.file.id;
+
+    displayElementInlineById("likedButton-" + index);
+    hideElementById("likeButton-" + index);
+    $http.post("/php/updateFile.php?type=likes&user=" + CURRENT_USER.email, file)
+        .then(
+            function (response) {
+              console.log(response.data);
+              file.likes++;
+            },
+            function (response) {
+              console.log(response.data);
+              console.log("Sorry, that didn't work.");
+            });
+  };
 
 
   $scope.goBackToBandPage = function() {
@@ -327,8 +349,32 @@ function playNext() {
         displayElementById("filepondDiv");
       });
     });
+  };
 
+  $scope.showPopup = function(id) {
+    if ($scope.currentSelectedFileId !== -1) {
+      $scope.togglePopup($scope.currentSelectedFileId);
+    }
+    $scope.currentSelectedFileId = id;
+    $scope.togglePopup(id);
+  };
 
+  $scope.hidePopup = function(id, event) {
+    stopPropogation(event);
+    $scope.currentSelectedFileId = -1;
+    var popup = document.getElementById("filePopup-" + id);
+    popup.classList.remove("show");
+  };
+
+  $scope.togglePopup = function(id) {
+    var popup = document.getElementById("filePopup-" + id);
+    popup.classList.toggle("show");
+  };
+
+  $scope.showFileSearchBar= function() {
+    hideElementById("searchFilesButton");
+    displayElementById("fileSearchBar");
+    displayElementById("fileFilters");
   };
 
   $scope.getFolder = function(id, callback) {
@@ -387,6 +433,11 @@ function playNext() {
       $scope.members = CURRENT_MEMBERS;
       $scope.numberOfFiles = CURRENT_FILES.length;
       loadFileList();
+      if (CURRENT_FILE.id !== undefined) {
+        if (CURRENT_FILE.id === id) {
+          showPlayerButtonById(id);
+        }
+      }
       displayElementById("folderView");
       var folderUrl = "/#/folder?id=" + CURRENT_FOLDER.id;
       removeNavLink("folderLink");
@@ -398,6 +449,7 @@ function playNext() {
       setupController();
       // Do this if logged in
       if (isLoggedIn()) {
+        CURRENT_SELECTED_FILE = {};
         var id = getParameterByName("id");
         console.log(id);
         if (id) {

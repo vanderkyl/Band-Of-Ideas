@@ -2,46 +2,20 @@
 var audioPlayerTrack = getElementById("audioPlayerPercentageBar");
 var audioPlayerTimeline = getElementById("audioPlayerTimeline");
 var audioTimeline = getElementById("audioTimeline");
-var audioTrack = getElementById("audioPercentageBar");
+var audioTrack = getElementById("audioFilePercentageBar");
 var audioPlayer = getElementById("audioPlayerAudio");
-var audio = getElementById("audioPlayerAudio");
+var audio = getElementById("audio");
 var miniAudioPlayer = getElementById("audioPlayer");
 var currentFileId = 0;
 
 function setupAudioEventListeners() {
   // -- EVENT LISTENERS -- // ----------------------------------------
-
-  /*
-  audioPlayerTimeline.addEventListener("click", function (event) {
-    hideElementById("play-btn");
-    displayElementInlineById("pause-btn");
-    moveplayhead(event, audioTimeline, audioTrack);
-    audio.currentTime = audio.duration * clickPercent(event, audioTimeline);
-  }, false);
-  */
   audioPlayerTimeline.addEventListener("click", function (event) {
     hideElementById("playButton");
     displayElementInlineById("pauseButton");
     moveplayhead(event, audioPlayerTimeline, audioPlayerTrack);
     audioPlayer.currentTime = audioPlayer.duration * clickPercent(event, audioPlayerTimeline);
   }, false);
-
-  audio.addEventListener("loadstart", function(event) {
-
-  }, false);
-  audio.addEventListener("durationchange", function (event) {
-
-  }, false);
-  audio.addEventListener("play", function(event) {
-    hideElementById("playButton");
-    displayElementInlineById("pauseButton");
-  }, false);
-  audio.addEventListener("pause", function (event) {
-    hideElementById("pauseButton");
-    displayElementInlineById("playButton");
-  }, false);
-
-  //audio.addEventListener("ended", playNext(true));
 
 
   // -- END OF EVENT LISTENERS -- // ----------------------------------------
@@ -165,7 +139,7 @@ function timeToString(currentTime) {
 
 function initProgressBar() {
   var audio = getElementById("audio");
-  var percentComplete = (audio.currentTime / audio.duration) * 100;
+  var percentComplete = (audio.currentTime / audio.duration) * 100.0;
   //Do something with upload progress
   var filePercentageBar = getElementById("audioFilePercentageBar");
   filePercentageBar.style.width = percentComplete + "%";

@@ -136,15 +136,6 @@ function createNewRegion() {
   });
 }
 
-function setRegionStart(start) {
-  start = roundToTwoDecimals(parseFloat(start));
-  getElementById("regionStartInput").value = start;
-}
-
-function getRegionStartValue() {
-  return parseFloat(getElementById("regionStartInput").value);
-}
-
 function setRegionEnd(end) {
   end = roundToTwoDecimals(parseFloat(end));
   getElementById("regionEndInput").value = end;
@@ -152,14 +143,6 @@ function setRegionEnd(end) {
 
 function getRegionEndValue() {
   return parseFloat(getElementById("regionEndInput").value);
-}
-
-function setRegionComment(comment) {
-  getElementById("commentInput").value = comment;
-}
-
-function getRegionCommentValue() {
-  return getElementById("commentInput").value;
 }
 
 function setRegionId(id) {
@@ -216,26 +199,6 @@ function skipWave() {
   wavesurfer.skip(5);
 }
 
-function addToStartTime() {
-  var start = getRegionStartValue();
-  var end = getRegionEndValue();
-  var newStart = start + 1;
-  if (newStart < end) {
-    resizeRegionStart(newStart, start);
-    setRegionStart(newStart);
-  }
-}
-
-function subtractStartTime() {
-  var start = getRegionStartValue();
-  var newStart = start - 1;
-  if (newStart <= 0) {
-    newStart = 0;
-  }
-  resizeRegionStart(newStart, start);
-  setRegionStart(newStart);
-}
-
 function addToEndTime() {
   var duration = getWaveDuration();
   var end = getRegionEndValue();
@@ -276,19 +239,7 @@ function hideUserComment() {
   $("#highlightComment").fadeOut('fast');
 }
 
-function closeHighlighter() {
-  if (selectedRegion !== undefined) {
-    if (selectedRegion.data.isNew) {
-      removeRegion();
-    }
-    setRegionStart(0);
-    setRegionEnd(0);
-    setRegionComment("");
-    setRegionId("");
-    hideElementById('highlighter');
-  }
 
-}
 
 function destroyWave() {
   if (wavesurfer !== undefined) {

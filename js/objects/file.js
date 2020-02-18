@@ -53,6 +53,54 @@ function checkFile(file, addFolder, addFile) {
   }
 };
 
+function addToStartTime() {
+  var start = getRegionStartValue();
+  var end = getRegionEndValue();
+  var newStart = start + 1;
+  if (newStart < end) {
+    setRegionStart(newStart);
+  }
+}
+
+function subtractStartTime() {
+  var start = getRegionStartValue();
+  var newStart = start - 1;
+  if (newStart <= 0) {
+    newStart = 0;
+  }
+  setRegionStart(newStart);
+}
+
+function hideCommentBar() {
+  hideElementById("commentInputDiv");
+  displayElementById("commentButton");
+}
+
+function closeHighlighter() {
+  setRegionStart(0);
+  setRegionComment("");
+  hideElementById('highlighter');
+  hideCommentBar();
+  getElementById("highlightButton").style.border = "none";
+}
+
+function setRegionComment(comment) {
+  getElementById("commentInput").value = comment;
+}
+
+function getRegionCommentValue() {
+  return getElementById("commentInput").value;
+}
+
+function setRegionStart(start) {
+  start = roundToTwoDecimals(parseFloat(start));
+  getElementById("regionStartInput").value = start;
+}
+
+function getRegionStartValue() {
+  return parseFloat(getElementById("regionStartInput").value);
+}
+
 function sortFiles(addFolder, addFile) {
   for (var i = 0; i < FILE_LIST.length; i++) {
     checkFile(FILE_LIST[i], addFolder, addFile);
@@ -101,3 +149,52 @@ function hideAddCommentButton() {
 
 }
 
+function showPlayerButton(file) {
+  var id = $(file).data("index").toString();
+  if (CURRENT_SELECTED_FILE.id !== undefined) {
+    if (CURRENT_SELECTED_FILE.id !== id) {
+      showPlayerButtonById(id);
+    }
+  } else {
+    showPlayerButtonById(id);
+  }
+}
+
+function showPlayerButtonById(id) {
+  hideElementById("fileIndex-" + id);
+  hideElementById("filePause-" + id);
+  hideElementById("filePlay-" + id);
+  displayElementById("fileStart-" + id);
+}
+
+function hidePlayerButton(file) {
+  var id = $(file).data("index").toString();
+  if (CURRENT_SELECTED_FILE.id !== undefined) {
+    if (CURRENT_SELECTED_FILE.id !== id) {
+      hidePlayerButtonByFileId(id);
+    }
+  } else {
+    hidePlayerButtonByFileId(id);
+  }
+}
+
+function hidePlayerButtonByFileId(id) {
+    hideElementById("filePlay-" + id);
+    hideElementById("filePause-" + id);
+    hideElementById("fileStart-" + id);
+    displayElementById("fileIndex-" + id);
+}
+
+function showPauseButton(file) {
+  if (CURRENT_SELECTED_FILE.id !== undefined) {
+    hidePlayerButtonByFileId(CURRENT_SELECTED_FILE.id)
+  }
+  hideElementById("fileIndex-" + file.id);
+  hideElementById("fileStart-" + file.id);
+  displayElementById("filePause-" + file.id);
+}
+
+function showPlayButton(file) {
+  hideElementById("filePause-" + file.id);
+  displayElementById("filePlay-" + file.id);
+}

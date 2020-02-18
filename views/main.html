@@ -13,6 +13,7 @@
 
 
       </div>
+
       <div class="col-xs-12 col-sm-6" style="padding: 5px">
         <div class="containers" style="padding: 0; margin: 0">
           <canvas id="ideaGraphContainer" ></canvas>
@@ -23,14 +24,25 @@
           <canvas id="otherGraphContainer"></canvas>
         </div>
       </div>
+  <!--
+  <div class="col-xs-12 containers">
+    <div class="col-xs-12 col-sm-6 scroller">
+      <div class="col-xs-12" ng-repeat="band in user.bands">
+        <span>{{ band.name }}: {{}}</span>
+      </div>
+    </div>
+  </div>
+  -->
       <!-- Band Section -->
       <div class="col-xs-12 col-sm-6" style="padding: 5px">
 
         <!-- Bands -->
         <div class="containers col-xs-12" style="padding: 0;">
-          <div id="bandHeader">
-            <span>Bands</span>
-            <div class="btn btn-success btn-xs addButton" data-toggle="modal" data-target="#addBandModal">+</div>
+          <div id="bandHeader" style="height: 40px;">
+            <span class="col-xs-6">Bands</span>
+            <div class="addToListButton col-xs-6"  data-toggle="modal" data-target="#addBandModal">
+              <a href="javascript:void(0)"><i class="fas fa-plus"></i></a>
+            </div>
           </div>
             <div class="col-xs-12 scroller">
                 <!--<h2 id="bandName" class="userInfoTitles">Bands</h2>-->
@@ -114,7 +126,7 @@
               </div>
               <div class="col-xs-12" style="padding: 10px; background: white; border-bottom: 1px solid #CCC; border-top: 1px solid #CCC;">
                 <div class="col-xs-10">{{ comment.comment }}</div>
-                <div ng-if="comment.highlightTime !== '0'" > <img src="../img/timeButton.png" style="width: 10px; height: 10px; margin-bottom: 1px;"/> {{ currentTimeToString(comment.highlightTime) }}</div>
+                <div ng-if="comment.highlightTime !== 0 && comment.highlightTime !== -1" >{{ currentTimeToString(comment.highlightTime) }}</div>
               </div>
               <div class="col-xs-12" style="padding: 5px;">
                 <div class="col-xs-12" style="padding: 0px; padding-right: 5px; text-align: right; font-size: 9px">{{ comment.band.name }} - {{ comment.file.folder.name }} - <strong>{{ comment.file.name }}</strong></div>
