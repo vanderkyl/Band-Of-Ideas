@@ -1,16 +1,17 @@
+<!-- Band View -->
 <div id="bandView" style="display: none">
-  <!-- Folders View -->
-  <div id="folderSection">
+  <div id="bandSection">
+    <!-- Band Header -->
     <div class="col-xs-12">
       <h3 style="color: white">{{ band.name }}</h3>
     </div>
     <div  style="display: none;">
       <i class="fas fa-share-alt"></i>
     </div>
+    <!-- End of Folders Header -->
     <!-- Band Buttons -->
-    <div class="containers col-xs-12">
+    <div id="bandButtons" class="containers col-xs-12">
       <a href="javascript:void(0)" style="font-size: 14px; position: absolute; right: 8px; top: 5px; z-index: 1000;"><i  class="fas fa-info-circle" data-toggle="modal" data-target="#bandDetails"></i></a>
-
       <div class="col-xs-12">
         <div class="col-xs-6 col-sm-3" style="padding: 10px">
           <div class="mainButton" ng-click="openAllFiles()">
@@ -38,9 +39,11 @@
         </div>
       </div>
     </div>
-    <div class="col-xs-12" style="padding: 0;">
+    <!-- End Band Buttons -->
+    <!-- Folders Section -->
+    <div id="folderSection" class="col-xs-12" style="padding: 0;">
       <h5 style="color: white">Folders</h5>
-      <!-- Container that holds all folders -->
+      <!-- Container that holds all folders and search -->
       <div class="containers folders col-xs-12" style="padding: 0;">
         <div id="folderHeader">
             <div id="searchFoldersButton" class="searchListButton col-xs-6" ng-click="showFolderSearchBar()">
@@ -52,9 +55,8 @@
             </div>
 
         </div>
-        <!--<h4 style="text-align: center; margin-left: 30px;">Folders  <button class="button homeButton" style="height: 30px; line-height: 10px; margin-left: 5px;" data-toggle="modal" data-target="#addFolderModal">+</button></h4>-->
+        <!-- Folders Container -->
         <div id="foldersContainer" class="col-xs-12 buttonList">
-
           <!-- Single Folder -->
           <div id="{{ 'folder-' + $index }}" ng-animate="'animate'" ng-repeat="folder in folders | reverse |
           filter:{name: search } " class=" col-xs-6 col-sm-4" style="padding-left: 2px; padding-right: 2px;" ng-click="openFolder(folder)">
@@ -62,12 +64,6 @@
             <div class="folder col-xs-12">
               <div class="col-xs-12" style="padding-bottom: 4px; padding-left: 0; padding-right: 0; border-bottom: 1px solid #CCC;">
                 <p class="folderTitle col-xs-12">{{ folder.name }}</p>
-                <!--<div id="folderDetailsOpen-{{ folder.id }}" class="fileDetailsButton" style="top: -19px;" ng-click="openFolderDetails(folder, $event)">
-                  <i class="fas fa-chevron-down"></i>
-                </div>
-                <div id="folderDetailsClose-{{ folder.id }}" class="fileDetailsButton" style="top: -19px; display: none;" ng-click="closeFolderDetails(folder, $event)">
-                  <i class="fas fa-chevron-up"></i>
-                </div>-->
               </div>
               <div id="folderDetails-{{ folder.id }}" class="col-xs-12 text-center" style="padding: 0">
                 <div id="detailsDiv-{{ folder.id }}">

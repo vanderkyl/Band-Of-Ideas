@@ -57,6 +57,7 @@ function signOut() {
   loggedIn = false;
   signedOut = true;
   bandListFilled = false;
+  clearAccountData();
   removeNavLink("folderLink");
   removeNavLink("bandLink");
   hideElementById("footer");

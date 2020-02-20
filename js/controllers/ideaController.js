@@ -389,6 +389,7 @@ function($scope, $sce, $http, $filter) {
   $scope.playNewHighlight = function() {
     var audio = getElementById("audio");
     audio.currentTime = $scope.currentTime;
+    audio.play();
   };
 
   $scope.rewindHighlight = function() {
@@ -676,7 +677,20 @@ function($scope, $sce, $http, $filter) {
       displayElementById("ideaContents");
     }, false);
     audio.addEventListener("canplaythrough", function (event) {
+      // Show loading animation.
+      var playPromise = audio.play();
 
+      if (playPromise !== undefined) {
+        playPromise.then(_ => {
+          // Automatic playback started!
+          // Show playing UI.
+        })
+            .catch(error => {
+              console.log(error);
+              // Auto-play was prevented
+              // Show paused UI.
+            });
+      }
     }, false);
     audio.addEventListener("loadstart", function (event) {
 

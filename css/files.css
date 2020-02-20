@@ -703,7 +703,7 @@
 }
 
 /* The actual popup */
-.popup .popuptext {
+.popup .popuptext , .leftPopup .popuptext {
   visibility: hidden;
   width: 160px;
   background-color: #555;
@@ -718,7 +718,7 @@
   margin-left: -80px;
 }
 
-.leftPopup .popuptext{
+.leftPopup .popuptext {
   right: 150%;
   left: unset;
   top: -16px;
@@ -744,7 +744,7 @@
 }
 
 /* Toggle this class - hide and show the popup */
-.popup .show {
+.popup .show, .leftPopup .show {
   visibility: visible;
   -webkit-animation: fadeIn 1s;
   animation: fadeIn 1s;

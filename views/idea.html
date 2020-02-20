@@ -20,7 +20,7 @@
           <div id="ideaContainer" class="col-xs-12" style="padding: 0">
             <div id="idea" class="containers col-xs-12" style="padding-bottom: 5px; min-height: 295px;">
               <a href="javascript:void(0)" id="ideaAddButton" ng-click="showAddPopup()"><i class="fas fa-plus"></i>
-                <div class="popup leftPopup" style="right: 150% !important;">
+                <div class="leftPopup" style="right: 150% !important;">
                 <span class="popuptext" id="addPopup">
                   <div class="popupButton col-xs-6" id="ideaSourceVideo" ng-click="openSourceVideo()" style="border-right: 1px solid white">
                     Add Video
@@ -152,7 +152,7 @@
                   <p class="commentUserName col-xs-5"><b>{{ commentObject.userName }}</b></p>
                   <p class="commentTime col-xs-7"><i>{{ commentObject.commentTime }}</i></p>
                   <p class="commentText col-xs-10">{{ commentObject.comment }}</p>
-                  <p ng-if="commentObject.highlightTime !== '0' && commentObject.highlightTime !== '-1'" class="col-xs-2" > {{ currentTimeToString(commentObject.highlightTime) }}</p>
+                  <p ng-if="commentObject.highlightTime !== '0' && commentObject.highlightTime !== '-1' && commentObject.highlightTime !== -1 && commentObject.highlightTime !== 0" class="col-xs-2" > {{ currentTimeToString(commentObject.highlightTime) }}</p>
                 </div>
                 <!--
                 <div id="showCommentsButton" class="commentButton col-xs-12" ng-disabled="file.comments.length < maxComments" ng-click="showAllComments()">Show All Comments ({{file.comments.length}})</div>

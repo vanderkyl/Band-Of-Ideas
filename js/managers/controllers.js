@@ -1,5 +1,6 @@
 function setupController() {
   console.log("Setting up controller");
+  showAppLoader();
   $('body').removeClass('modal-open');
   $('.modal-backdrop').remove();
   if (getElementById("topButtons") !== null) {
@@ -14,14 +15,24 @@ function setupController() {
 }
 
 function finishControllerSetup() {
-  //hideAppLoader();
+  shortHideAppLoader();
 }
 
 
 function showAppLoader() {
     displayElementById("appLoader");
     getElementById("appLoader").style.opacity = "1";
+    //hideNavs();
     hideBody();
+}
+
+function shortHideAppLoader() {
+    showBody();
+    getElementById("appLoader").style.opacity = "0";
+    setTimeout(function() {
+        hideElementById("appLoader");
+
+    }, 750);
 }
 
 function hideAppLoader() {
@@ -36,21 +47,6 @@ function hideAppLoader() {
         }, 1000);
     }, 2000);
 }
-
-/*
-function showAppLoader() {
-  hideElementById("appContainer");
-  $('document').ready(function() {
-    $(window).scrollTop(0);
-  });
-  displayElementById("loadContainer");
-}
-
-function hideAppLoader() {
-  hideElementById("loadContainer");
-  displayElementById("appContainer");
-}
-*/
 
 function updateFileViews(http, file) {
   file.views++;

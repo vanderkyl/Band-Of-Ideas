@@ -823,7 +823,7 @@ body {
   width: 120px;
   height: 120px;
   margin: auto;
-  margin-top: 20%;
+  margin-top: 150px;
   animation: spin .8s cubic-bezier(0.44, 0.41, 0.65, 0.62) infinite;
 }
 
