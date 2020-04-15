@@ -7,18 +7,17 @@
                 <h4 class="modal-title">Details</h4>
             </div>
             <div class="modal-body">
-                <h4>Name: </h4><p>{{ file.name }}</p>
+                <p><strong>Name:</strong> {{ file.name }}</p>
+                <p class="backToButton" ng-click="goBackToBandPage()"><strong>Band Name: </strong>{{ band.name }}</p>
+                <p class="backToButton" ng-click="goBackToFolderPage()"><strong>Folder Name: </strong>{{ folder.name }}</p>
                 <hr>
-                <h4>Band Name: </h4><p class="backToButton" ng-click="goBackToBandPage()">{{ band.name }}</p>
-                <h4>Folder Name: </h4><p class="backToButton" ng-click="goBackToFolderPage()">{{ folder.name }}</p>
-                <hr>
-                <h4>Views: </h4><p>{{ file.views }}</p>
-                <h4>Size: </h4><p>{{ file.size }}</p>
-                <h4>Comments: </h4><p>{{ file.comments.length }}</p>
-                <h4>Highlights: </h4><p>{{ file.highlights.length }}</p>
+                <p><strong>Views: </strong>{{ file.views }}</p>
+                <p><strong>Size: </strong>{{ file.size }}</p>
+                <p><strong>Comments: </strong>{{ file.comments.length }}</p>
+                <p><strong>Highlights: </strong>{{ file.highlights.length }}</p>
                 <hr>
                 <div ng-if="file.userLikes.length > 0">
-                    <strong>Favorited By:</strong>
+                    <strong>Liked By:</strong>
                     <div ng-repeat="like in file.userLikes">
                         {{ like.name }}
                     </div>

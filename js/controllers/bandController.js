@@ -18,23 +18,143 @@ function($scope, $sce, $http, $filter) {
 
     $scope.playlistName = "";
     $scope.playlists = [];
+    $scope.filesTitle = "";
+    $scope.currentSelectedFileId = -1;
+    $scope.files = [];
+    $scope.favoriteFiles = [];
+    $scope.highlightedFiles = [];
+    $scope.recentComments = [];
 
     // -- MAIN BAND CONTROLLER METHODS -- // -------------------------------------------------
 
     // Open Folder and navigate to Folder controller
     $scope.openFolder = function(folder) {
-    CURRENT_BAND = $scope.band;
-    CURRENT_FOLDERS = $scope.folders;
-    CURRENT_FOLDER = folder;
-    navigateToURL("/#/folder?id=" + folder.id);
+        CURRENT_BAND = $scope.band;
+        CURRENT_FOLDERS = $scope.folders;
+        CURRENT_FOLDER = folder;
+        navigateToURL("/#/folder?id=" + folder.id);
     };
 
-    $scope.openFavoritesFolder = function() {
-      navigateToURL("/#/playlist?id=bandFavorites");
+    $scope.openFilesSection = function() {
+        showElementById("filesSection");
+    };
+
+    $scope.closeFilesSection = function() {
+        hideElementByIdWithAnimation("filesSection");
+    };
+
+    $scope.openFavoriteFilesSection = function() {
+        $scope.files = $scope.favoriteFiles;
+        $scope.filesTitle = "Favorite";
+        $scope.openFilesSection();
+    };
+
+    $scope.openHighlightedFilesSection = function() {
+        $scope.files = $scope.highlightedFiles;
+        $scope.filesTitle = "Highlighted";
+        $scope.openFilesSection();
+    };
+
+    $scope.getBandFavoriteFiles = function(userId, bandId, callback) {
+        $http.get("/php/getFiles.php?type=bandFavorites&userId=" + userId + "&bandId=" + bandId)
+            .then(function (response) {
+                callback(response.data);
+            });
     };
 
     $scope.openHighlightsFolder = function() {
       navigateToURL("/#/playlist?id=bandHighlights");
+    };
+
+    $scope.getBandHighlightedFiles = function(userId, bandId, callback) {
+        $http.get("/php/getFiles.php?type=bandHighlights&userId=" + userId + "&bandId=" + bandId)
+            .then(function (response) {
+                callback(response.data);
+            });
+    };
+
+    $scope.openFile = function(file, event) {
+        stopPropogation(event);
+        getElementById("audioPlayerAudio").pause();
+
+        console.log("Opening file:");
+        console.log(file);
+        CURRENT_FILE = file;
+        quitPlayer();
+        navigateToURL("/#/idea?id=" + file.id);
+    };
+
+    $scope.openRecentlyCommentedFile = function(id, time) {
+        var numTime = parseInt(time);
+        if (numTime > 0) {
+            openFile(id, time);
+        } else {
+            openFile(id, 0);
+        }
+    };
+
+    $scope.closeFile = function() {
+        getElementById("audio").pause();
+        document.title = CURRENT_FOLDER.name;
+        closeFile($scope.file.id);
+    };
+
+    $scope.openMiniPlayer = function() {
+        var source = getElementById("m4aSource").src;
+        var currentTime = getElementById("audio").currentTime;
+        openMiniPlayer($scope.file.id, $scope.file.name, source, currentTime);
+    };
+
+    $scope.openMiniAudioPlayer = function(file) {
+        showPauseButton(file);
+        CURRENT_FILE = file;
+        CURRENT_SELECTED_FILE = file;
+        $scope.updateFileViews(file);
+        openMiniPlayer(file.id, file.name, file.link, 0);
+    };
+
+    $scope.playMiniAudioPlayer = function(file) {
+        showPauseButton(file);
+        playAudioFromPlayer();
+    };
+
+    $scope.pauseMiniAudioPlayer = function(file) {
+        showPlayButton(file);
+        pauseAudioFromPlayer();
+    };
+
+    $scope.updateFileViews = function(file) {
+        updateFileViews($http, file);
+    };
+
+    $scope.goToRecentComments = function() {
+        scrollToElementById("recentComments");
+    };
+
+    $scope.showPopup = function(id) {
+        if ($scope.currentSelectedFileId !== -1) {
+            $scope.togglePopup($scope.currentSelectedFileId);
+        }
+        $scope.currentSelectedFileId = id;
+        $scope.togglePopup(id);
+    };
+
+    $scope.hidePopup = function(id, event) {
+        stopPropogation(event);
+        $scope.currentSelectedFileId = -1;
+        var popup = document.getElementById("filePopup-" + id);
+        popup.classList.remove("show");
+    };
+
+    $scope.togglePopup = function(id) {
+        var popup = document.getElementById("filePopup-" + id);
+        popup.classList.toggle("show");
+    };
+
+    $scope.showFileSearchBar= function() {
+        hideElementById("searchFilesButton");
+        displayElementById("fileSearchBar");
+        displayElementById("fileFilters");
     };
 
     // -- END OF MAIN BAND CONTROLLER METHODS -- // -------------------------------------------------
@@ -106,6 +226,16 @@ function($scope, $sce, $http, $filter) {
                 CURRENT_FOLDERS = $scope.folders;
                 CURRENT_FOLDER = folder;
                 callback(response.data);
+            });
+    };
+
+    $scope.getRecentActivity = function() {
+        var bandIds = [ $scope.band.id ];
+        $http.get("/php/getRecentActivity.php?type=bandList&bandIds=" + JSON.stringify(bandIds))
+            .then(function (response) {
+                hideElementById("loadCommentsContainer");
+                displayElementById("commentContainer");
+                $scope.recentComments = response.data.highlights;
             });
     };
 
@@ -245,6 +375,7 @@ function($scope, $sce, $http, $filter) {
       $scope.members = CURRENT_MEMBERS;
       $scope.folders = CURRENT_FOLDERS;
       var bandUrl = "/#/band?id=" + CURRENT_BAND.id;
+      $scope.getRecentActivity();
       removeNavLink("bandLink");
       addNavLink("bandLink", CURRENT_BAND.name, bandUrl);
       displayElementById("bandView");
@@ -268,6 +399,13 @@ function($scope, $sce, $http, $filter) {
                 $scope.folderMessage = "Click the green button to Add a Folder!";
                 CURRENT_FOLDERS = [];
               }
+              $scope.getBandFavoriteFiles(CURRENT_USER.id, id, function(files) {
+                  $scope.favoriteFiles = files;
+              });
+              $scope.getBandHighlightedFiles(CURRENT_USER.id, id, function(files) {
+                  $scope.highlightedFiles = files;
+              });
+
               $scope.getBandMembers(function(members) {
                 CURRENT_MEMBERS = members;
                 $scope.loadUIObjects();

@@ -1,4 +1,6 @@
+
 // Page Elements
+
 var audioPlayerTrack = getElementById("audioPlayerPercentageBar");
 var audioPlayerTimeline = getElementById("audioPlayerTimeline");
 var audioTimeline = getElementById("audioTimeline");
@@ -58,7 +60,7 @@ function openMiniAudioPlayer(id, name) {
     trackName.innerHTML = name;
     trackName.href = "/#/idea?id=" + id;
     var footer = getElementById("footer");
-    footer.style.height = "180px";
+    footer.style.height = "115px";
     var audioPlayer = getElementById("audioPlayerAudio");
 
     audioPlayer.load();
@@ -107,15 +109,22 @@ function expandPlayer() {
 
 function collapsePlayer() {
     var footer = getElementById("footer");
-    footer.style.height = "180px";
+    footer.style.height = "115px";
     hideElementById("audioInfo");
     hideElementById("collapsePlayerButton");
     displayElementById("expandPlayerButton");
 }
 
 function setAudioInfo() {
-  getElementById("nextSong").innerText = getNextSong(true).name;
-  getElementById("previousSong").innerText = getPreviousSong(true).name;
+    var nextSong = getNextSong(true);
+    if (nextSong !== undefined) {
+        getElementById("nextSong").innerText = nextSong.name;
+    }
+    var prevSong = getPreviousSong(true);
+    if (prevSong !== undefined) {
+        getElementById("previousSong").innerText = prevSong.name;
+    }
+
   var songList = $("#songList");
   for (var i = 0; i < CURRENT_FILES.length; i++) {
       songList.append('<p>' + CURRENT_FILES[i].name + '</p>');
@@ -208,12 +217,12 @@ function fastForward(audio) {
 
 function playPrevious(loop) {
     var file = getPreviousSong(loop);;
-    openMiniAudioPlayer(file.id, file.name);
+    openMiniPlayer(file.id, file.name, file.link, 0);
 }
 
 function playNext(loop) {
     var file = getNextSong(loop);;
-    openMiniAudioPlayer(file.id, file.name);
+    openMiniPlayer(file.id, file.name, file.link, 0);
 }
 
 function getNextSong(loop) {

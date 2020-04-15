@@ -233,7 +233,7 @@ function generateBandCode() {
 function addBandLinks(bands) {
   if (!bandListFilled) {
     for (var i = 0; i < bands.length; i++) {
-      $("#bandList").append('<div id="band' + bands[i].id + '" class="navButtons"><a href="/#/band?id=' + bands[i].id + '"><i class="fas fa-sitemap"></i></i><span>' + bands[i].name + '</span></a></div>');
+      $("#bandList").append('<div id="band' + bands[i].id + '" class="navButtons"><a href="/#/band?id=' + bands[i].id + '"><span>' + bands[i].name + '</span></a></div>');
     }
     bandListFilled = true;
   }

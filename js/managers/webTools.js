@@ -112,13 +112,13 @@ function httpPost(url, callback) {
 function addNavLink(id, name, link) {
   displayElementById("recentLinks");
   if (id === "bandLink") {
-    $("#bandLinks").append('<div id="' + id + '" class="navButtons"><a href="' + link + '"><i class="fas fa-sitemap"></i></i><span>' + name + '</span></a></div>');
+    $("#bandLinks").append('<div id="' + id + '" class="navButtons"><a href="' + link + '"><i class="fas fa-users"></i><span>' + name + '</span></a></div>');
   } else if (id === "playlistLink") {
     $("#playlistLinks").append('<div id="' + id + '" class="navButtons"><a href="' + link + '"><i class="fas fa-stream"></i><span>' + name + '</span></a></div>');
   }else if (id === "folderLink") {
     $("#folderLinks").append('<div id="' + id + '" class="navButtons"><a href="' + link + '"><i class="far fa-folder-open"></i><span>' + name + '</span></a></div>');
   } else if (id === "fileLink") {
-    $("#fileLinks").append('<div id="' + id + '" class="navButtons"><a href="' + link + '"><i class="fas fa-wave-square"></i><span>' + name + '</span></a></div>');
+    $("#fileLinks").append('<div id="' + id + '" class="navButtons"><a href="' + link + '"><i class="far fa-file-audio"></i><span>' + name + '</span></a></div>');
   } else if (id === "playingLink") {
     $("#fileLinks").append('<div id="' + id + '" class="navButtons"><a href="' + link + '"><i class="far fa-play"></i><span>' + name + '</span></a></div>');
   }else {

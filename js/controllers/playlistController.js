@@ -301,7 +301,7 @@ app.controller('playlistController', ['$scope', '$sce', '$http', '$filter',
       };
 
       $scope.getBandFavoriteFiles = function(userId, bandId, callback) {
-        $http.get("/php/getFiles.php?type=allFavorites&userId=" + userId + "&bandId=" + bandId)
+        $http.get("/php/getFiles.php?type=bandFavorites&userId=" + userId + "&bandId=" + bandId)
             .then(function (response) {
               CURRENT_PLAYLIST = {
                 id: "bandFavorites",
@@ -332,7 +332,7 @@ app.controller('playlistController', ['$scope', '$sce', '$http', '$filter',
       };
 
       $scope.getBandHighlightedFiles = function(userId, bandId, callback) {
-        $http.get("/php/getFiles.php?type=allHighlights&userId=" + userId + "&bandId=" + bandId)
+        $http.get("/php/getFiles.php?type=bandHighlights&userId=" + userId + "&bandId=" + bandId)
             .then(function (response) {
               CURRENT_PLAYLIST = {
                 id: "bandHighlights",

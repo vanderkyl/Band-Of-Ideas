@@ -134,13 +134,18 @@
             <h4><a href="/#/dashboard"><i class="fas fa-chart-pie"></i><span>Dashboard</span></a></h4>
             <h4><a href="/#/playlists"><i class="far fa-list-alt"></i><span>Playlists</span></a></h4>
             <div>
-              <h4><a id="bandListToggle" href="javascript:void(0)" onclick="toggleBandList()"><i id="bandListOpener" class="fas fa-chevron-down"></i><i id="bandListCloser" class="fas fa-chevron-up" style="display: none"></i><span>Bands</span></a></h4>
+              <h4>
+                <a id="bandListToggle" href="javascript:void(0)" onclick="toggleBandList()">
+                  <i class="fas fa-users"></i><span>Bands</span> <i id="bandListOpener" class="fas fa-chevron-down"></i><i id="bandListCloser" class="fas fa-chevron-up" style="display: none"></i>
+                </a>
+              </h4>
               <div id="bandList" style="display: none; border-top: 1px solid #444;">
                 <!--<li class="navButtons"><a href="/#/band?id=123">Band Name</a></li> -->
               </div>
             </div>
           </div>
           <div id="recentLinks" style="display: none">
+            <span><i>Recent</i></span>
             <div id="playlistLinks">
               <!--<li class="navButtons"><a href="/#/music">Music</a></li> -->
             </div>
@@ -178,16 +183,11 @@
         <a id="closePlayerButton" href="javascript:void(0)" onclick="quitPlayer()">&times;</a>
         <!-- Floating Audio Player -->
         <div id="audioPlayer" style="display: none">
-          <a id="trackName" href="" class="playerFileTitle" onclick="quitPlayer()"></a>
-          <div style="text-align:center; margin-top: 3px;">
-            <i class="playerButton glyphicon glyphicon-step-backward" onclick="playPrevious(true)"></i>
-            <i id="rewindPlayerButton" class="playerButton glyphicon glyphicon-backward" onclick="rewind(getElementById('audioPlayerAudio'))"></i>
-            <i id="playButton" class="playerButton glyphicon glyphicon-play" style="display:none;" onclick="playAudioFromPlayer();"></i>
-            <i id="pauseButton" class="playerButton glyphicon glyphicon-pause" style="display:inline-block" onclick="pauseAudioFromPlayer();"></i>
-            <i id="forwardPlayerButton" class="playerButton glyphicon glyphicon-forward" onclick="fastForward(getElementById('audioPlayerAudio'))"></i>
-            <i class="playerButton glyphicon glyphicon-step-forward" onclick="playNext(true)"></i>
-          </div>
 
+
+          <div>
+            <a id="trackName" href="" class="playerFileTitle" onclick="quitPlayer()"></a>
+          </div>
           <audio id="audioPlayerAudio" ontimeupdate="initPlayerProgressBar()" preload="auto" autoplay="true" controls>
             <source id="audioPlayerSource" src="" type="audio/mp4"/>
             <p>Your browser does not support HTML5 audio.</p>
@@ -199,15 +199,23 @@
         </div>
 
         <div id="audioInfo" class="col-xs-12" style="display: none">
-
-          <div class="col-xs-12 col-sm-6" style="margin-bottom: 20px;">
-            <p>Previous</p>
-            <h2 id="previousSong"></h2>
+          <div style="text-align:center; margin-top: 3px; color: black">
+            <i class="playerButton glyphicon glyphicon-step-backward" onclick="playPrevious(true)"></i>
+            <i id="rewindPlayerButton" class="playerButton glyphicon glyphicon-backward" onclick="rewind(getElementById('audioPlayerAudio'))"></i>
+            <i id="playButton" class="playerButton glyphicon glyphicon-play" style="display:none;" onclick="playAudioFromPlayer();"></i>
+            <i id="pauseButton" class="playerButton glyphicon glyphicon-pause" style="display:inline-block" onclick="pauseAudioFromPlayer();"></i>
+            <i id="forwardPlayerButton" class="playerButton glyphicon glyphicon-forward" onclick="fastForward(getElementById('audioPlayerAudio'))"></i>
+            <i class="playerButton glyphicon glyphicon-step-forward" onclick="playNext(true)"></i>
           </div>
-          <div class="col-xs-12 col-sm-6" style="margin-bottom: 20px;">
+          <div class="col-xs-12 col-sm-6" style="margin-bottom: 20px;" onclick="playNext(true)">
             <p>Playing Next</p>
             <h2 id="nextSong"></h2>
           </div>
+          <div class="col-xs-12 col-sm-6" style="margin-bottom: 20px;" onclick="playPrevious(true)">
+            <p>Previous</p>
+            <h2 id="previousSong"></h2>
+          </div>
+
           <p><strong>Current Ideas</strong></p>
           <div id="songList">
 
@@ -294,6 +302,9 @@
     <!-- Directives - JS -->
     <script src="js/directives/fileLikes.js" type="text/javascript"></script>
     <script src="js/directives/modals.js" type="text/javascript"></script>
+
+    <!-- NPM -->
+    <script src="index.js" type="text/javascript"></script>
 
   </body>
 </html>

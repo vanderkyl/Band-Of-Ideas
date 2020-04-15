@@ -109,12 +109,12 @@ function playNext() {
   $scope.playMiniAudioPlayer = function(file) {
     showPauseButton(file);
     playAudioFromPlayer();
-  }
+  };
 
   $scope.pauseMiniAudioPlayer = function(file) {
     showPlayButton(file);
     pauseAudioFromPlayer();
-  }
+  };
 
   $scope.updateFileViews = function(file) {
     updateFileViews($http, file);

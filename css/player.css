@@ -374,8 +374,8 @@
 #closePlayerButton {
   position: absolute;
   right: 20px;
-  top: 15px;
-  font-size: 36px;
+  top: 5px;
+  font-size: 25px;
   z-index: 1000;
   color: #CCC;
   transition: 0.3s;

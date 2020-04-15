@@ -135,6 +135,11 @@ var testFolders = [
         archived: "true"
     },testFolder];
 
+// Test Playlist Objects
+var playlists = [{
+
+}]
+
 // Test File Objects
 var testFiles = [{
     folderId: "0",
