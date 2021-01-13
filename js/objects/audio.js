@@ -1,47 +1,23 @@
+
 // Page Elements
+
 var audioPlayerTrack = getElementById("audioPlayerPercentageBar");
 var audioPlayerTimeline = getElementById("audioPlayerTimeline");
 var audioTimeline = getElementById("audioTimeline");
-var audioTrack = getElementById("audioPercentageBar");
+var audioTrack = getElementById("audioFilePercentageBar");
 var audioPlayer = getElementById("audioPlayerAudio");
-var audio = getElementById("audioPlayerAudio");
+var audio = getElementById("audio");
 var miniAudioPlayer = getElementById("audioPlayer");
 var currentFileId = 0;
 
 function setupAudioEventListeners() {
   // -- EVENT LISTENERS -- // ----------------------------------------
-
-  /*
-  audioPlayerTimeline.addEventListener("click", function (event) {
-    hideElementById("play-btn");
-    displayElementInlineById("pause-btn");
-    moveplayhead(event, audioTimeline, audioTrack);
-    audio.currentTime = audio.duration * clickPercent(event, audioTimeline);
-  }, false);
-  */
   audioPlayerTimeline.addEventListener("click", function (event) {
     hideElementById("playButton");
     displayElementInlineById("pauseButton");
     moveplayhead(event, audioPlayerTimeline, audioPlayerTrack);
     audioPlayer.currentTime = audioPlayer.duration * clickPercent(event, audioPlayerTimeline);
   }, false);
-
-  audio.addEventListener("loadstart", function(event) {
-
-  }, false);
-  audio.addEventListener("durationchange", function (event) {
-
-  }, false);
-  audio.addEventListener("play", function(event) {
-    hideElementById("playButton");
-    displayElementInlineById("pauseButton");
-  }, false);
-  audio.addEventListener("pause", function (event) {
-    hideElementById("pauseButton");
-    displayElementInlineById("playButton");
-  }, false);
-
-  //audio.addEventListener("ended", playNext(true));
 
 
   // -- END OF EVENT LISTENERS -- // ----------------------------------------
@@ -78,12 +54,13 @@ function checkTime() {
 }
 
 function openMiniAudioPlayer(id, name) {
+    collapsePlayer();
     currentFileId = id;
     var trackName = getElementById("trackName");
     trackName.innerHTML = name;
     trackName.href = "/#/idea?id=" + id;
     var footer = getElementById("footer");
-    footer.style.height = "180px";
+    footer.style.height = "115px";
     var audioPlayer = getElementById("audioPlayerAudio");
 
     audioPlayer.load();
@@ -114,7 +91,6 @@ function openMiniPlayer(id, name, source, time) {
 }
 
 function quitPlayer() {
-    document.title = "BoI";
     pauseAudioFromPlayer();
     collapsePlayer();
     hideElementById("audioPlayer");
@@ -133,15 +109,26 @@ function expandPlayer() {
 
 function collapsePlayer() {
     var footer = getElementById("footer");
-    footer.style.height = "180px";
+    footer.style.height = "115px";
     hideElementById("audioInfo");
     hideElementById("collapsePlayerButton");
     displayElementById("expandPlayerButton");
 }
 
 function setAudioInfo() {
-  getElementById("nextSong").innerText = getNextSong(true).name;
-  getElementById("previousSong").innerText = getPreviousSong(true).name;
+    var nextSong = getNextSong(true);
+    if (nextSong !== undefined) {
+        getElementById("nextSong").innerText = nextSong.name;
+    }
+    var prevSong = getPreviousSong(true);
+    if (prevSong !== undefined) {
+        getElementById("previousSong").innerText = prevSong.name;
+    }
+
+  var songList = $("#songList");
+  for (var i = 0; i < CURRENT_FILES.length; i++) {
+      songList.append('<p>' + CURRENT_FILES[i].name + '</p>');
+  }
 }
 
 function timeToString(currentTime) {
@@ -161,7 +148,7 @@ function timeToString(currentTime) {
 
 function initProgressBar() {
   var audio = getElementById("audio");
-  var percentComplete = (audio.currentTime / audio.duration) * 100;
+  var percentComplete = (audio.currentTime / audio.duration) * 100.0;
   //Do something with upload progress
   var filePercentageBar = getElementById("audioFilePercentageBar");
   filePercentageBar.style.width = percentComplete + "%";
@@ -228,9 +215,14 @@ function fastForward(audio) {
     }
 }
 
+function playPrevious(loop) {
+    var file = getPreviousSong(loop);;
+    openMiniPlayer(file.id, file.name, file.link, 0);
+}
+
 function playNext(loop) {
     var file = getNextSong(loop);;
-    openMiniAudioPlayer(file.id, file.name);
+    openMiniPlayer(file.id, file.name, file.link, 0);
 }
 
 function getNextSong(loop) {

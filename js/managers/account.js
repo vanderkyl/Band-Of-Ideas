@@ -5,6 +5,7 @@ var CURRENT_FOLDERS = [];
 var CURRENT_FOLDER = {};
 var CURRENT_FILES = [];
 var CURRENT_FILE = {};
+var CURRENT_SELECTED_FILE = {};
 var CURRENT_FILE_INDEX = 0;
 var CURRENT_MEMBERS = [];
 var CURRENT_PLAYLISTS = [];
@@ -18,21 +19,26 @@ var testUserName = "testerboi";
 var testLogin = false;
 var loggedIn = false;
 var signedOut = false;
+var bandListFilled = false;
 
-function loginUser() {
+function loginUser(returnUrl) {
+  bandListFilled = false;
   loggedIn = true;
-  hideBody();
-  navigateToURL("/#/dashboard");
-  showNavs();
-  showBody();
+
+  loadApp(returnUrl, function() {
+    hideAppLoader();
+  });
 }
 
-function goToLastURL() {
-  loggedIn = true;
-  hideBody();
-  navigateToURL(LAST_URL);
-  showNavs();
-  showBody();
+function loadApp(returnUrl, callback) {
+  showAppLoader();
+  if (returnUrl === '' || returnUrl === null) {
+    navigateToURL("/#/dashboard");
+  } else {
+    navigateToURL(returnUrl);
+  }
+
+  hideAppLoader();
 }
 
 function showNavs() {
@@ -47,6 +53,8 @@ function showNavs() {
 function signOut() {
   loggedIn = false;
   signedOut = true;
+  bandListFilled = false;
+  clearAccountData();
   removeNavLink("folderLink");
   removeNavLink("bandLink");
   hideElementById("footer");
@@ -72,6 +80,7 @@ function clearAccountData() {
   CURRENT_FOLDER = {};
   CURRENT_FILES = [];
   CURRENT_FILE = {};
+  CURRENT_SELECTED_FILE = {};
   CURRENT_MEMBERS = [];
   CURRENT_PLAYLISTS = [];
   CURRENT_PLAYLIST = {};
@@ -194,11 +203,29 @@ function inputEmpty(input, inputId) {
 
 function isLoggedIn() {
   if (!loggedIn) {
-    LAST_URL = window.location.href;
+    LAST_URL = window.location;
     LAST_PATHNAME = window.location.pathname;
-    navigateToURL("/#/login");
+    navigateToURL("/#/login?returnUrl='" + LAST_URL + "'");
+  } else {
+    addBandLinks(CURRENT_BANDS);
   }
   return loggedIn;
+}
+
+function getReturnUrl () {
+  var url = "";
+  var queries = window.location.hash;
+  if (queries.indexOf("returnUrl") !== -1) {
+    var start = queries.indexOf("'") + 1;
+    var end = queries.lastIndexOf("'");
+    url = queries.substring(start, end);
+  }
+  url = decodeURIComponent(url);
+  if (url !== "") {
+    var start = url.indexOf("#") - 1;
+    url = url.substring(start);
+  }
+  return url;
 }
 
 function objectIsEmpty(obj) {
@@ -214,4 +241,13 @@ function generateBandCode() {
   var code = Math.random().toString(36).substring(2, 6).toUpperCase();
   console.log("Generating code: " + code);
   return code;
+}
+
+function addBandLinks(bands) {
+  if (!bandListFilled) {
+    for (var i = 0; i < bands.length; i++) {
+      $("#bandList").append('<div id="band' + bands[i].id + '" class="navButtons"><a href="/#/band?id=' + bands[i].id + '"><span>' + bands[i].name + '</span></a></div>');
+    }
+    bandListFilled = true;
+  }
 }

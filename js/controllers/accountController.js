@@ -14,16 +14,17 @@ function($scope, $http) {
     password: "",
     passwordAgain: ""
   };
+  $scope.returnUrl = "";
   var existingBand = "";
 
-  // -- SIGN IN / LOGIN METHODS -- // -------------------------------------------------
+  // -- SIGN IN METHODS -- // -------------------------------------------------
 
   // Test login - Data from account.js
   $scope.testLogin = function() {
     testLogin = true;
     CURRENT_USER = testUser;
     CURRENT_BANDS = testUser.bands;
-    loginUser();
+    loginUser('');
   };
 
   // This function runs when submitting sign in form.
@@ -53,7 +54,7 @@ function($scope, $http) {
       if (typeof user == "object") {
         CURRENT_USER = response.data;
         CURRENT_BANDS = response.data.bands;
-        loginUser();
+        loginUser($scope.returnUrl);
       } else {
         console.log("Login Failed.");
       }
@@ -94,16 +95,16 @@ function($scope, $http) {
         console.log("Sorry, " + username + " doesn't exist.");
         showInvalidInput("signInUsername");
         showInvalidUserMessage(username);
-        $scope.loginMessage = "Log In";
+        $scope.loginMessage = "Sign In";
         callback(false);
       } else {
-        $scope.loginMessage = "Logging In...";
+        $scope.loginMessage = "Signing In...";
         callback(response.data);
       }
     });
   };
 
-  // -- END OF SIGN IN / LOGIN METHODS -- // -------------------------------------------------
+  // -- END OF SIGN IN METHODS -- // -------------------------------------------------
 
   // -- SIGN UP METHODS -- // -------------------------------------------------
 
@@ -206,7 +207,6 @@ function($scope, $http) {
     });
   };
 
-  // TODO change email to username
   // Validate the given username in the database
   $scope.validUsername = function(callback) {
     var username = $scope.user.username;
@@ -262,9 +262,8 @@ function($scope, $http) {
     hideElementById("joinBand");
     displayElementById("chooseBand");
   }
+
   // -- END OF ACCOUNT UI MANAGEMENT -- // -------------------------------------
-
-
 
   // -- START OF PHP CALLS -- // -----------------------------------------------
 
@@ -353,13 +352,17 @@ function($scope, $http) {
     });
   };
 
+  // Load Current User and Band data to controller variables
   $scope.loadUserData = function () {
     $scope.user = CURRENT_USER;
     $scope.user.bands = CURRENT_BANDS;
   };
 
+  // Load Controller method
   $scope.loadController = function() {
       setupController();
+      $scope.returnUrl = getReturnUrl();
+      //LAST_URL = returnUrl
       // Check if user is logged in. Show user information instead of authentication forms.
       if (loggedIn) {
           $scope.loadUserData();
@@ -375,12 +378,9 @@ function($scope, $http) {
                   if (success) {
                       CURRENT_USER = loggedInUser;
                       CURRENT_BANDS = loggedInUser.bands;
-                      if (LAST_URL === "") {
-                        $scope.loadUserData();
-                        loginUser();
-                      } else {
-                        goToLastURL();
-                      }
+
+                      $scope.loadUserData();
+                      loginUser($scope.returnUrl);
 
                   } else {
                       clearAccountData();
@@ -397,7 +397,6 @@ function($scope, $http) {
 
   // Main load method
   $scope.loadController();
-
 
 }]);
 // End of mainController scope

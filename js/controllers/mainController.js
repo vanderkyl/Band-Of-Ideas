@@ -17,6 +17,7 @@ function($scope, $http) {
   $scope.bandFilter = "";
   $scope.playlists = [];
   $scope.playlistName = "";
+  $scope.numberOfIdeas = 0;
 
   // -- MAIN METHODS -- // ----------------------------------------
 
@@ -85,7 +86,12 @@ function($scope, $http) {
   };
 
     $scope.openFile = function(id, time) {
-        openFile(id, time);
+        var numTime = parseInt(time);
+        if (numTime > 0) {
+            openFile(id, time);
+        } else {
+            openFile(id, 0);
+        }
     };
 
   // Open User Details
@@ -218,10 +224,18 @@ function($scope, $http) {
           .then(function (response) {
               hideElementById("loadCommentsContainer");
               displayElementById("commentContainer");
-              $scope.recentComments = response.data.comments;
+              //$scope.recentComments = response.data.comments;
               $scope.recentHighlights = response.data.highlights;
               console.log($scope.recentHighlights);
           });
+  };
+
+  $scope.showIdeaGraph = function () {
+      showElementById("ideaGraph");
+  };
+
+  $scope.hideIdeaGraph = function () {
+      hideElementByIdWithAnimation("ideaGraph");
   };
 
   $scope.showRecentComments = function() {
@@ -320,6 +334,9 @@ function($scope, $http) {
   $scope.loadUIObjects = function() {
     $scope.user = CURRENT_USER;
     $scope.user.bands = CURRENT_BANDS;
+    for (var i = 0; i < $scope.user.bands.length; i++) {
+        $scope.numberOfIdeas += $scope.user.bands[i].numFiles;
+    }
     removeNavLink("#bandLink");
     removeNavLink("#folderLink");
     displayElementById("mainView");
@@ -335,9 +352,10 @@ function($scope, $http) {
             $scope.getUser(CURRENT_USER.username, true, function() {
               console.log("Getting user");
             });
+          $scope.getPlaylists();
+          $scope.getRecentActivity(CURRENT_BANDS);
           }
 
-          $scope.getRecentActivity(CURRENT_BANDS);
           $scope.loadUIObjects();
       }
   };

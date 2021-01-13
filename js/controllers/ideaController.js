@@ -27,8 +27,6 @@ function($scope, $sce, $http, $filter) {
   $scope.duration = "";
   $scope.sourceVideoLink = "";
 
-
-
   //TODO Create functionality for a recent file selection
 
   // -- BUTTON METHODS -- // ----------------------------------------
@@ -66,23 +64,6 @@ function($scope, $sce, $http, $filter) {
   // -- END OF BUTTON METHODS -- // ----------------------------------------
 
   // -- AUDIO PLAYER METHODS -- // ----------------------------------------
-
-  // Audio buttons
-  $scope.play = function() {
-    playWave();
-  };
-
-  $scope.pause = function() {
-    pauseWave();
-  };
-
-  $scope.rewind = function() {
-    rewindWave();
-  };
-
-  $scope.fastForward = function() {
-    skipWave();
-  };
 
   $scope.playNext = function() {
     playNext();
@@ -135,17 +116,8 @@ function($scope, $sce, $http, $filter) {
     $("#file-" + file.id).addClass("playListFileSelected");
   };
 
-  $scope.updateFileViews = function() {
-    $scope.file.views++;
-    CURRENT_FILE.views++;
-    $http.post("/php/updateFile.php?type=views", $scope.file)
-        .then(
-            function (response) {
-              console.log(response.data);
-            },
-            function (response) {
-              console.log(response.data);
-            });
+  $scope.updateFileViews = function(file) {
+    updateFileViews($http, file);
   };
 
   $scope.updateFileDuration = function() {
@@ -189,13 +161,13 @@ function($scope, $sce, $http, $filter) {
   $scope.favoriteFile = function() {
     var index = $scope.file.id;
 
-    displayElementInlineById("likedButton-" + index);
-    hideElementById("likeButton-" + index);
     $http.post("/php/updateFile.php?type=likes&user=" + CURRENT_USER.email, $scope.file)
     .then(
       function (response) {
         console.log(response.data);
         $scope.file.likes++;
+        displayElementInlineById("likedButton-" + index);
+        hideElementById("likeButton-" + index);
       },
       function (response) {
         console.log(response.data);
@@ -263,37 +235,14 @@ function($scope, $sce, $http, $filter) {
 
   };
 
-  $scope.addComment = function(commentText, user) {
+  $scope.addComment = function(commentText, highlightTime, user) {
     var commentObject = {comment: commentText,
       userName: user,
-      commentTime: "Just Now"};
+      commentTime: "Just Now",
+      highlightTime: highlightTime};
+
     $scope.file.comments.push(commentObject);
   }
-
-  $scope.submitComment2 = function(file) {
-    var comment = getElementById("commentText").value;
-    var user = CURRENT_USER;
-    var band = CURRENT_BAND;
-    var postData = {
-      userId: user.id,
-      bandId: band.id,
-      fileId: file.id,
-      comment: comment
-    }
-
-    $http.post("/php/addComment.php", postData)
-        .then(
-            function (response) {
-              console.log(response.data);
-              $scope.addComment(comment, user.name);
-              hideElementById("commentInput");
-              commentButton.innerHTML = "+ Comment";
-              getElementById("commentText").value = "";
-            },
-            function (response) {
-              console.log(response.data);
-            });
-  };
 
   $scope.showAllComments = function() {
     $scope.maxComments = $scope.file.comments.length;
@@ -330,49 +279,61 @@ function($scope, $sce, $http, $filter) {
     return timeToString(parseInt(currentTime));
   };
 
-
-
-  $scope.highlight = function() {
-      var highlightButton = getElementById("highlightButton");
-      var highlightContainer = getElementById("highlighter");
-      if (highlightContainer.style.display !== "block") {
-          //var currentTime = getElementById("audio").currentTime;
-          $scope.currentTime = getCurrentWaveTime();
-          setRegionStart($scope.currentTime);
-          setRegionEnd($scope.currentTime + 10);
-          createNewRegion();
-          highlightButton.innerHTML = "x";
-          displayElementById("highlighter");
-      } else {
-          highlightButton.innerHTML = "<i class='far fa-bookmark'></i>";
-          closeHighlighter();
-      }
-
+  $scope.showAddPopup = function() {
+    $scope.toggleAddPopup();
   };
 
-  $scope.addHighlight = function(commentText, highlightTime, endTime, user) {
-    if (highlightTime !== -1) {
-      var highlightObject = {comment: commentText,
-        userName: user,
-        commentTime: "Just Now",
-        highlightTime: highlightTime,
-        endTime: endTime};
-      //highlightObject.position = ((highlightObject.highlightTime / audio.duration)) * 100;
-      $scope.file.highlights.push(highlightObject);
-      selectedRegion.data.isNew = false;
-    }
+  $scope.hideAddPopup = function() {
+    var popup = document.getElementById("addPopup");
+    popup.classList.remove("show");
+  };
 
-  }
+  $scope.toggleAddPopup = function() {
+    var popup = document.getElementById("addPopup");
+    popup.classList.toggle("show");
+  };
+
+  $scope.highlight = function() {
+      $scope.currentTime = getElementById("audio").currentTime;
+      getElementById("highlightButton").style.border = "1px solid #ce0000";
+      setRegionStart($scope.currentTime);
+      if (getElementById("highlighter").style.display === "none") {
+        displayElementInlineById("highlighter");
+        $scope.addHighlight("", $scope.currentTime, CURRENT_USER.name);
+      }
+      $scope.showCommentBar();
+  };
+
+  $scope.addHighlight = function(commentText, highlightTime, user) {
+    var highlightObject = {comment: commentText,
+      userName: user,
+      commentTime: "Just Now",
+      highlightTime: highlightTime};
+    var audio = getElementById("audio");
+    highlightObject.position = ((highlightObject.highlightTime / audio.duration)) * 100;
+    $scope.file.highlights.push(highlightObject);
+  };
+
+  $scope.removeLastHighlight = function() {
+    $scope.file.highlights.pop();
+  };
+
+  $scope.closeHighlighter = function() {
+    $scope.removeLastHighlight();
+    closeHighlighter();
+  };
+
+  $scope.showCommentBar= function() {
+    hideElementById("commentButton");
+    displayElementById("commentInputDiv");
+  };
+
 
   $scope.submitComment = function(file) {
-    var highlight = 0;
+    var highlight = -1;
     var endTime = 0;
-    if (selectedRegion !== undefined || getElementById("highlighter").style.display != "none") {
-
-      if (selectedRegion.data.isNew) {
-        highlight = getRegionStartValue();
-        endTime = getRegionEndValue();
-      }
+    if (getElementById("highlighter").style.display != "none") {
+      highlight = getRegionStartValue();
     }
     var comment = getRegionCommentValue();
     var user = CURRENT_USER;
@@ -390,8 +351,9 @@ function($scope, $sce, $http, $filter) {
         .then(
             function (response) {
               console.log(response.data);
-              $scope.addHighlight(comment, highlight, endTime, user.name);
-              closeHighlighter();
+              $scope.closeHighlighter();
+              $scope.addHighlight(comment, highlight, user.name);
+              $scope.addComment(comment, highlight, user.name);
               //$scope.highlight();
 
             },
@@ -418,7 +380,8 @@ function($scope, $sce, $http, $filter) {
   $scope.playHighlight = function(event, time) {
     stopPropogation(event);
     if (time !== "") {
-      playWave(parseInt(time));
+      var audio = getElementById("audio");
+      audio.currentTime = parseInt(time);
     }
 
   };
@@ -426,18 +389,19 @@ function($scope, $sce, $http, $filter) {
   $scope.playNewHighlight = function() {
     var audio = getElementById("audio");
     audio.currentTime = $scope.currentTime;
+    audio.play();
   };
 
   $scope.rewindHighlight = function() {
-    console.log($scope.currentTime);
     $scope.currentTime = $scope.currentTime - 1;
-    console.log($scope.currentTime);
+    $scope.setHighlightToCurrentTime();
+    setRegionStart($scope.currentTime);
   };
 
   $scope.fastForwardHighlight = function() {
-    console.log($scope.currentTime);
     $scope.currentTime = $scope.currentTime + 1;
-    console.log($scope.currentTime);
+    $scope.setHighlightToCurrentTime();
+    setRegionStart($scope.currentTime);
   };
 
   $scope.getHighlightPositions = function() {
@@ -449,6 +413,12 @@ function($scope, $sce, $http, $filter) {
       });
     }
   };
+
+  $scope.setHighlightToCurrentTime = function() {
+    var lastHighlight = $scope.file.highlights.length-1;
+    var audio = getElementById("audio");
+    $scope.file.highlights[lastHighlight].position = (($scope.currentTime / audio.duration)) * 100;
+  }
 
   // -- END OF HIGHLIGHTS METHODS -- // ----------------------------------------
 
@@ -671,28 +641,72 @@ function($scope, $sce, $http, $filter) {
     $scope.folder = CURRENT_FOLDER;
     $scope.file = CURRENT_FILE;
     $scope.numberOfFiles = CURRENT_FILES.length;
+    $scope.file.comments = $scope.file.highlights.slice();
     updateTitle(CURRENT_FOLDER.name + " | " + CURRENT_FILE.name);
-    /*
-    loadFileWaveSurfer(time, function () {
-      loadWaveSurferEvents();
-      $scope.updateFileViews();
-    });
-  */
+    $scope.updateFileViews($scope.file);
     var audio = getElementById("audio");
     audio.load();
     audio.currentTime = time;
-    audio.play();
     $scope.checkIfFileIsLiked($scope.file);
-
     scrollToTop();
     loadFileLinkList();
     if (CURRENT_FILE.duration === "0") {
       $scope.updateFileDuration();
     }
+    $scope.setupEventListeners();
     $scope.loadUIObjects();
 
     $scope.sourceVideoLink = $sce.trustAsResourceUrl($scope.file.source);
     console.log($scope.file);
+  };
+
+  $scope.setupEventListeners = function() {
+    var audio = getElementById("audio");
+    var audioTimeline = getElementById("audioTimeline");
+    var audioTrack = getElementById("audioFilePercentageBar");
+    audioTimeline.addEventListener("click", function (event) {
+      hideElementById("play-btn");
+      displayElementInlineById("pause-btn");
+      moveplayhead(event, audioTimeline, audioTrack);
+      audio.currentTime = audio.duration * clickPercent(event, audioTimeline);
+    }, false);
+    audio.addEventListener("durationchange", function (event) {
+      getElementById("audioTime").innerText = timeToString(audio.currentTime) + " / " + timeToString(audio.duration);
+      $scope.getHighlightPositions();
+      hideElementById("ideaLoader");
+      displayElementById("ideaContents");
+    }, false);
+    audio.addEventListener("canplaythrough", function (event) {
+      // Show loading animation.
+      var playPromise = audio.play();
+
+      if (playPromise !== undefined) {
+        playPromise.then(_ => {
+          // Automatic playback started!
+          // Show playing UI.
+        })
+            .catch(error => {
+              console.log(error);
+              // Auto-play was prevented
+              // Show paused UI.
+            });
+      }
+    }, false);
+    audio.addEventListener("loadstart", function (event) {
+
+    }, false);
+    audio.addEventListener("error", function (event) {
+      hideElementById("pause-btn");
+      displayElementInlineById("play-btn");
+    }, false);
+    audio.addEventListener("play", function(event) {
+      hideElementById("play-btn");
+      displayElementInlineById("pause-btn");
+    }, false);
+    audio.addEventListener("pause", function (event) {
+      hideElementById("pause-btn");
+      displayElementInlineById("play-btn");
+    }, false);
   };
 
   $scope.loadUIObjects = function() {
@@ -700,6 +714,12 @@ function($scope, $sce, $http, $filter) {
     var fileUrl = "/#/idea?id=" + CURRENT_FILE.id;
     removeNavLink("fileLink");
     addNavLink("fileLink", CURRENT_FILE.name, fileUrl);
+    var highlightInput = getElementById("regionStartInput");
+    highlightInput.addEventListener("change", function() {
+      $scope.currentTime = parseInt(getElementById("regionStartInput").value);
+      $scope.setHighlightToCurrentTime();
+      setRegionStart($scope.currentTime);
+    }, false);
     displayElementById("ideaView");
     finishControllerSetup();
   };
@@ -711,7 +731,7 @@ function($scope, $sce, $http, $filter) {
       var id = getParameterByName("id");
       var time = getParameterByName("time");
       console.log(id);
-      if (id == 0) {
+      if (parseInt(id) === 0) {
         $scope.loadFile(0);
       } else if (id) {
         $scope.loadFileById(id, function() {

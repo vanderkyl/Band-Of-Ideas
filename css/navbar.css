@@ -95,14 +95,14 @@ a.nav-link:hover {
   height: 100%;
   width: 0;
   position: fixed;
-  z-index: 1000;
+  z-index: 1001;
   top: 0;
   left: 0;
   background-color: #222;
   overflow-x: hidden;
   transition: 0.5s;
-  padding-top: 13px;
-  margin-top: 51px;
+  padding-bottom: 50px;
+  padding-top: 55px;
 }
 
 .sideNav a {

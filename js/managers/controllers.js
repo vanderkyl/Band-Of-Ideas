@@ -1,39 +1,62 @@
 function setupController() {
   console.log("Setting up controller");
+  showAppLoader();
   $('body').removeClass('modal-open');
   $('.modal-backdrop').remove();
+  if (getElementById("topButtons") !== null) {
+      getElementById("topButtons").style.backgroundColor = getBackgroundColor(getBackgroundColorId());
+  }
+
   getElementById("userLink").innerText = CURRENT_USER.name;
-  showAppLoader();
+  //showAppLoader();
   loadProfileImage();
   scrollToTop();
-  hideAppLoader();
+  //hideAppLoader();
 }
 
 function finishControllerSetup() {
-  hideAppLoader();
+  shortHideAppLoader();
 }
 
 
 function showAppLoader() {
-  showElementById("appLoader");
+    displayElementById("appLoader");
+    getElementById("appLoader").style.opacity = "1";
+    //hideNavs();
+    hideBody();
+}
+
+function shortHideAppLoader() {
+    showBody();
+    getElementById("appLoader").style.opacity = "0";
+    setTimeout(function() {
+        hideElementById("appLoader");
+
+    }, 750);
 }
 
 function hideAppLoader() {
-  hideElementById("appLoader");
+    showNavs();
+    showBody();
+    setTimeout(function() {
+
+        getElementById("appLoader").style.opacity = "0";
+        setTimeout(function() {
+            hideElementById("appLoader");
+
+        }, 1000);
+    }, 2000);
 }
 
-/*
-function showAppLoader() {
-  hideElementById("appContainer");
-  $('document').ready(function() {
-    $(window).scrollTop(0);
-  });
-  displayElementById("loadContainer");
-}
-
-function hideAppLoader() {
-  hideElementById("loadContainer");
-  displayElementById("appContainer");
-}
-*/
+function updateFileViews(http, file) {
+  file.views++;
+  http.post("/php/updateFile.php?type=views", file)
+      .then(
+          function (response) {
+            console.log(response.data);
+          },
+          function (response) {
+            console.log(response.data);
+          });
+};
 

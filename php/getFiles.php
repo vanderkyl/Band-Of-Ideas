@@ -23,11 +23,14 @@
     } else if ($type == "bandFavorites"){
       $userId = $_GET['userId'];
       $bandId = $_GET['bandId'];
-      $files = getHighlightedFiles($conn, $userId, $bandId);
+      $files = getFavoriteFiles($conn, $userId, $bandId);
     } else if ($type == "bandHighlights"){
       $userId = $_GET['userId'];
       $bandId = $_GET['bandId'];
       $files = getHighlightedFiles($conn, $userId, $bandId);
+    } else if ($type == "bandFiles"){
+      $bandId = $_GET['bandId'];
+      $files = getBandFiles($conn, $bandId);
     } else if ($type == "singleFile"){
       $fileId = [$_GET['fileId']];
 
@@ -145,6 +148,11 @@
     return getFilesById($conn, $fileIds);
   }
 
+  function getBandFiles($conn, $bandId) {
+      $fileIds = getBandFileIds($conn, $bandId);
+      return getFilesById($conn, $fileIds);
+  }
+
   function getPlaylistFiles($conn, $playlistId) {
     $fileIds = getPlaylistFileIds($conn, $playlistId);
     return getFilesById($conn, $fileIds);
@@ -200,6 +208,7 @@
     }
   }
 
+  // Get Folder files
   function getFolderFiles($conn, $bandId, $folderId) {
     // Find the files in the given folder
     $query = "SELECT * FROM Files WHERE folderId = '" . $folderId . "'";
@@ -262,7 +271,7 @@
     if ($bandId == "") {
       $query = "SELECT fileId FROM UserLikes WHERE userId='" . $userId . "';";
     } else {
-      $query = "SELECT fileId FROM UserLikes WHERE userId='" . $userId . "' AND bandId='" . $bandId . "';";
+      $query = "SELECT fileId FROM UserLikes LEFT JOIN Files ON UserLikes.fileId = Files.id WHERE UserLikes.userId='" . $userId . "' AND Files.bandId='" . $bandId . "';";
     }
 
     if ($result = mysqli_query($conn, $query)) {
@@ -278,6 +287,7 @@
     return $fileIds;
   }
 
+  // Get Files ids that the user has highlighted
   function getUserHighlightedFileIds($conn, $userId, $bandId) {
     $fileIds = [];
     if ($bandId == "") {
@@ -299,6 +309,25 @@
     return $fileIds;
   }
 
+    // Get Files ids for the files in a band
+    function getBandFileIds($conn, $bandId) {
+        $fileIds = [];
+        $query = "SELECT id FROM Files WHERE bandId='" . $bandId . "';";
+
+        if ($result = mysqli_query($conn, $query)) {
+
+            if ($result->num_rows > 0) {
+              // Get current row as an array
+              while ($row = mysqli_fetch_assoc($result)) {
+                $fileIds[] = $row["id"];
+              }
+            }
+        }
+
+        return $fileIds;
+    }
+
+  // Get playlist file ids
   function getPlaylistFileIds($conn, $playlistId) {
     $fileIds = [];
     $query = "SELECT fileId FROM PlaylistFiles WHERE playlistId='" . $playlistId . "';";
@@ -316,6 +345,7 @@
     return $fileIds;
   }
 
+  // Get Highlights for a file
   function getFileHighlights($conn, $row) {
     // Check if the file has highlights
     $highlights = [];
@@ -342,6 +372,7 @@
     return $highlights;
   }
 
+  // Get comments for a file
   function getFileComments($conn, $row) {
     // Check if the file has comments
     $comments = [];
@@ -365,6 +396,7 @@
     return $comments;
   }
 
+  // Find username with given id
   function findUserName($conn, $userId) {
     // Find user name
     $userName = "";

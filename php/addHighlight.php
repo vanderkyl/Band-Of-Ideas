@@ -18,8 +18,8 @@
 
   if(mysqli_ping($conn)) {
     if ($userId != "" && $fileId != "" && $bandId != "") {
-      $query = "INSERT INTO Highlights (comment, userId, fileId, bandId, commentTime, highlightTime, endTime)
-                VALUES ('" . $comment . "','" . $userId . "','" . $fileId . "','" . $bandId . "','" . $dateTime . "','" . $highlight . "','" . $endTime ."');";
+      $query = "INSERT INTO Highlights (comment, userId, fileId, bandId, commentTime, highlightTime, endTime, commentDate)
+                VALUES ('" . $comment . "','" . $userId . "','" . $fileId . "','" . $bandId . "','" . $dateTime . "','" . $highlight . "','" . $endTime ."', NOW());";
       runMySQLInsertQuery($conn, $query);
     } else {
       echo "Sorry, the highlight failed to upload.";

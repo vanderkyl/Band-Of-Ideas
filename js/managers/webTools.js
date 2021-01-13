@@ -112,13 +112,13 @@ function httpPost(url, callback) {
 function addNavLink(id, name, link) {
   displayElementById("recentLinks");
   if (id === "bandLink") {
-    $("#bandLinks").append('<div id="' + id + '" class="navButtons"><a href="' + link + '"><i class="fas fa-sitemap"></i></i><span>' + name + '</span></a></div>');
+    $("#bandLinks").append('<div id="' + id + '" class="navButtons"><a href="' + link + '"><i class="fas fa-users"></i><span>' + name + '</span></a></div>');
   } else if (id === "playlistLink") {
     $("#playlistLinks").append('<div id="' + id + '" class="navButtons"><a href="' + link + '"><i class="fas fa-stream"></i><span>' + name + '</span></a></div>');
   }else if (id === "folderLink") {
     $("#folderLinks").append('<div id="' + id + '" class="navButtons"><a href="' + link + '"><i class="far fa-folder-open"></i><span>' + name + '</span></a></div>');
   } else if (id === "fileLink") {
-    $("#fileLinks").append('<div id="' + id + '" class="navButtons"><a href="' + link + '"><i class="fas fa-wave-square"></i><span>' + name + '</span></a></div>');
+    $("#fileLinks").append('<div id="' + id + '" class="navButtons"><a href="' + link + '"><i class="far fa-file-audio"></i><span>' + name + '</span></a></div>');
   } else if (id === "playingLink") {
     $("#fileLinks").append('<div id="' + id + '" class="navButtons"><a href="' + link + '"><i class="far fa-play"></i><span>' + name + '</span></a></div>');
   }else {
@@ -142,17 +142,34 @@ function sleep(ms) {
 }
 
 function updateTitle(title) {
+    console.log("Updating title:" + title);
   document.title = title;
 }
 
 function copyIdea() {
-  var ideaURLDisplay = document.getElementById("ideaURL").style.display;
-  if (ideaURLDisplay === "inline-block") {
+  var ideaCopied = document.getElementById("ideaCopiedButton").style.display;
+  if (ideaCopied === "inline-block") {
     hideElementById("ideaURL");
+    hideElementById("ideaCopiedButton");
+    displayElementInlineById("ideaCopyButton");
   } else {
     displayElementInlineById("ideaURL");
+    hideElementById("ideaCopyButton");
+    displayElementInlineById("ideaCopiedButton");
+
+    var copyText = document.getElementById("ideaURL");
+    copyText.focus();
+    copyText.select();
+    copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+    document.execCommand("copy");
+
+    /* Alert the copied text */
+    alert("Copied the text: " + copyText.value);
   }
 }
+
+
 
 function getAttribute(id, key) {
   return getElementById(id).getAttribute(key);

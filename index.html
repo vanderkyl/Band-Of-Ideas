@@ -54,182 +54,207 @@
     <script type="text/javascript">
       // Set up User Settings
 
-      var color = localStorage['background-color'] || "rgb(24, 27, 29)";
-      changeBackgroundColor(color);
+      var id = localStorage['background-color-id'] || "bgc-2";
+      changeBackgroundColor(id);
 
     </script>
   </head>
   <body ng-app="myApp">
-    <!-- Start of NavBar -->
-    <nav id="navBar" class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
-
-      <div id="navContainer" class="container">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="nav-header">
-          <div id="leftNavButtons">
-            <span id="sideNavButton" class="sideNavButton" onclick="openSideNav()" style="display: none"><i class="fas fa-bars"></i></span>
-            <span id="closeSideNavButton" class="closeSideNav" onclick="closeSideNav()" style="display: none"><i class="fas fa-arrow-left"></i></span>
-          </div>
-          <a id="brand" href="/#/" ><img src="img/bandofideas-logo-white.png" class="navbar-brand"/></a>
-          <div style="float: right">
-            <div id="showSearch" onclick="showSearchForm()" style="display: none"><i class="fa fa-search"></i></div>
-            <div id="search">
-              <form class="">
-                <div class="form-group">
-                  <input id="searchInput" type="text" class="" placeholder="Search Ideas" onkeyup="showResult(this.value, 'livesearch')" autocomplete="off">
-                  <button type="submit" class="btn btn-default" onclick="openSearchFolder()" style="filter: invert(100%);"><i class="fa fa-search"></i></button>
-                  <button type="reset" class="btn btn-default" style="filter: invert(100%);" onclick="hideResult('livesearch')">x</i></button>
-                </div>
-                <div id="livesearch"></div>
-
-
-              </form>
-            </div>
-            <div id="closeSearch" onclick="closeSearchForm()" style="display: none"><i class="far fa-times-circle"></i></div>
-
-          </div>
-        </div>
-
-
-
-
-      </div>
-      <div id="searchNavContainer">
-        <a href="/#/" ><img src="img/bandofideas-logo-white.png" class="navbar-brand" style="margin-left: 10px"/></a>
-        <div class="search" style="margin-right: 20px">
-          <form class="">
-            <div class="form-group">
-              <input id="largeSearchInput" type="text" class="" placeholder="Search Ideas" onkeyup="showResult(this.value, 'largeLivesearch')" autocomplete="off">
-              <button type="submit" class="btn btn-default" onclick="openSearchFolder()" style="filter: invert(100%);"><i class="fa fa-search"></i></button>
-              <button type="reset" class="btn btn-default" style="filter: invert(100%);" onclick="hideResult('largeLivesearch')">x</i></button>
-            </div>
-
-
-            <div id="largeLivesearch"></div>
-          </form>
-        </div>
-      </div>
-    </nav>
-    <!-- End of Nav -->
-    <!-- Side Bar -->
-    <div id="sideNav" class="sideNav">
-
-
-      <div class="sideNavHeader col-xs-12">
-
-        <a href="/#/user" class="col-xs-12">
-          <!--<i class="far fa-user" style="position: absolute;top: 13px;left: 20px;font-size: 15px;"></i> -->
-          <div id="userLinkImage" class="profileImage"></div>
-          <div id="userLink"></div>
-        </a>
-
-      </div>
-      <div id="navLinks" class="col-xs-12" style="margin-top: 10px;">
-        <div id="topLinks">
-          <h4><a href="/#/dashboard"><i class="fas fa-chart-pie"></i><span>Dashboard</span></a></h4>
-          <h4><a href="/#/playlists"><i class="far fa-list-alt"></i><span>Playlists</span></a></h4>
-        </div>
-        <div id="recentLinks" style="display: none">
-          <div id="playlistLinks">
-            <!--<li class="navButtons"><a href="/#/music">Music</a></li> -->
-          </div>
-          <div id="bandLinks">
-            <!--<li class="navButtons"><a href="/#/music">Music</a></li> -->
-          </div>
-          <div id="folderLinks">
-            <!--<li class="navButtons"><a href="/#/music">Music</a></li> -->
-          </div>
-          <div id="fileLinks" >
-            <!--<li class="navButtons"><a href="/#/music">Music</a></li> -->
-          </div>
-        </div>
-
-
-      </div>
-      <div class="sideNavFooter col-xs-12">
-        <h4><a href="javascript:void(0)" onclick="setupUploadModal()"><i class="fas fa-cloud-upload-alt"></i><span>Upload</span></a></h4>
-        <h4><a href="/#/settings"><i class="fas fa-sliders-h"></i><span>Settings</span></a></h4>
-        <h4><a id="signOutButton" class="dropdown-item " onclick="signOut();" href="javascript:void(0)"><i class="fas fa-sign-out-alt"></i><span>Sign Out</span></a></h4>
-      </div>
-
-
+    <div id="appLoader">
+      <div class="loader"></div>
+      <h5 style="color: white; text-align: center">Loading</h5>
     </div>
-    <!-- End of Side Bar -->
-    <!--<div id="loadContainer" class="loader"></div>-->
-    <div id="appLoader" class="lds-ripple"><div><div></div></div></div>
-    <!-- Container of Angular views -->
-    <div id="appContainer" class="appContainer" ng-view></div>
+    <div id="appContents">
+      <!-- Start of NavBar -->
+      <nav id="navBar" class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
 
-    <!-- Start of Footer -->
-    <div id="footer" class="footer">
-      <div id="expandPlayerButton" class="playerFooterButton" onclick="expandPlayer()"><i class="fas fa-ellipsis-h"></i></div>
-      <div id="collapsePlayerButton" class="playerFooterButton" onclick="collapsePlayer()" style="display: none"><i class="fas fa-ellipsis-h"></i></div>
-      <a id="closePlayerButton" href="javascript:void(0)" onclick="quitPlayer()">&times;</a>
-      <!-- Floating Audio Player -->
-      <div id="audioPlayer" style="display: none">
-        <a id="trackName" href="" class="playerFileTitle" onclick="quitPlayer()"></a>
-        <div style="text-align:center; margin-top: 3px;">
-          <!--<i class="playerButton glyphicon glyphicon-step-backward" ng-click="playPrev()"></i>-->
-          <i id="rewindPlayerButton" class="playerButton glyphicon glyphicon-backward" onclick="rewind(getElementById('audioPlayerAudio'))"></i>
-          <i id="playButton" class="playerButton glyphicon glyphicon-play" style="display:none;" onclick="playAudioFromPlayer();"></i>
-          <i id="pauseButton" class="playerButton glyphicon glyphicon-pause" style="display:inline-block" onclick="pauseAudioFromPlayer();"></i>
-          <i id="forwardPlayerButton" class="playerButton glyphicon glyphicon-forward" onclick="fastForward(getElementById('audioPlayerAudio'))"></i>
-          <!--<i class="playerButton glyphicon glyphicon-step-forward" ng-click="playNext()"></i>-->
+        <div id="navContainer" class="container">
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="nav-header">
+            <div id="leftNavButtons">
+              <span id="sideNavButton" class="sideNavButton" onclick="openSideNav()" style="display: none"><i class="fas fa-bars"></i></span>
+              <span id="closeSideNavButton" class="closeSideNav" onclick="closeSideNav()" style="display: none"><i class="fas fa-arrow-left"></i></span>
+            </div>
+            <a id="brand" href="/#/" ><img src="img/bandofideas-logo-white.png" class="navbar-brand"/></a>
+            <div style="float: right">
+              <div id="showSearch" onclick="showSearchForm()" style="display: none"><i class="fa fa-search"></i></div>
+              <div id="search">
+                <form class="">
+                  <div class="form-group">
+                    <input id="searchInput" type="text" class="" placeholder="Search Ideas" onkeyup="showResult(this.value, 'livesearch')" autocomplete="off">
+                    <button type="submit" class="btn btn-default" onclick="openSearchFolder()" style="filter: invert(100%);"><i class="fa fa-search"></i></button>
+                    <button type="reset" class="btn btn-default" style="filter: invert(100%);" onclick="hideResult('livesearch')">x</i></button>
+                  </div>
+                  <div id="livesearch"></div>
+
+
+                </form>
+              </div>
+              <div id="closeSearch" onclick="closeSearchForm()" style="display: none"><i class="far fa-times-circle"></i></div>
+
+            </div>
+          </div>
+
+
+
+
+        </div>
+        <div id="searchNavContainer">
+          <a href="/#/" ><img src="img/bandofideas-logo-white.png" class="navbar-brand" style="margin-left: 10px"/></a>
+          <div class="search" style="margin-right: 20px">
+            <form class="">
+              <div class="form-group">
+                <input id="largeSearchInput" type="text" class="" placeholder="Search Ideas" onkeyup="showResult(this.value, 'largeLivesearch')" autocomplete="off">
+                <button type="submit" class="btn btn-default" onclick="openSearchFolder()" style="filter: invert(100%);"><i class="fa fa-search"></i></button>
+                <button type="reset" class="btn btn-default" style="filter: invert(100%);" onclick="hideResult('largeLivesearch')">x</i></button>
+              </div>
+
+
+              <div id="largeLivesearch"></div>
+            </form>
+          </div>
+        </div>
+      </nav>
+      <!-- End of Nav -->
+      <!-- Side Bar -->
+      <div id="sideNav" class="sideNav">
+
+
+        <div class="sideNavHeader col-xs-12">
+
+          <a href="/#/user" class="col-xs-12">
+            <!--<i class="far fa-user" style="position: absolute;top: 13px;left: 20px;font-size: 15px;"></i> -->
+            <div id="userLinkImage" class="profileImage"></div>
+            <div id="userLink"></div>
+          </a>
+
+        </div>
+        <div id="navLinks" class="col-xs-12" style="margin-top: 10px;">
+          <div id="topLinks">
+            <h4><a href="/#/dashboard"><i class="fas fa-chart-pie"></i><span>Dashboard</span></a></h4>
+            <h4><a href="/#/playlists"><i class="far fa-list-alt"></i><span>Playlists</span></a></h4>
+            <div>
+              <h4>
+                <a id="bandListToggle" href="javascript:void(0)" onclick="toggleBandList()">
+                  <i class="fas fa-users"></i><span>Bands</span> <i id="bandListOpener" class="fas fa-chevron-down"></i><i id="bandListCloser" class="fas fa-chevron-up" style="display: none"></i>
+                </a>
+              </h4>
+              <div id="bandList" style="display: none; border-top: 1px solid #444;">
+                <!--<li class="navButtons"><a href="/#/band?id=123">Band Name</a></li> -->
+              </div>
+            </div>
+          </div>
+          <div id="recentLinks" style="display: none">
+            <span><i>Recent</i></span>
+            <div id="playlistLinks">
+              <!--<li class="navButtons"><a href="/#/music">Music</a></li> -->
+            </div>
+            <div id="bandLinks">
+              <!--<li class="navButtons"><a href="/#/music">Music</a></li> -->
+            </div>
+            <div id="folderLinks">
+              <!--<li class="navButtons"><a href="/#/music">Music</a></li> -->
+            </div>
+            <div id="fileLinks" >
+              <!--<li class="navButtons"><a href="/#/music">Music</a></li> -->
+            </div>
+          </div>
+
+
+        </div>
+        <div class="sideNavFooter col-xs-12">
+          <h4><a href="javascript:void(0)" onclick="setupUploadModal()"><i class="fas fa-cloud-upload-alt"></i><span>Upload</span></a></h4>
+          <h4><a href="/#/settings"><i class="fas fa-sliders-h"></i><span>Settings</span></a></h4>
+          <h4><a id="signOutButton" class="dropdown-item " onclick="signOut();" href="javascript:void(0)"><i class="fas fa-sign-out-alt"></i><span>Sign Out</span></a></h4>
         </div>
 
-        <audio id="audioPlayerAudio" ontimeupdate="initPlayerProgressBar()" preload="auto" autoplay="true" controls>
-          <source id="audioPlayerSource" src="" type="audio/mp4"/>
-          <p>Your browser does not support HTML5 audio.</p>
-        </audio>
-        <p id="audioPlayerTime" class="col-xs-12" style="display: none"></p>
-        <div id="audioPlayerTimeline" class="col-xs-12" style="bottom: -35px; position: absolute;">
-          <div id="audioPlayerPercentageBar" style="border-radius: 5px; height: 7px;"></div>
+
+      </div>
+      <!-- End of Side Bar -->
+      <!--<div id="loadContainer" class="loader"></div>
+      <div id="appLoader" style="display: none" class="lds-ripple"><div><div></div></div></div>-->
+      <!-- Container of Angular views -->
+      <div id="appContainer" class="appContainer" ng-view></div>
+
+      <!-- Start of Footer -->
+      <div id="footer" class="footer">
+        <div id="expandPlayerButton" class="playerFooterButton" onclick="expandPlayer()"><i class="fas fa-chevron-up"></i></div>
+        <div id="collapsePlayerButton" class="playerFooterButton" onclick="collapsePlayer()" style="display: none"><i class="fas fa-chevron-down"></i></div>
+        <a id="closePlayerButton" href="javascript:void(0)" onclick="quitPlayer()">&times;</a>
+        <!-- Floating Audio Player -->
+        <div id="audioPlayer" style="display: none">
+
+
+          <div>
+            <a id="trackName" href="" class="playerFileTitle" onclick="quitPlayer()"></a>
+          </div>
+          <audio id="audioPlayerAudio" ontimeupdate="initPlayerProgressBar()" preload="auto" autoplay="true" controls>
+            <source id="audioPlayerSource" src="" type="audio/mp4"/>
+            <p>Your browser does not support HTML5 audio.</p>
+          </audio>
+          <p id="audioPlayerTime" class="col-xs-12" style="display: none"></p>
+          <div id="audioPlayerTimeline" class="col-xs-12" style="bottom: -35px; position: absolute;">
+            <div id="audioPlayerPercentageBar" style="border-radius: 5px; height: 7px;"></div>
+          </div>
+        </div>
+
+        <div id="audioInfo" class="col-xs-12" style="display: none">
+          <div style="text-align:center; margin-top: 3px; color: black">
+            <i class="playerButton glyphicon glyphicon-step-backward" onclick="playPrevious(true)"></i>
+            <i id="rewindPlayerButton" class="playerButton glyphicon glyphicon-backward" onclick="rewind(getElementById('audioPlayerAudio'))"></i>
+            <i id="playButton" class="playerButton glyphicon glyphicon-play" style="display:none;" onclick="playAudioFromPlayer();"></i>
+            <i id="pauseButton" class="playerButton glyphicon glyphicon-pause" style="display:inline-block" onclick="pauseAudioFromPlayer();"></i>
+            <i id="forwardPlayerButton" class="playerButton glyphicon glyphicon-forward" onclick="fastForward(getElementById('audioPlayerAudio'))"></i>
+            <i class="playerButton glyphicon glyphicon-step-forward" onclick="playNext(true)"></i>
+          </div>
+          <div class="col-xs-12 col-sm-6" style="margin-bottom: 20px;" onclick="playNext(true)">
+            <p>Playing Next</p>
+            <h2 id="nextSong"></h2>
+          </div>
+          <div class="col-xs-12 col-sm-6" style="margin-bottom: 20px;" onclick="playPrevious(true)">
+            <p>Previous</p>
+            <h2 id="previousSong"></h2>
+          </div>
+
+          <p><strong>Current Ideas</strong></p>
+          <div id="songList">
+
+          </div>
+        </div>
+
+      </div>
+      <!-- End of Footer -->
+
+      <!-- Upload Modal -->
+      <div id="uploadModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Upload Ideas</h4>
+            </div>
+            <div class="modal-body" >
+              <div style="padding: 20px;">
+                <select id="UploadBands" class="col-xs-12"></select>
+              </div>
+              <div style="padding: 20px;">
+                <select id="UploadFolders" class="col-xs-12"></select>
+              </div>
+              <div id="filepondDiv" style="padding: 75px; display: none">
+                <input id="filepond" type="file" class="my-pond" name="filepond[]" required multiple/>
+              </div>
+              <audio id="uploadAudio" style="display: none"></audio>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn" data-dismiss="modal">Close</button>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div id="audioInfo" class="col-xs-12" style="display: none">
-
-        <div class="col-xs-12 col-sm-6" style="margin-bottom: 20px;">
-          <p>Previous</p>
-          <h2 id="previousSong"></h2>
-        </div>
-        <div class="col-xs-12 col-sm-6" style="margin-bottom: 20px;">
-          <p>Playing Next</p>
-          <h2 id="nextSong"></h2>
-        </div>
-      </div>
-
+      <!-- End of Upload Modal -->
     </div>
-    <!-- End of Footer -->
 
-    <!-- Upload Modal -->
-    <div id="uploadModal" class="modal fade" role="dialog">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Upload Ideas</h4>
-          </div>
-          <div class="modal-body" >
-            <div style="padding: 20px;">
-              <select id="UploadBands" class="col-xs-12"></select>
-            </div>
-            <div style="padding: 20px;">
-              <select id="UploadFolders" class="col-xs-12"></select>
-            </div>
-            <div id="filepondDiv" style="padding: 75px; display: none">
-              <input id="filepond" type="file" class="my-pond" name="filepond[]" required multiple/>
-            </div>
-            <audio id="uploadAudio" style="display: none"></audio>
-
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn" data-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- End of Upload Modal -->
 
     <script type="text/javascript">
       $(document).ready(function() {
@@ -277,6 +302,9 @@
     <!-- Directives - JS -->
     <script src="js/directives/fileLikes.js" type="text/javascript"></script>
     <script src="js/directives/modals.js" type="text/javascript"></script>
+
+    <!-- NPM -->
+    <script src="index.js" type="text/javascript"></script>
 
   </body>
 </html>

@@ -24,17 +24,22 @@
     <!-- File Filter: Sorted By, Number of Files on Page -->
     <div class="col-xs-12">
       <!--<i class="glyphicon glyphicon-search" style="position: absolute; top: 22px; left: 3%; font-size: 18px; cursor: pointer" ng-click="showFilters()"></i>-->
-      <h4 style="color: white; padding: 0; margin-top: 20px;" class="col-xs-9"><a href="/#/band?id={{ band.id }}" style="color: white" class="backToButton">{{ band.name }}</a> - <span style="margin-left:5px;">{{ folder.name }}</span></h4>
+      <h4 style="color: white; padding: 0; margin-top: 20px;" class="col-xs-9"><a href="/#/band?id={{ band.id }}" style="color: white" class="backToButton">{{ band.name }}</a> / <span style="margin-left:5px;">{{ folder.name }}</span></h4>
       <div id="uploadFiles" style="float: right; padding: 10px; max-width: 50px; margin-top: 10px;" class="btn btn-success btn-xs col-xs-3" ng-click="openUploadModal()"><i class="fas fa-upload"></i><div id="uploadPercentageButton"></div></div>
+      <div class="topButt" style="display: none;">
+        <i class="fas fa-share-alt"></i>
+      </div>
     </div>
+
     <!-- End of File Filter -->
     <div id="files" class="containers col-xs-12" style="padding: 0;">
       <div id="fileHeader">
-        <div class="col-xs-6 col-sm-8">
-          <input ng-model="search" class="searchBar" placeholder="Search Ideas">
+        <div id="searchFilesButton" class="searchListButton col-xs-6" ng-click="showFileSearchBar()">
+          <a href="javascript:void(0)"><i class="fas fa-search"></i></a>
         </div>
+        <input id="fileSearchBar" ng-model="search" class="searchBar col-xs-8" style="display: none" placeholder="Search Ideas">
 
-        <div class="col-xs-3 col-sm-2" style="padding-right: 0;">
+        <div id="fileFilters" style="padding-right: 0; float: right; display: none;">
           <select ng-model="sortBy" id="fileOrder" class="form-control">
             <option value="name">Name</option>
             <option value="bytes">Size</option>
@@ -42,41 +47,64 @@
             <option value="-views">Views</option>
           </select>
         </div>
-
-        <div class="col-xs-3 col-sm-2" style="padding-right: 0;">
-          <select ng-model="pageSize" id="pageSize" class="form-control">
-            <option value="4">4</option>
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="30">30</option>
-          </select>
-        </div>
       </div>
 
       <div id="playListFileDetails-{{ song.id }}" class="playListFileDetails"></div>
       <!-- Container that holds all files playlist -->
       <div id="fileList" class="col-xs-12" style="padding: 0">
-        <div class="col-xs-12 scroller" >
+        <div id="fileListHeader" class="playListFileInfo col-xs-12" style="padding-left: 15px; padding-right: 15px;">
+          <p class="col-xs-1 songIndex">#</p>
+          <p class="col-xs-4 fileName" >Name</p>
+          <div class="col-xs-6" style="text-align: right; padding-left: 0; padding-right: 0;">
+            <p style="min-width: 40px; display: inline-block">Duration</p>
+            <p style="min-width: 40px; display: inline-block">Views</p>
+            <p style="min-width: 40px; display: inline-block">Likes</p>
+
+          </div>
+        </div>
+        <div class="col-xs-12 buttonList" >
+
           <div ng-animate="'animate'" class="song" style="padding: 5px" ng-repeat="song in files |
           filter:{name: search }
           | orderBy:sortBy" >
             <!-- This is a Single File -->
 
-            <div id="file-{{ song.id }}" class="playListFile col-xs-12" data-index="{{ song.fileIndex }}" ng-click="stopFile(song); openMiniAudioPlayer(song); ">
-
+            <div id="file-{{ song.id }}" class="playListFile col-xs-12" data-index="{{ song.id }}" ng-click="showPopup(song.id)" onmouseover="showPlayerButton(this)" onmouseout="hidePlayerButton(this)" >
+              <div class="popup">
+                <span class="popuptext" id="filePopup-{{ song.id }}">
+                  <div class="popupButton col-xs-6" ng-click="stopFile(song); hidePopup(song.id, $event); openMiniAudioPlayer(song); " style="border-right: 1px solid white">
+                    Play
+                  </div>
+                  <div class="popupButton col-xs-6" ng-click="openFile(song, $event)">
+                    Open
+                  </div>
+                </span>
+              </div>
               <div class="playListFileInfo col-xs-12">
                 <!-- <p class="deleteButton" ng-click="deleteFile($index)"> x </p>-->
-                <p class="col-xs-1 songIndex">{{ $index + 1 }}</p>
-                <p class="col-xs-9 col-sm-10 fileName" >{{ song.name }}</p>
-                <p class="durationTime" style="text-align: right">{{ song.durationTime }}</p>
+                <p id="fileIndex-{{ song.id }}" class="col-xs-1 songIndex">{{ $index + 1 }}</p>
+                <p id="fileStart-{{ song.id }}" class="col-xs-1 songIndex" style="display: none" ng-click="stopFile(song); openMiniAudioPlayer(song); "><i class="fas fa-play"></i></p>
+                <p id="filePlay-{{ song.id }}" class="col-xs-1 songIndex" style="display: none" ng-click="playMiniAudioPlayer(song);"><i class="fas fa-play"></i></p>
+                <p id="filePause-{{ song.id }}" class="col-xs-1 songIndex" style="display: none" ng-click="pauseMiniAudioPlayer(song);"><i class="fas fa-pause"></i></p>
+                <p class="col-xs-4 fileName" >{{ song.name }}</p>
+                <div class="col-xs-6" style="text-align: right; padding-left: 0; padding-right: 0;">
+                  <p style="min-width: 40px; display: inline-block">{{ song.durationTime }}</p>
+                  <p style="min-width: 40px; display: inline-block">{{ song.views }}</p>
+                  <p style="min-width: 40px; display: inline-block">{{ song.likes }}</p>
 
+                </div>
+
+                <!--
                 <div id="fileActionsOpen-{{ song.id }}" class="fileDetailsButton" style="top: -19px;" ng-click="openFileActions(song, $event)">
                   <i class="fas fa-chevron-down"></i>
                 </div>
                 <div id="fileActionsClose-{{ song.id }}" class="fileDetailsButton" style="top: -19px; display: none;" ng-click="closeFileActions(song, $event)">
                   <i class="fas fa-chevron-up"></i>
                 </div>
+                -->
               </div>
+
+              <!--
               <div id="fileActions-{{ song.id }}" class="fileActions col-xs-12">
                 <div id="actionsDiv-{{ song.id }}" style="display: none">
                   <div id="playFile-{{ song.id }}" class="col-xs-3" style="text-align: center;" ng-click="stopFile(song); openMiniAudioPlayer(song); ">
@@ -91,7 +119,7 @@
                     <div class="btn btn-default"><i class="fas fa-external-link-alt"></i></div>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
 
         <!-- End of Single File -->

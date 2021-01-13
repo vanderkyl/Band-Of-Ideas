@@ -135,6 +135,11 @@ var testFolders = [
         archived: "true"
     },testFolder];
 
+// Test Playlist Objects
+var playlists = [{
+
+}]
+
 // Test File Objects
 var testFiles = [{
     folderId: "0",
@@ -157,7 +162,7 @@ var testFiles = [{
                 {id:3, comment:"laskjdflkdfasdfdf dfdf", userName:"user3", commentTime: "Nov 14th", highlightTime: 60.12, endTime: 0},
                 {id:4, comment:"laskjdflk", userName:"user", commentTime: "Nov 14th", highlightTime: 5.12, endTime: 15.45},
                 {id:4, comment:"laskjdflfdff dffsdfd dfdafsdfasdfasfasdfddf dfdfdasfsdfdsfd df dfdfdk", userName:"user", commentTime: "Nov 14th", highlightTime: 0.12, endTime: 15.45},
-                {id:5, comment:"laskjdf", userName:"user4", commentTime: "Nov 14th",  highlightTime: 20.12, endTime: 45.45},
+                {id:5, comment:"laskjdf", userName:"user4", commentTime: "Nov 14th",  highlightTime: -1, endTime: 45.45},
                 {id:6, comment:"laskjdf", userName:"user4", commentTime: "Nov 14th", highlightTime: 90.12, endTime: 99.45}]
 
   },
