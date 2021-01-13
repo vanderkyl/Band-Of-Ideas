@@ -31,9 +31,13 @@
                 </span>
                 </div>
               </a>
+              <a id="ideaDownloadLink" href="{{ file.link }}" download>
+                <span class="glyphicon glyphicon-download-alt"></span>
+              </a>
               <a href="javascript:void(0)" id="ideaInfoButton" class="glyphicon glyphicon-info-sign" style="margin-right: 10px;" data-toggle="modal" data-target="#ideaDetailsModal"></a>
 
               <a href="javascript:void(0)" id="ideaCopyButton" onclick="copyIdea()"><i class="far fa-copy"></i></a>
+              <a href="javascript:void(0)" id="ideaCopiedButton" onclick="copyIdea()" style="display: none"><i class="fas fa-copy"></i> <span style="font-size: 10px"> Copied!  </span></a>
 
               <input type="text" value="http://bandofideas.com/#/idea?id={{file.id}}" id="ideaURL" style="display:none; position: absolute; font-size: 10px; width: 200px">
               <p id="fileTitle" class="fileTitle col-xs-12">{{ file.name }}</p>
@@ -108,7 +112,7 @@
                     </div>
                   </div>
                   <div id="likeButton-{{file.id}}" class="fileButton" ng-click="favoriteFile()">{{ file.likes }} <i class="far fa-thumbs-up" ></i></div>
-                  <div id="likedButton-{{file.id}}" class="fileButton" style="display: none; border: 1px solid #337ab7" ng-click="stopPropogation($event); showLikesOnFile(file);">{{ file.likes }} <i class="fas fa-thumbs-up"></i></div>
+                  <div id="likedButton-{{file.id}}" class="fileButton" style="display: none; border: 1px solid #000000; border-radius: 4px" ng-click="stopPropogation($event); showLikesOnFile(file);">{{ file.likes }} <i class="fas fa-thumbs-up"></i></div>
                 </div>
                 <br>
                 <div id="sourceVideoDiv" class="videoWrapper col-xs-12" style="display: none">
@@ -127,7 +131,7 @@
               <!-- File Data, Buttons, Comments, and Highlights -->
               <div class="col-xs-12 commentHeader">
                 <div id="commentButton" class="searchListButton col-xs-9" ng-click="showCommentBar()" style="font-size: 13px">
-                  <a href="javascript:void(0)"><i class="fas fa-reply"></i> Comment </a>
+                  <a style="border: 1px solid; border-radius: 5px; padding: 4px;" href="javascript:void(0)"><i class="fas fa-reply"></i> Comment</a>
                   <span>as {{ user.name }}</span>
                 </div>
                 <div id="commentInputDiv" class="col-xs-9" style="padding: 0; display: none;">
@@ -285,4 +289,3 @@
 <!-- End of Add to Playlist Modal -->
 
 <script src="js/managers/uploader.js" type="text/javascript"></script>
-

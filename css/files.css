@@ -211,6 +211,12 @@
   font-size: 16px;
 }
 
+#ideaDownloadLink {
+  float: right;
+  padding-right: 32px;
+  padding-top: 2px;
+}
+
 .addToListButton {
   z-index: 1000;
   text-align: right;

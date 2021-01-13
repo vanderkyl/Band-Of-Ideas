@@ -21,27 +21,24 @@ var loggedIn = false;
 var signedOut = false;
 var bandListFilled = false;
 
-function loginUser() {
+function loginUser(returnUrl) {
   bandListFilled = false;
   loggedIn = true;
 
-  loadApp(function() {
+  loadApp(returnUrl, function() {
     hideAppLoader();
   });
 }
 
-function loadApp(callback) {
+function loadApp(returnUrl, callback) {
   showAppLoader();
-  navigateToURL("/#/dashboard");
-  hideAppLoader();
-}
+  if (returnUrl === '' || returnUrl === null) {
+    navigateToURL("/#/dashboard");
+  } else {
+    navigateToURL(returnUrl);
+  }
 
-function goToLastURL() {
-  loggedIn = true;
-  hideBody();
-  navigateToURL(LAST_URL);
-  showNavs();
-  showBody();
+  hideAppLoader();
 }
 
 function showNavs() {
@@ -206,13 +203,29 @@ function inputEmpty(input, inputId) {
 
 function isLoggedIn() {
   if (!loggedIn) {
-    LAST_URL = window.location.href;
+    LAST_URL = window.location;
     LAST_PATHNAME = window.location.pathname;
-    navigateToURL("/#/login");
+    navigateToURL("/#/login?returnUrl='" + LAST_URL + "'");
   } else {
     addBandLinks(CURRENT_BANDS);
   }
   return loggedIn;
+}
+
+function getReturnUrl () {
+  var url = "";
+  var queries = window.location.hash;
+  if (queries.indexOf("returnUrl") !== -1) {
+    var start = queries.indexOf("'") + 1;
+    var end = queries.lastIndexOf("'");
+    url = queries.substring(start, end);
+  }
+  url = decodeURIComponent(url);
+  if (url !== "") {
+    var start = url.indexOf("#") - 1;
+    url = url.substring(start);
+  }
+  return url;
 }
 
 function objectIsEmpty(obj) {

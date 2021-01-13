@@ -98,7 +98,8 @@
           $user = ['id' => $row["id"],
                   'name' => $row["name"],
                   'username' => $row["username"],
-                  'email' => $row["email"]];
+                  'email' => $row["email"],
+                  'lastloggedin' => $row["lastloggedin"]];
           $users[] = $user;
         }
       }
@@ -109,7 +110,7 @@
   function onLogin($user, $conn) {
     $SECRET_KEY = "BandOfIdeas";
     $token = bin2hex(openssl_random_pseudo_bytes(16)); // generate a token, should be 128 - 256 bit
-    $query = "UPDATE Users SET token='" . $token . "' WHERE id='" . $user->id . "';";
+    $query = "UPDATE Users SET token='" . $token . "', lastloggedin = NOW() WHERE id='" . $user->id . "';";
     if ($result = mysqli_query($conn, $query)) {
       // User updated successfully
       $cookie = $user->id . ':' . $token;
@@ -142,7 +143,16 @@
         }
       }
       if (hash_equals($userToken, $token)) {
+        $query = "UPDATE Users SET lastloggedin = NOW() WHERE token='" . $userToken . "';";
+        if ($result = mysqli_query($conn, $query)) {
           return true;
+        } else {
+          echo "Update unsuccessful";
+          echo $query;
+        }
+      }
+      else {
+        return false;
       }
     }
   }

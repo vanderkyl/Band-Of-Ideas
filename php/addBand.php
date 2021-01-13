@@ -19,8 +19,8 @@
     $bandQuery = "";
     if ($joiningBand == false) {
       $bandId = findIdForNewRow($conn, "Bands");
-      $bandQuery = "INSERT INTO Bands (id, name, metaName, code)
-                VALUES ('" . $bandId . "','" . $band . "','" . $bandMetaName . "',' . $bandCode . ')";
+      $bandQuery = "INSERT INTO Bands (id, name, metaName, code, creationDate)
+                VALUES ('" . $bandId . "','" . $band . "','" . $bandMetaName . "',' . $bandCode . ', NOW())";
       echo "Inserting the new band...";
       runMySQLInsertQuery($conn, $bandQuery);
 

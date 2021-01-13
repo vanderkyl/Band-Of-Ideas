@@ -14,6 +14,7 @@ function($scope, $http) {
     password: "",
     passwordAgain: ""
   };
+  $scope.returnUrl = "";
   var existingBand = "";
 
   // -- SIGN IN METHODS -- // -------------------------------------------------
@@ -23,7 +24,7 @@ function($scope, $http) {
     testLogin = true;
     CURRENT_USER = testUser;
     CURRENT_BANDS = testUser.bands;
-    loginUser();
+    loginUser('');
   };
 
   // This function runs when submitting sign in form.
@@ -53,7 +54,7 @@ function($scope, $http) {
       if (typeof user == "object") {
         CURRENT_USER = response.data;
         CURRENT_BANDS = response.data.bands;
-        loginUser();
+        loginUser($scope.returnUrl);
       } else {
         console.log("Login Failed.");
       }
@@ -360,6 +361,8 @@ function($scope, $http) {
   // Load Controller method
   $scope.loadController = function() {
       setupController();
+      $scope.returnUrl = getReturnUrl();
+      //LAST_URL = returnUrl
       // Check if user is logged in. Show user information instead of authentication forms.
       if (loggedIn) {
           $scope.loadUserData();
@@ -375,12 +378,9 @@ function($scope, $http) {
                   if (success) {
                       CURRENT_USER = loggedInUser;
                       CURRENT_BANDS = loggedInUser.bands;
-                      if (LAST_URL === "") {
-                        $scope.loadUserData();
-                        loginUser();
-                      } else {
-                        goToLastURL();
-                      }
+
+                      $scope.loadUserData();
+                      loginUser($scope.returnUrl);
 
                   } else {
                       clearAccountData();

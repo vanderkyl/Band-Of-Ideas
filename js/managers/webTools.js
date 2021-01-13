@@ -147,13 +147,29 @@ function updateTitle(title) {
 }
 
 function copyIdea() {
-  var ideaURLDisplay = document.getElementById("ideaURL").style.display;
-  if (ideaURLDisplay === "inline-block") {
+  var ideaCopied = document.getElementById("ideaCopiedButton").style.display;
+  if (ideaCopied === "inline-block") {
     hideElementById("ideaURL");
+    hideElementById("ideaCopiedButton");
+    displayElementInlineById("ideaCopyButton");
   } else {
     displayElementInlineById("ideaURL");
+    hideElementById("ideaCopyButton");
+    displayElementInlineById("ideaCopiedButton");
+
+    var copyText = document.getElementById("ideaURL");
+    copyText.focus();
+    copyText.select();
+    copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+    document.execCommand("copy");
+
+    /* Alert the copied text */
+    alert("Copied the text: " + copyText.value);
   }
 }
+
+
 
 function getAttribute(id, key) {
   return getElementById(id).getAttribute(key);

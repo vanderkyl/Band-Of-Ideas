@@ -16,7 +16,7 @@
     if ($type == "tokenUpdate") {
       $token = $data;
       echo $userId;
-      $query = "UPDATE Users SET token = '" . $token . "' WHERE id = '" . $userId . "';";
+      $query = "UPDATE Users SET token = '" . $token . "', lastloggedin = NOW() WHERE id = '" . $userId . "';";
       if ($result = mysqli_query($conn, $query)) {
         echo "User update successful!";
       } else {

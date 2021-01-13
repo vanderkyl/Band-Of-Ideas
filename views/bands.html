@@ -1,0 +1,220 @@
+<!-- Band View -->
+<div id="bandsView" style="display: none">
+  <div id="bandsSection">
+    <!-- Bands Header -->
+    <a href="javascript:void(0)" style="color: white" data-toggle="modal" data-target="#bandDetails">
+      <div id="bandsTitleContainer" class="col-xs-12" style="padding: 0">
+        <h3 id="bandsHeaderTitle" class="col-xs-12 col-sm-6 col-md-8" style="color: white; padding-top: 10px;">Your Bands</h3>
+        <div class="col-xs-12 col-sm-6 col-md-4">
+          <div id="bandsHeaderInfoContainer" class="col-xs-12">
+            <div class="col-xs-6 col-sm-12" style="padding: 10px">
+              <div ng-click="openAllFiles()">
+                <span style="font-size: 14px">{{ band.numFiles }} </span><span style="font-size: 0.9em">Ideas</span>
+              </div>
+            </div>
+            <div class="col-xs-6 col-sm-12" style="padding: 10px">
+              <div >
+                <span style="font-size: 14px">{{ members.length }} </span><span style="font-size: 0.9em">Members</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </a>
+    <div  style="display: none;">
+      <i class="fas fa-share-alt"></i>
+    </div>
+
+    <!-- End of Folders Header -->
+    <!-- Band Buttons -->
+    <div id="bandButtons" class="col-xs-12">
+      <div class="col-xs-12">
+        <div class="col-xs-6 col-sm-3" style="padding: 10px">
+          <div class="mainButton">
+            <span style="font-size: 14px">{{ folders.length }}</span><br>
+            <span style="font-size: 0.9em">Folders</span>
+            <div style="font-size: 8px">
+              <i class="fas fa-chevron-down"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-6 col-sm-3" style="padding: 10px">
+          <div class="mainButton" ng-click="openFavoriteFilesSection()">
+            <span style="font-size: 14px">{{ favoriteFiles.length }}</span><br>
+            <span style="font-size: 0.9em">Favorites</span>
+            <div style="font-size: 8px">
+              <i class="fas fa-chevron-down"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-6 col-sm-3" style="padding: 10px">
+          <div class="mainButton" ng-click="openHighlightedFilesSection()">
+            <span style="font-size: 14px">{{ highlightedFiles.length }}</span><br>
+            <span style="font-size: 0.9em">Highlights</span>
+            <div style="font-size: 8px">
+              <i class="fas fa-chevron-down"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-6 col-sm-3" style="padding: 10px">
+          <div class="mainButton" ng-click="goToRecentComments()">
+            <span style="font-size: 14px">{{ recentComments.length }}</span><br>
+            <span style="font-size: 0.9em">Comments</span>
+            <div style="font-size: 8px">
+              <i class="fas fa-chevron-down"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Band Buttons -->
+    <!-- Files -->
+    <div id="filesSection" class="col-xs-12" style="display: none">
+      <h5 class="col-xs-12" style="color: white">Your {{ filesTitle }} Ideas</h5>
+      <div id="files" class="containers col-xs-12" style="padding: 0;">
+        <div id="fileHeader" class="header">
+          <div id="searchFilesButton" class="searchListButton col-xs-6" ng-click="showFileSearchBar()">
+            <a href="javascript:void(0)"><i class="fas fa-search"></i></a>
+            </div>
+          <input id="fileSearchBar" ng-model="search" class="searchBar col-xs-8" style="display: none" placeholder="Search Ideas">
+          <a class="col-xs-6" style="text-align: right" href="javascript:void(0)" ng-click="closeFilesSection()"><i class="fas fa-times"></i></a>
+
+        </div>
+
+        <!-- Container that holds all files playlist -->
+        <div id="fileList" class="col-xs-12" style="padding: 0">
+          <div id="fileListHeader" class="playListFileInfo col-xs-12" style="padding-left: 15px; padding-right: 15px;">
+            <p class="col-xs-1 songIndex">#</p>
+            <p class="col-xs-4 fileName" >Name</p>
+            <div class="col-xs-6" style="text-align: right; padding-left: 0; padding-right: 0;">
+              <p style="min-width: 40px; display: inline-block">Duration</p>
+              <p style="min-width: 40px; display: inline-block">Views</p>
+              <p style="min-width: 40px; display: inline-block">Likes</p>
+
+            </div>
+          </div>
+          <div class="col-xs-12 scroller" >
+
+            <div ng-animate="'animate'" class="song" style="padding: 5px" ng-repeat="song in files |
+          filter:{name: search }
+          | orderBy:-likes" >
+              <!-- This is a Single File -->
+
+              <div id="file-{{ song.id }}" class="playListFile col-xs-12" data-index="{{ song.id }}" ng-click="showPopup(song.id)" onmouseover="showPlayerButton(this)" onmouseout="hidePlayerButton(this)" >
+                <div class="popup">
+                <span class="popuptext" id="filePopup-{{ song.id }}">
+                  <div class="popupButton col-xs-6" ng-click="stopFile(song); hidePopup(song.id, $event); openMiniAudioPlayer(song); " style="border-right: 1px solid white">
+                    Play
+                  </div>
+                  <div class="popupButton col-xs-6" ng-click="openFile(song, $event)">
+                    Open
+                  </div>
+                </span>
+                </div>
+                <div class="playListFileInfo col-xs-12">
+                  <!-- <p class="deleteButton" ng-click="deleteFile($index)"> x </p>-->
+                  <p id="fileIndex-{{ song.id }}" class="col-xs-1 songIndex">{{ $index + 1 }}</p>
+                  <p id="fileStart-{{ song.id }}" class="col-xs-1 songIndex" style="display: none" ng-click="stopFile(song); openMiniAudioPlayer(song); "><i class="fas fa-play"></i></p>
+                  <p id="filePlay-{{ song.id }}" class="col-xs-1 songIndex" style="display: none" ng-click="playMiniAudioPlayer(song);"><i class="fas fa-play"></i></p>
+                  <p id="filePause-{{ song.id }}" class="col-xs-1 songIndex" style="display: none" ng-click="pauseMiniAudioPlayer(song);"><i class="fas fa-pause"></i></p>
+                  <p class="col-xs-4 fileName" >{{ song.name }}</p>
+                  <div class="col-xs-6" style="text-align: right; padding-left: 0; padding-right: 0;">
+                    <p style="min-width: 40px; display: inline-block">{{ song.durationTime }}</p>
+                    <p style="min-width: 40px; display: inline-block">{{ song.views }}</p>
+                    <p style="min-width: 40px; display: inline-block">{{ song.likes }}</p>
+
+                  </div>
+                </div>
+              </div>
+
+              <!-- End of Single File -->
+            </div>
+          </div>
+        </div>
+        <!-- End of Files -->
+      </div>
+    </div>
+
+    <!-- End of Favorite Files -->
+
+    <!-- Folders Section -->
+    <div id="folderSection" class="col-xs-12" style="padding: 0;">
+      <h5 class="col-xs-12" style="color: white">Folders</h5>
+      <!-- Container that holds all folders and search -->
+      <div class="containers folders col-xs-12" style="padding: 0;">
+        <div id="folderHeader">
+            <div id="searchFoldersButton" class="searchListButton col-xs-6" ng-click="showFolderSearchBar()">
+              <a href="javascript:void(0)"><i class="fas fa-search"></i></a>
+            </div>
+            <input id="folderSearchBar" ng-model="search" class="searchBar col-xs-6" style="display: none;" placeholder="Search Folders">
+            <div id="addFolder" class="addToListButton col-xs-6" data-toggle="modal" data-target="#addFolderModal">
+              <a href="javascript:void(0)" ng-click="openAddToPlaylistModal()" ><i class="fas fa-plus"></i></a>
+            </div>
+
+        </div>
+        <!-- Folders Container -->
+        <div id="foldersContainer" class="col-xs-12 buttonList">
+          <!-- Single Folder -->
+          <div id="{{ 'folder-' + $index }}" ng-animate="'animate'" ng-repeat="folder in folders | reverse |
+          filter:{name: search } " class=" col-xs-6 col-sm-4" style="padding-left: 10px; padding-right: 10px;" ng-click="openFolder(folder)">
+            <!-- <p class="deleteFolderButton" ng-click="archiveFolder(folder)"> x </p> -->
+            <div class="folder col-xs-12">
+              <div class="col-xs-12" style="padding-bottom: 4px; padding-left: 0; padding-right: 0; border-bottom: 1px solid #CCC;">
+                <p class="folderTitle col-xs-12">{{ folder.name }}</p>
+              </div>
+              <div id="folderDetails-{{ folder.id }}" class="col-xs-12 text-center" style="padding: 0">
+                <div id="detailsDiv-{{ folder.id }}">
+                  <span class="col-xs-12" style="font-size:10px; padding: 0; margin-top: 5px;">{{ folder.numFiles }} Ideas<!--<i class="far fa-file-audio" style="font-size: 12px; top: 2px; position: relative;"></i> --></span>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+          <!-- End of Single Folder -->
+        </div>
+      </div>
+
+      <!-- End of folder container -->
+    </div>
+
+    <!-- Recent Activity -->
+    <!-- Recent Comment Section -->
+    <div id="recentComments" class="col-xs-12" style="margin-top: 10px">
+      <h5 class="col-xs-12" style="color: white">Recent Activity</h5>
+      <div class="containers col-xs-12" style="padding: 0;">
+        <div id="activityHeader" style="height: 40px;">
+          <span id="activityTitle" class="col-xs-6">Comments</span>
+        </div>
+        <div id="recentActivity">
+          <div id="loadCommentsContainer" class="col-xs-12 scroller" style="padding: 20px; text-align: center">
+            <i class="fa fa-spinner fa-spin" style="font-size: 20px"></i>
+          </div>
+          <div id="commentContainer" class="col-xs-12 scroller" style="display:none">
+            <div class="recentComments fileComments col-xs-12" ng-repeat="comment in recentComments.slice().reverse()" ng-click="openFile(comment.file.id, comment.highlightTime)" style="cursor: pointer">
+              <div class="col-xs-12" style="padding: 5px" >
+                <div class="col-xs-5 commentUserName"><strong>{{ comment.userName }}</strong></div>
+                <div class="col-xs-7" style="font-size: 9px; text-align: right; padding: 0">{{ comment.commentTime }}</div>
+              </div>
+              <div class="col-xs-12" style="padding: 10px; background: white; border-bottom: 1px solid #CCC; border-top: 1px solid #CCC;">
+                <div class="col-xs-10">{{ comment.comment }}</div>
+                <div ng-if="comment.highlightTime !== 0 && comment.highlightTime !== -1" >{{ currentTimeToString(comment.highlightTime) }}</div>
+              </div>
+              <div class="col-xs-12" style="padding: 5px;">
+                <div class="col-xs-12" style="padding: 0px; padding-right: 5px; text-align: right; font-size: 9px">{{ comment.band.name }} - {{ comment.file.folder.name }} - <strong>{{ comment.file.name }}</strong></div>
+              </div>
+            </div>
+            <div class="col-xs-12 text-center" style="cursor: pointer; font-size: 12px" ng-click="showAllRecentActivity(recentComments.length)">{{ (recentComments | filter: {bandName: bandFilter}).length }} Comments</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <member-modal></member-modal>
+  <playlists-modal></playlists-modal>
+  <band-details-modal></band-details-modal>
+  <add-folder-modal></add-folder-modal>
+</div>
