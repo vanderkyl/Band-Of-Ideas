@@ -20,7 +20,7 @@
           <div id="ideaContainer" class="col-xs-12" style="padding: 0">
             <div id="idea" class="containers col-xs-12" style="padding-bottom: 5px; min-height: 295px;">
               <a href="javascript:void(0)" id="ideaAddButton" ng-click="showAddPopup()"><i class="fas fa-plus"></i>
-                <div class="leftPopup" style="right: 150% !important;">
+              <div class="leftPopup" style="right: 150% !important;">
                 <span class="popuptext" id="addPopup">
                   <div class="popupButton col-xs-6" id="ideaSourceVideo" ng-click="openSourceVideo()" style="border-right: 1px solid white">
                     Add Video
@@ -29,20 +29,26 @@
                     Add to Playlist
                   </div>
                 </span>
-                </div>
+              </div>
               </a>
               <a id="ideaDownloadLink" href="{{ file.link }}" download>
                 <span class="glyphicon glyphicon-download-alt"></span>
               </a>
               <a href="javascript:void(0)" id="ideaInfoButton" class="glyphicon glyphicon-info-sign" style="margin-right: 10px;" data-toggle="modal" data-target="#ideaDetailsModal"></a>
 
-              <a href="javascript:void(0)" id="ideaCopyButton" onclick="copyIdea()"><i class="far fa-copy"></i></a>
-              <a href="javascript:void(0)" id="ideaCopiedButton" onclick="copyIdea()" style="display: none"><i class="fas fa-copy"></i> <span style="font-size: 10px"> Copied!  </span></a>
+              <a href="javascript:void(0)" id="ideaCopyButton" ng-click="toggleCopiedPopup()"><i class="far fa-copy"></i></a>
 
-              <input type="text" value="http://bandofideas.com/#/idea?id={{file.id}}" id="ideaURL" style="display:none; position: absolute; font-size: 10px; width: 200px">
+              <a href="javascript:void(0)" id="ideaCopiedButton" onclick="copyIdea()" style="display: none"><i class="fas fa-copy"></i> <span style="font-size: 10px"> Copied link!  </span></a>
+
+              <div>
+                <span class="popuptext" id="copiedPopup">
+                  <input type="text" value="http://bandofideas.com/#/idea?id={{file.id}}" id="ideaURL" style="position: absolute; right: 150%; font-size: 10px; width: 200px">
+                </span>
+              </div>
               <p id="fileTitle" class="fileTitle col-xs-12">{{ file.name }}</p>
               <div id="ideaLoader" class="loader" style="margin-top: 75px;"></div>
               <div id="ideaContents" style="display: none">
+                <!-- Idea Info Container -->
                 <div id="ideaInfoContainer" class="col-xs-12">
                   <div class="col-xs-4" style="border-right: 1px solid #4e4e4e; padding:0">
                     {{ file.views }} views

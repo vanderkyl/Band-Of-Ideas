@@ -293,6 +293,21 @@ function($scope, $sce, $http, $filter) {
     popup.classList.toggle("show");
   };
 
+  $scope.showCopiedPopup = function() {
+    $scope.toggleCopiedPopup();
+  };
+
+  $scope.hideCopiedPopup = function() {
+    var popup = document.getElementById("copiedPopup");
+    popup.classList.remove("show");
+  };
+
+  $scope.toggleCopiedPopup = function() {
+    copyIdea();
+    var popup = document.getElementById("copiedPopup");
+    popup.classList.toggle("show");
+  };
+
   $scope.highlight = function() {
       $scope.currentTime = getElementById("audio").currentTime;
       getElementById("highlightButton").style.border = "1px solid #ce0000";
