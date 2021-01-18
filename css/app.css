@@ -59,7 +59,17 @@ body {
   #ideaGraph .containers { margin: 0 100px 0 100px }
 }
 
-
+#welcomeMessage {
+  min-height: 70px;
+  padding-top: 21px;
+  border: 1px solid #eff0f2;
+  text-align: center;
+  border-radius: 15px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  box-shadow: rgb(56, 56, 56) 0px 4px 8px 0px;
+  color: white;
+}
 
 #appLoader {
   height: 100%;
@@ -410,7 +420,7 @@ body {
   min-width: 50px;
   min-height: 114px;
   padding: 5px;
-  border-radius: 40px;
+  border-radius: 30px;
   box-shadow: rgb(56, 56, 56) 0px 4px 8px 0px;
   transition: box-shadow 0.3s ease-in-out;
 }
