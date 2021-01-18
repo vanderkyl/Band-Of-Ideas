@@ -146,8 +146,9 @@ function updateTitle(title) {
   document.title = title;
 }
 
+// Copy the idea URL
 function copyIdea() {
-  var ideaCopied = document.getElementById("ideaCopiedButton").style.display;
+  var ideaCopied = getElementById("ideaCopiedButton").style.display;
   if (ideaCopied === "inline-block") {
     hideElementById("ideaURL");
     hideElementById("ideaCopiedButton");
@@ -159,7 +160,7 @@ function copyIdea() {
     displayElementInlineById("ideaCopiedButton");
     displayElementById("ideaDetailsCopied");
 
-    var copyText = document.getElementById("ideaURL");
+    var copyText = getElementById("ideaURL");
     copyText.focus();
     copyText.select();
     copyText.setSelectionRange(0, 99999); /* For mobile devices */
@@ -169,9 +170,17 @@ function copyIdea() {
 }
 
 // Copy the text from the given element id
-function copyTextFromElement(id) {
-  var element = getElementById(id);
+function copyTextFromElement(id, copiedId) {
+  var copyText = getElementById(id);
+  var copyText = document.getElementById("ideaURL");
+  copyText.focus();
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); /* For mobile devices */
 
+  document.execCommand("copy");
+  if (copiedId !== null && copiedId != undefined) {
+    displayElementInlineById(copiedId);
+  }
 }
 
 function getAttribute(id, key) {

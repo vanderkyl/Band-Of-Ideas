@@ -209,7 +209,7 @@
               </div>
               <div class="col-xs-12" style="padding: 5px;">
                 <div class="col-xs-8 commentDetails"><a onclick="stopPropagation(event)" href="http://bandofideas.com/#/band?id={{comment.band.id}}">{{ comment.band.name }}</a> / <a onclick="stopPropagation(event)" href="http://bandofideas.com/#/folder?id={{comment.file.folder.id}}">{{ comment.file.folder.name }}</a></div>
-                <div class="col-xs-4" style="font-size: 10px; text-align: right;">0 <i class="far fa-thumbs-up" style="margin-right: 3px;">  <i class="fas fa-reply"></i></i></div>
+                <div class="col-xs-4" style="font-size: 10px; text-align: right;">0 <i class="far fa-thumbs-up" style="margin-right: 5px;">  </i><i class="fas fa-reply"></i></div>
               </div>
             </div>
             <div class="col-xs-12 text-center" style="cursor: pointer; font-size: 12px" ng-click="showAllRecentActivity(recentComments.length)">{{ (recentComments | filter: {bandName: bandFilter}).length }} Comments</div>
