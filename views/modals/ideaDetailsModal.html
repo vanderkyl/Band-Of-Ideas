@@ -8,8 +8,10 @@
             </div>
             <div class="modal-body">
                 <p><strong>Name:</strong> {{ file.name }}</p>
-                <p class="backToButton" ng-click="goBackToBandPage()"><strong>Band Name: </strong>{{ band.name }}</p>
-                <p class="backToButton" ng-click="goBackToFolderPage()"><strong>Folder Name: </strong>{{ folder.name }}</p>
+                <p><strong>Band: </strong><span class="backToButton" ng-click="goBackToBandPage()">{{ band.name }}</span></p>
+                <p><strong>Folder: </strong><span class="backToButton" ng-click="goBackToFolderPage()">{{ folder.name }}</span></p>
+                <p><strong>Copy URL: </strong><a href="http://bandofideas.com/#/idea?id={{file.id}}" id="ideaCopyButton" onclick="copyIdea()"><i class="far fa-copy"></i> http://bandofideas.com/#/idea?id={{file.id}}</a></p>
+
                 <hr>
                 <p><strong>Views: </strong>{{ file.views }}</p>
                 <p><strong>Size: </strong>{{ file.size }}</p>
