@@ -27,12 +27,16 @@ function playAudio() {
     getElementById("audio").play();
     hideElementById("play-btn");
     displayElementInlineById("pause-btn");
+    hideElementById("filePaused-" + CURRENT_USER.id);
+    displayElementInlineById("filePlaying-" + CURRENT_USER.id);
 }
 
 function pauseAudio() {
     getElementById("audio").pause();
     hideElementById("pause-btn");
     displayElementInlineById("play-btn");
+    hideElementById("filePlaying-" + CURRENT_USER.id);
+    displayElementInlineById("filePaused-" + CURRENT_USER.id);
 }
 
 function playAudioFromPlayer() {
@@ -262,4 +266,3 @@ function getPreviousSong(loop) {
   }
   return song;
 }
-

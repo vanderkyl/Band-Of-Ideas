@@ -710,7 +710,6 @@ function($scope, $sce, $http, $filter) {
   };
 
   $scope.loadUIObjects = function() {
-    $("#file-" + CURRENT_FILE.id).addClass("playListFileSelected");
     var fileUrl = "/#/idea?id=" + CURRENT_FILE.id;
     removeNavLink("fileLink");
     addNavLink("fileLink", CURRENT_FILE.name, fileUrl);
@@ -721,7 +720,11 @@ function($scope, $sce, $http, $filter) {
       setRegionStart($scope.currentTime);
     }, false);
     displayElementById("ideaView");
+
     finishControllerSetup();
+    $("#file-" + CURRENT_FILE.id).addClass("playListFileSelected");
+    hideElementById("file-" + CURRENT_USER.id);
+    displayElementInlineById("filePlaying-" + CURRENT_USER.id);
   };
 
   $scope.loadController = function() {

@@ -95,7 +95,7 @@
 
 #audioTime {
   text-align: center;
-  font-size: 12px;
+  font-size: 14px;
   height: 10px;
   padding: 0;
 }
@@ -131,6 +131,7 @@
   border: 2px solid #444;
   padding: 0px;
   margin-bottom: 40px;
+  border-radius: 10px;
 }
 
 #audioPlayerTimeline {
@@ -407,4 +408,3 @@
   padding: 10px;
   border: 1px solid white;
 }
-

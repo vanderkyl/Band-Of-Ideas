@@ -53,14 +53,14 @@
               <div id="ideaContents" style="display: none">
                 <!-- Idea Info Container -->
                 <div id="ideaInfoContainer" class="col-xs-12">
-                  <div class="col-xs-4" style="border-right: 1px solid #4e4e4e; padding:0">
+                  <div class="col-xs-4" style="border-right: 1px solid #4e4e4e; padding:0; font-size: 13px;">
                     {{ file.views }} views
                   </div>
                   <div class="col-xs-4" style="border-right: 1px solid #4e4e4e; padding:0">
                     <p id="audioTime" class="col-xs-12"></p>
                   </div>
 
-                  <div class="col-xs-4" style="padding:0" >
+                  <div class="col-xs-4" style="padding:0; font-size: 13px;" >
                     <a href="javascript:void(0)" ng-click="downloadFromFile()">{{ file.size }}</a>
                   </div>
                 </div>
@@ -208,7 +208,7 @@
                     <div id="file-{{ song.id }}" class="playListFile col-xs-12" data-index="{{ song.fileIndex }}" ng-click="openFile(song)">
                       <div class="playListFileInfo col-xs-12">
                         <!-- <p class="deleteButton" ng-click="deleteFile($index)"> x </p>-->
-                        <p class="col-xs-1">{{ $index + 1 }}</p>
+                        <p class="col-xs-1"><span id="fileIndex-{{ song.id }}">{{ $index + 1 }}</span><i id="filePlaying-{{ song.id }}" class="fas fa-volume-up" style="display: none"></i><i id="filePaused-{{ song.id }}" class="fas fa-volume-off" style="display: none"></i></p>
                         <p class="col-xs-4 fileName" ng-click="openFile(song)">{{ song.name }}</p>
                         <div class="col-xs-6" style="text-align: right; padding-left: 0; padding-right: 0;">
                           <p style="min-width: 40px; display: inline-block">{{ song.highlights.length }}</p>
