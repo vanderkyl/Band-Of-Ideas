@@ -197,15 +197,15 @@
           <div id="commentContainer" class="col-xs-12 scroller" style="display:none">
             <div class="recentComments fileComments col-xs-12" ng-repeat="comment in recentHighlights.slice().reverse() | filter:(!!bandFilter || undefined) && {bandName: bandFilter}" ng-click="openFile(comment.file.id, comment.highlightTime)" style="cursor: pointer">
               <div class="col-xs-12" style="padding: 5px" >
-                <div class="col-xs-5 commentUserName"><strong>{{ comment.userName }}</strong></div>
+                <div class="col-xs-5"><strong>{{ comment.file.name }}</strong></div>
                 <div class="col-xs-7 commentDate" >{{ comment.commentTime }}</div>
               </div>
               <div class="col-xs-12" style="padding: 10px; background: white; border-bottom: 1px solid #CCC; border-top: 1px solid #CCC;">
-                <div class="col-xs-10">{{ comment.comment }}</div>
+                <div class="col-xs-10"><strong class="commentUserName">{{ comment.userName }}: </strong> {{ comment.comment }}</div>
                 <div ng-if="comment.highlightTime !== 0 && comment.highlightTime !== -1" >{{ currentTimeToString(comment.highlightTime) }}</div>
               </div>
               <div class="col-xs-12" style="padding: 5px;">
-                <div class="col-xs-12" style="padding: 0px; padding-right: 5px; text-align: right; font-size: 9px">{{ comment.band.name }} - {{ comment.file.folder.name }} - <strong>{{ comment.file.name }}</strong></div>
+                <div class="col-xs-12 commentDetails"><a onclick="stopPropagation(event)" href="http://bandofideas.com/#/band?id={{comment.band.id}}">{{ comment.band.name }}</a> / <a onclick="stopPropagation(event)" href="http://bandofideas.com/#/folder?id={{comment.file.folder.id}}">{{ comment.file.folder.name }}</div>
               </div>
             </div>
             <div class="col-xs-12 text-center" style="cursor: pointer; font-size: 12px" ng-click="showAllRecentActivity(recentComments.length)">{{ (recentComments | filter: {bandName: bandFilter}).length }} Comments</div>
