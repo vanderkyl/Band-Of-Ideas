@@ -264,7 +264,7 @@ body {
   background-color: rgba(255, 255, 255, .9);
   font-size: 0.75em;
   text-align: center;
-  border-radius: 20px;
+  border-radius: 45px;
   padding: 10px;
   transition: all 0.3s ease-in-out;
   box-shadow: rgb(56, 56, 56) 0px 4px 8px 0px;
@@ -410,7 +410,7 @@ body {
   min-width: 50px;
   min-height: 114px;
   padding: 5px;
-  border-radius: 15px;
+  border-radius: 40px;
   box-shadow: rgb(56, 56, 56) 0px 4px 8px 0px;
   transition: box-shadow 0.3s ease-in-out;
 }
@@ -521,7 +521,7 @@ body {
 .containers {
   padding: 15px;
   margin: 10px auto;
-  border-radius: 14px;
+  border-radius: 35px;
   box-shadow: 0 2px 10px rgba(0,0,0,.5);
   background: rgba(231, 234, 235, .7);
 }
@@ -729,7 +729,13 @@ body {
 #activityHeader, #bandHeader, #folderHeader, #fileHeader, #playlistHeader, .header {
   padding: 10px;
   margin-bottom: 5px;
+  margin-top: 3px;
   height: 35px;
+}
+
+.headerTitle {
+  font-size: 17px;
+  padding-left: 20px;
 }
 
 #activityHeader .btn {
@@ -789,6 +795,21 @@ body {
   font-size: 12px;
   color: #444;
 }
+
+@media screen and (max-width: 1200px) {
+  .commentDate {
+    font-size: 9px;
+    text-align: right;
+    padding: 0;
+  }
+}
+
+.commentDate {
+  font-size: 11px;
+  text-align: right;
+  padding-bottom: 6px;
+}
+
 
 .profileImage:hover p {
   display: block;

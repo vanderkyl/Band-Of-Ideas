@@ -152,10 +152,12 @@ function copyIdea() {
     hideElementById("ideaURL");
     hideElementById("ideaCopiedButton");
     displayElementInlineById("ideaCopyButton");
+    hideElementById("ideaDetailsCopied");
   } else {
     displayElementInlineById("ideaURL");
     hideElementById("ideaCopyButton");
     displayElementInlineById("ideaCopiedButton");
+    displayElementById("ideaDetailsCopied");
 
     var copyText = document.getElementById("ideaURL");
     copyText.focus();
@@ -166,7 +168,11 @@ function copyIdea() {
   }
 }
 
+// Copy the text from the given element id
+function copyTextFromElement(id) {
+  var element = getElementById(id);
 
+}
 
 function getAttribute(id, key) {
   return getElementById(id).getAttribute(key);
