@@ -163,9 +163,6 @@ function copyIdea() {
     copyText.setSelectionRange(0, 99999); /* For mobile devices */
 
     document.execCommand("copy");
-
-    /* Alert the copied text */
-    //alert("Copied the text: " + copyText.value);
   }
 }
 
