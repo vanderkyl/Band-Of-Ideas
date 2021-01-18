@@ -41,6 +41,12 @@
               <!-- Idea Copy Link Button - Copy the url for the idea for sharing -->
               <a href="javascript:void(0)" id="ideaCopyButton" onclick="copyIdea()"><i class="far fa-copy"></i></a>
               <a href="javascript:void(0)" id="ideaCopiedButton" onclick="copyIdea()" style="display: none"><i class="fas fa-copy"></i> <span style="font-size: 10px"> Copied link!  </span></a>
+              <!-- Idea URL Popup - Currently is not visible -->
+              <div>
+                <span class="popuptext" id="copiedPopup">
+                  <input type="text" value="http://bandofideas.com/#/idea?id={{file.id}}" id="ideaURL" style="position: absolute; right: 150%; font-size: 10px; width: 200px">
+                </span>
+              </div>
               <!-- Idea Title -->
               <p id="fileTitle" class="fileTitle col-xs-12">{{ file.name }}</p>
               <div id="ideaLoader" class="loader" style="margin-top: 75px;"></div>
