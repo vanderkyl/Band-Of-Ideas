@@ -365,7 +365,7 @@ function($scope, $http) {
     for (var i = 0; i < $scope.user.bands.length; i++) {
         $scope.numberOfIdeas += $scope.user.bands[i].numFiles;
     }
-    $scope.welcomeMessage = getRandomWelcomeMessage($scope.user);
+    $scope.welcomeMessage = $scope.getRandomWelcomeMessage($scope.user);
     removeNavLink("#bandLink");
     removeNavLink("#folderLink");
     displayElementById("mainView");
