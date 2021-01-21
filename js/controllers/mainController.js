@@ -18,6 +18,7 @@ function($scope, $http) {
   $scope.playlists = [];
   $scope.playlistName = "";
   $scope.numberOfIdeas = 0;
+  $scope.welcomeMessage = "Welcome back!"
 
   // -- MAIN METHODS -- // ----------------------------------------
 
@@ -331,12 +332,40 @@ function($scope, $http) {
           });
   };
 
+  // Get a random Welcome Message from a list of choices
+  $scope.getRandomWelcomeMessage = function(user) {
+    var message = "";
+    // Generate a random number between 1 and 5
+    var choice = Math.floor((Math.random() * 5) + 1);
+    switch (choice) {
+      case 1:
+        message = "Hello " + user.name;
+        break;
+      case 2:
+        message = "Welcome back " + user.name;
+        break;
+      case 3:
+        message = user.name + "'s Dashboard";
+        break;
+      case 4:
+        message = "Hi " + user.name;
+        break;
+      case 5:
+        message = "Hello " + user.name;
+        break;
+      default:
+        message = "Hello " + user.name;
+    }
+    return message;
+  };
+
   $scope.loadUIObjects = function() {
     $scope.user = CURRENT_USER;
     $scope.user.bands = CURRENT_BANDS;
     for (var i = 0; i < $scope.user.bands.length; i++) {
         $scope.numberOfIdeas += $scope.user.bands[i].numFiles;
     }
+    $scope.welcomeMessage = $scope.getRandomWelcomeMessage($scope.user);
     removeNavLink("#bandLink");
     removeNavLink("#folderLink");
     displayElementById("mainView");

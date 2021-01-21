@@ -146,30 +146,42 @@ function updateTitle(title) {
   document.title = title;
 }
 
+// Copy the idea URL
 function copyIdea() {
-  var ideaCopied = document.getElementById("ideaCopiedButton").style.display;
+  var ideaCopied = getElementById("ideaCopiedButton").style.display;
   if (ideaCopied === "inline-block") {
     hideElementById("ideaURL");
     hideElementById("ideaCopiedButton");
     displayElementInlineById("ideaCopyButton");
+    hideElementById("ideaDetailsCopied");
   } else {
     displayElementInlineById("ideaURL");
     hideElementById("ideaCopyButton");
     displayElementInlineById("ideaCopiedButton");
+    displayElementById("ideaDetailsCopied");
 
-    var copyText = document.getElementById("ideaURL");
+    var copyText = getElementById("ideaURL");
     copyText.focus();
     copyText.select();
     copyText.setSelectionRange(0, 99999); /* For mobile devices */
 
     document.execCommand("copy");
-
-    /* Alert the copied text */
-    alert("Copied the text: " + copyText.value);
   }
 }
 
+// Copy the text from the given element id
+function copyTextFromElement(id, copiedId) {
+  var copyText = getElementById(id);
+  var copyText = document.getElementById("ideaURL");
+  copyText.focus();
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); /* For mobile devices */
 
+  document.execCommand("copy");
+  if (copiedId !== null && copiedId != undefined) {
+    displayElementInlineById(copiedId);
+  }
+}
 
 function getAttribute(id, key) {
   return getElementById(id).getAttribute(key);

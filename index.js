@@ -1,4 +1,4 @@
-import { analyze } from 'web-audio-beat-detector';
+//import { analyze } from 'web-audio-beat-detector';
 
 // Getting Audio Buffer from audio
 var context = new (window.AudioContext || window.webkitAudioContext)();
