@@ -720,7 +720,7 @@ function($scope, $sce, $http, $filter) {
       setRegionStart($scope.currentTime);
     }, false);
     displayElementById("ideaView");
-    highlightCurrentIdea();
+
     finishControllerSetup();
   };
 
