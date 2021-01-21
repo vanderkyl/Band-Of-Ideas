@@ -52,6 +52,12 @@ function pauseAudioFromPlayer() {
 
 }
 
+function highlightCurrentIdea() {
+  $("#file-" + CURRENT_FILE.id).addClass("playListFileSelected");
+  hideElementById("file-" + CURRENT_USER.id);
+  displayElementInlineById("filePlaying-" + CURRENT_USER.id);
+}
+
 function checkTime() {
     var audio = getElementById("audio");
     alert(audio.currentTime);

@@ -722,9 +722,6 @@ function($scope, $sce, $http, $filter) {
     displayElementById("ideaView");
 
     finishControllerSetup();
-    $("#file-" + CURRENT_FILE.id).addClass("playListFileSelected");
-    hideElementById("file-" + CURRENT_USER.id);
-    displayElementInlineById("filePlaying-" + CURRENT_USER.id);
   };
 
   $scope.loadController = function() {
@@ -756,4 +753,5 @@ function($scope, $sce, $http, $filter) {
 
   // -- CONTROLLER STARTUP METHOD CALL -- // ----------------------------------------
   $scope.loadController();
+  highlightCurrentIdea();
 }]);
