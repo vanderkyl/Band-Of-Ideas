@@ -54,8 +54,8 @@ function pauseAudioFromPlayer() {
 
 function highlightCurrentIdea() {
   $("#file-" + CURRENT_FILE.id).addClass("playListFileSelected");
-  hideElementById("file-" + CURRENT_USER.id);
-  displayElementInlineById("filePlaying-" + CURRENT_USER.id);
+  hideElementById("fileIndex-" + CURRENT_FILE.id);
+  displayElementInlineById("filePlaying-" + CURRENT_FILE.id);
 }
 
 function checkTime() {
