@@ -10,6 +10,11 @@
   display: none;
 }
 
+#startSignIn:hover, #startBand:hover {
+  background: #000000ab !important;
+  transition: all 0.3s ease-in-out;
+}
+
 #signInMessage2 {
   display: none;
 }
@@ -37,6 +42,14 @@
   margin-bottom: 50px;
   text-align: center;
   display: block;
+}
+
+#login-brand {
+  width: 100%;
+  padding: 10px;
+
+  border-radius: 5px;
+  background: #00000069 !important;
 }
 
 .loginForm {
@@ -67,7 +80,6 @@
   left: 9%;
   right: 9%;
   margin: 0 auto;
-  margin-top: 30px;
   min-width: 300px;
   max-width: 400px;
   width: 80%;
