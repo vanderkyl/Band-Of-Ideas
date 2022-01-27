@@ -18,6 +18,8 @@ app.controller('playlistController', ['$scope', '$sce', '$http', '$filter',
         $scope.userLikes = [];
         $scope.members = [];
 
+        $scope.likedFiles = [];
+        $scope.highlightedFiles = [];
 
         $scope.goToLink = function() {
             var source = $scope.file.source;
@@ -381,7 +383,12 @@ app.controller('playlistController', ['$scope', '$sce', '$http', '$filter',
             setupController();
             // Do this if logged in
             if (isLoggedIn()) {
-
+                $scope.getFavoriteFiles(CURRENT_USER.id, function(files) {
+                  $scope.likedFiles = files;
+                });
+                $scope.getHighlightedFiles(CURRENT_USER.id, function(files) {
+                  $scope.highlightedFiles = files;
+                });
                 var id = getParameterByName("id");
                 if (id) {
                     if (id === "allFavorites") {
@@ -429,4 +436,3 @@ app.controller('playlistController', ['$scope', '$sce', '$http', '$filter',
         $scope.loadController();
     }
 ]);
-

@@ -14,6 +14,8 @@ function($scope, $sce, $http, $filter, fileUpload) {
   $scope.uploadFiles = [];
   $scope.addFolderMessage = "New Folder";
   $scope.folderMessage = "";
+  $scope.likedFiles = 0;
+  $scope.recentComments = [];
 
   $scope.currentPage = 1;
   $scope.numberOfFiles = 0;
@@ -316,6 +318,12 @@ function playNext() {
       console.log($scope.files[i]);
       $scope.fileLinks[i] = $scope.files[i].link;
       $scope.files[i].durationTime = timeToString($scope.files[i].duration);
+      var userLikes = $scope.files[i].userLikes;
+      for (var j = 0; j < userLikes.length; j++) {
+        if (userLikes[j].id === CURRENT_USER.id) {
+          $scope.likedFiles++;
+        }
+      }
     }
     console.log($scope.files);
   }
@@ -438,6 +446,7 @@ function playNext() {
           showPlayerButtonById(id);
         }
       }
+
       displayElementById("folderView");
       var folderUrl = "/#/folder?id=" + CURRENT_FOLDER.id;
       removeNavLink("folderLink");
@@ -526,4 +535,3 @@ app.service('fileUpload', ['$http', function ($http) {
               });
            }
         }]);
-

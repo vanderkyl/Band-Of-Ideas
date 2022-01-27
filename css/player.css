@@ -80,7 +80,7 @@
   margin-bottom: 10px;
   border: black 1px solid;
   border-radius: 10px;
-  background: #FFF;
+  background: #1717177a;
   line-height: 40px;
   text-align: center;
   cursor: pointer;
@@ -128,7 +128,8 @@
 #audioTimeline {
   cursor: pointer;
   cursor: hand;
-  border: 2px solid #444;
+  border: 2px solid #00000069;
+  border-radius: 5px;
   padding: 0px;
   margin-bottom: 40px;
 }
@@ -142,15 +143,17 @@
 }
 
 #audioFilePercentageBar {
-  background: #265a88;
+  background: white; /*#265a88;*/
   height: 10px;
   width: 0%;
+  border-radius: 2px;
 }
 
 #audioPlayerPercentageBar {
   background: green;
   height: 10px;
   width: 0%;
+  border-radius: 2px;
 }
 
 #audioTracker {
@@ -163,7 +166,7 @@
   width: 2px;
   position: absolute;
   height: 25px;
-  background: #FFF;
+  background: #00000069;
   box-shadow: 0 2px 5px rgba(0,0,0,0.5);
 }
 
@@ -233,7 +236,7 @@
 #highlighter {
   top: -6px;
   margin-left: 2px;
-  border: 1px solid #ce0000;
+  /*border: 1px solid #ce0000;*/
   padding: 5px;
 }
 
@@ -244,7 +247,8 @@
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
   border-bottom-left-radius: 5px;
-  background: #FFF;
+  color: white;
+  background: #1717177a;
   box-shadow: 0 2px 5px rgba(0,0,0,0.5);
   font-size: 0px;
   z-index: 1000;
@@ -407,4 +411,3 @@
   padding: 10px;
   border: 1px solid white;
 }
-

@@ -19,12 +19,30 @@ function showResult(str, searchId) {
       results = files;
       var fileHtml = "";
       for (var i = 0; i < files.length; i++) {
-        var folderHtml = "<span class='searchResultSubText'>" + files[i].folderName + "</span>";
-        var bandHtml = "<span class='searchResultSubText'>" + files[i].bandName + " - </span>";
-        fileHtml += "<div class='fileSearchButton' onclick='openFile(" + files[i].id + ")'>" + files[i].name + "  " + bandHtml + folderHtml + "</div>";
+        var nameHtml = "<span class='col-xs-4' style='text-align: left; padding: 0;'> " + files[i].name + "</span>";
+        var folderHtml = "<span class='searchResultSubText col-xs-4' style='text-align: right; padding: 0;'>" + files[i].folderName + "</span>";
+        var bandHtml = "<span class='searchResultSubText col-xs-4' style='text-align: right; padding: 0;'>" + files[i].bandName + "</span>";
+        fileHtml += "<div class='fileSearchButton col-xs-12' onclick='openFile(" + files[i].id + ")'>" + nameHtml + bandHtml + folderHtml + "</div>";
       }
       document.getElementById(searchId).innerHTML= fileHtml;
       document.getElementById(searchId).style.border="1px solid #A5ACB2";
+    }
+  }
+  xmlhttp.open("GET","/php/livesearch.php?q=" + str + "&bandId=" + CURRENT_BAND.id, true);
+  xmlhttp.send();
+}
+
+function getRecommendedFiles(str, searchId) {
+  if (window.XMLHttpRequest) {
+    // code for IE7+, Firefox, Chrome, Opera, Safari
+    xmlhttp=new XMLHttpRequest();
+  } else {  // code for IE6, IE5
+    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+  xmlhttp.onreadystatechange=function() {
+    if (this.readyState==4 && this.status==200) {
+      var files = JSON.parse(this.responseText);
+      return files
     }
   }
   xmlhttp.open("GET","/php/livesearch.php?q=" + str + "&bandId=" + CURRENT_BAND.id, true);
