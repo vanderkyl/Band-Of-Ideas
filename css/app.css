@@ -216,18 +216,17 @@ body {
 
 .folder {
   padding: 10px;
-  background: rgba(255, 255, 255, .9);
+  background: #1717177a;
   margin-top: 7px;
   margin-bottom: 7px;
-  border-radius: 15px;
+  border-radius: 10px;
   transition: all .2s ease-in;
-  box-shadow: rgb(56, 56, 56) 0px 4px 8px 0px;
+  box-shadow: rgb(21, 21, 21) 0px 4px 8px 0px;
 }
 
 .folder:hover {
-  color: #444;
-  box-shadow: 0 2px 10px rgba(0,0,0,.5);
-
+  color: white;
+  background: #17171738;
 }
 
 .folders {
@@ -261,17 +260,18 @@ body {
 
 .mainButton {
   cursor: pointer;
-  background-color: rgba(255, 255, 255, .9);
+  background-color: #00000069;
   font-size: 0.75em;
   text-align: center;
   border-radius: 20px;
   padding: 10px;
+  color: white;
   transition: all 0.3s ease-in-out;
-  box-shadow: rgb(56, 56, 56) 0px 4px 8px 0px;
+  box-shadow: rgb(21, 21, 21) 0px 4px 8px 0px;
 }
 
 .mainButton:hover {
-
+  background: #171717d1;
 }
 
 
@@ -290,7 +290,7 @@ body {
 }
 
 .bandTitle {
-  color: #444;
+  color: white;
   font-size: 1em;
   padding: 0;
   line-height: 30px;
@@ -303,7 +303,7 @@ body {
   padding-top: 18px;
   padding-bottom: 18px;
   font-size: 12px;
-  border-top: 1px solid #CCC;
+  border-top: 1px solid #ffffff59;
 }
 
 .bandDetailsButton {
@@ -322,8 +322,13 @@ body {
   left: 48%;
 }
 
+#bandButtons {
+  color: white;
+  text-align: center;
+}
+
 .folderTitle {
-  color: #444;
+  color: white;
   margin-top: 5px;
   margin-bottom: 5px;
   font-size: 14px;
@@ -337,6 +342,7 @@ body {
   border-radius: 4px;
   margin-bottom: 10px;
   padding: 5px;
+  color: black;
 }
 
 .folderTitle h2 {
@@ -404,20 +410,20 @@ body {
 }
 
 .bandButton {
-  color: #444;
-  background: rgba(255, 255, 255, .9);
+  color: white;
+  background: #1717177a;
   cursor: pointer;
   min-width: 50px;
   min-height: 114px;
   padding: 5px;
   border-radius: 15px;
-  box-shadow: rgb(56, 56, 56) 0px 4px 8px 0px;
-  transition: box-shadow 0.3s ease-in-out;
+  box-shadow: rgb(21, 21, 21) 0px 4px 8px 0px;
+  transition: background 0.3s ease-in-out;
 }
 
 
 .bandButton:hover {
-  box-shadow: rgb(140, 145, 154) 0px 4px 8px 0px;
+  background: #17171738;
 }
 
 .backToButton {
@@ -522,12 +528,25 @@ body {
   padding: 15px;
   margin: 10px auto;
   border-radius: 14px;
-  box-shadow: 0 2px 10px rgba(0,0,0,.5);
-  background: rgba(231, 234, 235, .7);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.69);
+  background: #00000040;
+  color: white;
+}
+
+.viewTitle {
+  color: white;
+  padding: 0;
+  text-align: center;
+  margin-top: 20px;
+  border: 1px solid white;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+  padding: 10px;
+  margin-bottom: 10px;
 }
 
 .members {
-
   border: 1px solid #444;
 }
 
@@ -607,12 +626,14 @@ body {
   margin-top: 34px;
 }
 
-#bandHeaderInfoContainer {
+#bandHeaderInfoContainer, #folderHeaderInfoContainer {
   margin-bottom: 17px;
   margin-top: 17px;
   border-radius: 15px;
-  box-shadow: 1px 1px 5px #333 inset;
+  box-shadow: 1px 1px 5px #151515 inset;
   border: 1px solid #ffffff00;
+  color: white;
+  text-align: center;
 }
 
 #bandTitleContainer {
@@ -703,18 +724,19 @@ body {
 .fileSearchButton {
   cursor: pointer;
   padding: 15px;
-  font-size: 11px;
+  font-size: 14px;
+  border-bottom: 1px solid #ffffff59;
 }
 
 .fileSearchButton:hover {
   color: #FFF;
-  background-color: #3CB371;
+  background-color: #0000004a;
   transition: background 500ms;
 }
 
 .searchResultSubText {
   color: #CCC;
-  font-size: 10px;
+  font-size: 13px;
 }
 
 #search {
@@ -730,6 +752,7 @@ body {
   padding: 10px;
   margin-bottom: 5px;
   height: 35px;
+  font-size: 16px;
 }
 
 #activityHeader .btn {
@@ -739,7 +762,7 @@ body {
 
 .recentComments {
   font-size: 10px;
-  border: 1px solid #CCC;
+  border: 1px solid #ffffff59;
   padding: 5px 0px 5px 0px !important;
   transition: all 0.3s ease-in-out;
   margin-bottom: 5px;
@@ -815,12 +838,26 @@ body {
 
 .buttonList {
   padding-bottom: 20px;
-  box-shadow: 1px 1px 5px #555 inset;
+  box-shadow: 1px 1px 5px #171717 inset;
   padding-top: 10px;
 }
 
 .dashboard-button {
   padding: 10px;
+  text-align: center;
+}
+
+.dashboardButton {
+  padding: 10px;
+  border: 1px solid white;
+  border-radius: 5px;
+  box-shadow: rgb(21, 21, 21) 0px 4px 8px 0px;
+  cursor: pointer;
+  cursor: hand;
+}
+
+#dashboardButtons {
+  color: white;
   text-align: center;
 }
 

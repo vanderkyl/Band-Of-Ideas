@@ -9,6 +9,7 @@ function($scope, $sce, $http, $filter) {
   $scope.visibleFiles = {};
   $scope.file = {};
   $scope.fileLinks = [];
+  $scope.recommendedFiles = [];
   // Users and Bands
   $scope.band = {};
   $scope.user = {};
@@ -26,6 +27,7 @@ function($scope, $sce, $http, $filter) {
   $scope.currentTime = "";
   $scope.duration = "";
   $scope.sourceVideoLink = "";
+  $scope.highlightActive = false;
 
   //TODO Create functionality for a recent file selection
 
@@ -294,6 +296,8 @@ function($scope, $sce, $http, $filter) {
   };
 
   $scope.highlight = function() {
+      $scope.highlightActive = true;
+      hideElementById("commentButton");
       $scope.currentTime = getElementById("audio").currentTime;
       getElementById("highlightButton").style.border = "1px solid #ce0000";
       setRegionStart($scope.currentTime);
@@ -319,12 +323,16 @@ function($scope, $sce, $http, $filter) {
   };
 
   $scope.closeHighlighter = function() {
-    $scope.removeLastHighlight();
-    closeHighlighter();
+    if ($scope.highlightActive === true) {
+      $scope.removeLastHighlight();
+      closeHighlighter();
+      $scope.highlightActive = false;
+    } else {
+      closeHighlighter();
+    }
   };
 
   $scope.showCommentBar= function() {
-    hideElementById("commentButton");
     displayElementById("commentInputDiv");
   };
 
@@ -421,6 +429,14 @@ function($scope, $sce, $http, $filter) {
   }
 
   // -- END OF HIGHLIGHTS METHODS -- // ----------------------------------------
+
+  $scope.getRecommendedFiles = function(callback) {
+    $http.get("/php/livesearch.php?q=" + str + "&bandId=" + CURRENT_BAND.id)
+        .then(function (response) {
+          $scope.recommendedFiles = response.data;
+          callback();
+        });
+  };
 
   // -- PLAYLIST METHODS -- // ----------------------------------------
 
@@ -642,6 +658,7 @@ function($scope, $sce, $http, $filter) {
     $scope.file = CURRENT_FILE;
     $scope.numberOfFiles = CURRENT_FILES.length;
     $scope.file.comments = $scope.file.highlights.slice();
+    //$scope.file.size = formatBytes($scope.file.size);
     updateTitle(CURRENT_FOLDER.name + " | " + CURRENT_FILE.name);
     $scope.updateFileViews($scope.file);
     var audio = getElementById("audio");
@@ -658,6 +675,16 @@ function($scope, $sce, $http, $filter) {
 
     $scope.sourceVideoLink = $sce.trustAsResourceUrl($scope.file.source);
     console.log($scope.file);
+  };
+
+  $scope.goToRecentComments = function() {
+    hideElementById("filesContainer");
+    displayElementById("commentContainer");
+  };
+
+  $scope.goToFolderFiles = function() {
+    hideElementById("commentContainer");
+    displayElementById("filesContainer");
   };
 
   $scope.setupEventListeners = function() {

@@ -1,12 +1,13 @@
 <!-- Authentication Form -->
 <div id="authentication">
-  <div class="col-xs-12">
-    <img id="login-brand" src="img/band-of-ideas-logo-white.png" />
-
+  <div class="col-xs-12" style="padding: 10px">
+    <div id="login-logo" class="col-xs-12" style="border: 1px solid white; border-radius: 8px; padding: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.5);" >
+      <img id="login-brand" src="img/band-of-ideas-logo-white.png" />
+    </div>
   </div>
 
   <!-- Sign In Form -->
-  <div id="signInForm" class="loginForm form col-xs-12">
+  <div id="signInForm" class="loginForm form col-xs-12" style="margin-top: 10px;">
     <form name="signIn">
       <h3 ng-click="testLogin()">Sign In</h3>
       <input id="signInUsername" type="text" name="username" placeholder="Username" onfocus="closeUserMessage()" ng-model="user.username" required/>
