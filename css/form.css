@@ -37,11 +37,10 @@
 }
 
 #large-live-search {
-    border: 1px solid white;
     border-radius: 10px;
-    background: #00000069;
     color: white;
-    padding-top: 25px;
+    padding-top: 41px;
+    margin-top: -50px;
 }
 
 .invalidInput {

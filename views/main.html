@@ -9,49 +9,6 @@
       </div>-->
       <h3 class="col-xs-12" style="border: 1px solid white; border-radius: 8px; padding: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); margin-top: 20px; color: white"><a href="/#/user" style="color: white">Hello {{ user.name }}</a></h3>
   </div>
-  <!-- Dashboard Buttons
-  <div id="dashboardButtons" class="col-xs-12">
-    <div class="col-xs-12">
-      <div class="col-xs-3 col-sm-3" style="padding: 5px">
-        <div class="mainButton" ng-click="showIdeaGraph()">
-          <strong style="font-size: 14px">{{ numberOfIdeas }}</strong><br>
-          <span style="font-size: 0.9em">Ideas</span>
-          <div style="font-size: 8px">
-            <i class="fas fa-chevron-down"></i>
-          </div>
-        </div>
-      </div>
-      <div class="col-xs-3 col-sm-3" style="padding: 5px">
-        <div class="mainButton" onclick="scrollToElementById('bands')">
-          <strong style="font-size: 14px">{{ user.bands.length }}</strong><br>
-          <span style="font-size: 0.9em">Bands</span>
-          <div style="font-size: 8px">
-            <i class="fas fa-chevron-down"></i>
-          </div>
-        </div>
-      </div>
-      <div class="col-xs-3 col-sm-3" style="padding: 5px">
-        <div class="mainButton" onclick="scrollToElementById('playlistsDiv')">
-          <strong style="font-size: 14px">{{ playlists.length }}</strong><br>
-          <span style="font-size: 0.9em">Playlists</span>
-          <div style="font-size: 8px">
-            <i class="fas fa-chevron-down"></i>
-          </div>
-        </div>
-      </div>
-      <div class="col-xs-3 col-sm-3" style="padding: 5px">
-        <div class="mainButton" onclick="scrollToElementById('recentComments')">
-          <strong style="font-size: 14px">{{ recentHighlights.length }}</strong><br>
-          <span style="font-size: 0.9em">Comments</span>
-          <div style="font-size: 8px">
-            <i class="fas fa-chevron-down"></i>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-  -->
   <div class="dashboard-search col-xs-12" style="margin-top: -10px;">
     <form class="">
       <div class="form-group">
@@ -59,7 +16,7 @@
       </div>
 
 
-      <div id="large-live-search"></div>
+      <div id="large-live-search" class="col-xs-12"></div>
     </form>
   </div>
   <div id="dashboardButtons" class="col-xs-12" style="padding: 0;">
@@ -67,7 +24,7 @@
       <div class="col-xs-3 col-sm-3" style="padding: 5px">
         <div class="dashboardButton" ng-click="showIdeaGraph()">
           <strong style="font-size: 18px">{{ numberOfIdeas }}</strong><br>
-          <span style="font-size: 0.9em">Ideas</span>
+          <span style="font-size: 0.8em">Ideas</span>
           <div style="font-size: 8px">
             <i class="fas fa-chevron-down"></i>
           </div>
@@ -76,7 +33,7 @@
       <div class="col-xs-3 col-sm-3" style="padding: 5px">
         <div class="dashboardButton" onclick="scrollToElementById('bands')">
           <strong style="font-size: 18px">{{ user.bands.length }}</strong><br>
-          <span style="font-size: 0.9em">Bands</span>
+          <span style="font-size: 0.8em">Bands</span>
           <div style="font-size: 8px">
             <i class="fas fa-chevron-down"></i>
           </div>
@@ -85,7 +42,7 @@
       <div class="col-xs-3 col-sm-3" style="padding: 5px">
         <div class="dashboardButton" onclick="scrollToElementById('playlistsDiv')">
           <strong style="font-size: 18px">{{ playlists.length }}</strong><br>
-          <span style="font-size: 0.9em">Playlists</span>
+          <span style="font-size: 0.8em">Playlists</span>
           <div style="font-size: 8px">
             <i class="fas fa-chevron-down"></i>
           </div>
@@ -94,7 +51,7 @@
       <div class="col-xs-3 col-sm-3" style="padding: 5px">
         <div class="dashboardButton" onclick="scrollToElementById('recentComments')">
           <strong style="font-size: 18px">{{ recentHighlights.length }}</strong><br>
-          <span style="font-size: 0.9em">Comments</span>
+          <span style="font-size: 0.8em">Comments</span>
           <div style="font-size: 8px">
             <i class="fas fa-chevron-down"></i>
           </div>
@@ -209,7 +166,7 @@
           filter:{name: search } " class="col-xs-12 col-sm-4" style="padding-left: 10px; padding-right: 10px;" ng-click="openPlaylist(playlist)">
             <!-- <p class="deleteFolderButton" ng-click="archiveFolder(folder)"> x </p> -->
             <div class="folder col-xs-12">
-              <div class="col-xs-12" style="padding-bottom: 4px; padding-left: 0; padding-right: 0; border-bottom: 1px solid #CCC;">
+              <div class="col-xs-12" style="padding-bottom: 4px; padding-left: 0; padding-right: 0; border-bottom: 1px solid #ffffff59;">
                 <p class="folderTitle col-xs-12">{{ playlist.name }}</p>
               </div>
               <div class="col-xs-12 text-center" style="padding: 0">
@@ -228,7 +185,7 @@
       <div id="activityHeader" style="height: 40px;">
         <span id="activityTitle" class="col-xs-6">Recent Comments</span>
 
-        <select ng-model="bandFilter" id="bandFilter" style="float: right; width: 30%;">
+        <select ng-model="bandFilter" id="bandFilter" style="float: right; width: 30%; color: black">
           <option ng-selected="true" value="">All</option>
           <option ng-selected="{{band.name == bandFilter}}"
                   ng-repeat="band in user.bands"
@@ -247,7 +204,7 @@
                 <div class="col-xs-5 commentUserName"><strong>{{ comment.userName }}</strong></div>
                 <div class="col-xs-7" style="font-size: 9px; text-align: right; padding: 0">{{ comment.commentTime }}</div>
               </div>
-              <div class="col-xs-12" style="padding: 10px; background: white; border-bottom: 1px solid #CCC; border-top: 1px solid #CCC;">
+              <div class="col-xs-12" style="padding: 10px; border-bottom: 1px solid #ffffff59; border-top: 1px solid #ffffff59;">
                 <div class="col-xs-10">{{ comment.comment }}</div>
                 <div ng-if="comment.highlightTime !== 0 && comment.highlightTime !== -1" >{{ currentTimeToString(comment.highlightTime) }}</div>
               </div>

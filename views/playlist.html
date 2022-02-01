@@ -4,11 +4,11 @@
 
     <div id="files" style="display: none;">
       <div class="col-xs-12 viewTitle">
-        <h3 style="color: white; padding-bottom: 10px;">Opened Playlist</h3>
+        <h3 style="color: white; padding-bottom: 10px;">{{ playlist.name }}</h3>
       </div>
       <div class="containers col-xs-12" style="padding: 0;">
         <div id="openedPlaylist" style="padding-top: 10px; height: 40px;">
-          <div class="col-xs-8" ><span >{{ playlist.name }}</span></div>
+          <div class="col-xs-8" ><span >Playlist</span></div>
           <div class="col-xs-3" style="font-size:12px; text-align: right">{{ files.length }} Ideas</div>
           <a style="right: 20px; position: absolute" href="javascript:void(0)" onclick="hideElementById('files')"><i class="fas fa-times"></i></a>
         </div>
@@ -16,26 +16,23 @@
         <!-- Container that holds all files playlist -->
         <div id="fileList" class="col-xs-12">
           <div class="col-xs-12 scroller" style="max-height: 500px">
-            <div ng-animate="'animate'" class="col-xs-12 song" style="padding: 0" ng-repeat="song in files |
-          filter:{name: search } | orderBy:sortBy" >
+            <div ng-animate="'animate'" class="col-xs-12 song" style="padding: 0" ng-repeat="song in files | orderBy:sortBy" >
               <!-- This is a Single File -->
               <div id="file-{{ song.id }}" class="playListFile col-xs-12" data-index="{{ song.fileIndex }}" ng-click="stopFile(song); openMiniAudioPlayer(song); ">
                 <div class="playListFileInfo col-xs-12">
                   <!-- <p class="deleteButton" ng-click="deleteFile($index)"> x </p>-->
                   <p class="col-xs-1">{{ $index + 1 }}</p>
                   <p class="col-xs-4 fileName" ng-click="openFile(song)">{{ song.name }}</p>
-                  <div class="col-xs-6" style="text-align: right; padding-left: 0; padding-right: 0;">
-                    <p style="min-width: 40px; display: inline-block">{{ song.likes }} <img src="../img/black-metal.png"/></p>
-                    <p style="min-width: 40px; display: inline-block">{{ song.highlights.length }} <img src="../img/commentButton.png"/></p>
-                    <p style="min-width: 40px; display: inline-block">{{ song.views }} <img src="../img/music.png"/></p>
+                  <div class="col-xs-6" style="text-align: right; padding-left: 0; padding-right: 0; color: white">
+                    <p style="min-width: 40px; display: inline-block">{{ song.views }} <i class="fas fa-music"></i></p>
+                    <p style="min-width: 40px; display: inline-block">{{ song.highlights.length }} <i class="far fa-comment"></i></p>
+                    <p style="min-width: 40px; display: inline-block">{{ song.likes }} <i class="far fa-thumbs-up" ></i></p>
                   </div>
                 </div>
-                <div class="col-xs-12" style="border-top: 1px solid #CCC; padding: 6px; padding-left: 16px; font-size: 11px;">
+                <div class="col-xs-12" style="border-top: 1px solid #ffffff59; padding: 6px; padding-left: 16px; font-size: 11px; text-align: right">
                   <span>{{ song.band.name }} - </span>
                   <span ng-click="openFolder(song, event)">{{ song.folder.name }}</span>
-                  <div class="fileDetailsButton">
-                    <i class="fas fa-ellipsis-h"></i>
-                  </div>
+
                 </div>
 
               </div>
