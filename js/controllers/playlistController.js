@@ -383,6 +383,7 @@ app.controller('playlistController', ['$scope', '$sce', '$http', '$filter',
             setupController();
             // Do this if logged in
             if (isLoggedIn()) {
+                updateTitle("Playlists");
                 $scope.getFavoriteFiles(CURRENT_USER.id, function(files) {
                   $scope.likedFiles = files;
                 });
@@ -428,7 +429,6 @@ app.controller('playlistController', ['$scope', '$sce', '$http', '$filter',
                     $scope.loadUIObjects();
                   });
                 }
-                updateTitle("Playlists");
             }
 
         }

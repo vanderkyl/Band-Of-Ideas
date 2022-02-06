@@ -747,6 +747,11 @@ function($scope, $sce, $http, $filter) {
       $scope.setHighlightToCurrentTime();
       setRegionStart($scope.currentTime);
     }, false);
+    for (var i = 0; i < $scope.files.length; i++) {
+      if ($scope.files[i].id === $scope.file.id) {
+        $scope.file.fileIndex = $scope.files[i].fileIndex;
+      }
+    }
     displayElementById("ideaView");
     finishControllerSetup();
   };
