@@ -48,8 +48,6 @@
       $playlistId = $_GET['playlistId'];
       $files = getPlaylistFiles($conn, $playlistId);
     }
-
-
     echo json_encode($files);
   } else {
     echo "Error: " . msqli_error($conn);
@@ -59,9 +57,9 @@
 
   // End of Database Connection //
 
-
   // Start of Helper Methods //
 
+  // Get search results with -> $searchString
   function getSearchResults($conn, $searchString) {
     $files = [];
     if ($result = mysqli_query($conn, "SELECT * FROM Files WHERE name LIKE '%" . $searchString . "%'")) {
@@ -96,6 +94,7 @@
     return $files;
   }
 
+  // Get Folder from DB with -> $folderId
   function getFolder($conn, $folderId) {
       $folder = [];
 
@@ -111,6 +110,7 @@
       return $folder;
   }
 
+  // Get Band from DB with -> bandId
   function getBand($conn, $bandId) {
       $band = [];
 
@@ -126,6 +126,7 @@
       return $band;
   }
 
+  // Get Folder Id with -> $bandId and $folderName
   function getFolderId($conn, $bandId, $folderName) {
     $folderId = "";
     // Find folder id
@@ -138,26 +139,31 @@
     return $folderId;
   }
 
+  // Get Favorite Files with -> $userId and $bandId
   function getFavoriteFiles($conn, $userId, $bandId) {
     $fileIds = getUserLikedFileIds($conn, $userId, $bandId);
     return getFilesById($conn, $fileIds);
   }
 
+  // Get Highlighted Files with -> $userId and $bandId
   function getHighlightedFiles($conn, $userId, $bandId) {
     $fileIds = getUserHighlightedFileIds($conn, $userId, $bandId);
     return getFilesById($conn, $fileIds);
   }
 
+  // Get Band Files with -> $bandId
   function getBandFiles($conn, $bandId) {
       $fileIds = getBandFileIds($conn, $bandId);
       return getFilesById($conn, $fileIds);
   }
 
+  // Get Playlist Files with -> $bandId
   function getPlaylistFiles($conn, $playlistId) {
     $fileIds = getPlaylistFileIds($conn, $playlistId);
     return getFilesById($conn, $fileIds);
   }
 
+  // Get list of Files with -> $fileIds
   function getFilesById($conn, $fileIds) {
     if (empty($fileIds)) {
       return $fileIds;
@@ -173,7 +179,6 @@
       if ($result = mysqli_query($conn, $query)) {
         $fileData = "";
         if ($result->num_rows > 0) {
-
           // Get current row as an array
           while ($row = mysqli_fetch_assoc($result)) {
             $comments = getFileComments($conn, $row);
@@ -208,7 +213,7 @@
     }
   }
 
-  // Get Folder files
+  // Get Folder files with -> $bandId and $folderId
   function getFolderFiles($conn, $bandId, $folderId) {
     // Find the files in the given folder
     $query = "SELECT * FROM Files WHERE folderId = '" . $folderId . "'";
@@ -247,11 +252,11 @@
     return $files;
   }
 
+  // Get users who liked file with -> $fileId
   function getUserLikes($conn, $fileId) {
     $userLikes = [];
     $query = "SELECT userId FROM UserLikes WHERE fileId='" . $fileId . "';";
     if ($result = mysqli_query($conn, $query)) {
-
       if ($result->num_rows > 0) {
         // Get current row as an array
         while ($row = mysqli_fetch_assoc($result)) {
@@ -265,6 +270,7 @@
     return $userLikes;
   }
 
+  // Get User liked File Ids with -> $userId and $bandId
   function getUserLikedFileIds($conn, $userId, $bandId) {
     $fileIds = [];
     $query;
@@ -273,9 +279,7 @@
     } else {
       $query = "SELECT fileId FROM UserLikes LEFT JOIN Files ON UserLikes.fileId = Files.id WHERE UserLikes.userId='" . $userId . "' AND Files.bandId='" . $bandId . "';";
     }
-
     if ($result = mysqli_query($conn, $query)) {
-
       if ($result->num_rows > 0) {
         // Get current row as an array
         while ($row = mysqli_fetch_assoc($result)) {
@@ -283,11 +287,10 @@
         }
       }
     }
-
     return $fileIds;
   }
 
-  // Get Files ids that the user has highlighted
+  // Get Files ids that the user has highlighted with -> $userId and $bandId
   function getUserHighlightedFileIds($conn, $userId, $bandId) {
     $fileIds = [];
     if ($bandId == "") {
@@ -295,9 +298,7 @@
     } else {
       $query = "SELECT fileId FROM Highlights WHERE userId='" . $userId . "' AND bandId='" . $bandId . "';";
     }
-
     if ($result = mysqli_query($conn, $query)) {
-
       if ($result->num_rows > 0) {
         // Get current row as an array
         while ($row = mysqli_fetch_assoc($result)) {
@@ -305,35 +306,29 @@
         }
       }
     }
-
     return $fileIds;
   }
 
-    // Get Files ids for the files in a band
-    function getBandFileIds($conn, $bandId) {
-        $fileIds = [];
-        $query = "SELECT id FROM Files WHERE bandId='" . $bandId . "';";
-
-        if ($result = mysqli_query($conn, $query)) {
-
-            if ($result->num_rows > 0) {
-              // Get current row as an array
-              while ($row = mysqli_fetch_assoc($result)) {
-                $fileIds[] = $row["id"];
-              }
+  // Get Files ids for the files in a band with -> $bandId
+  function getBandFileIds($conn, $bandId) {
+      $fileIds = [];
+      $query = "SELECT id FROM Files WHERE bandId='" . $bandId . "';";
+      if ($result = mysqli_query($conn, $query)) {
+          if ($result->num_rows > 0) {
+            // Get current row as an array
+            while ($row = mysqli_fetch_assoc($result)) {
+              $fileIds[] = $row["id"];
             }
-        }
+          }
+      }
+      return $fileIds;
+  }
 
-        return $fileIds;
-    }
-
-  // Get playlist file ids
+  // Get playlist file ids with -> $playlistId
   function getPlaylistFileIds($conn, $playlistId) {
     $fileIds = [];
     $query = "SELECT fileId FROM PlaylistFiles WHERE playlistId='" . $playlistId . "';";
-
     if ($result = mysqli_query($conn, $query)) {
-
       if ($result->num_rows > 0) {
         // Get current row as an array
         while ($row = mysqli_fetch_assoc($result)) {
@@ -341,7 +336,6 @@
         }
       }
     }
-
     return $fileIds;
   }
 
@@ -350,13 +344,11 @@
     // Check if the file has highlights
     $highlights = [];
     $highlightQuery = "SELECT * FROM Highlights WHERE fileId = '" . $row["id"] . "'";
-
     if ($highlightResult = mysqli_query($conn, $highlightQuery)) {
       if ($highlightResult->num_rows > 0) {
         while ($highlightRow = mysqli_fetch_assoc($highlightResult)) {
           $highlight = $highlightRow["comment"];
           $userName = findUserName($conn, $highlightRow["userId"]);
-
           if ($highlight != null) {
             $highlightObject = ['id' => $highlightRow["id"],
                               'comment' => $highlight,
@@ -396,7 +388,7 @@
     return $comments;
   }
 
-  // Find username with given id
+  // Find username with given id with -> $userId
   function findUserName($conn, $userId) {
     // Find user name
     $userName = "";
@@ -410,6 +402,4 @@
     }
     return $userName;
   }
-
-
 ?>

@@ -1,4 +1,4 @@
-<!-- Main View -->
+<!-- Main View (Dashboard) -->
 <div id="mainView" style="display: none">
   <!-- Buttons -->
   <div class="col-xs-12" style="text-align: center">
@@ -9,16 +9,17 @@
       </div>-->
       <h3 class="col-xs-12" style="border: 1px solid white; border-radius: 8px; padding: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); margin-top: 20px; color: white"><a href="/#/user" style="color: white">Hello {{ user.name }}</a></h3>
   </div>
+  <!-- Search -->
   <div class="dashboard-search col-xs-12" style="margin-top: -10px;">
     <form class="">
       <div class="form-group">
         <input id="large-search-input" type="text" class="col-xs-12" placeholder="Search Ideas" onkeyup="showResult(this.value, 'large-live-search')" autocomplete="off">
       </div>
-
-
+      <!-- Search Results -->
       <div id="large-live-search" class="col-xs-12"></div>
     </form>
   </div>
+  <!-- Dashboard buttons -->
   <div id="dashboardButtons" class="col-xs-12" style="padding: 0;">
     <div class="col-xs-12">
       <div class="col-xs-3 col-sm-3" style="padding: 5px">
@@ -57,7 +58,6 @@
           </div>
         </div>
       </div>
-
     </div>
   </div>
   <!-- End of Buttons -->
@@ -68,89 +68,63 @@
       <canvas id="ideaGraphContainer" ></canvas>
     </div>
   </div>
-
-  <!--
-      <div class="col-xs-12 col-sm-6" style="padding: 5px">
-        <div class="containers" style="padding: 0; margin: 0">
-          <canvas id="otherGraphContainer"></canvas>
+  <!-- Band Section -->
+  <div id="bands" class="col-xs-12" >
+    <!-- Bands -->
+    <div class="containers col-xs-12" style="padding: 5px;">
+      <div id="bandHeader" style="height: 40px;">
+        <span class="col-xs-6">Bands</span>
+        <div class="addToListButton col-xs-6"  data-toggle="modal" data-target="#addBandModal">
+          <a href="javascript:void(0)"><i class="fas fa-plus"></i></a>
         </div>
       </div>
-
-  <div class="col-xs-12 containers">
-    <div class="col-xs-12 col-sm-6 scroller">
-      <div class="col-xs-12" ng-repeat="band in user.bands">
-        <span>{{ band.name }}: {{}}</span>
-      </div>
-    </div>
-  </div>
-  -->
-      <!-- Band Section -->
-      <div id="bands" class="col-xs-12" >
-
-        <!-- Bands -->
-        <div class="containers col-xs-12" style="padding: 5px;">
-          <div id="bandHeader" style="height: 40px;">
-            <span class="col-xs-6">Bands</span>
-            <div class="addToListButton col-xs-6"  data-toggle="modal" data-target="#addBandModal">
-              <a href="javascript:void(0)"><i class="fas fa-plus"></i></a>
-            </div>
-          </div>
-            <div class="col-xs-12 scroller" style="max-height: fit-content; overflow-y: unset;">
-                <!--<h2 id="bandName" class="userInfoTitles">Bands</h2>-->
-              <div class="bands col-xs-12 col-sm-6 col-md-4" ng-repeat="band in user.bands">
-                <div class="col-xs-12 bandButton">
-                  <div id="bandLoader-{{ band.id }}" class="bandLoader" style="display: none"><i class="fa fa-spinner fa-spin"></i></div>
-                  <div id="{{ 'band-' + band.id }}" class="col-xs-12" style="padding: 0" ng-click="enterBand(band)">
-
-
-                    <div class="col-xs-12" style="">
-                      <h4 id="bandTitle" class="bandTitle col-xs-12">{{ band.name }}</h4>
-                      <div class="col-xs-12 bandDetails">{{ band.numFiles }} Ideas</div>
-                    </div>
-
-                    <!--<div class="bandDetailsButton" ng-click="showBandDetails($event, band)">
-                      <i class="fas fa-ellipsis-v"></i>
-                    </div>-->
-
-                  </div>
+        <div class="col-xs-12 scroller" style="max-height: fit-content; overflow-y: unset;">
+          <div class="bands col-xs-12 col-sm-6 col-md-4" ng-repeat="band in user.bands">
+            <div class="col-xs-12 bandButton">
+              <div id="bandLoader-{{ band.id }}" class="bandLoader" style="display: none"><i class="fa fa-spinner fa-spin"></i></div>
+              <div id="{{ 'band-' + band.id }}" class="col-xs-12" style="padding: 0" ng-click="enterBand(band)">
+                <div class="col-xs-12" style="">
+                  <h4 id="bandTitle" class="bandTitle col-xs-12">{{ band.name }}</h4>
+                  <div class="col-xs-12 bandDetails">{{ band.numFiles }} Ideas</div>
                 </div>
-                <!-- Band Details Modal -->
-                <div id="bandDetails-{{ band.id }}" class="modal fade" role="dialog">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Band Details</h4>
-                      </div>
-                      <div class="modal-body col-xs-12">
-                        <div class="col-xs-12">
-                          <h4>Name: </h4><p>{{ band.name }}</p>
-                          <h4>Code: </h4><p>{{ band.code}}</p>
-                        </div>
-                        <div class="col-xs-12">
-                          <h4>Band Members</h4>
-                          <div id="{{ 'member-' + $index }}" ng-animate="'animate'" ng-repeat="member in band.members" class="memberButton">
-                            <div>
-                              <p class="folderTitle">{{ member.name }}</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn" data-dismiss="modal">Close</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- End of Band Details Modal -->
               </div>
             </div>
+            <!-- Band Details Modal -->
+            <div id="bandDetails-{{ band.id }}" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Band Details</h4>
+                  </div>
+                  <div class="modal-body col-xs-12">
+                    <div class="col-xs-12">
+                      <h4>Name: </h4><p>{{ band.name }}</p>
+                      <h4>Code: </h4><p>{{ band.code}}</p>
+                    </div>
+                    <div class="col-xs-12">
+                      <h4>Band Members</h4>
+                      <div id="{{ 'member-' + $index }}" ng-animate="'animate'" ng-repeat="member in band.members" class="memberButton">
+                        <div>
+                          <p class="folderTitle">{{ member.name }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End of Band Details Modal -->
+          </div>
         </div>
-        <!-- End of Bands -->
-
-      </div>
-
+    </div>
+    <!-- End of Bands -->
+  </div>
   <!-- End of band Section -->
+  <!-- Playlists Section -->
   <div id="playlistsDiv" class="col-xs-12">
     <div class="containers col-xs-12" style="padding: 5px;">
       <div id="playlistHeader">
@@ -173,7 +147,6 @@
                 <span class="col-xs-12" style="font-size:10px; padding: 0; margin-top: 5px;">{{ playlist.numFiles }} Ideas</span>
               </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -184,7 +157,6 @@
     <div class="containers col-xs-12" style="padding: 5px;">
       <div id="activityHeader" style="height: 40px;">
         <span id="activityTitle" class="col-xs-6">Recent Comments</span>
-
         <select ng-model="bandFilter" id="bandFilter" style="float: right; width: 30%; color: black">
           <option ng-selected="true" value="">All</option>
           <option ng-selected="{{band.name == bandFilter}}"
@@ -214,13 +186,11 @@
             </div>
             <div class="col-xs-12 text-center" style="cursor: pointer; font-size: 12px" ng-click="showAllRecentActivity(recentComments.length)">{{ (recentComments | filter: {bandName: bandFilter}).length }} Comments</div>
           </div>
-
         </div>
     </div>
   </div>
   <!-- Modals -->
   <playlists-modal></playlists-modal>
-
   <add-band-modal></add-band-modal>
   <user-details-modal></user-details-modal>
 </div>

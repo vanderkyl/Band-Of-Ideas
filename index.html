@@ -5,10 +5,10 @@
     <!-- Meta tags -->
     <meta charset="UTF-8">
     <meta name="description" content="Band of Ideas">
-    <meta name="keywords" content="music,ideas,bands,collaboration,share,message,videos,audio,band,of,ideas,bandofideas">
-    <meta name="author" content="KHOOF">
+    <meta name="keywords" content="music,ideas,bands,collaboration,share,message,videos,audio,band,of,ideas,bandofideas,songs,playlist,stream,streaming,bandmates">
+    <meta name="author" content="Kyle Vanderhoof">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- TODO: Change to relevant favicon "logo" -->
+    <!-- Favicon -->
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
 
@@ -51,23 +51,23 @@
     <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
     <script src="js/managers/settings.js" type="text/javascript"></script>
     <script src="js/managers/webTools.js" type="text/javascript"></script>
+    <!-- JS script that will run before the web app loads -->
     <script type="text/javascript">
       // Set up User Settings
-
       var id = localStorage['background-color-id'] || "bgc-2";
       changeBackgroundColor(id);
-
     </script>
   </head>
   <body ng-app="myApp">
+    <!-- Loading screen -->
     <div id="appLoader">
       <div class="loader"></div>
       <h5 style="color: white; text-align: center">Loading</h5>
     </div>
+    <!-- Angular app contents -->
     <div id="appContents">
       <!-- Start of NavBar -->
       <nav id="navBar" class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
-
         <div id="navContainer" class="container">
           <!-- Brand and toggle get grouped for better mobile display -->
           <div class="nav-header">
@@ -86,18 +86,11 @@
                     <button type="reset" class="btn btn-default" style="filter: invert(100%);" onclick="hideResult('livesearch')">x</i></button>
                   </div>
                   <div id="livesearch"></div>
-
-
                 </form>
               </div>
               <div id="closeSearch" onclick="closeSearchForm()" style="display: none"><i class="far fa-times-circle"></i></div>
-
             </div>
           </div>
-
-
-
-
         </div>
         <div id="searchNavContainer">
           <a href="/#/" ><img src="img/band-of-ideas-logo-white.png" class="navbar-brand" style="margin-left: 10px"/></a>
@@ -108,8 +101,6 @@
                 <button type="submit" class="btn btn-default" onclick="openSearchFolder()" style="filter: invert(100%);"><i class="fa fa-search"></i></button>
                 <button type="reset" class="btn btn-default" style="filter: invert(100%);" onclick="hideResult('largeLivesearch')">x</i></button>
               </div>
-
-
               <div id="largeLivesearch"></div>
             </form>
           </div>
@@ -118,16 +109,12 @@
       <!-- End of Nav -->
       <!-- Side Bar -->
       <div id="sideNav" class="sideNav">
-
-
         <div class="sideNavHeader col-xs-12">
-
           <a href="/#/user" class="col-xs-12">
             <!--<i class="far fa-user" style="position: absolute;top: 13px;left: 20px;font-size: 15px;"></i> -->
             <div id="userLinkImage" class="profileImage"></div>
             <div id="userLink"></div>
           </a>
-
         </div>
         <div id="navLinks" class="col-xs-12" style="margin-top: 10px;">
           <div id="topLinks">
@@ -140,39 +127,34 @@
                 </a>
               </h4>
               <div id="bandList" style="display: none; border-top: 1px solid #444;">
-                <!--<li class="navButtons"><a href="/#/band?id=123">Band Name</a></li> -->
+                <!-- Example Band link: <li class="navButtons"><a href="/#/band?id=123">Band Name</a></li> -->
               </div>
             </div>
           </div>
           <div id="recentLinks" style="display: none">
             <span><i>Recent</i></span>
             <div id="playlistLinks">
-              <!--<li class="navButtons"><a href="/#/music">Music</a></li> -->
+              <!-- Example Playlist link:  <li class="navButtons"><a href="/#/music">Music</a></li> -->
             </div>
             <div id="bandLinks">
-              <!--<li class="navButtons"><a href="/#/music">Music</a></li> -->
+              <!-- Example Band link: <li class="navButtons"><a href="/#/music">Music</a></li> -->
             </div>
             <div id="folderLinks">
-              <!--<li class="navButtons"><a href="/#/music">Music</a></li> -->
+              <!-- Example Folder link: <li class="navButtons"><a href="/#/music">Music</a></li> -->
             </div>
             <div id="fileLinks" >
-              <!--<li class="navButtons"><a href="/#/music">Music</a></li> -->
+              <!-- Example Idea link: <li class="navButtons"><a href="/#/music">Music</a></li> -->
             </div>
           </div>
-
-
         </div>
         <div class="sideNavFooter col-xs-12">
           <h4><a href="javascript:void(0)" onclick="setupUploadModal()"><i class="fas fa-cloud-upload-alt"></i><span>Upload</span></a></h4>
           <h4><a href="/#/settings"><i class="fas fa-sliders-h"></i><span>Settings</span></a></h4>
           <h4><a id="signOutButton" class="dropdown-item " onclick="signOut();" href="javascript:void(0)"><i class="fas fa-sign-out-alt"></i><span>Sign Out</span></a></h4>
         </div>
-
-
       </div>
       <!-- End of Side Bar -->
-      <!--<div id="loadContainer" class="loader"></div>
-      <div id="appLoader" style="display: none" class="lds-ripple"><div><div></div></div></div>-->
+
       <!-- Container of Angular views -->
       <div id="appContainer" class="appContainer" ng-view></div>
 
@@ -183,8 +165,6 @@
         <a id="closePlayerButton" href="javascript:void(0)" onclick="quitPlayer()">&times;</a>
         <!-- Floating Audio Player -->
         <div id="audioPlayer" style="display: none">
-
-
           <div>
             <a id="trackName" href="" class="playerFileTitle" onclick="quitPlayer()"></a>
           </div>
@@ -217,9 +197,7 @@
           </div>
 
           <p><strong>Current Ideas</strong></p>
-          <div id="songList">
-
-          </div>
+          <div id="songList"></div>
         </div>
 
       </div>
@@ -255,13 +233,14 @@
       <!-- End of Upload Modal -->
     </div>
 
-
     <script type="text/javascript">
       $(document).ready(function() {
           setupAudioEventListeners();
       });
     </script>
 
+    <!-- Third Party JS -->
+    <!-- Wavesurfer, Chart.js -->
     <script src="https://unpkg.com/wavesurfer.js"></script>
     <script src="https://unpkg.com/wavesurfer.js/dist/plugin/wavesurfer.regions.min.js"></script>
     <script src="https://unpkg.com/wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js"></script>
@@ -274,7 +253,6 @@
     <script src="js/managers/wavesurfer.js" type="text/javascript"></script>
     <script src="js/managers/controllers.js" type="text/javascript"></script>
     <script src="js/managers/filepond.js" type="text/javascript"></script>
-
 
     <!-- Objects - JS -->
     <script src="js/objects/folder.js" type="text/javascript"></script>
@@ -305,6 +283,5 @@
 
     <!-- NPM -->
     <script src="index.js" type="text/javascript"></script>
-
   </body>
 </html>

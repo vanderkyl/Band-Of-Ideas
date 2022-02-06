@@ -17,7 +17,6 @@ body {
     background: transparent !important;
 }
 
-
 @-webkit-keyframes Gradient {
   0% {
     background-position: 0% 50%
@@ -58,8 +57,6 @@ body {
   .appContainer { padding-right: 2% !important; padding-left: 2% !important; }
   #ideaGraph .containers { margin: 0 100px 0 100px }
 }
-
-
 
 #appLoader {
   height: 100%;
@@ -234,11 +231,11 @@ body {
 }
 
 .addButton {
-    width: 18%;
-    float: right;
-    margin-right: 5px;
-    font-size: 12px;
-    max-width: 70px;
+  width: 18%;
+  float: right;
+  margin-right: 5px;
+  font-size: 12px;
+  max-width: 70px;
 }
 
 #topButtons {
@@ -354,8 +351,6 @@ body {
 
 }
 
-
-
 .button:hover {
   cursor: pointer;
   cursor: hand;
@@ -363,8 +358,6 @@ body {
   background-color: #265a88;
   transition: background 500ms;
 }
-
-
 
 .folder:active, .homeButton:active, .filesButton:active, .button:active {
   background-color: rgba(20, 54, 81, 0.66);
@@ -421,7 +414,6 @@ body {
   transition: background 0.3s ease-in-out;
 }
 
-
 .bandButton:hover {
   background: #17171738;
 }
@@ -469,7 +461,6 @@ body {
 
 #addBand {
   background: #3CB371;
-
 }
 
 #addBand:hover {
@@ -549,8 +540,6 @@ body {
 .members {
   border: 1px solid #444;
 }
-
-
 
 .navigation {
 
@@ -867,35 +856,35 @@ body {
 }
 
 .dropbtn {
-    background-color: #4b4b4b;
-    color: white;
-    padding: 16px;
-    font-size: 14px;
-    border: none;
-    width: 100%;
+  background-color: #4b4b4b;
+  color: white;
+  padding: 16px;
+  font-size: 14px;
+  border: none;
+  width: 100%;
 }
 
 .dropdown {
-    position: relative;
-    display: inline-block;
-    width: 100%;
+  position: relative;
+  display: inline-block;
+  width: 100%;
 }
 
 .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f1f1f1;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-    width: 100%;
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  width: 100%;
 }
 
 .dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
 }
 
 .dropdown-content a:hover {background-color: #ddd;}

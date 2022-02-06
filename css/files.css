@@ -57,18 +57,15 @@
   border-radius: 4px;
 }
 
-
 #file .fileData {
   margin-top: 15px;
   margin-left: 15px;
 }
 
-
 .fileInfo {
   display: inline-block;
   right: 5px;
 }
-
 
 #file .fileSize {
   padding-right: 2%;
@@ -373,8 +370,6 @@
 .comment {
   background: #FFF;
   border: 1px solid green;
-
-
 }
 
 .comment:hover {
@@ -432,7 +427,6 @@
 .highlight:hover {
   color: #FFF;
   background: #F65A5B;
-
   transition: background 500ms;
 }
 
@@ -525,7 +519,6 @@
 #file .ideaButtons {
   text-align: center;
   display: inline-block;
-
 }
 
 .fileButtons img, .ideaButtons img {
@@ -653,7 +646,6 @@
 
 }
 
-
 .fileNavigation p {
   padding: 10px;
   border: 1px solid white;
@@ -674,7 +666,6 @@
   background-color: #fdfdfd;
   font-size: 12px !important;
   padding: 5px !important;
-
   display: block !important;
   transition: all .3s ease-in-out;
 }

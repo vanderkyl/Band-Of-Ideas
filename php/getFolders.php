@@ -23,7 +23,6 @@
       }
       $data = getFolders($conn, $bandId);
     }
-
     echo json_encode($data);
   } else {
     echo "Error: " . msqli_error($conn);
@@ -64,6 +63,7 @@
     return $data;
   }
 
+  // Get Folder with -> $id
   function getFolder($conn, $id) {
     $query = "SELECT * FROM Folders WHERE id = '" . $id . "';";
     $data = [];
@@ -79,6 +79,7 @@
     return $data;
   }
 
+  // Get Folders with - > $bandId
   function getFolders($conn, $bandId) {
     $query = "SELECT * FROM Folders WHERE bandId = '" . $bandId . "' AND parentId = '0';";
     $folders = [];

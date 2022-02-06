@@ -16,7 +16,7 @@
         $bandId = $row["id"];
       }
     }
-
+    // If band id was found, Insert the folder
     if ($bandId != "") {
       $query = "INSERT INTO Folders (name, metaName, bandId)
                 VALUES ('" . $name . "','" . $metaName . "','" . $bandId . "');";

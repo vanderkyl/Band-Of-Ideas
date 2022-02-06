@@ -24,7 +24,6 @@
     echo "Error: " . msqli_error($conn);
   }
 
-
   mysqli_close($conn);
 
   function getUser($username, $login, $conn) {
