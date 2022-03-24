@@ -19,13 +19,11 @@
             </div>
           </div>
         </div>
-
       </div>
     </a>
     <div  style="display: none;">
       <i class="fas fa-share-alt"></i>
     </div>
-
     <!-- End of Folders Header -->
     <!-- Band Buttons -->
     <div id="bandButtons" class="col-xs-12">
@@ -79,9 +77,7 @@
             </div>
           <input id="fileSearchBar" ng-model="search" class="searchBar col-xs-8" style="display: none" placeholder="Search Ideas">
           <a class="col-xs-6" style="text-align: right" href="javascript:void(0)" ng-click="closeFilesSection()"><i class="fas fa-times"></i></a>
-
         </div>
-
         <!-- Container that holds all files playlist -->
         <div id="fileList" class="col-xs-12" style="padding: 0">
           <div id="fileListHeader" class="playListFileInfo col-xs-12" style="padding-left: 15px; padding-right: 15px;">
@@ -91,16 +87,12 @@
               <p style="min-width: 40px; display: inline-block">Duration</p>
               <p style="min-width: 40px; display: inline-block">Views</p>
               <p style="min-width: 40px; display: inline-block">Likes</p>
-
             </div>
           </div>
           <div class="col-xs-12 scroller" >
 
-            <div ng-animate="'animate'" class="song" style="padding: 5px" ng-repeat="song in files |
-          filter:{name: search }
-          | orderBy:-likes" >
+            <div ng-animate="'animate'" class="song" style="padding: 5px" ng-repeat="song in files | filter:{name: search } | orderBy:-likes" >
               <!-- This is a Single File -->
-
               <div id="file-{{ song.id }}" class="playListFile col-xs-12" data-index="{{ song.id }}" ng-click="showPopup(song.id)" onmouseover="showPlayerButton(this)" onmouseout="hidePlayerButton(this)" >
                 <div class="popup">
                 <span class="popuptext" id="filePopup-{{ song.id }}">
@@ -123,11 +115,9 @@
                     <p style="min-width: 40px; display: inline-block">{{ song.durationTime }}</p>
                     <p style="min-width: 40px; display: inline-block">{{ song.views }}</p>
                     <p style="min-width: 40px; display: inline-block">{{ song.likes }}</p>
-
                   </div>
                 </div>
               </div>
-
               <!-- End of Single File -->
             </div>
           </div>
@@ -135,26 +125,21 @@
         <!-- End of Files -->
       </div>
     </div>
-
     <!-- End of Favorite Files -->
 
     <!-- Folders Section -->
     <div id="folderSection" class="col-xs-12" style="padding: 0;">
-
       <!-- Container that holds all folders and search -->
       <div class="containers folders col-xs-12" style="padding: 5px;">
         <div id="folderHeader">
-
             <div id="searchFoldersButton" class="searchListButton col-xs-6" ng-click="showFolderSearchBar()">
               <span style="color: white; font-size: 16px;">Folders</span>
               <a href="javascript:void(0)"><i class="fas fa-search"></i></a>
             </div>
-
             <input id="folderSearchBar" ng-model="search" class="searchBar col-xs-6" style="display: none;" placeholder="Search Folders">
             <div id="addFolder" class="addToListButton col-xs-6" data-toggle="modal" data-target="#addFolderModal">
               <a href="javascript:void(0)" ng-click="openAddToPlaylistModal()" ><i class="fas fa-plus"></i></a>
             </div>
-
         </div>
         <!-- Folders Container -->
         <div id="foldersContainer" class="col-xs-12 buttonList">
@@ -170,18 +155,14 @@
                 <div id="detailsDiv-{{ folder.id }}">
                   <span class="col-xs-12" style="font-size:10px; padding: 0; margin-top: 5px;">{{ folder.numFiles }} Ideas<!--<i class="far fa-file-audio" style="font-size: 12px; top: 2px; position: relative;"></i> --></span>
                 </div>
-
               </div>
             </div>
-
           </div>
           <!-- End of Single Folder -->
         </div>
       </div>
-
       <!-- End of folder container -->
     </div>
-
     <!-- Recent Activity -->
     <!-- Recent Comment Section -->
     <div id="recentComments" class="col-xs-12" style="margin-top: 10px">
@@ -210,12 +191,11 @@
             </div>
             <div class="col-xs-12 text-center" style="cursor: pointer; font-size: 12px" ng-click="showAllRecentActivity(recentComments.length)">{{ (recentComments | filter: {bandName: bandFilter}).length }} Comments</div>
           </div>
-
         </div>
       </div>
     </div>
   </div>
-
+  <!-- Modals -->
   <member-modal></member-modal>
   <playlists-modal></playlists-modal>
   <band-details-modal></band-details-modal>

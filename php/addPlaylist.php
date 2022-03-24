@@ -8,7 +8,6 @@
   $bandId = $data->bandId;
   $userId = $data->userId;
 
-
   if(mysqli_ping($conn)) {
 
     $query = "INSERT INTO Playlists (name, userId, bandId, public, creationDate)

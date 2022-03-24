@@ -11,13 +11,10 @@
   $userId = $data->userId;
   $joiningBand = $data->band->joiningBand;
 
-
   if(mysqli_ping($conn)) {
-
-
     // Insert Band
     $bandQuery = "";
-    if ($joiningBand == false) {
+    if ($joiningBand == false) { // If joining existing band
       $bandId = findIdForNewRow($conn, "Bands");
       $bandQuery = "INSERT INTO Bands (id, name, metaName, code, creationDate)
                 VALUES ('" . $bandId . "','" . $band . "','" . $bandMetaName . "',' . $bandCode . ', NOW())";
@@ -30,7 +27,7 @@
       echo "Updating band members...";
       runMySQLInsertQuery($conn, $bandMemberQuery);
 
-    } else {
+    } else { // Else if creating new band
       $bandId = $data->band->id;
       $bandMemberId = findIdForNewRow($conn, "BandMembers");
       $bandQuery = "INSERT INTO BandMembers (id, userId, bandId)
@@ -38,9 +35,6 @@
       echo "Updating band members...";
       runMySQLInsertQuery($conn, $bandQuery);
     }
-
-
   }
-
   mysqli_close($conn);
 ?>

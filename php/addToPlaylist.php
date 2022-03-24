@@ -7,7 +7,6 @@
   $playlistId = $data->playlistId;
   $fileId = $data->fileId;
 
-
   if(mysqli_ping($conn)) {
     $id = findIdForNewRow($conn, "PlaylistFiles");
 

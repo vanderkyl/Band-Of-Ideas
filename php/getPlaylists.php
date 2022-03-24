@@ -55,9 +55,9 @@
     echo "Error: " . msqli_error($conn);
   }
 
-
   mysqli_close($conn);
 
+  // Get Playlist Files with -> $fileId and $userId
   function getFilePlaylists($conn, $fileId, $userId) {
     $playlistIds = [];
     $query = "Select * From PlaylistFiles Where fileId = '" . $fileId . "'";
@@ -103,6 +103,7 @@
     return $playlists;
   }
 
+  // Get Playlist with -> $id
   function getPlaylist($conn, $id) {
     $query = "Select * From Playlists Where id = '" . $id . "'";
     $playlist = [];

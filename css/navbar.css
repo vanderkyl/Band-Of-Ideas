@@ -8,7 +8,6 @@
   width: 100%;
 }
 
-
 .navbar>.container .navbar-brand:hover {
   background: #444;
 }
@@ -135,7 +134,6 @@ a.nav-link:hover {
   min-width: 200px;
 }
 
-
 .sideNav .closeSideNav {
   position: absolute;
   top: 0;
@@ -190,7 +188,6 @@ a.nav-link:hover {
 }
 
 .sideNavHeader {
-
   border-bottom: 1px #444 solid;
   padding-bottom: 5px;
   margin-bottom: 5px;

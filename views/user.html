@@ -7,7 +7,6 @@
     <h3 class="containers">{{ user.name }}</h3>
   </div>
   <div class="col-xs-12">
-
     <div class="containers col-xs-12">
       <div id="userInfo">
         <a href="javascript:void(0)" onclick="showEditUser()" class="col-xs-12" style="text-align: right;">Edit</a>
@@ -15,9 +14,7 @@
           <h4>Username: </h4><p>{{ user.username }}</p>
           <h4>Password: </h4><p>******</p>
           <h4>Email: </h4><p>{{ user.email }}</p>
-
         </div>
-
       </div>
       <div id="editUserInfo" style="display: none">
         <a href="javascript:void(0)" onclick="closeEditUser()" class="col-xs-12" style="text-align: right;">Close</a>
@@ -29,9 +26,7 @@
           <br>
           <input type="submit" class="btn btn-success form-control" ng-click="updateUser()" value="Save Changes"/>
         </form>
-
       </div>
-
     </div>
     <div class="containers col-xs-12">
       <h4>Bands ({{ user.bands.length }}): </h4>
@@ -40,7 +35,6 @@
       </div>
     </div>
   </div>
-
   <!-- Modals -->
   <!-- Profile Image Modal -->
   <div id="profileImageModal" class="modal fade" role="dialog">
@@ -85,9 +79,7 @@
   </div>
   <!-- End of Playlist Modal -->
   <add-playlist-modal></add-playlist-modal>
-
   <playlists-modal></playlists-modal>
-
   <add-band-modal></add-band-modal>
   <user-details-modal></user-details-modal>
   <band-details-modal></band-details-modal>

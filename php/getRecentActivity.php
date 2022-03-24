@@ -4,8 +4,6 @@
 
   $conn = connectToDatabase();
 
-
-
   if(mysqli_ping($conn)) {
     $data = [];
     $type = $_GET['type'];
@@ -24,7 +22,6 @@
                  'activityCount' => getBandActivityCount($conn, $bandId)];
     }
 
-
     echo json_encode($data);
   } else {
     echo "Error: " . msqli_error($conn);
@@ -32,6 +29,7 @@
 
   mysqli_close($conn);
 
+  // Get Band Comment Count with -> $bandId
   function getBandActivityCount($conn, $bandId) {
       $query = "SELECT COUNT(id) FROM Comments WHERE bandId = '" . $bandId . "'";
 
@@ -47,8 +45,8 @@
           }
   }
 
+  // Get Comments with -> $bandIds
   function getRecentComments($conn, $bandIds) {
-
     $query = "SELECT * FROM Comments WHERE bandId = '" . $bandIds[0] . "'";
     if (count($bandIds) > 1) {
       for($i = 1; $i < count($bandIds); $i++) {
@@ -80,6 +78,7 @@
     }
   }
 
+  // Get Highlights with -> $bandIds
   function getRecentHighlights($conn, $bandIds) {
     $query = "SELECT * FROM Highlights WHERE bandId = '" . $bandIds[0] . "'";
     if (count($bandIds) > 1) {
@@ -113,6 +112,7 @@
     }
   }
 
+  // Get UserName with -> $userId
   function getUserName($conn, $userId) {
       $userName = "";
 
@@ -126,6 +126,7 @@
       return $userName;
   }
 
+  // Get File with -> $fileId
   function getFile($conn, $fileId) {
       $file = [];
 
@@ -141,6 +142,7 @@
       return $file;
   }
 
+  // Get Folder with -> $folderId
   function getFolder($conn, $folderId) {
       $folder = [];
 
@@ -155,6 +157,7 @@
       return $folder;
   }
 
+  // Get Band with -> $bandId
   function getBand($conn, $bandId) {
       $band = [];
 
