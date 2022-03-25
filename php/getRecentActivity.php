@@ -128,12 +128,12 @@
     $recentFolderActivity = getRecentFolders($conn, $bandIds, $lastloggedin);
     $uploadActivity = getUploadActivityFromLastThirtyDays($conn, $bandIds);
     $folderActivity = getFolderActivityFromLastThirtyDays($conn, $bandIds);
-    $notifications = {
+    $notifications = [
       'recentUploadActivity': $recentUploadActivity,
       'recentFolderActivity': $recentFolderActivity,
       'uploadActivity': $uploadActivity,
       'folderActivity': $folderActivity
-    };
+    ];
     return $notifications;
   }
 
