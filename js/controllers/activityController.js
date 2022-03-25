@@ -347,10 +347,12 @@ function($scope, $sce, $http, $filter) {
       for (var i = 0; i < bands.length; i++) {
           console.log(bands[i].id);
           bandIds.push(bands[i].id);
+          /*
         $http.get("/php/getRecentActivity.php?type=activityCount&bandId=" + bands[i].id)
             .then(function (response) {
               ACTIVITY_COUNTS.push(response);
             });
+            */
       }
 
       console.log(ACTIVITY_COUNTS);
