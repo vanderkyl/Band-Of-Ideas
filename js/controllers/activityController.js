@@ -12,6 +12,9 @@ function($scope, $sce, $http, $filter) {
   $scope.search = "";
 
   $scope.recentHighlights = [];
+  $scope.notifications = [];
+  $scope.uploads = [];
+  $scope.folders = [];
 
   $scope.goToLink = function() {
     var source = $scope.file.source;
