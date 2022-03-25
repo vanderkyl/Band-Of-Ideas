@@ -234,7 +234,7 @@
         while ($row = mysqli_fetch_assoc($result)) {
           $userName = getUserName($conn, $row["userId"]);
           $data = ['id' => $row["id"],
-                   'name' => $row["name"]),
+                   'name' => $row["name"],
                    'metaName' => $row["metaName"],
                    'bandId' => $row["bandId"],
                    'userName' => $userName,
