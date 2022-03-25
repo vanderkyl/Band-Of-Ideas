@@ -44,7 +44,7 @@ function loadApp(returnUrl, callback) {
 function showNavs() {
   displayElementById("sideNav");
   displayElementById("navLinks");
-  displayElementById("showSearch");
+  displayElementInlineById("showSearch");
   displayElementById("sideNavButton");
   displayElementById("navBar");
   displayElementById("signOutButton");

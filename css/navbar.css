@@ -179,12 +179,17 @@ a.nav-link:hover {
   left: -12px;
 }
 
-#showSearch, #closeSearch {
+#showSearch, #notificationButton, #userButton, #showLargeSearch, #largeNotificationButton, #largeUserButton {
   filter: invert(100%);
   cursor: pointer;
-  font-size: 20px;
-  padding-top: 10px;
+  font-size: 17px;
+  display: inline-block;
+  padding-top: 13px;
   margin-right: 20px;
+}
+
+#showSearch {
+  padding-top: 4px !important;
 }
 
 .sideNavHeader {

@@ -78,6 +78,34 @@ function openSearchFolder() {
     xmlhttp.send();
 }
 
+function showSearchForm() {
+    if ($(document).width() < 505) {
+        hideElementById("brand");
+    }
+    hideElementById("showSearch");
+    displayElementInlineById("search");
+    displayElementInlineById("closeSearch");
+}
+
+function closeSearchForm() {
+    hideElementById("closeSearch");
+    hideElementById("search");
+    displayElementInlineById("showSearch");
+    displayElementInlineById("brand");
+}
+
+function showLargeSearchForm() {
+    hideElementById("showLargeSearch");
+    displayElementInlineById("largeSearchForm");
+    displayElementInlineById("closeLargeSearch");
+}
+
+function closeLargeSearchForm() {
+    hideElementById("closeLargeSearch");
+    hideElementById("largeSearchForm");
+    displayElementInlineById("showLargeSearch");
+}
+
 function openFile(id, time) {
     console.log("Opening File");
     if (time) {

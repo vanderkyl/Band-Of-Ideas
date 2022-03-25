@@ -16,7 +16,9 @@
     if ($type == "tokenUpdate") {
       $token = $data;
       echo $userId;
-      $query = "UPDATE Users SET token = '" . $token . "', lastloggedin = NOW() WHERE id = '" . $userId . "';";
+      $user = getUser($conn, $userId);
+      $lastloggedin = $user->loginDate;
+      $query = "UPDATE Users SET token = '" . $token . "', loginDate = NOW(), lastloggedin = '" . $lastloggedin . "' WHERE id = '" . $userId . "';";
       if ($result = mysqli_query($conn, $query)) {
         echo "User update successful!";
       } else {
@@ -93,4 +95,19 @@
 
 
   mysqli_close($conn);
+
+  function getUser($conn, $id) {
+    $user = {};
+    if ($result = mysqli_query($conn, "SELECT * FROM Users Where id = " . $id . ";")){
+        // Find the new band id
+        if($row = mysqli_fetch_assoc($result)) {
+          $data = ['id' => $row["id"],
+                   'name' => $row["name"],
+                   'lastloggedin' => $row["lastloggedin"],
+                   'loginDate' => $row["loginDate"];
+          $user = $data;
+        }
+     }
+     return $user;
+  }
 ?>

@@ -3,6 +3,8 @@
   $conn = connectToDatabase();
   $data = getPostData();
   $id = $data->id;
+  date_default_timezone_set('CST6CDT');
+  $dateTime = date('F jS Y \- h:i A');
 
   $updateType = $_GET['type'];
 
@@ -15,6 +17,22 @@
         echo "File updated successfully";
       } else {
         echo "Update unsuccessful";
+        echo $query;
+      }
+      $bandId = $data->bandId;
+      $user= $_GET['user'];
+      $userId = "";
+      // Find user id
+      if ($result = mysqli_query($conn, "SELECT id FROM Users WHERE email='" . $user . "';")) {
+        if($row = mysqli_fetch_assoc($result)) {
+          $userId = $row["id"];
+        }
+      }
+      $query = "INSERT INTO UserViews (userId, fileId, bandId) VALUES ('" . $userId . "', '" . $id . "', '" . $bandId . "', '" . $dateTime . "');";
+      if ($result = mysqli_query($conn, $query)) {
+        echo "UserView inserted successfully";
+      } else {
+        echo "Insert unsuccessful";
         echo $query;
       }
     } else if ($updateType == "duration") {
@@ -37,12 +55,12 @@
         }
       }
 
-
-      $query = "INSERT INTO UserLikes (userId, fileId) VALUES ('" . $userId . "', '" . $id . "');";
+      $bandId = $data->bandId;
+      $query = "INSERT INTO UserLikes (userId, fileId, bandId, likeDate) VALUES ('" . $userId . "', '" . $id . "', '" . $bandId . "', '" . $dateTime . "');";
       if ($result = mysqli_query($conn, $query)) {
-        echo "File updated successfully";
+        echo "UserLike inserted successfully";
       } else {
-        echo "Update unsuccessful";
+        echo "Insert unsuccessful";
         echo $query;
       }
     } else if ($updateType == "video") {

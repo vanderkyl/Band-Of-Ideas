@@ -66,6 +66,10 @@ app.config(function ($routeProvider) {
     controller: 'credentialsController',
     templateUrl: 'views/forgot-password.html'
   })
+  .when("/activity", {
+    controller: 'activityController',
+    templateUrl: 'views/activity.html'
+  })
   .otherwise({
     redirectTo: '/'
   });
