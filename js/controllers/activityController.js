@@ -342,20 +342,7 @@ function($scope, $sce, $http, $filter) {
   };
   */
 
-  $scope.getRecentActivity = function(bands) {
-      var bandIds = [];
-      for (var i = 0; i < bands.length; i++) {
-          console.log(bands[i].id);
-          bandIds.push(bands[i].id);
-          /*
-        $http.get("/php/getRecentActivity.php?type=activityCount&bandId=" + bands[i].id)
-            .then(function (response) {
-              ACTIVITY_COUNTS.push(response);
-            });
-            */
-      }
-
-      console.log(ACTIVITY_COUNTS);
+  $scope.getRecentActivity = function(bandIds) {
       $http.get("/php/getRecentActivity.php?type=bandList&bandIds=" + JSON.stringify(bandIds))
           .then(function (response) {
               hideElementById("loadCommentsContainer");
@@ -366,10 +353,7 @@ function($scope, $sce, $http, $filter) {
           });
   };
 
-  $scope.getNotifications = function(bands) {
-      var bandIds = [];
-
-      console.log(ACTIVITY_COUNTS);
+  $scope.getNotifications = function(bandIds) {
       $http.get("/php/getRecentActivity.php?type=notifications&userId=" + CURRENT_USER.id + "&bandIds=" + JSON.stringify(bandIds))
           .then(function (response) {
               hideElementById("loadNotificationsContainer");
@@ -392,8 +376,13 @@ function($scope, $sce, $http, $filter) {
     setupController();
     // Do this if logged in
     if (isLoggedIn()) {
-      $scope.getRecentActivity(CURRENT_BANDS);
-      $scope.getNotifications(CURRENT_BANDS);
+      var bandIds = [];
+      for (var i = 0; i < CURRENT_BANDS.length; i++) {
+          console.log(CURRENT_BANDS[i].id);
+          bandIds.push(CURRENT_BANDS[i].id);
+      }
+      $scope.getRecentActivity(bandIds);
+      $scope.getNotifications(bandIds);
       $scope.loadUIObjects();
 
     }

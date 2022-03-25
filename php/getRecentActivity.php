@@ -26,7 +26,7 @@
         if (empty($bandIds)) {
           $data = ['notifications' => []];
         } else {
-          $data = ['notifications' => getNotifications($conn, $bandId, $userId)];
+          $data = ['notifications' => getNotifications($conn, $bandIds, $userId)];
         }
     }
 
