@@ -56,6 +56,7 @@
              'name' => $row["name"],
              'metaName' => $row["metaName"],
              'bandId' => $row["bandId"],
+             'userId' => $row["userId"],
              'parentId' => $row["parentId"],
              'numFiles' => $numFiles,
              'numFavorites' => $numFavorites,

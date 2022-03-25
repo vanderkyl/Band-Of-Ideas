@@ -6,6 +6,8 @@
   $folderName = $_GET['folderName'];
   $bandDir = "../uploads/band/" . $bandName . "/";
   $targetDir = "../uploads/band/" . $bandName . "/" . $folderName . "/";
+  date_default_timezone_set('CST6CDT');
+  $dateTime = date('F jS Y \- h:i A');
   $fileCount = $_FILES["files"]['size'][0];
   echo "File Size: " . $fileCount . "\n";
   if ($fileCount > 0) {
@@ -56,9 +58,9 @@
               $link = "/uploads/band/" . $bandName . "/" . $folderName . "/" . $file["name"];
               //$source = $file["source"];
               $source = "";
-              echo "File Info: " . $name . "\n Type: " . $type . "\n Size: " . $size . "\n Link: " . $link . "\n Duration: " . $duration;
-              $query = "INSERT INTO Files (name, metaName, type, size, link, source, folderId, bandId, duration)
-                        VALUES ('" . $name . "','" . $name . "','" . $type . "','" . $size . "','" . $link . "','" . $source . "','" . $folderId . "','" . $bandId . "','" . $duration . "')";
+              echo "File Info: " . $name . "\n Type: " . $type . "\n Size: " . $size . "\n Link: " . $link . "\n Duration: " . $duration . "\n Upload Time: " . $dateTime;
+              $query = "INSERT INTO Files (name, metaName, type, size, link, source, folderId, bandId, duration, uploadTime)
+                        VALUES ('" . $name . "','" . $name . "','" . $type . "','" . $size . "','" . $link . "','" . $source . "','" . $folderId . "','" . $bandId . "','" . $duration . "','" . $dateTime . "')";
               if (!$conn->query($query) === TRUE) {
                 echo "Query: " . $query . "\n";
                 echo "Error: " . $query . "<br>" . $conn->error;
