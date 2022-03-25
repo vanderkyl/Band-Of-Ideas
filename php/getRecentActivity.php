@@ -312,7 +312,7 @@
   }
 
   function getUser($conn, $id) {
-    $user = {};
+    $user = [];
     if ($result = mysqli_query($conn, "SELECT * FROM Users Where id = " . $id . ";")){
         // Find the new band id
         if($row = mysqli_fetch_assoc($result)) {
