@@ -104,7 +104,7 @@
           $data = ['id' => $row["id"],
                    'name' => $row["name"],
                    'lastloggedin' => $row["lastloggedin"],
-                   'loginDate' => $row["loginDate"];
+                   'loginDate' => $row["loginDate"]];
           $user = $data;
         }
      }

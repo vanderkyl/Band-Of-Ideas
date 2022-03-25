@@ -238,7 +238,7 @@
                    'metaName' => $row["metaName"],
                    'bandId' => $row["bandId"],
                    'userName' => $userName,
-                   'creationDate' => $row["creationDate"];
+                   'creationDate' => $row["creationDate"]];
           $folders[] = $data;
 
         }
@@ -319,7 +319,7 @@
           $data = ['id' => $row["id"],
                    'name' => $row["name"],
                    'lastloggedin' => $row["lastloggedin"],
-                   'loginDate' => $row["loginDate"];
+                   'loginDate' => $row["loginDate"]];
           $user = $data;
         }
      }
