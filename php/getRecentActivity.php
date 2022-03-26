@@ -123,6 +123,7 @@
   // Get Notifications (Uploads, New Folders, Likes, Comments, Highlights)
   function getNotifications($conn, $bandIds, $userId) {
     $user = getUser($conn, $userId);
+    echo $user;
     $lastloggedin = $user->lastloggedin;
     $recentUploadActivity = getRecentUploads($conn, $bandIds, $lastloggedin);
     $recentFolderActivity = getRecentFolders($conn, $bandIds, $lastloggedin);
@@ -214,7 +215,7 @@
     return $folders;
   }
 
-  function getFolderActivityFromLast30Days($conn, $bandIds) {
+  function getFolderActivityFromLastThirtyDays($conn, $bandIds) {
     $query = "SELECT * FROM Folders WHERE creationDate >= DATE_ADD(NOW(), INTERVAL -30 DAY) AND bandId = '" . $bandIds[0] . "'";
     if (count($bandIds) > 1) {
       for($i = 1; $i < count($bandIds); $i++) {
@@ -313,7 +314,7 @@
 
   function getUser($conn, $id) {
     $user = [];
-    if ($result = mysqli_query($conn, "SELECT * FROM Users Where id = " . $id . ";")){
+    if ($result = mysqli_query($conn, "SELECT * FROM Users Where id = '" . $id . "';")){
         // Find the new band id
         if($row = mysqli_fetch_assoc($result)) {
           $data = ['id' => $row["id"],
