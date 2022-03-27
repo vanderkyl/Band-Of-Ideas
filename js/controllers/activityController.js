@@ -389,7 +389,7 @@ function($scope, $sce, $http, $filter) {
               var recentComments = response.data.notifications.recentCommentActivity;
               var recentLikes = response.data.notifications.recentLikeActivity;
 
-              $scope.allNotifications = $scope.uploads.concat($scope.folders, comments));
+              $scope.allNotifications = $scope.uploads.concat($scope.folders, comments);
               $scope.allNotifications = $scope.allNotifications.concat(likes)));
               $scope.allNotifications.sort(function(a,b) {
                 return new Date(b.dateTime) - new Date(a.dateTime);
