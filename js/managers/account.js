@@ -206,6 +206,7 @@ function isLoggedIn() {
   if (!loggedIn) {
     LAST_URL = window.location;
     LAST_PATHNAME = window.location.pathname;
+    updateNotificationCounter(CURRENT_NOTIFICATIONS);
     navigateToURL("/#/login?returnUrl='" + LAST_URL + "'");
   } else {
     addBandLinks(CURRENT_BANDS);
@@ -227,6 +228,25 @@ function getReturnUrl () {
     url = url.substring(start);
   }
   return url;
+}
+
+function updateNotificationCounter(recentNotifications) {
+  CURRENT_NOTIFICATIONS = recentNotifications;
+  var numberOfNotifications = recentNotifications.length;
+  var notificationCounter = getElementById("notificationCounter");
+  var largeNotificationCounter = getElementById("largeNotificationCounter");
+  notificationCounter.style.display = "block";
+  largeNotificationCounter.style.display = "block";
+  notificationCounter.innerText = numberOfNotifications;
+  largeNotificationCounter.innerText = numberOfNotifications;
+  var notificationLink = getElementById("notificationButtonLink");
+  notificationLink.style.color = "aqua";
+  notificationLink.style.fontSize = "19px";
+  var largeNotificationLink = getElementById("largeNotificationButtonLink");
+  largeNotificationLink.style.color = "aqua";
+  largeNotificationLink.style.fontSize = "19px";
+  console.log($scope.notifications);
+  console.log($scope.recentNotifications);
 }
 
 function objectIsEmpty(obj) {
