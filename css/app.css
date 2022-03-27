@@ -870,8 +870,7 @@ input[type=search]::-webkit-search-cancel-button {-webkit-appearance: searchfiel
     width: 16px;
     height: 16px;
     color: black;
-    bottom: 4px;
-    left: -1px;
+    bottom: 6px;
 }
 
 .dropbtn {
