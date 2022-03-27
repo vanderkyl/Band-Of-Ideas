@@ -354,7 +354,7 @@ function($scope, $sce, $http, $filter) {
     return date.toLocaleString('en-US', { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true });
   };
 
-  $scope.getNotificationType(notification) {
+  $scope.getNotificationType = function(notification) {
     var text = "";
     var type = notification.notificationType;
     if (type === "upload") {
@@ -370,7 +370,7 @@ function($scope, $sce, $http, $filter) {
     }
   };
 
-  $scope.getNotificationContent(notification) {
+  $scope.getNotificationContent = function(notification) {
     var text = "";
     var type = notification.notificationType;
     if (type === "upload") {
