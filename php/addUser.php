@@ -13,7 +13,7 @@
   $metaName = $data->metaName;
   $password = $data->password;
   $existingBand = false;
-
+  date_default_timezone_set('CST6CDT');
   // Set temp Ids
   $userId = "";
   $bandId = "";

@@ -10,7 +10,7 @@
   $bandId = "";
   $userId =$data->userId;
   $description = "";
-
+  date_default_timezone_set('CST6CDT');
   if(mysqli_ping($conn)) {
     // Find band id
     if ($result = mysqli_query($conn, "SELECT id FROM Bands WHERE name='" . $band . "';")) {

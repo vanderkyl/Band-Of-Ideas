@@ -2,7 +2,7 @@
   header('Content-Type: application/json');
   require 'data/dataHelper.php';
   require 'data/bandMembers.php';
-
+  date_default_timezone_set('CST6CDT');
   $conn = connectToDatabase();
 
   $username = $_GET['username'];
