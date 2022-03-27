@@ -54,16 +54,18 @@
         <div>
           <!-- This is a Single  Notification -->
           <div id="recent{{ notification.notificationType }}Notification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="openNotification(notification)">
-              <div class="notificationType col-xs-2">
+              <div class="notificationType col-xs-4 col-sm-2 col-md-3">
                 {{ getNotificationType(notification) }}
               </div>
-              <div class="notificationBody col-xs-10">
+              <div class="notificationBody col-xs-8 col-sm-10 col-md-9">
                 {{ getNotificationContent(notification) }}
               </div>
           </div>
           <!-- End of Single Notification -->
         </div>
-
+      </div>
+      <div ng-show="!recentNotifications.length" class="folder notification col-xs-12">
+        You are all caught up
       </div>
     </div>
     <div id="recentUploadsContainer" class="col-xs-12" style="display: none">
@@ -96,17 +98,18 @@
         <div>
           <!-- This is a Single  Notification -->
           <div id="{{ notification.notificationType }}Notification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="openNotification(notification)">
-              <div class="notificationType col-xs-2">
+              <div class="notificationType col-xs-4 col-sm-2 col-md-3">
                 {{ getNotificationType(notification) }}
               </div>
-              <div class="notificationBody col-xs-10">
+              <div class="notificationBody col-xs-8 col-sm-10 col-md-9">
                 {{ getNotificationContent(notification) }}
               </div>
           </div>
           <!-- End of Single Notification -->
-
         </div>
-
+      </div>
+      <div ng-show="!allNotifications.length" class="folder notification col-xs-12">
+        Nothing to see here
       </div>
     </div>
     <div id="uploadsContainer" style="display: none" class="col-xs-12">
