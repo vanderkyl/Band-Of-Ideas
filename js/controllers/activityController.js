@@ -352,11 +352,11 @@ function($scope, $sce, $http, $filter) {
   };
 
   $scope.openFolder = function(folder) {
-    navigateToURL("/#/folder?=" + folder.id);
+    navigateToURL("/#/folder?id=" + folder.id);
   };
 
   $scope.openFile = function(file) {
-    navigateToURL("/#/idea?=" + file.id);
+    navigateToURL("/#/idea?id=" + file.id);
   };
 
   $scope.getRecentActivity = function(bandIds) {
