@@ -344,22 +344,8 @@ function($scope, $http) {
               $scope.recentNotifications = $scope.notifications.recentUploadActivity.concat($scope.notifications.recentFolderActivity);
               $scope.recentNotifications = $scope.recentNotifications.concat($scope.notifications.recentCommentActivity);
               $scope.recentNotifications = $scope.recentNotifications.concat($scope.notifications.recentLikeActivity);
-              var numberOfNotifications = $scope.recentNotifications.length;
-              CURRENT_NOTIFICATIONS = $scope.recentNotifications;
-              var notificationCounter = getElementById("notificationCounter");
-              var largeNotificationCounter = getElementById("largeNotificationCounter");
-              notificationCounter.style.display = "block";
-              largeNotificationCounter.style.display = "block";
-              notificationCounter.innerText = numberOfNotifications;
-              largeNotificationCounter.innerText = numberOfNotifications;
-              var notificationLink = getElementById("notificationButtonLink");
-              notificationLink.style.color = "aqua";
-              notificationLink.style.fontSize = "19px";
-              var largeNotificationLink = getElementById("largeNotificationButtonLink");
-              largeNotificationLink.style.color = "aqua";
-              largeNotificationLink.style.fontSize = "19px";
-              console.log($scope.notifications);
-              console.log($scope.recentNotifications);
+
+              updateNotificationCounter($scope.recentNotifications);
           });
   };
 
