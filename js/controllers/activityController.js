@@ -347,7 +347,8 @@ function($scope, $sce, $http, $filter) {
   */
 
   $scope.currentTimeToString = function(currentTime) {
-    return new Date(currentTime);
+    var date = new Date(currentTime);
+    return date.toLocaleDateString("en-US");
   };
 
   $scope.openFolder = function(id) {

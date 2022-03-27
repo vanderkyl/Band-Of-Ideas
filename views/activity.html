@@ -54,7 +54,7 @@
         </div>
         <!-- End of Single Upload Notification -->
         <!-- This is a Single Upload Notification -->
-        <div ng-switch-when="folder" id="folderNotification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="openFolder(notification.id)">
+        <div ng-switch-when="folder" id="folderNotification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="openFolder({{notification.id}})">
             <p>[Folder] {{ notification.name }} was created on {{ currentTimeToString(notification.dateTime) }}</p>
         </div>
         <!-- End of Single Upload Notification -->
