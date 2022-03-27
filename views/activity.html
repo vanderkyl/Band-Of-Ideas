@@ -56,12 +56,22 @@
         <div ng-switch on="notification.notificationType">
           <!-- This is a Single Upload Notification -->
           <div ng-switch-when="upload" id="recentUploadNotification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="openFile(notification)">
-              <p>[Upload] {{ notification.name }} was uploaded on {{ currentTimeToString(notification.dateTime) }}</p>
+              <div class="notificationType col-xs-2">
+                UPLOAD
+              </div>
+              <div class="notificationBody col-xs-10">
+                {{ notification.name }} was uploaded on {{ currentTimeToString(notification.dateTime) }}
+              </div>
           </div>
           <!-- End of Single Upload Notification -->
           <!-- This is a Single Upload Notification -->
           <div ng-switch-when="folder" id="recentFolderNotification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="openFolder(notification)">
-              <p>[Folder] {{ notification.name }} was created on {{ currentTimeToString(notification.dateTime) }}</p>
+              <div class="notificationType col-xs-2">
+                FOLDER
+              </div>
+              <div class="notificationBody col-xs-10">
+                {{ notification.name }} was created on {{ currentTimeToString(notification.dateTime) }}
+              </div>
           </div>
           <!-- End of Single Upload Notification -->
         </div>
@@ -100,12 +110,22 @@
         <div ng-switch on="notification.notificationType">
           <!-- This is a Single Upload Notification -->
           <div ng-switch-when="upload" id="uploadNotification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="openFile(notification)">
-              <p>[Upload] {{ notification.name }} was uploaded on {{ currentTimeToString(notification.dateTime) }}</p>
+              <div class="notificationType col-xs-2">
+                UPLOAD
+              </div>
+              <div class="notificationBody col-xs-10">
+                {{ notification.name }} was created on {{ currentTimeToString(notification.dateTime) }}
+              </div>
           </div>
           <!-- End of Single Upload Notification -->
           <!-- This is a Single Upload Notification -->
           <div ng-switch-when="folder" id="folderNotification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="openFolder(notification)">
-              <p>[Folder] {{ notification.name }} was created on {{ currentTimeToString(notification.dateTime) }}</p>
+              <div class="notificationType col-xs-2">
+                FOLDER
+              </div>
+              <div class="notificationBody col-xs-10">
+                {{ notification.name }} was created on {{ currentTimeToString(notification.dateTime) }}
+              </div>
           </div>
           <!-- End of Single Upload Notification -->
         </div>
