@@ -87,7 +87,7 @@
           <!-- This is a Single Like Notification -->
           <div ng-switch-when="like" id="recentLikeNotification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="openLike(notification)">
               <div class="notificationType col-xs-2">
-                Like
+                LIKE
               </div>
               <div class="notificationBody col-xs-10">
                 {{ notification.userName }} liked {{ notification.file.name }} on {{ currentTimeToString(notification.dateTime) }}

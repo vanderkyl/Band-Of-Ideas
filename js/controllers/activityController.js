@@ -404,6 +404,8 @@ function($scope, $sce, $http, $filter) {
               $scope.numberOfNotifications = $scope.allNotifications.length + $scope.recentNotifications.length;
 
               console.log($scope.notifications);
+              console.log($scope.recentNotifications);
+              console.log($scope.allNotifications);
           });
   };
 
