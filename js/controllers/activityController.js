@@ -354,6 +354,38 @@ function($scope, $sce, $http, $filter) {
     return date.toLocaleString('en-US', { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true });
   };
 
+  $scope.getNotificationType(notification) {
+    var text = "";
+    var type = notification.notificationType;
+    if (type === "upload") {
+      text = "UPLOAD";
+    } else if (type === "folder") {
+      text = "FOLDER";
+    } else if (type === "comment") {
+      text = "COMMENT";
+    } else if (type === "likedFile") {
+      text = "LIKE";
+    } else {
+      text = "NOTIFICATION";
+    }
+  };
+
+  $scope.getNotificationContent(notification) {
+    var text = "";
+    var type = notification.notificationType;
+    if (type === "upload") {
+      text = notification.name + "was uploaded on " + $scope.currentTimeToString(notification.dateTime);
+    } else if (type === "folder") {
+      text = notification.name + "was created on " + $scope.currentTimeToString(notification.dateTime);
+    } else if (type === "comment") {
+      text = notification.userName + " left a comment on " + $scope.currentTimeToString(notification.dateTime);
+    } else if (type === "likedFile") {
+      text = notification.userName + " liked " + notification.file.name + " on " + $scope.currentTimeToString(notification.dateTime);
+    } else {
+      text = "NOTIFICATION";
+    }
+  };
+
   $scope.openFolder = function(folder) {
     navigateToURL("/#/folder?id=" + folder.id);
   };
