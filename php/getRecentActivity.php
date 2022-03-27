@@ -213,9 +213,13 @@
     $lastloggedin = $user->lastloggedin;
     $recentUploadActivity = getRecentUploads($conn, $bandIds, $lastloggedin);
     $recentFolderActivity = getRecentFolders($conn, $bandIds, $lastloggedin);
+    $recentCommentActivity = getRecentCommentActivity($conn, $bandIds, $lastloggedin);
+    $recentLikeActivity = getRecentLikeActivity($conn, $bandIds, $lastloggedin);
     $notifications = [
       'recentUploadActivity' => $recentUploadActivity,
-      'recentFolderActivity' => $recentFolderActivity
+      'recentFolderActivity' => $recentFolderActivity,
+      'recentCommentActivity' => $recentCommentActivity,
+      'recentLikeActivity' => $recentLikeActivity
     ];
     return $notifications;
   }
@@ -347,7 +351,7 @@
     }
     $query = $query . ") AND likeDate BETWEEN '" . $lastloggedin . "' AND NOW()";
 
-    return getLikeActivity($conn, $bandIds, $query);
+    return getLikeActivity($conn, $query);
   }
 
   function getLikeActivityFromLastThirtyDays($conn, $bandIds, $lastloggedin) {
@@ -359,10 +363,10 @@
     }
     $query = $query . ") AND likeDate BETWEEN DATE_ADD('" . $lastloggedin . "', INTERVAL -30 DAY) AND '" . $lastloggedin . "'";
 
-    return getLikeActivity($conn, $bandIds, $query);
+    return getLikeActivity($conn, $query);
   }
 
-  function getLikeActivity($conn, $bandIds, $query) {
+  function getLikeActivity($conn, $query) {
     if ($result = mysqli_query($conn, $query)) {
       $data = "";
       $likes = [];

@@ -397,10 +397,8 @@ function($scope, $sce, $http, $filter) {
               $scope.recentNotifications.sort(function(a,b) {
                 return new Date(b.dateTime) - new Date(a.dateTime);
               });
-              $scope.numberOfNotifications = $scope.allNotifications.length;
-              $scope.allNotifications = $scope.allNotifications.filter(function(el) {
-                return !$scope.recentNotifications.includes(el);
-              });
+              $scope.numberOfNotifications = $scope.allNotifications.length + $scope.recentNotifications.length;
+
               console.log($scope.notifications);
           });
   };
