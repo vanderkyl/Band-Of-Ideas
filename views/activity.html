@@ -85,7 +85,7 @@
           </div>
           <!-- End of Single Comment Notification -->
           <!-- This is a Single Like Notification -->
-          <div ng-switch-when="like" id="recentLikeNotification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="openLike(notification)">
+          <div ng-switch-when="likedFile" id="recentLikeNotification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="openLike(notification)">
               <div class="notificationType col-xs-2">
                 LIKE
               </div>
@@ -94,6 +94,16 @@
               </div>
           </div>
           <!-- End of Single Like Notification -->
+          <!-- This is a Single Notification -->
+          <div ng-switch-default id="recentLikeNotification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="openLike(notification)">
+              <div class="notificationType col-xs-2">
+                NOTIFICATION
+              </div>
+              <div class="notificationBody col-xs-10">
+                Notification: {{ notification.notificationType }} on {{ currentTimeToString(notification.dateTime) }}
+              </div>
+          </div>
+          <!-- End of Single Notification -->
         </div>
 
       </div>
