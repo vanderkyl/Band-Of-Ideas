@@ -342,6 +342,8 @@ function($scope, $http) {
           .then(function (response) {
               $scope.notifications = response.data.notifications;
               $scope.recentNotifications = $scope.notifications.recentUploadActivity.concat($scope.notifications.recentFolderActivity);
+              $scope.recentNotifications = $scope.recentNotifications.concat($scope.notifications.recentCommentActivity);
+              $scope.recentNotifications = $scope.recentNotifications.concat($scope.notifications.recentLikeActivity);
               var numberOfNotifications = $scope.recentNotifications.length;
               var notificationCounter = getElementById("notificationCounter");
               var largeNotificationCounter = getElementById("largeNotificationCounter");
