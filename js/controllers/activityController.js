@@ -347,11 +347,15 @@ function($scope, $sce, $http, $filter) {
   */
 
   $scope.currentTimeToString = function(currentTime) {
-    return timeToString(parseInt(currentTime));
+    return new Date(currentTime);
   };
 
   $scope.openFolder = function(id) {
     navigateToURL("/#/folder?=" + id);
+  };
+
+  $scope.openFile = function(id) {
+    navigateToURL("/#/idea?=" + id);
   };
 
   $scope.getRecentActivity = function(bandIds) {
