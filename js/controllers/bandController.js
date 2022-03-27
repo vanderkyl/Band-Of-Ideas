@@ -244,7 +244,8 @@ function($scope, $sce, $http, $filter) {
         var folder = {
             name: $scope.newFolder,
             metaName: generateMetaName($scope.newFolder),
-            band: $scope.band.name
+            band: $scope.band.name,
+            userId: CURRENT_USER.id
         };
         // TODO verify that the right data is there
         $http.post("/php/addFolder.php", folder)
@@ -422,4 +423,3 @@ function($scope, $sce, $http, $filter) {
     $scope.loadController();
 
 }]);
-

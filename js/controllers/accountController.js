@@ -16,6 +16,7 @@ function($scope, $http) {
   };
   $scope.returnUrl = "";
   var existingBand = "";
+  $scope.notifications = [];
 
   // -- SIGN IN METHODS -- // -------------------------------------------------
 
@@ -336,6 +337,18 @@ function($scope, $http) {
     });
   };
 
+  $scope.getNotifications = function(bandIds) {
+      $http.get("/php/getRecentActivity.php?type=recentNotifications&userId=" + CURRENT_USER.id + "&bandIds=" + JSON.stringify(bandIds))
+          .then(function (response) {
+              $scope.notifications = response.data.notifications;
+              $scope.recentNotifications = $scope.notifications.recentUploadActivity.concat($scope.notifications.recentFolderActivity);
+              $scope.recentNotifications = $scope.recentNotifications.concat($scope.notifications.recentCommentActivity);
+              $scope.recentNotifications = $scope.recentNotifications.concat($scope.notifications.recentLikeActivity);
+
+              updateNotificationCounter($scope.recentNotifications);
+          });
+  };
+
   // -- END OF PHP CALLS -- // -------------------------------------------------
 
   // -- STARTUP CONTROLLER METHODS -- // ----------------------------------------
@@ -366,6 +379,8 @@ function($scope, $http) {
       // Check if user is logged in. Show user information instead of authentication forms.
       if (loggedIn) {
           $scope.loadUserData();
+          var bandIds = convertCurrentBandsToBandIds();
+          $scope.getNotifications(bandIds);
           navigateToURL("/#/dashboard");
       } else {
           if (signedOut) {
@@ -378,7 +393,8 @@ function($scope, $http) {
                   if (success) {
                       CURRENT_USER = loggedInUser;
                       CURRENT_BANDS = loggedInUser.bands;
-
+                      var bandIds = convertCurrentBandsToBandIds();
+                      $scope.getNotifications(bandIds);
                       $scope.loadUserData();
                       loginUser($scope.returnUrl);
 

@@ -8,7 +8,9 @@
   $band = $data->band;
   $folderId = "";
   $bandId = "";
-
+  $userId =$data->userId;
+  $description = "";
+  date_default_timezone_set('CST6CDT');
   if(mysqli_ping($conn)) {
     // Find band id
     if ($result = mysqli_query($conn, "SELECT id FROM Bands WHERE name='" . $band . "';")) {
@@ -18,8 +20,8 @@
     }
     // If band id was found, Insert the folder
     if ($bandId != "") {
-      $query = "INSERT INTO Folders (name, metaName, bandId)
-                VALUES ('" . $name . "','" . $metaName . "','" . $bandId . "');";
+      $query = "INSERT INTO Folders (name, metaName, bandId, userId, description, creationDate)
+                VALUES ('" . $name . "','" . $metaName . "','" . $bandId . "','" . $userId . "','" . $description . "',NOW());";
       if ($result = mysqli_query($conn, $query)) {
         echo "New record created successfully!";
       } else {

@@ -46,22 +46,6 @@ function closeSideNav() {
     displayElementInlineById("sideNavButton");
 }
 
-function showSearchForm() {
-    if ($(document).width() < 505) {
-        hideElementById("brand");
-    }
-    hideElementById("showSearch");
-    displayElementInlineById("search");
-    displayElementInlineById("closeSearch");
-}
-
-function closeSearchForm() {
-    hideElementById("closeSearch");
-    hideElementById("search");
-    displayElementInlineById("showSearch");
-    displayElementInlineById("brand");
-}
-
 function changeBackgroundColor(id) {
     var currentId = getBackgroundColorId();
     if (currentId !== undefined) {

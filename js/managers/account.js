@@ -10,6 +10,7 @@ var CURRENT_FILE_INDEX = 0;
 var CURRENT_MEMBERS = [];
 var CURRENT_PLAYLISTS = [];
 var CURRENT_PLAYLIST = {};
+var CURRENT_NOTIFICATIONS = [];
 var ACTIVITY_COUNTS =  [];
 var REQUESTED_URL = "";
 var LAST_URL = "";
@@ -44,7 +45,7 @@ function loadApp(returnUrl, callback) {
 function showNavs() {
   displayElementById("sideNav");
   displayElementById("navLinks");
-  displayElementById("showSearch");
+  displayElementInlineById("showSearch");
   displayElementById("sideNavButton");
   displayElementById("navBar");
   displayElementById("signOutButton");
@@ -205,6 +206,7 @@ function isLoggedIn() {
   if (!loggedIn) {
     LAST_URL = window.location;
     LAST_PATHNAME = window.location.pathname;
+    updateNotificationCounter(CURRENT_NOTIFICATIONS);
     navigateToURL("/#/login?returnUrl='" + LAST_URL + "'");
   } else {
     addBandLinks(CURRENT_BANDS);
@@ -226,6 +228,32 @@ function getReturnUrl () {
     url = url.substring(start);
   }
   return url;
+}
+
+function updateNotificationCounter(recentNotifications) {
+  CURRENT_NOTIFICATIONS = recentNotifications;
+  var numberOfNotifications = recentNotifications.length;
+  var notificationCounter = getElementById("notificationCounter");
+  var largeNotificationCounter = getElementById("largeNotificationCounter");
+  var notificationLink = getElementById("notificationButtonLink");
+  var largeNotificationLink = getElementById("largeNotificationButtonLink");
+  if (numberOfNotifications === 0) {
+    notificationCounter.style.display = "none";
+    largeNotificationCounter.style.display = "none";
+    notificationLink.style.color = "#333";
+    notificationLink.style.fontSize = "17px";
+    largeNotificationLink.style.color = "#333";
+    largeNotificationLink.style.fontSize = "17px";
+  } else {
+    notificationCounter.style.display = "block";
+    largeNotificationCounter.style.display = "block";
+    notificationCounter.innerText = numberOfNotifications;
+    largeNotificationCounter.innerText = numberOfNotifications;
+    notificationLink.style.color = "aqua";
+    notificationLink.style.fontSize = "19px";
+    largeNotificationLink.style.color = "aqua";
+    largeNotificationLink.style.fontSize = "19px";
+  }
 }
 
 function objectIsEmpty(obj) {
@@ -250,4 +278,13 @@ function addBandLinks(bands) {
     }
     bandListFilled = true;
   }
+}
+
+function convertCurrentBandsToBandIds() {
+  var bandIds = [];
+  for (var i = 0; i < CURRENT_BANDS.length; i++) {
+      console.log(CURRENT_BANDS[i].id);
+      bandIds.push(CURRENT_BANDS[i].id);
+  }
+  return bandIds;
 }

@@ -10,7 +10,7 @@
   $bandCode = $data->band->code;
   $userId = $data->userId;
   $joiningBand = $data->band->joiningBand;
-
+  date_default_timezone_set('CST6CDT');
   if(mysqli_ping($conn)) {
     // Insert Band
     $bandQuery = "";

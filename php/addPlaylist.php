@@ -7,7 +7,7 @@
   $setListName = $data->name;
   $bandId = $data->bandId;
   $userId = $data->userId;
-
+  date_default_timezone_set('CST6CDT');
   if(mysqli_ping($conn)) {
 
     $query = "INSERT INTO Playlists (name, userId, bandId, public, creationDate)

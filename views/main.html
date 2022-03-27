@@ -13,7 +13,7 @@
   <div class="dashboard-search col-xs-12" style="margin-top: -10px;">
     <form class="">
       <div class="form-group">
-        <input id="large-search-input" type="text" class="col-xs-12" placeholder="Search Ideas" onkeyup="showResult(this.value, 'large-live-search')" autocomplete="off">
+        <input id="large-search-input" type="search" class="col-xs-12" placeholder="Search Ideas" onkeyup="showResult(this.value, 'large-live-search')" autocomplete="off">
       </div>
       <!-- Search Results -->
       <div id="large-live-search" class="col-xs-12"></div>
@@ -50,9 +50,9 @@
         </div>
       </div>
       <div class="col-xs-3 col-sm-3" style="padding: 5px">
-        <div class="dashboardButton" onclick="scrollToElementById('recentComments')">
-          <strong style="font-size: 18px">{{ recentHighlights.length }}</strong><br>
-          <span style="font-size: 0.8em">Comments</span>
+        <div class="dashboardButton" onclick="navigateToURL('/#/activity')">
+          <strong style="font-size: 18px">{{ numberOfNotifications }}</strong><br>
+          <span style="font-size: 0.8em">Notifications</span>
           <div style="font-size: 8px">
             <i class="fas fa-chevron-down"></i>
           </div>
@@ -152,7 +152,7 @@
       </div>
     </div>
   </div>
-  <!-- Recent Comment Section -->
+  <!-- Recent Comment Section
   <div id="recentComments" class="col-xs-12">
     <div class="containers col-xs-12" style="padding: 5px;">
       <div id="activityHeader" style="height: 40px;">
@@ -188,7 +188,7 @@
           </div>
         </div>
     </div>
-  </div>
+  </div>-->
   <!-- Modals -->
   <playlists-modal></playlists-modal>
   <add-band-modal></add-band-modal>
