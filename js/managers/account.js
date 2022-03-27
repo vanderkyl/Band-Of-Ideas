@@ -235,16 +235,25 @@ function updateNotificationCounter(recentNotifications) {
   var numberOfNotifications = recentNotifications.length;
   var notificationCounter = getElementById("notificationCounter");
   var largeNotificationCounter = getElementById("largeNotificationCounter");
-  notificationCounter.style.display = "block";
-  largeNotificationCounter.style.display = "block";
-  notificationCounter.innerText = numberOfNotifications;
-  largeNotificationCounter.innerText = numberOfNotifications;
   var notificationLink = getElementById("notificationButtonLink");
-  notificationLink.style.color = "aqua";
-  notificationLink.style.fontSize = "19px";
   var largeNotificationLink = getElementById("largeNotificationButtonLink");
-  largeNotificationLink.style.color = "aqua";
-  largeNotificationLink.style.fontSize = "19px";
+  if (numberOfNotifications === 0) {
+    notificationCounter.style.display = "none";
+    largeNotificationCounter.style.display = "none";
+    notificationLink.style.color = "#333";
+    notificationLink.style.fontSize = "17px";
+    largeNotificationLink.style.color = "#333";
+    largeNotificationLink.style.fontSize = "17px";
+  } else {
+    notificationCounter.style.display = "block";
+    largeNotificationCounter.style.display = "block";
+    notificationCounter.innerText = numberOfNotifications;
+    largeNotificationCounter.innerText = numberOfNotifications;
+    notificationLink.style.color = "aqua";
+    notificationLink.style.fontSize = "19px";
+    largeNotificationLink.style.color = "aqua";
+    largeNotificationLink.style.fontSize = "19px";
+  }
 }
 
 function objectIsEmpty(obj) {
