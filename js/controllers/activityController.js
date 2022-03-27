@@ -389,12 +389,14 @@ function($scope, $sce, $http, $filter) {
               var recentComments = response.data.notifications.recentCommentActivity;
               var recentLikes = response.data.notifications.recentLikeActivity;
 
-              $scope.allNotifications = $scope.uploads.concat($scope.folders, comments);
-              $scope.allNotifications = $scope.allNotifications.concat(likes)));
+              $scope.allNotifications = $scope.uploads.concat($scope.folders);
+              $scope.allNotifications = $scope.allNotifications.concat(comments);
+              $scope.allNotifications = $scope.allNotifications.concat(likes);
               $scope.allNotifications.sort(function(a,b) {
                 return new Date(b.dateTime) - new Date(a.dateTime);
               });
-              $scope.recentNotifications = $scope.recentUploads.concat($scope.recentFolders, recentComments);
+              $scope.recentNotifications = $scope.recentUploads.concat($scope.recentFolders);
+              $scope.recentNotifications = $scope.recentNotifications.concat(recentComments);
               $scope.recentNotifications = $scope.recentNotifications.concat(recentLikes);
               $scope.recentNotifications.sort(function(a,b) {
                 return new Date(b.dateTime) - new Date(a.dateTime);
