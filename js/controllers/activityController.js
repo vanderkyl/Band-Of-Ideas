@@ -347,6 +347,18 @@ function($scope, $sce, $http, $filter) {
 
   };
   */
+  $scope.updateUser = function(userId) {
+    $http.post("/php/updateUser.php?userId=" + userId + "&type=tokenUpdate", "token")
+    .then(function (response) {
+      console.log("Updated user successfully.");
+      callback(true);
+    },
+    function (response) {
+      console.log("The update failed: " + response.data);
+      callback(false);
+    });
+  }
+
   $scope.timeToString = function(currentTime) {
     return timeToString(parseInt(currentTime));
   };
@@ -477,8 +489,8 @@ function($scope, $sce, $http, $filter) {
   };
 
   $scope.loadUIObjects = function() {
-
-
+    $scope.updateUser(CURRENT_USER.id);
+    
     finishControllerSetup();
   };
 
