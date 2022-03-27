@@ -368,6 +368,7 @@ function($scope, $sce, $http, $filter) {
     } else {
       text = "NOTIFICATION";
     }
+    return text;
   };
 
   $scope.getNotificationContent = function(notification) {
@@ -384,6 +385,7 @@ function($scope, $sce, $http, $filter) {
     } else {
       text = "NOTIFICATION";
     }
+    return text;
   };
 
   $scope.openFolder = function(folder) {

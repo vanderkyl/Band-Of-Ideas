@@ -18,6 +18,7 @@ function($scope, $http) {
   $scope.playlists = [];
   $scope.playlistName = "";
   $scope.numberOfIdeas = 0;
+  $scope.numberOfNotifications = 0;
 
   // -- MAIN METHODS -- // ----------------------------------------
 
@@ -209,25 +210,7 @@ function($scope, $http) {
     }
 
   $scope.getRecentActivity = function(bands) {
-      var bandIds = [];
-      for (var i = 0; i < bands.length; i++) {
-          console.log(bands[i].id);
-          bandIds.push(bands[i].id);
-        $http.get("/php/getRecentActivity.php?type=activityCount&bandId=" + bands[i].id)
-            .then(function (response) {
-              ACTIVITY_COUNTS.push(response);
-            });
-      }
-
-      console.log(ACTIVITY_COUNTS);
-      $http.get("/php/getRecentActivity.php?type=bandList&bandIds=" + JSON.stringify(bandIds))
-          .then(function (response) {
-              hideElementById("loadCommentsContainer");
-              displayElementById("commentContainer");
-              //$scope.recentComments = response.data.comments;
-              $scope.recentHighlights = response.data.highlights;
-              console.log($scope.recentHighlights);
-          });
+      $scope.numberOfNotifications = CURRENT_NOTIFICATIONS.length;
   };
 
   $scope.showIdeaGraph = function () {
