@@ -4,7 +4,7 @@
   require 'data/bandMembers.php';
   header('Content-Type: text/plain');
   $conn = connectToDatabase();
-
+  date_default_timezone_set('CST6CDT');
   $postData = file_get_contents("php://input");
     $data = json_decode($postData);
     $userId = $_GET['userId'];

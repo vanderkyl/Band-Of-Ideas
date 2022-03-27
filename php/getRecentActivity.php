@@ -1,7 +1,7 @@
 <?php
   header('Content-Type: application/json');
   require 'data/dataHelper.php';
-
+  date_default_timezone_set('CST6CDT');
   $conn = connectToDatabase();
 
   if(mysqli_ping($conn)) {
