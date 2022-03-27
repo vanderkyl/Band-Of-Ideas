@@ -341,7 +341,7 @@ function($scope, $http) {
       $http.get("/php/getRecentActivity.php?type=recentNotifications&userId=" + CURRENT_USER.id + "&bandIds=" + JSON.stringify(bandIds))
           .then(function (response) {
               $scope.notifications = response.data.notifications;
-              $scope.recentNotifications = $scope.notifications.recentUploads.concat($scope.notifications.recentFolders);
+              $scope.recentNotifications = $scope.notifications.recentUploadActivity.concat($scope.notifications.recentFolderActivity);
               var numberOfNotifications = $scope.recentNotifications.length;
               var notificationCounter = getElementById("notificationCounter");
               var largeNotificationCounter = getElementById("largeNotificationCounter");
