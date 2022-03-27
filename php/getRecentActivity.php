@@ -123,7 +123,7 @@
   // Get Notifications (Uploads, New Folders, Likes, Comments, Highlights)
   function getNotifications($conn, $bandIds, $userId) {
     $user = getUser($conn, $userId);
-    echo $user;
+    $user = (object)$user;
     $lastloggedin = $user->lastloggedin;
     $recentUploadActivity = getRecentUploads($conn, $bandIds, $lastloggedin);
     $recentFolderActivity = getRecentFolders($conn, $bandIds, $lastloggedin);
@@ -139,23 +139,26 @@
   }
 
   function getRecentUploads($conn, $bandIds, $lastloggedin) {
-    $query = "SELECT * FROM Files WHERE uploadDate >= DATE_ADD('" . $lastloggedin . "', INTERVAL -30 DAY) AND bandId = '" . $bandIds[0] . "'";
+    $query = "SELECT * FROM Files WHERE (bandId = '" . $bandIds[0] . "'";
     if (count($bandIds) > 1) {
       for($i = 1; $i < count($bandIds); $i++) {
         $query = $query . " OR bandId = '" . $bandIds[$i] . "'";
       }
     }
+    $query = $query . ") AND uploadTime BETWEEN '" . $lastloggedin . "' AND NOW()";
+
     $uploads = getUploadActivity($conn, $query);
     return $uploads;
   }
 
   function getUploadActivityFromLastThirtyDays($conn, $bandIds) {
-    $query = "SELECT * FROM Files WHERE uploadDate >= DATE_ADD(NOW(), INTERVAL -30 DAY) AND bandId = '" . $bandIds[0] . "'";
+    $query = "SELECT * FROM Files WHERE (bandId = '" . $bandIds[0] . "'";
     if (count($bandIds) > 1) {
       for($i = 1; $i < count($bandIds); $i++) {
         $query = $query . " OR bandId = '" . $bandIds[$i] . "'";
       }
     }
+    $query = $query . ") AND uploadTime >= DATE_ADD(NOW(), INTERVAL -30 DAY)";
     $uploads = getUploadActivity($conn, $query);
     return $uploads;
   }
@@ -194,8 +197,7 @@
                    'uploadTime' => $row["uploadTime"],
                    'userName' => $userName,
                    'folderId' => $row["folderId"],
-                   'bandId' => $row["bandId"],
-                   'bandName' => $band["name"]];
+                   'bandId' => $row["bandId"]];
           $uploads[] = $data;
 
         }
@@ -205,23 +207,25 @@
   }
 
   function getRecentFolders($conn, $bandIds, $lastloggedin) {
-    $query = "SELECT * FROM Folders WHERE creationDate >= DATE_ADD('" . $lastloggedin . "', INTERVAL -30 DAY) AND bandId = '" . $bandIds[0] . "'";
+    $query = "SELECT * FROM Folders WHERE (bandId = '" . $bandIds[0] . "'";
     if (count($bandIds) > 1) {
       for($i = 1; $i < count($bandIds); $i++) {
         $query = $query . " OR bandId = '" . $bandIds[$i] . "'";
       }
     }
+    $query = $query . ") AND creationDate BETWEEN '" . $lastloggedin . "' AND NOW()";
     $folders = getFolderActivity($conn, $query);
     return $folders;
   }
 
   function getFolderActivityFromLastThirtyDays($conn, $bandIds) {
-    $query = "SELECT * FROM Folders WHERE creationDate >= DATE_ADD(NOW(), INTERVAL -30 DAY) AND bandId = '" . $bandIds[0] . "'";
+    $query = "SELECT * FROM Folders WHERE (bandId = '" . $bandIds[0] . "'";
     if (count($bandIds) > 1) {
       for($i = 1; $i < count($bandIds); $i++) {
         $query = $query . " OR bandId = '" . $bandIds[$i] . "'";
       }
     }
+    $query = $query . ") AND creationDate >= DATE_ADD(NOW(), INTERVAL -30 DAY)";
     $folders = getFolderActivity($conn, $query);
     return $folders;
   }
