@@ -390,6 +390,9 @@ function($scope, $sce, $http, $filter) {
               $scope.recentNotifications.sort(function(a,b) {
                 return new Date(b.dateTime) - new Date(a.dateTime);
               });
+              $scope.allNotifications = $scope.allNotifications.filter(function(el) {
+                return !$scope.recentNotifications.includes(el);
+              });
               console.log($scope.notifications);
           });
   };
