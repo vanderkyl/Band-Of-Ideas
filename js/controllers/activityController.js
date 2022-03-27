@@ -346,6 +346,10 @@ function($scope, $sce, $http, $filter) {
   };
   */
 
+  $scope.currentTimeToString = function(currentTime) {
+    return timeToString(parseInt(currentTime));
+  };
+
   $scope.openFolder = function(id) {
     navigateToURL("/#/folder?=" + id);
   };
@@ -375,11 +379,11 @@ function($scope, $sce, $http, $filter) {
 
               $scope.allNotifications = $scope.uploads.concat($scope.folders);
               $scope.allNotifications.sort(function(a,b) {
-                return new Date(b.dateTime) - new DateTime(a.dateTime);
+                return new Date(b.dateTime) - new Date(a.dateTime);
               });
               $scope.recentNotifications = $scope.recentUploads.concat($scope.recentFolders);
               $scope.recentNotifications.sort(function(a,b) {
-                return new Date(b.dateTime) - new DateTime(a.dateTime);
+                return new Date(b.dateTime) - new Date(a.dateTime);
               });
               console.log($scope.notifications);
           });

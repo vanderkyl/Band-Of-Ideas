@@ -13,12 +13,12 @@
       <div ng-switch on="notification.notificationType">
         <!-- This is a Single Upload Notification -->
         <div ng-switch-when="upload" id="recentUploadNotification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="">
-            <p>[Upload] {{ notification.name }} was uploaded on {{ notification.dateTime }}</p>
+            <p>[Upload] {{ notification.name }} was uploaded on {{ currentTimeToString(notification.dateTime) }}</p>
         </div>
         <!-- End of Single Upload Notification -->
         <!-- This is a Single Upload Notification -->
-        <div ng-switch-when="folder" id="recentFolderNotification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="">
-            <p>[Folder] {{ notification.name }} was created on {{ notification.dateTime }}</p>
+        <div ng-switch-when="folder" id="recentFolderNotification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="openFolder(id)">
+            <p>[Folder] {{ notification.name }} was created on {{ currentTimeToString(notification.dateTime) }}</p>
         </div>
         <!-- End of Single Upload Notification -->
       </div>
@@ -29,7 +29,7 @@
     | orderBy:sortBy" >
       <!-- This is a Single Upload Notification -->
       <div id="recentUploadNotification-{{ upload.id }}" class="folder notification col-xs-12" data-index="{{ upload.id }}" ng-click="">
-          <p>[Upload] {{ upload.name }} was uploaded on {{ upload.uploadDate }}</p>
+          <p>[Upload] {{ upload.name }} was uploaded on {{ currentTimeToString(upload.uploadDate) }}</p>
       </div>
       <!-- End of Single Upload Notification -->
     </div>
@@ -38,7 +38,7 @@
     | orderBy:sortBy" >
       <!-- This is a Single Folder Notification -->
       <div id="recentFolderNotification-{{ folder.id }}" class="folder notification col-xs-12" data-index="{{ folder.id }}" ng-click="openFolder(folder.id)">
-          <p>[Folder] {{ folder.name }} was created on {{ folder.creationDate }}</p>
+          <p>[Folder] {{ folder.name }} was created on {{ currentTimeToString(folder.creationDate) }}</p>
       </div>
       <!-- End of Single Folder Notification -->
     </div>
@@ -50,12 +50,12 @@
       <div ng-switch on="notification.notificationType">
         <!-- This is a Single Upload Notification -->
         <div ng-switch-when="upload" id="uploadNotification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="">
-            <p>[Upload] {{ notification.name }} was uploaded on {{ notification.dateTime }}</p>
+            <p>[Upload] {{ notification.name }} was uploaded on {{ currentTimeToString(notification.dateTime) }}</p>
         </div>
         <!-- End of Single Upload Notification -->
         <!-- This is a Single Upload Notification -->
         <div ng-switch-when="folder" id="folderNotification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="">
-            <p>[Folder] {{ notification.name }} was created on {{ notification.dateTime }}</p>
+            <p>[Folder] {{ notification.name }} was created on {{ currentTimeToString(notification.dateTime) }}</p>
         </div>
         <!-- End of Single Upload Notification -->
       </div>
@@ -66,7 +66,7 @@
     | orderBy:sortBy" >
       <!-- This is a Single Upload Notification -->
       <div id="uploadNotification-{{ upload.id }}" class="folder notification col-xs-12" data-index="{{ upload.id }}" ng-click="">
-          <p>{{ upload.name }} was uploaded on {{ upload.uploadDate }}</p>
+          <p>{{ upload.name }} was uploaded on {{ currentTimeToString(upload.uploadDate) }}</p>
       </div>
       <!-- End of Single Upload Notification -->
     </div>
@@ -75,7 +75,7 @@
     | orderBy:sortBy" >
       <!-- This is a Single Folder Notification -->
       <div id="folderNotification-{{ folder.id }}" class="folder notification col-xs-12" data-index="{{ folder.id }}" ng-click="openFolder(folder.id)">
-          <p>The folder [{{ folder.name }}] was created on {{ folder.creationDate }}</p>
+          <p>The folder [{{ folder.name }}] was created on {{ currentTimeToString(folder.creationDate) }}</p>
       </div>
       <!-- End of Single Folder Notification -->
     </div>
