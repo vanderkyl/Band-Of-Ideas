@@ -135,9 +135,10 @@
     </div>
 
   </div>
-  <h4 style="color: white; text-align: center; margin-top: 10px;">Recent Comments</h4>
+
     <!-- Recent Comment Section -->
     <div id="recentComments" class="col-xs-12" style="padding: 0;">
+      <h4 style="color: white; text-align: center; margin-top: 25px;">Recent Comments</h4>
       <div class="containers col-xs-12" style="padding: 5px;">
         <div id="activityHeader" style="height: 40px;">
           <span id="activityTitle" class="col-xs-6">Recent Comments</span>
@@ -162,7 +163,7 @@
                 </div>
                 <div class="col-xs-12" style="padding: 10px; border-bottom: 1px solid #ffffff59; border-top: 1px solid #ffffff59;">
                   <div class="col-xs-10">{{ comment.comment }}</div>
-                  <div ng-if="comment.highlightTime !== 0 && comment.highlightTime !== -1" >{{ currentTimeToString(comment.highlightTime) }}</div>
+                  <div ng-if="comment.highlightTime !== 0 && comment.highlightTime !== -1" >{{ timeToString(comment.highlightTime) }}</div>
                 </div>
                 <div class="col-xs-12" style="padding: 5px;">
                   <div class="col-xs-12" style="padding: 0px; padding-right: 5px; text-align: right; font-size: 9px">{{ comment.band.name }} - {{ comment.file.folder.name }} - <strong>{{ comment.file.name }}</strong></div>

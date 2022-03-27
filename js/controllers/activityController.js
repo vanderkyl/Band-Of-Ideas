@@ -347,6 +347,9 @@ function($scope, $sce, $http, $filter) {
 
   };
   */
+  $scope.timeToString = function(currentTime) {
+    return timeToString(parseInt(currentTime));
+  };
 
   $scope.currentTimeToString = function(currentTime) {
     var date = new Date(currentTime);
@@ -398,7 +401,7 @@ function($scope, $sce, $http, $filter) {
       navigateToURL("/#/idea?id=" + notification.fileId);
     } else if (type === "likedFile") {
       navigateToURL("/#/idea?id=" + notification.fileId);
-    } 
+    }
   };
 
   $scope.openFolder = function(folder) {
@@ -407,6 +410,15 @@ function($scope, $sce, $http, $filter) {
 
   $scope.openFile = function(file) {
     navigateToURL("/#/idea?id=" + file.id);
+  };
+
+  $scope.openFile = function(id, time) {
+      var numTime = parseInt(time);
+      if (numTime > 0) {
+          openFile(id, time);
+      } else {
+          openFile(id, 0);
+      }
   };
 
   $scope.openComment = function(comment) {
