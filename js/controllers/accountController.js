@@ -16,6 +16,7 @@ function($scope, $http) {
   };
   $scope.returnUrl = "";
   var existingBand = "";
+  $scope.notifications = [];
 
   // -- SIGN IN METHODS -- // -------------------------------------------------
 
@@ -334,6 +335,23 @@ function($scope, $http) {
       console.log(response.data);
       callback(response.data);
     });
+  };
+
+  $scope.getNotifications = function(bandIds) {
+      $http.get("/php/getRecentActivity.php?type=recentNotifications&userId=" + CURRENT_USER.id + "&bandIds=" + JSON.stringify(bandIds))
+          .then(function (response) {
+              $scope.notifications = response.data.notifications;
+              $scope.recentNotifications = $scope.notifications.recentUploads.concat($scope.notifications.recentFolders);
+              var numberOfNotifications = $scope.recentNotifications.length;
+              var notificationCounter = getElementById("notificationCounter");
+              var largeNotificationCounter = getElementById("largeNotificationCounter");
+              notificationCounter.style.display = "block";
+              largeNotificationCounter.style.display = "block";
+              notificationCounter.innerText = numberOfNotifications;
+              largeNotificationCounter.innerText = numberOfNotifications;
+              console.log($scope.notifications);
+              console.log($scope.recentNotifications);
+          });
   };
 
   // -- END OF PHP CALLS -- // -------------------------------------------------

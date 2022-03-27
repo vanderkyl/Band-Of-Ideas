@@ -348,15 +348,15 @@ function($scope, $sce, $http, $filter) {
 
   $scope.currentTimeToString = function(currentTime) {
     var date = new Date(currentTime);
-    return date.toLocaleDateString("en-US");
+    return date.toLocaleString('en-US', { hour12: true });
   };
 
-  $scope.openFolder = function(id) {
-    navigateToURL("/#/folder?=" + id);
+  $scope.openFolder = function(folder) {
+    navigateToURL("/#/folder?=" + folder.id);
   };
 
-  $scope.openFile = function(id) {
-    navigateToURL("/#/idea?=" + id);
+  $scope.openFile = function(file.id) {
+    navigateToURL("/#/idea?=" + file.id);
   };
 
   $scope.getRecentActivity = function(bandIds) {
