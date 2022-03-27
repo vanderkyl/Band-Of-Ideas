@@ -60,7 +60,7 @@
               $source = "";
               echo "File Info: " . $name . "\n Type: " . $type . "\n Size: " . $size . "\n Link: " . $link . "\n Duration: " . $duration . "\n Upload Time: " . $dateTime;
               $query = "INSERT INTO Files (name, metaName, type, size, link, source, folderId, bandId, duration, uploadTime)
-                        VALUES ('" . $name . "','" . $name . "','" . $type . "','" . $size . "','" . $link . "','" . $source . "','" . $folderId . "','" . $bandId . "','" . $duration . "','" . $dateTime . "')";
+                        VALUES ('" . $name . "','" . $name . "','" . $type . "','" . $size . "','" . $link . "','" . $source . "','" . $folderId . "','" . $bandId . "','" . $duration . "',NOW())";
               if (!$conn->query($query) === TRUE) {
                 echo "Query: " . $query . "\n";
                 echo "Error: " . $query . "<br>" . $conn->error;

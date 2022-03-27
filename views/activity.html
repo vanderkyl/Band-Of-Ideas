@@ -16,7 +16,7 @@
       </div>
       <div class="col-xs-3 col-sm-3" style="padding: 5px">
         <div class="dashboardButton" onclick="">
-          <strong style="font-size: 18px">{{ allNotifications.length }}</strong><br>
+          <strong style="font-size: 18px">{{ numberOfNotifications }}</strong><br>
           <span style="font-size: 0.8em">Notifications</span>
           <div style="font-size: 8px">
             <i class="fas fa-chevron-down"></i>
@@ -64,7 +64,7 @@
               </div>
           </div>
           <!-- End of Single Upload Notification -->
-          <!-- This is a Single Upload Notification -->
+          <!-- This is a Single Folder Notification -->
           <div ng-switch-when="folder" id="recentFolderNotification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="openFolder(notification)">
               <div class="notificationType col-xs-2">
                 FOLDER
@@ -73,7 +73,27 @@
                 {{ notification.name }} was created on {{ currentTimeToString(notification.dateTime) }}
               </div>
           </div>
-          <!-- End of Single Upload Notification -->
+          <!-- End of Single Folder Notification -->
+          <!-- This is a Single Comment Notification -->
+          <div ng-switch-when="comment" id="recentCommentNotification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="openComment(notification)">
+              <div class="notificationType col-xs-2">
+                COMMENT
+              </div>
+              <div class="notificationBody col-xs-10">
+                {{ notification.userName }} left a comment on {{ currentTimeToString(notification.dateTime) }}
+              </div>
+          </div>
+          <!-- End of Single Comment Notification -->
+          <!-- This is a Single Like Notification -->
+          <div ng-switch-when="like" id="recentLikeNotification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="openLike(notification)">
+              <div class="notificationType col-xs-2">
+                Like
+              </div>
+              <div class="notificationBody col-xs-10">
+                {{ notification.userName }} liked {{ notification.file.name }} on {{ currentTimeToString(notification.dateTime) }}
+              </div>
+          </div>
+          <!-- End of Single Like Notification -->
         </div>
 
       </div>
@@ -101,7 +121,7 @@
         <!-- End of Single Folder Notification -->
       </div>
     </div>
-    <hr style="col-xs-12" />
+    <div class="col-xs-12" style="border-bottom: 1px solid white; padding: 10px; margin-bottom: 15px;"></div>
     <h4 style="color: white; text-align: center" class="col-xs-12">Last 30 Days</h4>
     <div id="allNotificationsContainer" style="" class="col-xs-12">
       <div  ng-animate="'animate'" class="activityList" style="padding: 5px" ng-repeat="notification in allNotifications |
@@ -114,7 +134,7 @@
                 UPLOAD
               </div>
               <div class="notificationBody col-xs-10">
-                {{ notification.name }} was created on {{ currentTimeToString(notification.dateTime) }}
+                {{ notification.name }} was uploaded on {{ currentTimeToString(notification.dateTime) }}
               </div>
           </div>
           <!-- End of Single Upload Notification -->

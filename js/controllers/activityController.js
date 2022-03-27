@@ -2,6 +2,7 @@ app.controller('activityController', ['$scope', '$sce', '$http', '$filter',
 function($scope, $sce, $http, $filter) {
 
   $scope.band = {};
+  $scope.bands = [];
   $scope.recentComments = [];
 
   $scope.currentPage = 1;
@@ -19,6 +20,7 @@ function($scope, $sce, $http, $filter) {
   $scope.folders = [];
   $scope.recentUploads = [];
   $scope.recentFolders = [];
+  $scope.numberOfNotifications = 0;
 
   $scope.goToLink = function() {
     var source = $scope.file.source;
@@ -348,7 +350,8 @@ function($scope, $sce, $http, $filter) {
 
   $scope.currentTimeToString = function(currentTime) {
     var date = new Date(currentTime);
-    return date.toLocaleString('en-US', { hour12: true });
+    date.setHours( date.getHours() + 2 );
+    return date.toLocaleString('en-US', { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true });
   };
 
   $scope.openFolder = function(folder) {
@@ -379,17 +382,22 @@ function($scope, $sce, $http, $filter) {
 
               $scope.uploads = response.data.notifications.uploadActivity;
               $scope.folders = response.data.notifications.folderActivity;
+              var comments = response.data.notifications.commentActivity;
+              var likes = response.data.notifications.likeActivity;
               $scope.recentUploads = response.data.notifications.recentUploadActivity;
               $scope.recentFolders = response.data.notifications.recentFolderActivity;
+              var recentComments = response.data.notifications.recentCommentActivity;
+              var recentLikes = response.data.notifications.recentLikeActivity;
 
-              $scope.allNotifications = $scope.uploads.concat($scope.folders);
+              $scope.allNotifications = $scope.uploads.concat($scope.folders.concat(comments.concat(likes)));
               $scope.allNotifications.sort(function(a,b) {
                 return new Date(b.dateTime) - new Date(a.dateTime);
               });
-              $scope.recentNotifications = $scope.recentUploads.concat($scope.recentFolders);
+              $scope.recentNotifications = $scope.recentUploads.concat($scope.recentFolders.concat(recentComments.concat(recentLikes)));
               $scope.recentNotifications.sort(function(a,b) {
                 return new Date(b.dateTime) - new Date(a.dateTime);
               });
+              $scope.numberOfNotifications = $scope.allNotifications.length;
               $scope.allNotifications = $scope.allNotifications.filter(function(el) {
                 return !$scope.recentNotifications.includes(el);
               });
@@ -408,6 +416,7 @@ function($scope, $sce, $http, $filter) {
     // Do this if logged in
     if (isLoggedIn()) {
       var bandIds = convertCurrentBandsToBandIds();
+      $scope.bands = CURRENT_BANDS;
       $scope.getRecentActivity(bandIds);
       $scope.getNotifications(bandIds);
       $scope.loadUIObjects();

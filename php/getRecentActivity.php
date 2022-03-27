@@ -128,6 +128,58 @@
     }
   }
 
+  function getRecentCommentActivity($conn, $bandIds, $lastloggedin) {
+    $query = "SELECT * FROM Highlights WHERE (bandId = '" . $bandIds[0] . "'";
+    if (count($bandIds) > 1) {
+      for($i = 1; $i < count($bandIds); $i++) {
+        $query = $query . " OR bandId = '" . $bandIds[$i] . "'";
+      }
+    }
+    $query = $query . ") AND commentTime BETWEEN '" . $lastloggedin . "' AND NOW()";
+
+    return getCommentActivity($conn, $bandIds, $query);
+  }
+
+  function getCommentActivityFromLastThirtyDays($conn, $bandIds, $lastloggedin) {
+    $query = "SELECT * FROM Highlights WHERE (bandId = '" . $bandIds[0] . "'";
+    if (count($bandIds) > 1) {
+      for($i = 1; $i < count($bandIds); $i++) {
+        $query = $query . " OR bandId = '" . $bandIds[$i] . "'";
+      }
+    }
+    $query = $query . ") AND commentTime BETWEEN DATE_ADD('" . $lastloggedin . "', INTERVAL -30 DAY) AND '" . $lastloggedin . "'";
+
+    return getCommentActivity($conn, $bandIds, $query);
+  }
+
+  function getCommentActivity($conn, $bandIds, $query) {
+    if ($result = mysqli_query($conn, $query)) {
+      $data = "";
+      $highlights = [];
+      if ($result->num_rows > 0) {
+        // Get current row as an array
+        while ($row = mysqli_fetch_assoc($result)) {
+          //$band = getBand($conn, $row["bandId"]);
+          $userName = getUserName($conn, $row["userId"]);
+          $data = ['id' => $row["id"],
+                   'comment' => $row["comment"],
+                   'commentTime' => $row["commentTime"],
+                   'commentDate' => $row["commentDate"],
+                   'dateTime' => $row["commentDate"],
+                   'highlightTime' => roundToTwoDecimals($row["highlightTime"]),
+                   'userId' => $row["userId"],
+                   "userName" => $userName,
+                   'notificationType' => "comment",
+                   'fileId' => $row["fileId"],
+                   'bandId' => $row["bandId"]];
+          $highlights[] = $data;
+
+        }
+      }
+      return $highlights;
+    }
+  }
+
   // Get Notifications (Uploads, New Folders, Likes, Comments, Highlights)
   function getNotifications($conn, $bandIds, $userId) {
     $user = getUser($conn, $userId);
@@ -135,13 +187,21 @@
     $lastloggedin = $user->lastloggedin;
     $recentUploadActivity = getRecentUploads($conn, $bandIds, $lastloggedin);
     $recentFolderActivity = getRecentFolders($conn, $bandIds, $lastloggedin);
+    $recentCommentActivity = getRecentCommentActivity($conn, $bandIds, $lastloggedin);
+    $recentLikeActivity = getRecentLikeActivity($conn, $bandIds, $lastloggedin);
     $uploadActivity = getUploadActivityFromLastThirtyDays($conn, $bandIds, $lastloggedin);
     $folderActivity = getFolderActivityFromLastThirtyDays($conn, $bandIds, $lastloggedin);
+    $commentActivity = getCommentActivityFromLastThirtyDays($conn, $bandIds, $lastloggedin);
+    $likeActivity = getLikeActivityFromLastThirtyDays($conn, $bandIds, $lastloggedin);
     $notifications = [
       'recentUploadActivity' => $recentUploadActivity,
       'recentFolderActivity' => $recentFolderActivity,
+      'recentCommentActivity' => $recentCommentActivity,
+      'recentLikeActivity' => $recentLikeActivity,
       'uploadActivity' => $uploadActivity,
-      'folderActivity' => $folderActivity
+      'folderActivity' => $folderActivity,
+      'commentActivity' => $commentActivity,
+      'likeActivity' => $likeActivity
     ];
     return $notifications;
   }
@@ -278,8 +338,55 @@
     }
   }
 
-  function getRecentLikes() {
+  function getRecentLikeActivity($conn, $bandIds, $lastloggedin) {
+    $query = "SELECT * FROM UserLikes WHERE (bandId = '" . $bandIds[0] . "'";
+    if (count($bandIds) > 1) {
+      for($i = 1; $i < count($bandIds); $i++) {
+        $query = $query . " OR bandId = '" . $bandIds[$i] . "'";
+      }
+    }
+    $query = $query . ") AND likeDate BETWEEN '" . $lastloggedin . "' AND NOW()";
 
+    return getLikeActivity($conn, $bandIds, $query);
+  }
+
+  function getLikeActivityFromLastThirtyDays($conn, $bandIds, $lastloggedin) {
+    $query = "SELECT * FROM UserLikes WHERE (bandId = '" . $bandIds[0] . "'";
+    if (count($bandIds) > 1) {
+      for($i = 1; $i < count($bandIds); $i++) {
+        $query = $query . " OR bandId = '" . $bandIds[$i] . "'";
+      }
+    }
+    $query = $query . ") AND likeDate BETWEEN DATE_ADD('" . $lastloggedin . "', INTERVAL -30 DAY) AND '" . $lastloggedin . "'";
+
+    return getLikeActivity($conn, $bandIds, $query);
+  }
+
+  function getLikeActivity($conn, $bandIds, $query) {
+    if ($result = mysqli_query($conn, $query)) {
+      $data = "";
+      $likes = [];
+      if ($result->num_rows > 0) {
+        // Get current row as an array
+        while ($row = mysqli_fetch_assoc($result)) {
+          //$band = getBand($conn, $row["bandId"]);
+          $file = getFile($conn, $row["fileId"]);
+          $userName = getUserName($conn, $row["userId"]);
+          $data = ['id' => $row["id"],
+                   'userId' => $row["userId"],
+                   "userName" => $userName,
+                   'notificationType' => "like",
+                   'likeDate' => $row["likeDate"],
+                   'dateTime' => $row["likeDate"],
+                   'fileId' => $row["fileId"],
+                   'file' => $file,
+                   'bandId' => $row["bandId"]];
+          $likes[] = $data;
+
+        }
+      }
+      return $likes;
+    }
   }
 
   // Get UserName with -> $userId
