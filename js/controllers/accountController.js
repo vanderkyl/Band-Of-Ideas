@@ -384,6 +384,7 @@ function($scope, $http) {
       // Check if user is logged in. Show user information instead of authentication forms.
       if (loggedIn) {
           $scope.loadUserData();
+          $scope.getNotifications(CURRENT_BANDS);
           navigateToURL("/#/dashboard");
       } else {
           if (signedOut) {
@@ -396,7 +397,7 @@ function($scope, $http) {
                   if (success) {
                       CURRENT_USER = loggedInUser;
                       CURRENT_BANDS = loggedInUser.bands;
-
+                      $scope.getNotifications(CURRENT_BANDS);
                       $scope.loadUserData();
                       loginUser($scope.returnUrl);
 
