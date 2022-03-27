@@ -17,6 +17,7 @@
       $token = $data;
       echo $userId;
       $user = getUser($conn, $userId);
+      $user = (object)$user;
       $lastloggedin = $user->loginDate;
       $query = "UPDATE Users SET token = '" . $token . "', loginDate = NOW(), lastloggedin = '" . $lastloggedin . "' WHERE id = '" . $userId . "';";
       if ($result = mysqli_query($conn, $query)) {

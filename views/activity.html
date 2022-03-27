@@ -92,9 +92,7 @@
     <div class="col-xs-12" style="border-bottom: 1px solid white; padding: 10px; margin-bottom: 15px;"></div>
     <h4 style="color: white; text-align: center" class="col-xs-12">Last 30 Days</h4>
     <div id="allNotificationsContainer" style="" class="col-xs-12">
-      <div  ng-animate="'animate'" class="activityList" style="padding: 5px" ng-repeat="notification in allNotifications |
-      filter:{name: search }
-      | orderBy:sortBy" >
+      <div ng-animate="'animate'" class="activityList" style="padding: 5px" ng-repeat="notification in allNotifications" >
         <div>
           <!-- This is a Single  Notification -->
           <div id="{{ notification.notificationType }}Notification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="openNotification(notification)">
