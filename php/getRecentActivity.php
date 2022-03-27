@@ -189,12 +189,14 @@
                    'name' => getFriendlyTitle($row["name"]),
                    'metaName' => $row["metaName"],
                    'type' => $row["type"],
+                   'notificationType' => "upload",
                    'size' => $row["size"],
                    'link' => $row["link"],
                    'size' => $row["size"],
                    'views' => $row["views"],
                    'duration' => $row["duration"],
                    'uploadTime' => $row["uploadTime"],
+                   'dateTime' => $row["uploadTime"],
                    'userName' => $userName,
                    'folderId' => $row["folderId"],
                    'bandId' => $row["bandId"]];
@@ -241,9 +243,11 @@
           $data = ['id' => $row["id"],
                    'name' => $row["name"],
                    'metaName' => $row["metaName"],
+                   'notificationType' => "folder",
                    'bandId' => $row["bandId"],
                    'userName' => $userName,
-                   'creationDate' => $row["creationDate"]];
+                   'creationTime' => $row["creationDate"],
+                   'dateTime' => $row["creationDate"]];
           $folders[] = $data;
 
         }

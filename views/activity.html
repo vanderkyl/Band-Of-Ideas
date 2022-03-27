@@ -6,20 +6,75 @@
     <i class="fa fa-spinner fa-spin" style="font-size: 20px"></i>
   </div>
   <div id="notificationsContainer" class="containers col-xs-12" style="display: none">
-    <div ng-animate="'animate'" class="activityList" style="padding: 5px" ng-repeat="upload in uploads |
+    <h4 style="color: white; text-align: center">New Updates</h4>
+    <div id="recentNotificationsContainer" style="" ng-animate="'animate'" class="activityList" style="padding: 5px" ng-repeat="notification in recentNotifications |
+    filter:{name: search }
+    | orderBy:sortBy" >
+      <div ng-switch on="notification.notificationType">
+        <!-- This is a Single Upload Notification -->
+        <div ng-switch-when="upload" id="recentUploadNotification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="">
+            <p>[Upload] {{ notification.name }} was uploaded on {{ notification.dateTime }}</p>
+        </div>
+        <!-- End of Single Upload Notification -->
+        <!-- This is a Single Upload Notification -->
+        <div ng-switch-when="folder" id="recentFolderNotification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="">
+            <p>[Folder] {{ notification.name }} was created on {{ notification.dateTime }}</p>
+        </div>
+        <!-- End of Single Upload Notification -->
+      </div>
+
+    </div>
+    <div id="recentUploadsContainer" style="display: none" ng-animate="'animate'" class="activityList" style="padding: 5px" ng-repeat="upload in recentUploads |
     filter:{name: search }
     | orderBy:sortBy" >
       <!-- This is a Single Upload Notification -->
-      <div id="uploadNotification-{{ upload.id }}" class="notification col-xs-12" data-index="{{ upload.id }}" ng-click="">
+      <div id="recentUploadNotification-{{ upload.id }}" class="folder notification col-xs-12" data-index="{{ upload.id }}" ng-click="">
+          <p>[Upload] {{ upload.name }} was uploaded on {{ upload.uploadDate }}</p>
+      </div>
+      <!-- End of Single Upload Notification -->
+    </div>
+    <div id="recentFoldersContainer" style="display: none" ng-animate="'animate'" class="activityList" style="padding: 5px" ng-repeat="folder in recentFolders |
+    filter:{name: search }
+    | orderBy:sortBy" >
+      <!-- This is a Single Folder Notification -->
+      <div id="recentFolderNotification-{{ folder.id }}" class="folder notification col-xs-12" data-index="{{ folder.id }}" ng-click="openFolder(folder.id)">
+          <p>[Folder] {{ folder.name }} was created on {{ folder.creationDate }}</p>
+      </div>
+      <!-- End of Single Folder Notification -->
+    </div>
+    <hr />
+    <h4 style="color: white; text-align: center">Last 30 Days</h4>
+    <div id="allNotificationsContainer" style="" ng-animate="'animate'" class="activityList" style="padding: 5px" ng-repeat="notification in allNotifications |
+    filter:{name: search }
+    | orderBy:sortBy" >
+      <div ng-switch on="notification.notificationType">
+        <!-- This is a Single Upload Notification -->
+        <div ng-switch-when="upload" id="uploadNotification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="">
+            <p>[Upload] {{ notification.name }} was uploaded on {{ notification.dateTime }}</p>
+        </div>
+        <!-- End of Single Upload Notification -->
+        <!-- This is a Single Upload Notification -->
+        <div ng-switch-when="folder" id="folderNotification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="">
+            <p>[Folder] {{ notification.name }} was created on {{ notification.dateTime }}</p>
+        </div>
+        <!-- End of Single Upload Notification -->
+      </div>
+
+    </div>
+    <div id="uploadsContainer" style="display: none" ng-animate="'animate'" class="activityList" style="padding: 5px" ng-repeat="upload in uploads |
+    filter:{name: search }
+    | orderBy:sortBy" >
+      <!-- This is a Single Upload Notification -->
+      <div id="uploadNotification-{{ upload.id }}" class="folder notification col-xs-12" data-index="{{ upload.id }}" ng-click="">
           <p>{{ upload.name }} was uploaded on {{ upload.uploadDate }}</p>
       </div>
       <!-- End of Single Upload Notification -->
     </div>
-    <div ng-animate="'animate'" class="activityList" style="padding: 5px" ng-repeat="folder in folders |
+    <div id="foldersContainer" style="display: none" ng-animate="'animate'" class="activityList" style="padding: 5px" ng-repeat="folder in folders |
     filter:{name: search }
     | orderBy:sortBy" >
       <!-- This is a Single Folder Notification -->
-      <div id="folderNotification-{{ folder.id }}" class="folder col-xs-12" data-index="{{ folder.id }}" ng-click="">
+      <div id="folderNotification-{{ folder.id }}" class="folder notification col-xs-12" data-index="{{ folder.id }}" ng-click="openFolder(folder.id)">
           <p>The folder [{{ folder.name }}] was created on {{ folder.creationDate }}</p>
       </div>
       <!-- End of Single Folder Notification -->

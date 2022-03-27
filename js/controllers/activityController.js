@@ -12,9 +12,13 @@ function($scope, $sce, $http, $filter) {
   $scope.search = "";
 
   $scope.recentHighlights = [];
+  $scope.recentNotifications = [];
+  $scope.allNotifications = [];
   $scope.notifications = [];
   $scope.uploads = [];
   $scope.folders = [];
+  $scope.recentUploads = [];
+  $scope.recentFolders = [];
 
   $scope.goToLink = function() {
     var source = $scope.file.source;
@@ -342,6 +346,10 @@ function($scope, $sce, $http, $filter) {
   };
   */
 
+  $scope.openFolder = function(id) {
+    navigateToURL("/#/folder?=" + id);
+  };
+
   $scope.getRecentActivity = function(bandIds) {
       $http.get("/php/getRecentActivity.php?type=bandList&bandIds=" + JSON.stringify(bandIds))
           .then(function (response) {
@@ -362,6 +370,17 @@ function($scope, $sce, $http, $filter) {
 
               $scope.uploads = response.data.notifications.uploadActivity;
               $scope.folders = response.data.notifications.folderActivity;
+              $scope.recentUploads = response.data.notifications.recentUploadActivity;
+              $scope.recentFolders = response.data.notifications.recentFolderActivity;
+
+              $scope.allNotifications = $scope.uploads.concat($scope.folders);
+              $scope.allNotifications.sort(function(a,b) {
+                return new Date(b.dateTime) - new DateTime(a.dateTime);
+              });
+              $scope.recentNotifications = $scope.recentUploads.concat($scope.recentFolders);
+              $scope.recentNotifications.sort(function(a,b) {
+                return new Date(b.dateTime) - new DateTime(a.dateTime);
+              });
               console.log($scope.notifications);
           });
   };
