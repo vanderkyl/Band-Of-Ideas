@@ -161,7 +161,8 @@
         while ($row = mysqli_fetch_assoc($result)) {
           //$band = getBand($conn, $row["bandId"]);
           $userName = getUserName($conn, $row["userId"]);
-          $data = ['id' => $row["id"],
+          $data = ['notificationType' => "comment",
+                   'id' => $row["id"],
                    'comment' => $row["comment"],
                    'commentTime' => $row["commentTime"],
                    'commentDate' => $row["commentDate"],
@@ -169,7 +170,6 @@
                    'highlightTime' => roundToTwoDecimals($row["highlightTime"]),
                    'userId' => $row["userId"],
                    "userName" => $userName,
-                   'notificationType' => "comment",
                    'fileId' => $row["fileId"],
                    'bandId' => $row["bandId"]];
           $highlights[] = $data;
@@ -271,11 +271,11 @@
           //$band = getBand($conn, $row["bandId"]);
           //$folder = getFolder($conn, $row["folderId"])
           $userName = getUserName($conn, $row["userId"]);
-          $data = ['id' => $row["id"],
+          $data = ['notificationType' => "upload",
+                   'id' => $row["id"],
                    'name' => getFriendlyTitle($row["name"]),
                    'metaName' => $row["metaName"],
                    'type' => $row["type"],
-                   'notificationType' => "upload",
                    'size' => $row["size"],
                    'link' => $row["link"],
                    'size' => $row["size"],
@@ -326,10 +326,10 @@
         // Get current row as an array
         while ($row = mysqli_fetch_assoc($result)) {
           $userName = getUserName($conn, $row["userId"]);
-          $data = ['id' => $row["id"],
+          $data = ['notificationType' => "folder",
+                   'id' => $row["id"],
                    'name' => $row["name"],
                    'metaName' => $row["metaName"],
-                   'notificationType' => "folder",
                    'bandId' => $row["bandId"],
                    'userName' => $userName,
                    'creationTime' => $row["creationDate"],
@@ -376,10 +376,10 @@
           //$band = getBand($conn, $row["bandId"]);
           $file = getFile($conn, $row["fileId"]);
           $userName = getUserName($conn, $row["userId"]);
-          $data = ['id' => $row["id"],
+          $data = ['notificationType' => "likedFile",
+                   'id' => $row["id"],
                    'userId' => $row["userId"],
                    "userName" => $userName,
-                   'notificationType' => "likedFile",
                    'likeDate' => $row["likeDate"],
                    'dateTime' => $row["likeDate"],
                    'fileId' => $row["fileId"],
