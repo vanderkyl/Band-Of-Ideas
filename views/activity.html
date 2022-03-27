@@ -33,7 +33,7 @@
         </div>
       </div>
       <div class="col-xs-3 col-sm-3" style="padding: 5px">
-        <div class="dashboardButton" onclick="">
+        <div class="dashboardButton" onclick="scrollToElementById('recentComments')">
           <strong style="font-size: 18px">{{ recentHighlights.length }}</strong><br>
           <span style="font-size: 0.8em">Comments</span>
           <div style="font-size: 8px">
@@ -53,7 +53,7 @@
       <div ng-animate="'animate'" class="activityList" style="padding: 5px" ng-repeat="notification in recentNotifications" >
         <div>
           <!-- This is a Single  Notification -->
-          <div id="recent{{ notification.notificationType }}Notification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="openFile(notification)">
+          <div id="recent{{ notification.notificationType }}Notification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="openNotification(notification)">
               <div class="notificationType col-xs-2">
                 {{ getNotificationType(notification) }}
               </div>
@@ -97,7 +97,7 @@
       | orderBy:sortBy" >
         <div>
           <!-- This is a Single  Notification -->
-          <div id="{{ notification.notificationType }}Notification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="openFile(notification)">
+          <div id="{{ notification.notificationType }}Notification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="openNotification(notification)">
               <div class="notificationType col-xs-2">
                 {{ getNotificationType(notification) }}
               </div>
@@ -108,7 +108,7 @@
           <!-- End of Single Notification -->
 
         </div>
-        
+
       </div>
     </div>
     <div id="uploadsContainer" style="display: none" class="col-xs-12">
@@ -136,7 +136,7 @@
 
   </div>
     <!-- Recent Comment Section -->
-    <div id="recentComments" class="col-xs-12" style="display: none">
+    <div id="recentComments" class="col-xs-12" >
       <div class="containers col-xs-12" style="padding: 5px;">
         <div id="activityHeader" style="height: 40px;">
           <span id="activityTitle" class="col-xs-6">Recent Comments</span>

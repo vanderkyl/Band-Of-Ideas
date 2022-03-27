@@ -375,9 +375,9 @@ function($scope, $sce, $http, $filter) {
     var text = "";
     var type = notification.notificationType;
     if (type === "upload") {
-      text = notification.name + "was uploaded on " + $scope.currentTimeToString(notification.dateTime);
+      text = notification.name + " was uploaded on " + $scope.currentTimeToString(notification.dateTime);
     } else if (type === "folder") {
-      text = notification.name + "was created on " + $scope.currentTimeToString(notification.dateTime);
+      text = notification.name + " was created on " + $scope.currentTimeToString(notification.dateTime);
     } else if (type === "comment") {
       text = notification.userName + " left a comment on " + $scope.currentTimeToString(notification.dateTime);
     } else if (type === "likedFile") {
@@ -386,6 +386,19 @@ function($scope, $sce, $http, $filter) {
       text = "NOTIFICATION";
     }
     return text;
+  };
+
+  $scope.openNotification = function(notification) {
+    var type = notification.notificationType;
+    if (type === "upload") {
+      navigateToURL("/#/idea?id=" + notification.id);
+    } else if (type === "folder") {
+      navigateToURL("/#/folder?id=" + notification.id);
+    } else if (type === "comment") {
+      navigateToURL("/#/idea?id=" + notification.fileId);
+    } else if (type === "likedFile") {
+      navigateToURL("/#/idea?id=" + notification.fileId);
+    } 
   };
 
   $scope.openFolder = function(folder) {
