@@ -379,7 +379,7 @@
           $data = ['id' => $row["id"],
                    'userId' => $row["userId"],
                    "userName" => $userName,
-                   'notificationType' => "like",
+                   'notificationType' => "likedFile",
                    'likeDate' => $row["likeDate"],
                    'dateTime' => $row["likeDate"],
                    'fileId' => $row["fileId"],
