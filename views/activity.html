@@ -74,6 +74,10 @@
               </div>
           </div>
           <!-- End of Single Folder Notification -->
+
+
+        </div>
+        <div ng-switch on="notification.notificationType">
           <!-- This is a Single Comment Notification -->
           <div ng-switch-when="comment" id="recentCommentNotification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="openComment(notification)">
               <div class="notificationType col-xs-2">
@@ -94,18 +98,7 @@
               </div>
           </div>
           <!-- End of Single Like Notification -->
-          <!-- This is a Single Notification -->
-          <div ng-switch-default id="recentLikeNotification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="openLike(notification)">
-              <div class="notificationType col-xs-2">
-                NOTIFICATION
-              </div>
-              <div class="notificationBody col-xs-10">
-                Notification: {{ notification.notificationType }} on {{ currentTimeToString(notification.dateTime) }}
-              </div>
-          </div>
-          <!-- End of Single Notification -->
         </div>
-
       </div>
     </div>
     <div id="recentUploadsContainer" class="col-xs-12" style="display: none">
@@ -159,7 +152,28 @@
           </div>
           <!-- End of Single Upload Notification -->
         </div>
-
+        <div ng-switch on="notification.notificationType">
+          <!-- This is a Single Comment Notification -->
+          <div ng-switch-when="comment" id="commentNotification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="openComment(notification)">
+              <div class="notificationType col-xs-2">
+                COMMENT
+              </div>
+              <div class="notificationBody col-xs-10">
+                {{ notification.userName }} left a comment on {{ currentTimeToString(notification.dateTime) }}
+              </div>
+          </div>
+          <!-- End of Single Comment Notification -->
+          <!-- This is a Single Like Notification -->
+          <div ng-switch-when="likedFile" id="likeNotification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="openLike(notification)">
+              <div class="notificationType col-xs-2">
+                LIKE
+              </div>
+              <div class="notificationBody col-xs-10">
+                {{ notification.userName }} liked {{ notification.file.name }} on {{ currentTimeToString(notification.dateTime) }}
+              </div>
+          </div>
+          <!-- End of Single Like Notification -->
+        </div>
       </div>
     </div>
     <div id="uploadsContainer" style="display: none" class="col-xs-12">

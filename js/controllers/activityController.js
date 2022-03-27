@@ -362,6 +362,14 @@ function($scope, $sce, $http, $filter) {
     navigateToURL("/#/idea?id=" + file.id);
   };
 
+  $scope.openComment = function(comment) {
+    navigateToURL("/#/idea?id=" + comment.fileId);
+  };
+
+  $scope.openLike = function(like) {
+    navigateToURL("/#/idea?id=" + like.fileId);
+  };
+
   $scope.getRecentActivity = function(bandIds) {
       $http.get("/php/getRecentActivity.php?type=bandList&bandIds=" + JSON.stringify(bandIds))
           .then(function (response) {
