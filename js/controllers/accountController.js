@@ -349,6 +349,12 @@ function($scope, $http) {
               largeNotificationCounter.style.display = "block";
               notificationCounter.innerText = numberOfNotifications;
               largeNotificationCounter.innerText = numberOfNotifications;
+              var notificationLink = getElementById("notificationButtonLink");
+              notificationLink.style.color = "aqua";
+              notificationLink.style.fontSize = "19px";
+              var largeNotificationLink = getElementById("largeNotificationButtonLink");
+              largeNotificationLink.style.color = "aqua";
+              largeNotificationLink.style.fontSize = "19px";
               console.log($scope.notifications);
               console.log($scope.recentNotifications);
           });
@@ -384,7 +390,8 @@ function($scope, $http) {
       // Check if user is logged in. Show user information instead of authentication forms.
       if (loggedIn) {
           $scope.loadUserData();
-          $scope.getNotifications(CURRENT_BANDS);
+          var bandIds = convertCurrentBandsToBandIds();
+          $scope.getNotifications(bandIds);
           navigateToURL("/#/dashboard");
       } else {
           if (signedOut) {
@@ -397,7 +404,8 @@ function($scope, $http) {
                   if (success) {
                       CURRENT_USER = loggedInUser;
                       CURRENT_BANDS = loggedInUser.bands;
-                      $scope.getNotifications(CURRENT_BANDS);
+                      var bandIds = convertCurrentBandsToBandIds();
+                      $scope.getNotifications(bandIds);
                       $scope.loadUserData();
                       loginUser($scope.returnUrl);
 

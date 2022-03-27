@@ -251,3 +251,12 @@ function addBandLinks(bands) {
     bandListFilled = true;
   }
 }
+
+function convertCurrentBandsToBandIds() {
+  var bandIds = [];
+  for (var i = 0; i < CURRENT_BANDS.length; i++) {
+      console.log(CURRENT_BANDS[i].id);
+      bandIds.push(CURRENT_BANDS[i].id);
+  }
+  return bandIds;
+}

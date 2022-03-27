@@ -407,11 +407,7 @@ function($scope, $sce, $http, $filter) {
     setupController();
     // Do this if logged in
     if (isLoggedIn()) {
-      var bandIds = [];
-      for (var i = 0; i < CURRENT_BANDS.length; i++) {
-          console.log(CURRENT_BANDS[i].id);
-          bandIds.push(CURRENT_BANDS[i].id);
-      }
+      var bandIds = convertCurrentBandsToBandIds();
       $scope.getRecentActivity(bandIds);
       $scope.getNotifications(bandIds);
       $scope.loadUIObjects();
