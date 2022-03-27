@@ -355,7 +355,7 @@ function($scope, $sce, $http, $filter) {
     navigateToURL("/#/folder?=" + folder.id);
   };
 
-  $scope.openFile = function(file.id) {
+  $scope.openFile = function(file) {
     navigateToURL("/#/idea?=" + file.id);
   };
 
