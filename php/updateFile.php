@@ -28,7 +28,7 @@
           $userId = $row["id"];
         }
       }
-      $query = "INSERT INTO UserViews (userId, fileId, bandId) VALUES ('" . $userId . "', '" . $id . "', '" . $bandId . "', '" . $dateTime . "');";
+      $query = "INSERT INTO UserViews (userId, fileId, bandId) VALUES ('" . $userId . "', '" . $id . "', '" . $bandId . "', NOW());";
       if ($result = mysqli_query($conn, $query)) {
         echo "UserView inserted successfully";
       } else {
@@ -56,7 +56,7 @@
       }
 
       $bandId = $data->bandId;
-      $query = "INSERT INTO UserLikes (userId, fileId, bandId, likeDate) VALUES ('" . $userId . "', '" . $id . "', '" . $bandId . "', '" . $dateTime . "');";
+      $query = "INSERT INTO UserLikes (userId, fileId, bandId, likeDate) VALUES ('" . $userId . "', '" . $id . "', '" . $bandId . "', NOW());";
       if ($result = mysqli_query($conn, $query)) {
         echo "UserLike inserted successfully";
       } else {
