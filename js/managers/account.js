@@ -245,8 +245,6 @@ function updateNotificationCounter(recentNotifications) {
   var largeNotificationLink = getElementById("largeNotificationButtonLink");
   largeNotificationLink.style.color = "aqua";
   largeNotificationLink.style.fontSize = "19px";
-  console.log($scope.notifications);
-  console.log($scope.recentNotifications);
 }
 
 function objectIsEmpty(obj) {
