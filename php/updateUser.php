@@ -35,6 +35,15 @@
           echo "Sorry, it didn't work.";
           echo $query;
         }
+    } else if ($type == "userInfo") {
+        $user = $data;
+        $query = "UPDATE Users SET name = '" . $user->name . "', password = '" . $user->password . "', email = '" . $user->email . "' WHERE id = '" . $userId . "';";
+        if ($result = mysqli_query($conn, $query)) {
+          echo "User update successful!";
+        } else {
+          echo "Sorry, it didn't work.";
+          echo $query;
+        }
     } else if ($type == "bandUpdate") {
       $band = $data->metaName;
       // Find band id
