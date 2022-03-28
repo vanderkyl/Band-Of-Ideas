@@ -64,7 +64,7 @@
 
   <div id="recentViews" class="col-xs-12 sideScroller">
     <div class="folder viewFile" style="width: 90px;font-size: 25px;margin-right: 10px;" ng-click="goToHistoryPage()"><p style="font-size: 11px;">Recent Views</p><i class="fas fa-history" style="padding-bottom: 10px"></i></div>
-    <div ng-show="!recentViews.length" style="padding: 20px; color: white"><p>No recent views</p></div>
+    <div ng-show="!recentViews.length" style="padding: 20px; color: white; display: inline-block"><p>No recent views</p></div>
     <div ng-repeat="view in recentViews" style="display: inline-block; margin-right: 10px">
       <div class="folder viewFile" ng-click="openView(view)">
         <p style="margin-top: 10px">{{ view.name }}</p>
