@@ -23,13 +23,11 @@ function($scope, $http) {
   $scope.updateUserInfo = function() {
     $scope.updateUser(CURRENT_USER.id, "userInfo", $scope.user, function(success) {
       if (success) {
-        closeEditUser();
         $scope.editUserMessage = "Updated successfully";
       } else {
         $scope.editUserMessage = "Update unsuccessful";
       }
     });
-
   };
 
   $scope.updateUserImage = function(icon, color) {
