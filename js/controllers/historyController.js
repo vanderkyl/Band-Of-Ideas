@@ -117,8 +117,8 @@ function($scope, $sce, $http, $filter) {
     var bandIds = convertCurrentBandsToBandIds();
     $http.get("/php/getRecentActivity.php?type=views&userId=" + CURRENT_USER.id + "&bandIds=" + JSON.stringify(bandIds))
         .then(function (response) {
-            hideElementById("loadViewsContainer");
-            displayElementById("viewsContainer");
+            hideElementById("loadHistoryContainer");
+            displayElementById("historyContainer");
             //$scope.recentComments = response.data.comments;
             $scope.recentViews = response.data.views.recentViewActivity;
             console.log($scope.recentViews);
