@@ -21,7 +21,7 @@ function($scope, $http) {
   };
 
   $scope.updateUserInfo = function() {
-    if ($scope.user.password === $scope.confirmPassword) {
+    if ($scope.user.password == $scope.confirmPassword) {
       $scope.updateUser(CURRENT_USER.id, "userInfo", $scope.user, function(success) {
         if (success) {
           closeEditUser();
