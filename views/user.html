@@ -25,9 +25,9 @@
         <a href="javascript:void(0)" ng-click="closeEditUser()" class="col-xs-6" style="text-align: right;">Close</a>
         <form class="col-xs-12">
           <h4>Username: </h4><p>{{ user.username }}</p>
-          <h4>Name: </h4><input id="nameInput" class="form-control" type="text" value="{{ user.name }}" placeholder="{{ user.name }}">
-          <h4>Email: </h4><input id="emailInput" class="form-control" type="text" value="{{ user.email }}" placeholder="{{ user.email }}">
-          <h4>Password: </h4><input id="passwordInput" class="form-control" type="text" value="{{ user.password }}" placeholder="{{ user.password }}">
+          <h4>Name: </h4><input id="nameInput" class="form-control" type="text" ng-model="user.name" value="{{ user.name }}" placeholder="{{ user.name }}">
+          <h4>Email: </h4><input id="emailInput" class="form-control" type="text" ng-model="user.email" value="{{ user.email }}" placeholder="{{ user.email }}">
+          <h4>Password: </h4><input id="passwordInput" class="form-control" type="text" ng-model="user.password" value="{{ user.password }}" placeholder="{{ user.password }}">
           <br>
           <input class="btn btn-success form-control" ng-click="updateUserInfo()" value="Save Changes"/>
         </form>
