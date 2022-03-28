@@ -97,7 +97,7 @@ function($scope, $http) {
     };
 
   $scope.openView = function(view) {
-    navigateToURL("/#/idea?id=" + view.id);
+    navigateToURL("/#/idea?id=" + view.fileId);
   };
 
   $scope.goToHistoryPage = function() {

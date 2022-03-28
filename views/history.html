@@ -50,7 +50,7 @@
   <div id="historyContainer" class="containers col-xs-12" style="display: none">
     <h4 style="color: white; text-align: center">Recent Views</h4>
     <div id="recentViewsContainer" style="" class="col-xs-12">
-      <div ng-animate="'animate'" class="activityList" style="padding: 5px" ng-repeat="view in recentViews" >
+      <div ng-animate="'animate'" class="activityList" style="padding: 5px;" ng-repeat="view in recentViews" >
         <div>
           <!-- This is a Single View -->
           <div id="recentView-{{ view.id }}" class="folder col-xs-12" data-index="{{ view.id }}" ng-click="openView(view)">
