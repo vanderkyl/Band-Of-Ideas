@@ -36,6 +36,14 @@
         } else {
           $data = ['notifications' => getRecentNotifications($conn, $bandIds, $userId)];
         }
+    } else if ($type == "history") {
+        $userId = $_GET['userId'];
+        $bandIds = json_decode($_GET['bandIds']);
+        if (empty($bandIds)) {
+          $data = ['history' => []];
+        } else {
+          $data = ['history' => getHistory($conn, $bandIds, $userId)];
+        }
     }
 
     echo json_encode($data);
@@ -339,6 +347,57 @@
         }
       }
       return $folders;
+    }
+  }
+
+  function getRecentLikeActivity($conn, $bandIds, $lastloggedin) {
+    $query = "SELECT * FROM UserViews WHERE (bandId = '" . $bandIds[0] . "'";
+    if (count($bandIds) > 1) {
+      for($i = 1; $i < count($bandIds); $i++) {
+        $query = $query . " OR bandId = '" . $bandIds[$i] . "'";
+      }
+    }
+    $query = $query . ") AND viewDate BETWEEN '" . $lastloggedin . "' AND NOW()";
+
+    return getViewActivity($conn, $query);
+  }
+
+  function getViewActivityFromLastThirtyDays($conn, $bandIds, $lastloggedin) {
+    $query = "SELECT * FROM UserViews WHERE (bandId = '" . $bandIds[0] . "'";
+    if (count($bandIds) > 1) {
+      for($i = 1; $i < count($bandIds); $i++) {
+        $query = $query . " OR bandId = '" . $bandIds[$i] . "'";
+      }
+    }
+    $query = $query . ") AND viewDate BETWEEN DATE_ADD('" . $lastloggedin . "', INTERVAL -30 DAY) AND '" . $lastloggedin . "'";
+
+    return getViewActivity($conn, $query);
+  }
+
+  function getViewActivity($conn, $query) {
+    if ($result = mysqli_query($conn, $query)) {
+      $data = "";
+      $likes = [];
+      if ($result->num_rows > 0) {
+        // Get current row as an array
+        while ($row = mysqli_fetch_assoc($result)) {
+          //$band = getBand($conn, $row["bandId"]);
+          $file = getFile($conn, $row["fileId"]);
+          $userName = getUserName($conn, $row["userId"]);
+          $data = ['notificationType' => "likedFile",
+                   'id' => $row["id"],
+                   'userId' => $row["userId"],
+                   "userName" => $userName,
+                   'likeDate' => $row["likeDate"],
+                   'dateTime' => $row["likeDate"],
+                   'fileId' => $row["fileId"],
+                   'file' => $file,
+                   'bandId' => $row["bandId"]];
+          $likes[] = $data;
+
+        }
+      }
+      return $likes;
     }
   }
 

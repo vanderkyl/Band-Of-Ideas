@@ -77,7 +77,7 @@
             </div>
             <a id="brand" href="/#/" style="float: left;" ><img src="img/band-of-ideas-logo-white.png" class="navbar-brand"/></a>
             <div style="float: right; margin-right: 10px;">
-              <div id="showSearch" onclick="showSearchForm()" style="display: none"><i class="fa fa-search"></i></div>
+              <div id="showSearch" onclick="showSearchForm()" style="display: none" class="navbarButtons"><i class="fa fa-search"></i></div>
               <div id="search">
                 <form class="">
                   <div class="form-group">
@@ -88,16 +88,19 @@
                   <div id="livesearch"></div>
                 </form>
               </div>
-              <div id="notificationButton"><a id="notificationButtonLink" style="color: #333 !important;" href="/#/activity"><span id="notificationCounter" class="notificationCounter"></span><i class="fa fa-bell"></a></i></div>
-              <div id="userButton"><a style="color: #333 !important;" href="/#/user"><i class="fas fa-user"></i></a></div>
+              <div id="notificationButton" class="navbarButtons"><a id="notificationButtonLink" style="color: #333 !important;" href="/#/activity"><span id="notificationCounter" class="notificationCounter"></span><i class="fa fa-bell"></a></i></div>
+              <div id="historyButton" class="navbarButtons"><a style="color: #333 !important;" href="/#/history"><i class="fas fa-history"></i></a></div>
+
+              <div id="userButton" class="navbarButtons"><a style="color: #333 !important;" href="/#/user"><i class="fas fa-user"></i></a></div>
             </div>
           </div>
         </div>
         <div id="searchNavContainer">
           <a href="/#/" ><img src="img/band-of-ideas-logo-white.png" class="navbar-brand" style="margin-left: 10px"/></a>
-          <div id="largeUserButton" style="float: right;"><a style="color: #333 !important;" href="/#/user"><i class="fas fa-user"></i></a></div>
-          <div id="largeNotificationButton" style="float: right;"><a id="largeNotificationButtonLink" style="color: #333 !important;" href="/#/activity"><span id="largeNotificationCounter" class="notificationCounter"></span><i class="fa fa-bell"></i></a></div>
-          <div id="showLargeSearch" style="float: right;" onclick="showLargeSearchForm()"><i class="fa fa-search"></i></div>
+          <div id="largeUserButton" style="float: right;" class="navbarButtons"><a style="color: #333 !important;" href="/#/user"><i class="fas fa-user"></i></a></div>
+          <div id="largeHistoryButton" style="float: right;" class="navbarButtons"><a style="color: #333 !important;" href="/#/history"><i class="fas fa-history"></i></a></div>
+          <div id="largeNotificationButton" style="float: right;" class="navbarButtons"><a id="largeNotificationButtonLink" style="color: #333 !important;" href="/#/activity"><span id="largeNotificationCounter" class="notificationCounter"></span><i class="fa fa-bell"></i></a></div>
+          <div id="showLargeSearch" style="float: right;" class="navbarButtons" onclick="showLargeSearchForm()"><i class="fa fa-search"></i></div>
           <div id="largeSearch" style="float: right;" class="search">
             <form id="largeSearchForm" class="" style="display: none; margin-right: 15px;">
               <div class="form-group">
@@ -154,6 +157,7 @@
         </div>
         <div class="sideNavFooter col-xs-12">
           <h4><a href="/#/activity" ><i class="fas fa-chart-line"></i><span>Activity</span></a></h4>
+          <h4><a href="/#/history" ><i class="fas fa-history"></i><span>History</span></a></h4>
           <h4><a href="/#/settings"><i class="fas fa-sliders-h"></i><span>Settings</span></a></h4>
           <h4><a id="signOutButton" class="dropdown-item " onclick="signOut();" href="javascript:void(0)"><i class="fas fa-sign-out-alt"></i><span>Sign Out</span></a></h4>
         </div>

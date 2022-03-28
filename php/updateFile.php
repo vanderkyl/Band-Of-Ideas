@@ -20,15 +20,17 @@
         echo $query;
       }
       $bandId = $data->bandId;
-      $user= $_GET['user'];
-      $userId = "";
+      $user= $_GET['userId'];
+      $userId = $user;
       // Find user id
-      if ($result = mysqli_query($conn, "SELECT id FROM Users WHERE email='" . $user . "';")) {
+      /*
+      if ($result = mysqli_query($conn, "SELECT id FROM Users WHERE id='" . $user . "';")) {
         if($row = mysqli_fetch_assoc($result)) {
           $userId = $row["id"];
         }
       }
-      $query = "INSERT INTO UserViews (userId, fileId, bandId) VALUES ('" . $userId . "', '" . $id . "', '" . $bandId . "', NOW());";
+      */
+      $query = "INSERT INTO UserViews (userId, fileId, bandId, viewDate) VALUES ('" . $userId . "', '" . $id . "', '" . $bandId . "', NOW());";
       if ($result = mysqli_query($conn, $query)) {
         echo "UserView inserted successfully";
       } else {
