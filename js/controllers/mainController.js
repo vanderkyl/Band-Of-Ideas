@@ -223,6 +223,7 @@ function($scope, $http) {
     $http.get("/php/getRecentActivity.php?type=views&userId=" + CURRENT_USER.id + "&bandIds=" + JSON.stringify(bandIds))
         .then(function (response) {
             $scope.recentViews = response.data.views.recentViewActivity;
+            console.log($scope.recentViews);
         });
   };
 

@@ -63,9 +63,11 @@
   </div>
 
   <div id="recentViews" class="col-xs-12 sideScroller">
+    <div style="padding: 20px; color: white"><i class="fas fa-history"></i></div>
+    <div ng-show="!recentViews.length" style="padding: 20px; color: white"><p>No recent views</p></div>
     <div ng-repeat="view in recentViews">
       <div class="folder viewFile" ng-click="openView(view)">
-        <p>{{ view.name }}</p>
+        <p style="margin-top: 10px">{{ view.name }}</p>
         <p style="color: #909090; font-size: 11px">{{ view.band.name }} / {{ view.folder.name }}</p>
       </div>
     </div>
