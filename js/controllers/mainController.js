@@ -222,7 +222,7 @@ function($scope, $http) {
     var bandIds = convertCurrentBandsToBandIds();
     $http.get("/php/getRecentActivity.php?type=views&userId=" + CURRENT_USER.id + "&bandIds=" + JSON.stringify(bandIds))
         .then(function (response) {
-            $scope.recentViews = response.data.views;
+            $scope.recentViews = response.data.views.recentViewActivity;
         });
   };
 
