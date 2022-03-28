@@ -105,60 +105,26 @@ function($scope, $sce, $http, $filter) {
       }
   };
 
-  $scope.openComment = function(comment) {
-    navigateToURL("/#/idea?id=" + comment.fileId);
+  $scope.openView = function(view) {
+    navigateToURL("/#/idea?id=" + view.fileId);
   };
 
   $scope.openLike = function(like) {
     navigateToURL("/#/idea?id=" + like.fileId);
   };
 
-  $scope.getRecentActivity = function(bandIds) {
-      $http.get("/php/getRecentActivity.php?type=bandList&bandIds=" + JSON.stringify(bandIds))
-          .then(function (response) {
-              hideElementById("loadCommentsContainer");
-              displayElementById("commentContainer");
-              //$scope.recentComments = response.data.comments;
-              $scope.recentHighlights = response.data.highlights;
-              console.log($scope.recentHighlights);
-          });
+  $scope.getRecentViewsActivity = function() {
+    var bandIds = convertCurrentBandsToBandIds();
+    $http.get("/php/getRecentActivity.php?type=views&userId=" + CURRENT_USER.id + "&bandIds=" + JSON.stringify(bandIds))
+        .then(function (response) {
+            hideElementById("loadViewsContainer");
+            displayElementById("viewsContainer");
+            //$scope.recentComments = response.data.comments;
+            $scope.recentViews = response.data.views.recentViewActivity;
+            console.log($scope.recentViews);
+        });
   };
 
-  $scope.getNotifications = function(bandIds) {
-      $http.get("/php/getRecentActivity.php?type=notifications&userId=" + CURRENT_USER.id + "&bandIds=" + JSON.stringify(bandIds))
-          .then(function (response) {
-              hideElementById("loadNotificationsContainer");
-              displayElementById("notificationsContainer");
-              $scope.notifications = response.data.notifications;
-
-              $scope.uploads = response.data.notifications.uploadActivity;
-              $scope.folders = response.data.notifications.folderActivity;
-              var comments = response.data.notifications.commentActivity;
-              var likes = response.data.notifications.likeActivity;
-              $scope.recentUploads = response.data.notifications.recentUploadActivity;
-              $scope.recentFolders = response.data.notifications.recentFolderActivity;
-              var recentComments = response.data.notifications.recentCommentActivity;
-              var recentLikes = response.data.notifications.recentLikeActivity;
-
-              $scope.allNotifications = $scope.uploads.concat($scope.folders);
-              $scope.allNotifications = $scope.allNotifications.concat(comments);
-              $scope.allNotifications = $scope.allNotifications.concat(likes);
-              $scope.allNotifications.sort(function(a,b) {
-                return new Date(b.dateTime) - new Date(a.dateTime);
-              });
-              $scope.recentNotifications = $scope.recentUploads.concat($scope.recentFolders);
-              $scope.recentNotifications = $scope.recentNotifications.concat(recentComments);
-              $scope.recentNotifications = $scope.recentNotifications.concat(recentLikes);
-              $scope.recentNotifications.sort(function(a,b) {
-                return new Date(b.dateTime) - new Date(a.dateTime);
-              });
-              $scope.numberOfNotifications = $scope.allNotifications.length + $scope.recentNotifications.length;
-
-              console.log($scope.notifications);
-              console.log($scope.recentNotifications);
-              console.log($scope.allNotifications);
-          });
-  };
 
   $scope.loadUIObjects = function() {
 
@@ -171,7 +137,7 @@ function($scope, $sce, $http, $filter) {
     if (isLoggedIn()) {
       var bandIds = convertCurrentBandsToBandIds();
       $scope.bands = CURRENT_BANDS;
-
+      $scope.getRecentViewsActivity();
       $scope.loadUIObjects();
 
     }
