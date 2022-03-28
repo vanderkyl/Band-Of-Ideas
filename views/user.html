@@ -1,14 +1,16 @@
 <!-- User Info -->
 <div id="userView" class="col-xs-12" style="display: none">
+  <div class="col-xs-12 viewTitle">
+    <h3 style="color: white; padding-bottom: 10px;">{{ user.name }}</h3>
+  </div>
   <div class="col-xs-12">
     <div id="profileImage" class="profileImage containers col-xs-12 col-sm-6" style="margin-top: 15px; margin-bottom: 20px; float: none;" data-toggle="modal" data-target="#profileImageModal">
       <p class="changeImageMessage">Change Image</p>
     </div>
-    <h3 class="containers">{{ user.name }}</h3>
   </div>
-  <div class="col-xs-12">
-    <div class="containers col-xs-12">
-      <div id="userInfo">
+  <div class="containers col-xs-12">
+    <div class="col-xs-12 col-sm-6" style="border-right: 1px solid white">
+      <div id="userInfo" style="text-align: center">
         <a href="javascript:void(0)" onclick="showEditUser()" class="col-xs-12" style="text-align: right;">Edit</a>
         <div class="col-xs-12">
           <h4>Username: </h4><p>{{ user.username }}</p>
@@ -17,21 +19,26 @@
         </div>
       </div>
       <div id="editUserInfo" style="display: none">
-        <a href="javascript:void(0)" onclick="closeEditUser()" class="col-xs-12" style="text-align: right;">Close</a>
+        <div class="col-xs-6" style="text-align: left">
+          {{ editUserMessage }}
+        </div>
+        <a href="javascript:void(0)" ng-click="closeEditUser()" class="col-xs-6" style="text-align: right;">Close</a>
         <form class="col-xs-12">
+          <h4>Username: </h4><p>{{ user.username }}</p>
           <h4>Name: </h4><input id="nameInput" class="form-control" type="text" value="{{ user.name }}" placeholder="{{ user.name }}">
-          <h4>Username: </h4><input id="usernameInput" class="form-control" type="text" value="{{ user.username }}" placeholder="{{ user.username }}">
-          <h4>Password: </h4><input id="passwordInput" class="form-control" type="text" value="{{ user.password }}" placeholder="{{ user.password }}">
           <h4>Email: </h4><input id="emailInput" class="form-control" type="text" value="{{ user.email }}" placeholder="{{ user.email }}">
+          <h4>Password: </h4><input id="passwordInput" class="form-control" type="text" value="{{ user.password }}" placeholder="{{ user.password }}">
+          <h4>Confirm Password: </h4><input id="confirmPasswordInput" class="form-control" type="text" value="{{ confirmPassword }}" placeholder="">
           <br>
-          <input type="submit" class="btn btn-success form-control" ng-click="updateUser()" value="Save Changes"/>
+          <input class="btn btn-success form-control" ng-click="updateUserInfo()" value="Save Changes"/>
         </form>
       </div>
     </div>
-    <div class="containers col-xs-12">
-      <h4>Bands ({{ user.bands.length }}): </h4>
+    <div class="col-xs-12 col-sm-6" style="text-align: center">
+      <div class="col-xs-12" style="padding: 15px;"></div>
+      <h4>Bands: </h4>
       <div ng-repeat="band in user.bands">
-        <p>{{ band.name }}</p>
+        <p ng-click="goToBand(band)">{{ band.name }}</p>
       </div>
     </div>
   </div>
@@ -45,33 +52,33 @@
           <h4 class="modal-title">Choose User Image</h4>
         </div>
         <div class="modal-body col-xs-12">
-          <h5>Icon</h5>
           <div class="col-xs-6 col-sm-3" >
-            <div class="profileImageButton containers" style="background-image: url('../img/electric-profile.png');" ng-click="changeProfileImage('../img/electric-profile.png')"></div>
+            <div id="image-1" class="profileImageButton containers" style="background-image: url('../img/electric-profile.png');" ng-click="changeProfileImage('image-1','../img/electric-profile.png')"></div>
           </div>
           <div class="col-xs-6 col-sm-3">
-            <div class="profileImageButton containers" style="background-image: url('../img/acoustic-profile.png');" ng-click="changeProfileImage('../img/acoustic-profile.png')"></div>
+            <div id="image-2" class="profileImageButton containers" style="background-image: url('../img/acoustic-profile.png');" ng-click="changeProfileImage('image-2','../img/acoustic-profile.png')"></div>
           </div>
           <div class="col-xs-6 col-sm-3">
-            <div class="profileImageButton containers" style="background-image: url('../img/bass-profile.png');" ng-click="changeProfileImage('../img/bass-profile.png')"></div>
+            <div id="image-3" class="profileImageButton containers" style="background-image: url('../img/bass-profile.png');" ng-click="changeProfileImage('image-3','../img/bass-profile.png')"></div>
           </div>
           <div class="col-xs-6 col-sm-3">
-            <div class="profileImageButton containers" style="background-image: url('../img/drums-profile.png');" ng-click="changeProfileImage('../img/drums-profile.png')"></div>
+            <div id="image-4" class="profileImageButton containers" style="background-image: url('../img/drums-profile.png');" ng-click="changeProfileImage('image-4','../img/drums-profile.png')"></div>
           </div>
           <div class="col-xs-6 col-sm-3">
-            <div class="profileImageButton containers" style="background-image: url('../img/sticks-profile.png');" ng-click="changeProfileImage('../img/sticks-profile.png')"></div>
+            <div id="image-5" class="profileImageButton containers" style="background-image: url('../img/sticks-profile.png');" ng-click="changeProfileImage('image-5','../img/sticks-profile.png')"></div>
           </div>
           <div class="col-xs-6 col-sm-3">
-            <div class="profileImageButton containers" style="background-image: url('../img/vocal-profile.png');" ng-click="changeProfileImage('../img/vocal-profile.png')"></div>
+            <div id="image-6" class="profileImageButton containers" style="background-image: url('../img/vocal-profile.png');" ng-click="changeProfileImage('image-6','../img/vocal-profile.png')"></div>
           </div>
           <div class="col-xs-6 col-sm-3">
-            <div class="profileImageButton containers" style="background-image: url('../img/headphones-profile.png');" ng-click="changeProfileImage('../img/headphones-profile.png')"></div>
+            <div id="image-7" class="profileImageButton containers" style="background-image: url('../img/headphones-profile.png');" ng-click="changeProfileImage('image-7','../img/headphones-profile.png')"></div>
           </div>
           <div class="col-xs-6 col-sm-3">
-            <div class="profileImageButton containers" style="background-image: url('../img/piano-profile.png');" ng-click="changeProfileImage('../img/piano-profile.png')"></div>
+            <div id="image-8" class="profileImageButton containers" style="background-image: url('../img/piano-profile.png');" ng-click="changeProfileImage('image-8','../img/piano-profile.png')"></div>
           </div>
         </div>
         <div class="modal-footer">
+          <button id="saveProfileImageButton" type="button" class="btn btn-success" style="display: none" data-dismiss="modal" ng-click="saveProfileImage()">Save</button>
           <button type="button" class="btn" data-dismiss="modal">Close</button>
         </div>
       </div>
