@@ -58,6 +58,19 @@ body {
   #ideaGraph .containers { margin: 0 100px 0 100px }
 }
 
+body::-webkit-scrollbar {
+  width: 10px;
+}
+
+body::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
+
 /*input[type=search] {-webkit-appearance: searchfield !important;}*/
 
 input[type=search]::-webkit-search-cancel-button {-webkit-appearance: searchfield-cancel-button !important;}
