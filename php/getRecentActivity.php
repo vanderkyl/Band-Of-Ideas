@@ -395,13 +395,14 @@
         // Get current row as an array
         while ($row = mysqli_fetch_assoc($result)) {
           //$band = getBand($conn, $row["bandId"]);
-          //$file = getFile($conn, $row["fileId"]);
+          $file = getFile($conn, $row["fileId"]);
           //$userName = getUserName($conn, $row["userId"]);
           $data = ['notificationType' => "likedFile",
                    'id' => $row["id"],
                    'userId' => $row["userId"],
                    'bandId' => $row["bandId"],
                    'fileId' => $row["fileId"],
+                   'file' => $file,
                    'viewDate' => $row["viewDate"]];
           $views[] = $data;
 

@@ -61,10 +61,12 @@
       <div id="large-live-search" class="col-xs-12"></div>
     </form>
   </div>
+
   <div id="recentViews" class="col-xs-12 sideScroller">
     <div ng-repeat="view in recentViews">
-      <div class="folder" style="width: 200px" ng-click="openView(view)">
+      <div class="folder viewFile" ng-click="openView(view)">
         <p>{{ view.name }}</p>
+        <p style="color: #909090; font-size: 11px">{{ view.band.name }} / {{ view.folder.name }}</p>
       </div>
     </div>
   </div>
