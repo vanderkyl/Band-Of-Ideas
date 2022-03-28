@@ -100,6 +100,10 @@ function($scope, $http) {
     navigateToURL("/#/idea?id=" + view.id);
   };
 
+  $scope.goToHistoryPage = function() {
+    navigateToURL("/#/history");
+  };
+
   // Open User Details
   $scope.showUserDetails = function() {
     var detailsDisplay = getElementById("userDetails").style.display;

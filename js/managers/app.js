@@ -70,6 +70,10 @@ app.config(function ($routeProvider) {
     controller: 'activityController',
     templateUrl: 'views/activity.html'
   })
+  .when("/history", {
+    controller: 'historyController',
+    templateUrl: 'views/history.html'
+  })
   .otherwise({
     redirectTo: '/'
   });

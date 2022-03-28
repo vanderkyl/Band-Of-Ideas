@@ -1,0 +1,178 @@
+<div id="historyView" class="col-xs-12">
+  <div class="col-xs-12 viewTitle">
+    <h3 style="color: white; padding-bottom: 10px;">History</h3>
+  </div>
+  <!-- Dashboard buttons
+  <div id="dashboardButtons" class="col-xs-12" style="padding: 0;">
+    <div class="col-xs-12">
+      <div class="col-xs-3 col-sm-3" style="padding: 5px">
+        <div class="dashboardButton" ng-click="">
+          <strong style="font-size: 18px">{{ recentNotifications.length }}</strong><br>
+          <span style="font-size: 0.8em">New</span>
+          <div style="font-size: 8px">
+            <i class="fas fa-chevron-down"></i>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-3 col-sm-3" style="padding: 5px">
+        <div class="dashboardButton" onclick="">
+          <strong style="font-size: 18px">{{ numberOfNotifications }}</strong><br>
+          <span style="font-size: 0.8em">Notifications</span>
+          <div style="font-size: 8px">
+            <i class="fas fa-chevron-down"></i>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-3 col-sm-3" style="padding: 5px">
+        <div class="dashboardButton" onclick="">
+          <strong style="font-size: 18px">{{ bands.length }}</strong><br>
+          <span style="font-size: 0.8em">Bands</span>
+          <div style="font-size: 8px">
+            <i class="fas fa-chevron-down"></i>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-3 col-sm-3" style="padding: 5px">
+        <div class="dashboardButton" onclick="scrollToElementById('recentComments')">
+          <strong style="font-size: 18px">{{ recentHighlights.length }}</strong><br>
+          <span style="font-size: 0.8em">Comments</span>
+          <div style="font-size: 8px">
+            <i class="fas fa-chevron-down"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End of Buttons -->
+  <div id="loadHistoryContainer" class="col-xs-12 scroller" style="padding: 20px; text-align: center">
+    <i class="fa fa-spinner fa-spin" style="font-size: 20px"></i>
+  </div>
+  <div id="notificationsContainer" class="containers col-xs-12" style="display: none">
+    <h4 style="color: white; text-align: center">New Updates</h4>
+    <div id="recentNotificationsContainer" style="" class="col-xs-12">
+      <div ng-animate="'animate'" class="activityList" style="padding: 5px" ng-repeat="notification in recentNotifications" >
+        <div>
+          <!-- This is a Single  Notification -->
+          <div id="recent{{ notification.notificationType }}Notification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="openNotification(notification)">
+              <div class="notificationType col-xs-4 col-sm-2 col-md-3">
+                {{ getNotificationType(notification) }}
+              </div>
+              <div class="notificationBody col-xs-8 col-sm-10 col-md-9">
+                {{ getNotificationContent(notification) }}
+              </div>
+          </div>
+          <!-- End of Single Notification -->
+        </div>
+      </div>
+      <div ng-show="!recentNotifications.length" class="folder notification col-xs-12" style="text-align: center">
+        You are all caught up
+      </div>
+    </div>
+    <div id="recentUploadsContainer" class="col-xs-12" style="display: none">
+      <div ng-animate="'animate'" class="activityList" style="padding: 5px" ng-repeat="upload in recentUploads |
+      filter:{name: search }
+      | orderBy:sortBy" >
+        <!-- This is a Single Upload Notification -->
+        <div id="recentUploadNotification-{{ upload.id }}" class="folder notification col-xs-12" data-index="{{ upload.id }}" ng-click="openFile(upload)">
+            <p>[Upload] {{ upload.name }} was uploaded on {{ currentTimeToString(upload.uploadDate) }}</p>
+        </div>
+        <!-- End of Single Upload Notification -->
+      </div>
+
+    </div>
+    <div id="recentFoldersContainer" style="display: none" class="col-xs-12">
+      <div ng-animate="'animate'" class="activityList" style="padding: 5px" ng-repeat="folder in recentFolders |
+      filter:{name: search }
+      | orderBy:sortBy" >
+        <!-- This is a Single Folder Notification -->
+        <div id="recentFolderNotification-{{ folder.id }}" class="folder notification col-xs-12" data-index="{{ folder.id }}" ng-click="openFolder(folder)">
+            <p>[Folder] {{ folder.name }} was created on {{ currentTimeToString(folder.creationDate) }}</p>
+        </div>
+        <!-- End of Single Folder Notification -->
+      </div>
+    </div>
+    <div class="col-xs-12" style="border-bottom: 1px solid white; padding: 10px; margin-bottom: 15px;"></div>
+    <h4 style="color: white; text-align: center" class="col-xs-12">Last 30 Days</h4>
+    <div id="allNotificationsContainer" style="" class="col-xs-12">
+      <div ng-animate="'animate'" class="activityList" style="padding: 5px" ng-repeat="notification in allNotifications" >
+        <div>
+          <!-- This is a Single  Notification -->
+          <div id="{{ notification.notificationType }}Notification-{{ notification.id }}" class="folder notification col-xs-12" data-index="{{ notification.id }}" ng-click="openNotification(notification)">
+              <div class="notificationType col-xs-4 col-sm-2 col-md-3">
+                {{ getNotificationType(notification) }}
+              </div>
+              <div class="notificationBody col-xs-8 col-sm-10 col-md-9">
+                {{ getNotificationContent(notification) }}
+              </div>
+          </div>
+          <!-- End of Single Notification -->
+        </div>
+      </div>
+      <div ng-show="!allNotifications.length" class="folder notification col-xs-12" style="text-align: center">
+        Nothing to see here
+      </div>
+    </div>
+    <div id="uploadsContainer" style="display: none" class="col-xs-12">
+      <div ng-animate="'animate'" class="activityList" style="padding: 5px" ng-repeat="upload in uploads |
+      filter:{name: search }
+      | orderBy:sortBy" >
+        <!-- This is a Single Upload Notification -->
+        <div id="uploadNotification-{{ upload.id }}" class="folder notification col-xs-12" data-index="{{ upload.id }}" ng-click="openFile(upload)">
+            <p>{{ upload.name }} was uploaded on {{ currentTimeToString(upload.uploadDate) }}</p>
+        </div>
+        <!-- End of Single Upload Notification -->
+      </div>
+    </div>
+    <div id="foldersContainer" style="display: none" class="col-xs-12">
+      <div ng-animate="'animate'" class="activityList" style="padding: 5px" ng-repeat="folder in folders |
+      filter:{name: search }
+      | orderBy:sortBy" >
+        <!-- This is a Single Folder Notification -->
+        <div id="folderNotification-{{ folder.id }}" class="folder notification col-xs-12" data-index="{{ folder.id }}" ng-click="openFolder(folder)">
+            <p>The folder [{{ folder.name }}] was created on {{ currentTimeToString(folder.creationDate) }}</p>
+        </div>
+        <!-- End of Single Folder Notification -->
+      </div>
+    </div>
+
+  </div>
+
+    <!-- Recent Comment Section -->
+    <div id="recentComments" class="col-xs-12" style="padding: 0;">
+      <h4 style="color: white; text-align: center; margin-top: 25px;">Recent Comments</h4>
+      <div class="containers col-xs-12" style="padding: 5px;">
+        <div id="activityHeader" style="height: 40px;">
+          <span id="activityTitle" class="col-xs-6">Recent Comments</span>
+          <select ng-model="bandFilter" id="bandFilter" style="float: right; width: 30%; color: black">
+            <option ng-selected="true" value="">All</option>
+            <option ng-selected="{{band.name == bandFilter}}"
+                    ng-repeat="band in user.bands"
+                    value="{{ band.name }}">
+              {{band.name}}
+            </option>
+          </select>
+        </div>
+          <div id="recentActivity">
+            <div id="loadCommentsContainer" class="col-xs-12 scroller" style="padding: 20px; text-align: center">
+              <i class="fa fa-spinner fa-spin" style="font-size: 20px"></i>
+            </div>
+            <div id="commentContainer" class="col-xs-12 scroller" style="display:none">
+              <div class="recentComments fileComments col-xs-12" ng-repeat="comment in recentHighlights.slice().reverse() | filter:(!!bandFilter || undefined) && {bandName: bandFilter}" ng-click="openFile(comment.file.id, comment.highlightTime)" style="cursor: pointer">
+                <div class="col-xs-12" style="padding: 5px" >
+                  <div class="col-xs-5 commentUserName"><strong>{{ comment.userName }}</strong></div>
+                  <div class="col-xs-7" style="font-size: 9px; text-align: right; padding: 0">{{ comment.commentTime }}</div>
+                </div>
+                <div class="col-xs-12" style="padding: 10px; border-bottom: 1px solid #ffffff59; border-top: 1px solid #ffffff59;">
+                  <div class="col-xs-10">{{ comment.comment }}</div>
+                  <div ng-if="comment.highlightTime !== 0 && comment.highlightTime !== -1" >{{ timeToString(comment.highlightTime) }}</div>
+                </div>
+                <div class="col-xs-12" style="padding: 5px;">
+                  <div class="col-xs-12" style="padding: 0px; padding-right: 5px; text-align: right; font-size: 9px">{{ comment.band.name }} - {{ comment.file.folder.name }} - <strong>{{ comment.file.name }}</strong></div>
+                </div>
+              </div>
+              <div class="col-xs-12 text-center" style="cursor: pointer; font-size: 12px" ng-click="showAllRecentActivity(recentComments.length)">{{ (recentComments | filter: {bandName: bandFilter}).length }} Comments</div>
+            </div>
+          </div>
+      </div>
+    </div>
+</div>
