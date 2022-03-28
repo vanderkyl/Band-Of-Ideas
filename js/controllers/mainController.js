@@ -224,7 +224,6 @@ function($scope, $http) {
         .then(function (response) {
             $scope.recentViews = response.data.views;
         });
-    };
   };
 
   $scope.showIdeaGraph = function () {
