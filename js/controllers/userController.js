@@ -59,8 +59,8 @@ function($scope, $http) {
     $http.post("/php/updateUser.php?userId=" + $scope.user.id + "&type=userImage", postData)
     .then(function (response) {
       console.log(response);
-      getElementById("profileImage").style.backgroundImage = "url(" + icon + ")";
-      changeUserIcon(icon);
+      getElementById("profileImage").style.backgroundImage = "url(" + $scope.userImage + ")";
+      changeUserIcon($scope.userImage);
     },
     function (response) {
       console.log(response);
