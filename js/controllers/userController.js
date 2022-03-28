@@ -21,18 +21,14 @@ function($scope, $http) {
   };
 
   $scope.updateUserInfo = function() {
-    if ($scope.user.password == $scope.confirmPassword) {
-      $scope.updateUser(CURRENT_USER.id, "userInfo", $scope.user, function(success) {
-        if (success) {
-          closeEditUser();
-          $scope.editUserMessage = "Updated successfully";
-        } else {
-          $scope.editUserMessage = "Update unsuccessful";
-        }
-      });
-    } else {
-      $scope.editUserMessage = "Passwords don't match";
-    }
+    $scope.updateUser(CURRENT_USER.id, "userInfo", $scope.user, function(success) {
+      if (success) {
+        closeEditUser();
+        $scope.editUserMessage = "Updated successfully";
+      } else {
+        $scope.editUserMessage = "Update unsuccessful";
+      }
+    });
 
   };
 
