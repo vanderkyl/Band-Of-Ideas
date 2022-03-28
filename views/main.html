@@ -9,16 +9,6 @@
       </div>-->
       <h3 class="col-xs-12" style="border: 1px solid white; border-radius: 8px; padding: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); margin-top: 20px; color: white"><a href="/#/user" style="color: white">Hello {{ user.name }}</a></h3>
   </div>
-  <!-- Search -->
-  <div class="dashboard-search col-xs-12" style="margin-top: -10px;">
-    <form class="">
-      <div class="form-group">
-        <input id="large-search-input" type="search" class="col-xs-12" placeholder="Search Ideas" onkeyup="showResult(this.value, 'large-live-search')" autocomplete="off">
-      </div>
-      <!-- Search Results -->
-      <div id="large-live-search" class="col-xs-12"></div>
-    </form>
-  </div>
   <!-- Dashboard buttons -->
   <div id="dashboardButtons" class="col-xs-12" style="padding: 0;">
     <div class="col-xs-12">
@@ -61,6 +51,23 @@
     </div>
   </div>
   <!-- End of Buttons -->
+  <!-- Search -->
+  <div class="dashboard-search col-xs-12" style="margin-top: -10px;">
+    <form class="">
+      <div class="form-group">
+        <input id="large-search-input" type="search" class="col-xs-12" placeholder="Search Ideas" onkeyup="showResult(this.value, 'large-live-search')" autocomplete="off">
+      </div>
+      <!-- Search Results -->
+      <div id="large-live-search" class="col-xs-12"></div>
+    </form>
+  </div>
+  <div id="recentViews" class="col-xs-12 sideScroller">
+    <div ng-repeat="view in recentViews">
+      <div class="folder" style="width: 200px" ng-click="openView(view)">
+        <p>{{ view.name }}</p>
+      </div>
+    </div>
+  </div>
 
   <div id="ideaGraph" class="col-xs-12" style="padding: 15px; display: none">
     <div class="containers" style="padding: 0;">

@@ -36,13 +36,13 @@
         } else {
           $data = ['notifications' => getRecentNotifications($conn, $bandIds, $userId)];
         }
-    } else if ($type == "history") {
+    } else if ($type == "views") {
         $userId = $_GET['userId'];
         $bandIds = json_decode($_GET['bandIds']);
         if (empty($bandIds)) {
-          $data = ['history' => []];
+          $data = ['views' => []];
         } else {
-          $data = ['history' => getHistory($conn, $bandIds, $userId)];
+          $data = ['views' => getRecentViews($conn, $bandIds, $userId)];
         }
     }
 
@@ -232,6 +232,19 @@
     return $notifications;
   }
 
+  // Get Recent Views since
+  function getRecentViews($conn, $bandIds, $userId) {
+    $user = getUser($conn, $userId);
+    $user = (object)$user;
+    $lastloggedin = $user->lastloggedin;
+
+    $recentViewActivity = getViewActivityFromLastThirtyDays($conn, $userId, $bandIds, $lastloggedin);
+    $views = [
+      'recentViewActivity' => $recentViewActivity
+    ];
+    return $views;
+  }
+
   function getRecentUploads($conn, $bandIds, $lastloggedin) {
     $query = "SELECT * FROM Files WHERE (bandId = '" . $bandIds[0] . "'";
     if (count($bandIds) > 1) {
@@ -350,26 +363,26 @@
     }
   }
 
-  function getRecentLikeActivity($conn, $bandIds, $lastloggedin) {
+  function getRecentViewActivity($conn, $userId, $bandIds, $lastloggedin) {
     $query = "SELECT * FROM UserViews WHERE (bandId = '" . $bandIds[0] . "'";
     if (count($bandIds) > 1) {
       for($i = 1; $i < count($bandIds); $i++) {
         $query = $query . " OR bandId = '" . $bandIds[$i] . "'";
       }
     }
-    $query = $query . ") AND viewDate BETWEEN '" . $lastloggedin . "' AND NOW()";
+    $query = $query . ") AND userId = '" . $userId . "' AND viewDate BETWEEN '" . $lastloggedin . "' AND NOW()";
 
     return getViewActivity($conn, $query);
   }
 
-  function getViewActivityFromLastThirtyDays($conn, $bandIds, $lastloggedin) {
+  function getViewActivityFromLastThirtyDays($conn, $userId, $bandIds, $lastloggedin) {
     $query = "SELECT * FROM UserViews WHERE (bandId = '" . $bandIds[0] . "'";
     if (count($bandIds) > 1) {
       for($i = 1; $i < count($bandIds); $i++) {
         $query = $query . " OR bandId = '" . $bandIds[$i] . "'";
       }
     }
-    $query = $query . ") AND viewDate BETWEEN DATE_ADD('" . $lastloggedin . "', INTERVAL -30 DAY) AND '" . $lastloggedin . "'";
+    $query = $query . ") AND userId = '" . $userId . "'AND viewDate BETWEEN DATE_ADD('" . $lastloggedin . "', INTERVAL -30 DAY) AND '" . $lastloggedin . "'";
 
     return getViewActivity($conn, $query);
   }
@@ -377,27 +390,24 @@
   function getViewActivity($conn, $query) {
     if ($result = mysqli_query($conn, $query)) {
       $data = "";
-      $likes = [];
+      $views = [];
       if ($result->num_rows > 0) {
         // Get current row as an array
         while ($row = mysqli_fetch_assoc($result)) {
           //$band = getBand($conn, $row["bandId"]);
-          $file = getFile($conn, $row["fileId"]);
-          $userName = getUserName($conn, $row["userId"]);
+          //$file = getFile($conn, $row["fileId"]);
+          //$userName = getUserName($conn, $row["userId"]);
           $data = ['notificationType' => "likedFile",
                    'id' => $row["id"],
                    'userId' => $row["userId"],
-                   "userName" => $userName,
-                   'likeDate' => $row["likeDate"],
-                   'dateTime' => $row["likeDate"],
+                   'bandId' => $row["bandId"],
                    'fileId' => $row["fileId"],
-                   'file' => $file,
-                   'bandId' => $row["bandId"]];
-          $likes[] = $data;
+                   'viewDate' => $row["viewDate"]];
+          $views[] = $data;
 
         }
       }
-      return $likes;
+      return $views;
     }
   }
 

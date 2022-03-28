@@ -19,6 +19,7 @@ function($scope, $http) {
   $scope.playlistName = "";
   $scope.numberOfIdeas = 0;
   $scope.numberOfNotifications = 0;
+  $scope.recentViews = [];
 
   // -- MAIN METHODS -- // ----------------------------------------
 
@@ -94,6 +95,10 @@ function($scope, $http) {
             openFile(id, 0);
         }
     };
+
+  $scope.openView = function(view) {
+    navigateToURL("/#/idea?id=" + view.id);
+  };
 
   // Open User Details
   $scope.showUserDetails = function() {
@@ -211,6 +216,15 @@ function($scope, $http) {
 
   $scope.getRecentActivity = function(bands) {
       $scope.numberOfNotifications = CURRENT_NOTIFICATIONS.length;
+  };
+
+  $scope.getRecentViews = function() {
+    var bandIds = convertCurrentBandsToBandIds();
+    $http.get("/php/getRecentActivity.php?type=views&userId=" + CURRENT_USER.id + "&bandIds=" + JSON.stringify(bandIds))
+        .then(function (response) {
+            $scope.recentViews = response.data.views;
+        });
+    };
   };
 
   $scope.showIdeaGraph = function () {
@@ -335,8 +349,9 @@ function($scope, $http) {
             $scope.getUser(CURRENT_USER.username, true, function() {
               console.log("Getting user");
             });
-          $scope.getPlaylists();
-          $scope.getRecentActivity(CURRENT_BANDS);
+            $scope.getPlaylists();
+            $scope.getRecentActivity(CURRENT_BANDS);
+            $scope.getRecentViews();
           }
 
           $scope.loadUIObjects();

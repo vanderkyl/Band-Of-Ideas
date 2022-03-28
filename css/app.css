@@ -830,6 +830,11 @@ input[type=search]::-webkit-search-cancel-button {-webkit-appearance: searchfiel
   font-size: 12px;
 }
 
+#recentViews {
+  overflow: auto;
+  white-space: nowrap;
+}
+
 .buttonList {
   padding-bottom: 20px;
   box-shadow: 1px 1px 5px #171717 inset;
