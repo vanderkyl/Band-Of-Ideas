@@ -382,7 +382,7 @@
         $query = $query . " OR bandId = '" . $bandIds[$i] . "'";
       }
     }
-    $query = $query . ") AND userId = '" . $userId . "'AND viewDate BETWEEN DATE_ADD('" . $lastloggedin . "', INTERVAL -30 DAY) AND '" . $lastloggedin . "'";
+    $query = $query . ") AND userId = '" . $userId . "'AND viewDate BETWEEN DATE_ADD(NOW(), INTERVAL -30 DAY) AND NOW()";
 
     return getViewActivity($conn, $query);
   }

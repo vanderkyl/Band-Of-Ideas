@@ -121,6 +121,9 @@ function($scope, $sce, $http, $filter) {
             displayElementById("historyContainer");
             //$scope.recentComments = response.data.comments;
             $scope.recentViews = response.data.views.recentViewActivity;
+            $scope.recentViews.sort(function(a,b) {
+              return new Date(b.viewDate) - new Date(a.viewDate);
+            });
             console.log($scope.recentViews);
         });
   };
