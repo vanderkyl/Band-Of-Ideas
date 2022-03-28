@@ -50,7 +50,7 @@ function hideAppLoader() {
 
 function updateFileViews(http, file) {
   file.views++;
-  http.post("/php/updateFile.php?type=views", file)
+  http.post("/php/updateFile.php?type=views&userId=" + CURRENT_USER.id, file)
       .then(
           function (response) {
             console.log(response.data);
@@ -59,4 +59,3 @@ function updateFileViews(http, file) {
             console.log(response.data);
           });
 };
-

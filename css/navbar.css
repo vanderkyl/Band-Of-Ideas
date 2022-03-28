@@ -179,7 +179,7 @@ a.nav-link:hover {
   left: -12px;
 }
 
-#showSearch, #notificationButton, #userButton, #showLargeSearch, #largeNotificationButton, #largeUserButton {
+.navbarButtons {
   filter: invert(100%);
   cursor: pointer;
   font-size: 17px;
