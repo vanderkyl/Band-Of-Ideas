@@ -418,12 +418,12 @@ function playNext() {
     }
   };
 
-  $scope.getSongFiles = function(song, callback) {
+  $scope.getSongFiles = function(songId, callback) {
     if (song.id === "-1") {
       CURRENT_FILES = testFiles;
       callback(CURRENT_FILES);
     } else {
-      $http.get("/php/getFiles.php?type=songFiles&songId=" + song.id)
+      $http.get("/php/getFiles.php?type=songFiles&songId=" + songId)
           .then(function (response) {
             console.log(response.data);
             CURRENT_FILES = response.data;
@@ -464,7 +464,7 @@ function playNext() {
         if (id) {
           $scope.getSong(id, function(song) {
             CURRENT_SONG = song;
-            $scope.getSongFiles(id, song, function(files) {
+            $scope.getSongFiles(song.id, function(files) {
               CURRENT_FILES = files;
               updateTitle(CURRENT_SONG.name);
               //$scope.showLikes();
