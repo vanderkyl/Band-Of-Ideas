@@ -385,17 +385,17 @@ function playNext() {
     displayElementById("fileFilters");
   };
 
-  $scope.getFolder = function(id, callback) {
+  $scope.getSong = function(id, callback) {
     // Open Test Files
     if (id === "-1") {
-      CURRENT_FOLDER = testFolder;
-      callback(CURRENT_FOLDER);
+      CURRENT_SONG = testSongs;
+      callback(CURRENT_SONG);
     } else {
-      $http.get("/php/getFolders.php?id=" + id)
+      $http.get("/php/getSongs.php?type=song&id=" + id)
           .then(function (response) {
             console.log(response.data);
-            CURRENT_FOLDER = response.data;
-            $scope.getBand(CURRENT_FOLDER.bandId, function(band) {
+            CURRENT_SONG = response.data;
+            $scope.getBand(CURRENT_SONG.bandId, function(band) {
               console.log(band);
               callback(response.data);
             })
@@ -418,12 +418,12 @@ function playNext() {
     }
   };
 
-  $scope.getFiles = function(song, callback) {
-    if (folder.id === "-1") {
+  $scope.getSongFiles = function(song, callback) {
+    if (song.id === "-1") {
       CURRENT_FILES = testFiles;
       callback(CURRENT_FILES);
     } else {
-      $http.get("/php/getFiles.php?type=song&songId=" + song.id)
+      $http.get("/php/getFiles.php?type=songFiles&songId=" + song.id)
           .then(function (response) {
             console.log(response.data);
             CURRENT_FILES = response.data;
