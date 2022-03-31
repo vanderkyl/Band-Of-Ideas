@@ -37,6 +37,14 @@ function($scope, $sce, $http, $filter) {
         navigateToURL("/#/folder?id=" + folder.id);
     };
 
+    // Open Song and navigate to Song controller
+    $scope.openSong = function(song) {
+        CURRENT_BAND = $scope.band;
+        CURRENT_SONGS = $scope.folders;
+        CURRENT_SONG = song;
+        navigateToURL("/#/songs?id=" + song.id);
+    };
+
     $scope.openFilesSection = function() {
         showElementById("filesSection");
     };

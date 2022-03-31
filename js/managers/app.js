@@ -74,6 +74,10 @@ app.config(function ($routeProvider) {
     controller: 'historyController',
     templateUrl: 'views/history.html'
   })
+  .when("/song", {
+    controller: 'songController',
+    templateUrl: 'views/song.html'
+  })
   .otherwise({
     redirectTo: '/'
   });
