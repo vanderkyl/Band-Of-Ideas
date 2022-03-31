@@ -42,7 +42,7 @@ function($scope, $sce, $http, $filter) {
         CURRENT_BAND = $scope.band;
         CURRENT_SONGS = $scope.folders;
         CURRENT_SONG = song;
-        navigateToURL("/#/songs?id=" + song.id);
+        navigateToURL("/#/song?id=" + song.id);
     };
 
     $scope.openFilesSection = function() {

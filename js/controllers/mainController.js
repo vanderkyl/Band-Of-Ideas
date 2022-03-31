@@ -227,6 +227,9 @@ function($scope, $http) {
     $http.get("/php/getRecentActivity.php?type=views&userId=" + CURRENT_USER.id + "&bandIds=" + JSON.stringify(bandIds))
         .then(function (response) {
             $scope.recentViews = response.data.views.recentViewActivity;
+            $scope.recentViews.sort(function(a,b) {
+              return new Date(b.viewDate) - new Date(a.viewDate);
+            });
             console.log($scope.recentViews);
         });
   };
