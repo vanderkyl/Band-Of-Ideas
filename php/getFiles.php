@@ -32,7 +32,7 @@
       $bandId = $_GET['bandId'];
       $files = getBandFiles($conn, $bandId);
     } else if ($type == "songFiles"){
-      $bandId = $_GET['songId'];
+      $songId = $_GET['songId'];
       $files = getSongFiles($conn, $songId);
     } else if ($type == "singleFile"){
       $fileId = [$_GET['fileId']];
