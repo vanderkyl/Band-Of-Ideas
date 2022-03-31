@@ -379,7 +379,7 @@ function($scope, $sce, $http, $filter) {
       if (id === "-1") {
         callback(testSongs);
       } else {
-        $http.get("/php/getSongs.php?bandId=" + band.id)
+        $http.get("/php/getSongs.php?type=songsbandId=" + band.id)
             .then(function (response) {
               console.log(response.data);
               CURRENT_SONGS = response.data;
