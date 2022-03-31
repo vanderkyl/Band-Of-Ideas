@@ -31,6 +31,9 @@
     } else if ($type == "bandFiles"){
       $bandId = $_GET['bandId'];
       $files = getBandFiles($conn, $bandId);
+    } else if ($type == "songFiles"){
+      $bandId = $_GET['songId'];
+      $files = getSongFiles($conn, $songId);
     } else if ($type == "singleFile"){
       $fileId = [$_GET['fileId']];
 
@@ -154,6 +157,12 @@
   // Get Band Files with -> $bandId
   function getBandFiles($conn, $bandId) {
       $fileIds = getBandFileIds($conn, $bandId);
+      return getFilesById($conn, $fileIds);
+  }
+
+  // Get Band Files with -> $songId
+  function getSongFiles($conn, $songId) {
+      $fileIds = getSongFileIds($conn, $songId);
       return getFilesById($conn, $fileIds);
   }
 
@@ -318,6 +327,21 @@
             // Get current row as an array
             while ($row = mysqli_fetch_assoc($result)) {
               $fileIds[] = $row["id"];
+            }
+          }
+      }
+      return $fileIds;
+  }
+
+  // Get Files ids for the files in a band with -> $songId
+  function getSongFileIds($conn, $songId) {
+      $fileIds = [];
+      $query = "SELECT id FROM SongFiles WHERE songId='" . $songId . "';";
+      if ($result = mysqli_query($conn, $query)) {
+          if ($result->num_rows > 0) {
+            // Get current row as an array
+            while ($row = mysqli_fetch_assoc($result)) {
+              $fileIds[] = $row["fileId"];
             }
           }
       }
