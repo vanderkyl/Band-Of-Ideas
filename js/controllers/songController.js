@@ -418,12 +418,12 @@ function playNext() {
     }
   };
 
-  $scope.getFiles = function(folderName, folder, callback) {
+  $scope.getFiles = function(song, callback) {
     if (folder.id === "-1") {
       CURRENT_FILES = testFiles;
       callback(CURRENT_FILES);
     } else {
-      $http.get("/php/getFiles.php?type=folder&folderName=" + folder.metaName + "&bandId=" + folder.bandId)
+      $http.get("/php/getFiles.php?type=song&songId=" + song.id)
           .then(function (response) {
             console.log(response.data);
             CURRENT_FILES = response.data;
@@ -438,6 +438,7 @@ function playNext() {
       $scope.user = CURRENT_USER;
       $scope.files = CURRENT_FILES;
       $scope.folder = CURRENT_FOLDER;
+      $scope.song = CURRENT_SONG;
       $scope.members = CURRENT_MEMBERS;
       $scope.numberOfFiles = CURRENT_FILES.length;
       loadFileList();
@@ -447,10 +448,10 @@ function playNext() {
         }
       }
 
-      displayElementById("folderView");
-      var folderUrl = "/#/folder?id=" + CURRENT_FOLDER.id;
-      removeNavLink("folderLink");
-      addNavLink("folderLink", CURRENT_FOLDER.name, folderUrl);
+      displayElementById("songView");
+      var songUrl = "/#/song?id=" + CURRENT_SONG.id;
+      removeNavLink("songLink");
+      addNavLink("songLink", CURRENT_SONG.name, songUrl);
       finishControllerSetup();
     };
 
@@ -458,16 +459,15 @@ function playNext() {
       setupController();
       // Do this if logged in
       if (isLoggedIn()) {
-        CURRENT_SELECTED_FILE = {};
         var id = getParameterByName("id");
         console.log(id);
         if (id) {
-
-          $scope.getFolder(id, function(folder) {
-            $scope.getFiles(id, folder, function(files) {
+          $scope.getSong(id, function(song) {
+            CURRENT_SONG = song;
+            $scope.getSongFiles(id, song, function(files) {
               CURRENT_FILES = files;
-              updateTitle(CURRENT_FOLDER.name);
-              $scope.showLikes();
+              updateTitle(CURRENT_SONG.name);
+              //$scope.showLikes();
               $scope.loadUIObjects();
             });
           });

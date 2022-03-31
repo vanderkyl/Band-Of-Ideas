@@ -5,8 +5,9 @@
   $data = json_decode($postData);
   $name = $data->name;
   $bandId = $data->bandId;
-  $userId =$data->userId;
+  $userId = $data->userId;
   $description = $data->description;
+  $lyrics = "";
   date_default_timezone_set('CST6CDT');
   if(mysqli_ping($conn)) {
     // If band id was found, Insert the song

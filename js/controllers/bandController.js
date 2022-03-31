@@ -373,6 +373,21 @@ function($scope, $sce, $http, $filter) {
       }
     };
 
+    // Get Songs for given band
+    $scope.getSongs = function(band, callback) {
+      var id = band.id;
+      if (id === "-1") {
+        callback(testSongs);
+      } else {
+        $http.get("/php/getSongs.php?bandId=" + band.id)
+            .then(function (response) {
+              console.log(response.data);
+              CURRENT_SONGS = response.data;
+              callback(response.data);
+            });
+      }
+    };
+
     // Get Band Members for given band
     $scope.getBandMembers = function(callback) {
         // If Test Band
@@ -410,6 +425,7 @@ function($scope, $sce, $http, $filter) {
       $scope.folder = CURRENT_FOLDER;
       $scope.members = CURRENT_MEMBERS;
       $scope.folders = CURRENT_FOLDERS;
+      $scope.songs = CURRENT_SONGS;
       var bandUrl = "/#/band?id=" + CURRENT_BAND.id;
       $scope.getRecentActivity();
       removeNavLink("bandLink");
@@ -429,6 +445,12 @@ function($scope, $sce, $http, $filter) {
         if (id) {
           $scope.getBand(id, function(band) {
             CURRENT_BAND = band;
+            $scope.getSongs(band, function(songs) {
+              CURRENT_SONGS = songs;
+              if (CURRENT_SONGS.length == 0) {
+                CURRENT_SONGS = [];
+              }
+            });
             $scope.getFolders(band, function(folders) {
               CURRENT_FOLDERS = folders;
               if (CURRENT_FOLDERS.length == 0) {
