@@ -64,3 +64,9 @@ app.directive('memberModal', function() {
         templateUrl: 'views/modals/memberModal.html'
     };
 });
+// Add Song Modal Directive
+app.directive('addSongModal', function() {
+    return {
+        templateUrl: 'views/modals/addSongModal.html'
+    };
+});
