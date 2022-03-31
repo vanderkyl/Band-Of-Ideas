@@ -1,9 +1,7 @@
 app.controller('songController', ['$scope', '$sce', '$http', '$filter',
 function($scope, $sce, $http, $filter) {
-  // Folders
-  $scope.folders = [];
-  $scope.folder = {};
-  $scope.newFolder = "";
+  // Song and Band
+  $scope.song = {};
   $scope.band = {};
   // Files
   $scope.files = [];
@@ -11,10 +9,6 @@ function($scope, $sce, $http, $filter) {
   $scope.file = {};
   $scope.fileLinks = [];
   $scope.currentSelectedFileId = -1;
-  $scope.uploadFiles = [];
-  $scope.addFolderMessage = "New Folder";
-  $scope.folderMessage = "";
-  $scope.likedFiles = 0;
   $scope.recentComments = [];
 
   $scope.currentPage = 1;
@@ -23,10 +17,6 @@ function($scope, $sce, $http, $filter) {
   $scope.pageSize = "10";
   $scope.maxSize = 5;
   $scope.search = "";
-
-  $scope.wavesurfers = [];
-  $scope.wavesurferName = "";
-  $scope.wavesurferId = "";
 
   $scope.maxComments = "5";
   $scope.fileIcon = "/img/music.png";
