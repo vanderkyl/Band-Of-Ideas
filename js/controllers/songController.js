@@ -419,7 +419,7 @@ function playNext() {
   };
 
   $scope.getSongFiles = function(songId, callback) {
-    if (song.id === "-1") {
+    if (songId === "-1") {
       CURRENT_FILES = testFiles;
       callback(CURRENT_FILES);
     } else {
