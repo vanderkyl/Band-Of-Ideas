@@ -5,6 +5,8 @@ function($scope, $sce, $http, $filter) {
     $scope.newFolder = "";
     $scope.band = {};
     $scope.members = [];
+    $scope.songs = [];
+    $scope.newSong = "";
 
     $scope.addFolderMessage = "New Folder";
     $scope.folderMessage = "";
@@ -157,6 +159,12 @@ function($scope, $sce, $http, $filter) {
         displayElementById("fileFilters");
     };
 
+    $scope.showSongSearchBar= function() {
+        hideElementById("searchSongsButton");
+        displayElementById("songSearchBar");
+        displayElementById("songFilters");
+    };
+
     // -- END OF MAIN BAND CONTROLLER METHODS -- // -------------------------------------------------
 
     // -- PAGINATION METHODS -- // --------------------------------------------
@@ -279,6 +287,33 @@ function($scope, $sce, $http, $filter) {
                 });
         }
     };
+
+    $scope.addSong = function() {
+        var song = {
+            name: $scope.newSong,
+            description: $scope.newSongDescription,
+            bandId: CURRENT_BAND.id,
+            userId: CURRENT_USER.id
+        };
+        // TODO verify that the right data is there
+        $http.post("/php/addSong.php", song)
+            .then(
+                function (response) {
+                    if (response.data === "New record created successfully!") {
+
+                        $scope.songs.push(song);
+                        console.log($scope.songs);
+                        location.reload(true);
+                    } else {
+                      console.log("Failed to add song");
+                        //$scope.addFolderMessage = "Failed to add folder.";
+                    }
+                },
+                function (response) {
+                    console.log(response.data);
+                });
+    };
+
     // Add Playlist method
     $scope.addPlaylist = function() {
         if ($scope.playlistName != "") {
