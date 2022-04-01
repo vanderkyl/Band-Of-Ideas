@@ -18,12 +18,13 @@
         <h4 style="color: white; text-align: center; margin-top: 25px;">Arrangement</h4>
         <div id="arrangment" class="col-xs-12"></div>
       </div>
+      <hr class="col-xs-12"/>
       <div id="songLyrics">
         <h4 style="color: white; text-align: center; margin-top: 25px;">Lyrics</h4>
         <div id="songLyricsText" class="containers col-xs-12" style="padding: 10px;">
           {{ song.lyrics }}
         </div>
-        <hr class="col-xs-12"/>
+
         <div id="songLyricsInputContainer" class="containers col-xs-12" style="padding: 10px; display: none">
           <textarea id="songLyricsInput" name="lyrics" ng-model="song.lyrics" rows="4" cols="50">
             {{ song.lyrics }}
@@ -146,7 +147,7 @@
         <div id="ideaSearchContainer" class="idea-search col-xs-12">
           <form class="">
             <div class="form-group">
-              <input id="idea-search-input" type="search" class="col-xs-12" placeholder="Search Ideas" onkeyup="showIdeaResult(this.value, 'idea-live-search')" autocomplete="off">
+              <input id="idea-search-input" type="search" class="col-xs-12" placeholder="Search Ideas" onkeyup="showIdeaResult(this.value, 'idea-live-search', CURRENT_FILES)" autocomplete="off">
             </div>
 
           </form>
