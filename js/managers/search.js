@@ -53,21 +53,12 @@ function showIdeaResult(str, searchId, currentSongIdeas) {
         var ideaHtml = "<div id='ideaAddButton-" + files[i].id + "'class='playlistDetailsButton btn btn-default col-xs-3' ng-click='addToSong(idea)'>Add Idea</div><div id='ideaAdded-" + files[i].id + "' class='playlistDetailsButton col-xs-3' style='display: none; padding top: 5px'>Added</div>";
         for (var j = 0; j < currentSongIdeas.length; j++)
         if (files[i].id === currentSongIdeas[j].id) {
-          ideaHtml = "<div id='ideaAddButton-" + files[i].id + "'class='playlistDetailsButton btn btn-default col-xs-3' style='display: none' ng-click='addToSong(idea)'>Add Idea</div><div id='ideaAdded-" + files[i].id + "' class='playlistDetailsButton col-xs-3' style='padding top: 5px'>Added</div>";"
+          ideaHtml = "<div id='ideaAddButton-" + files[i].id + "'class='playlistDetailsButton btn btn-default col-xs-3' style='display: none' ng-click='addToSong(idea)'>Add Idea</div><div id='ideaAdded-" + files[i].id + "' class='playlistDetailsButton col-xs-3' style='padding top: 5px'>Added</div>";
         }
         fileHtml += "<div class='playlistButton col-xs-12'><div class='playlistDetails col-xs-6'><div>" + files[i].name + "</div></div><div class='playlistDetailsButton btn btn-default col-xs-3' data-dismiss='modal' ng-click='openIdea(idea)'>Open</div>" + ideaHtml + "</div>";
       }
       document.getElementById(searchId).innerHTML= fileHtml;
-      for (var i = 0; i < playlists.length; i++) {
-        for (var j = 0; j < filePlaylists.length; j++) {
-          if (playlists[i].id === filePlaylists[j].id) {
-            console.log("playlistAddButton-" + playlists[i].id);
-            hideElementById("playlistAddButton-" + playlists[i].id);
-            displayElementById("playlistAdded-" + playlists[i].id);
-            j = filePlaylists.length;
-          }
-        }
-      }
+      
       //document.getElementById(searchId).style.border="1px solid #A5ACB2";
     }
   }
