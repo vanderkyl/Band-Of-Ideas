@@ -386,6 +386,9 @@ function playNext() {
           .then(function (response) {
             console.log(response.data);
             CURRENT_SONG = response.data;
+            CURRENT_SONG.lyrics = CURRENT_SONG.lyrics.trim();
+            $scope.song = response.data;
+
             $scope.getBand(CURRENT_SONG.bandId, function(band) {
               console.log(band);
               callback(response.data);
@@ -428,23 +431,52 @@ function playNext() {
     $("#addSongFileModal").modal('show');
   };
 
-  $scope.addToSong = function(idea) {
+  $scope.addToSong2 = function(idea) {
+    console.log("Add Song");
     var data = {
       songId: $scope.song.id,
-      fileId: idea.id
+      fileId: idea.id,
+      bandId: CURRENT_BAND.id,
+      userId: CURRENT_USER.id
     }
     $http.post("/php/addToSong.php", data)
         .then(function (response) {
               console.log(response.data);
-              hideElementById("ideaAddButton-" + idea.id);
-              displayElementById("ideaAdded-" + idea.id);
+
             },
             function (response) {
               console.log(response.data);
             });
   };
 
+  function addToSong(id) {
+    var data = new FormData();
+    data.append('songId', CURRENT_SONG.id);
+    data.append('fileId', id);
+    data.append('bandId', CURRENT_BAND.id);
+    data.append('userId', CURRENT_USER.id);
+
+      if (window.XMLHttpRequest) {
+        // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp=new XMLHttpRequest();
+      } else {  // code for IE6, IE5
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+      }
+      xmlhttp.onreadystatechange=function() {
+        if (this.readyState==4 && this.status==200) {
+          console.log("Success");
+          console.log(this.ResponseText);
+          hideElementById("ideaAddButton-" + id);
+          displayElementById("ideaAdded-" + id);
+        }
+      }
+      xmlhttp.open("POST","/php/addToSong.php", true);
+      xmlhttp.send(data);
+    }
+  }
+
   $scope.openIdea = function(idea) {
+    console.log("Opening idea: " + idea.id);
     navigateToURL("/#/idea?id=" + idea.id);
   };
 
