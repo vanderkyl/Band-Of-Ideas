@@ -14,18 +14,24 @@
     </div>
 
     <div id="songDetails" class="containers col-xs-12" style="padding: 5px">
-      <div id="songArrangement">
+      <div id="songArrangement" class="col-xs-12" style="border-bottom: 1px solid white; margin-bottom: 10px">
         <h4 style="color: white; text-align: center; margin-top: 25px;">Arrangement</h4>
-        <div id="arrangment" class="col-xs-12"></div>
+        <div ng-show="!arrangement.length" ng-click="addArrangement()" class="folder col-xs-12" style="text-align: center">
+          <p style="color: white">Add Arrangement</p>
+        </div>
+        <div id="arrangment" class="col-xs-12">
+
+        </div>
+
       </div>
-      <hr class="col-xs-12"/>
-      <div id="songLyrics">
+
+      <div id="songLyrics" class="col-xs-12">
         <h4 style="color: white; text-align: center; margin-top: 25px;">Lyrics</h4>
-        <div id="songLyricsText" class="containers col-xs-12" style="padding: 10px;">
+        <div id="songLyricsText" class="containers col-xs-12" style="padding: 10px; white-space: pre-wrap;">
           {{ song.lyrics }}
         </div>
 
-        <div id="songLyricsInputContainer" class="containers col-xs-12" style="padding: 10px; display: none">
+        <div id="songLyricsInputContainer" class="containers col-xs-12" style="padding: 10px; white-space: pre-wrap; display: none">
           <textarea id="songLyricsInput" name="lyrics" ng-model="song.lyrics" rows="4" cols="50">
             {{ song.lyrics }}
           </textarea>
@@ -73,7 +79,7 @@
       <div id="fileHeader">
         <!--<input id="fileSearchBar" type="search" ng-model="search" class="searchBar col-xs-12" style="" placeholder="Search Ideas">-->
         <div id="addSongFile" class="addToListButton col-xs-6">
-          <a href="javascript:void(0)" ng-click="openSongFileModal()" ><i class="fas fa-plus"></i></a>
+          <a href="javascript:void(0)" ng-click="openSongFileModal()" >Add Ideas</a>
         </div>
         <div id="fileFilters" style="padding-right: 0; float: right; display: none;">
           <select ng-model="sortBy" id="fileOrder" class="form-control">

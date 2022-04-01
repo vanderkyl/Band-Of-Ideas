@@ -24,6 +24,7 @@ function($scope, $sce, $http, $filter) {
   $scope.user = {};
   $scope.userLikes = [];
   $scope.members = [];
+  $scope.arrangement = [];
 
   //TODO Create functionality for a recent file selection
 
