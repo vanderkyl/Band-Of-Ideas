@@ -32,6 +32,49 @@ function showResult(str, searchId) {
   xmlhttp.send();
 }
 
+function showIdeaResult(str, searchId, currentSongIdeas) {
+  if (str.length==0) {
+    hideResult(searchId);
+    results = "";
+    return;
+  }
+  if (window.XMLHttpRequest) {
+    // code for IE7+, Firefox, Chrome, Opera, Safari
+    xmlhttp=new XMLHttpRequest();
+  } else {  // code for IE6, IE5
+    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+  xmlhttp.onreadystatechange=function() {
+    if (this.readyState==4 && this.status==200) {
+      var files = JSON.parse(this.responseText);
+      results = files;
+      var fileHtml = "";
+      for (var i = 0; i < files.length; i++) {
+        var ideaHtml = "<div id='ideaAddButton-" + files[i].id + "'class='playlistDetailsButton btn btn-default col-xs-3' ng-click='addToSong(idea)'>Add Idea</div><div id='ideaAdded-" + files[i].id + "' class='playlistDetailsButton col-xs-3' style='display: none; padding top: 5px'>Added</div>";
+        for (var j = 0; j < currentSongIdeas.length; j++)
+        if (files[i].id === currentSongIdeas[j].id) {
+          ideaHtml = "<div id='ideaAddButton-" + files[i].id + "'class='playlistDetailsButton btn btn-default col-xs-3' style='display: none' ng-click='addToSong(idea)'>Add Idea</div><div id='ideaAdded-" + files[i].id + "' class='playlistDetailsButton col-xs-3' style='padding top: 5px'>Added</div>";"
+        }
+        fileHtml += "<div class='playlistButton col-xs-12'><div class='playlistDetails col-xs-6'><div>" + files[i].name + "</div></div><div class='playlistDetailsButton btn btn-default col-xs-3' data-dismiss='modal' ng-click='openIdea(idea)'>Open</div>" + ideaHtml + "</div>";
+      }
+      document.getElementById(searchId).innerHTML= fileHtml;
+      for (var i = 0; i < playlists.length; i++) {
+        for (var j = 0; j < filePlaylists.length; j++) {
+          if (playlists[i].id === filePlaylists[j].id) {
+            console.log("playlistAddButton-" + playlists[i].id);
+            hideElementById("playlistAddButton-" + playlists[i].id);
+            displayElementById("playlistAdded-" + playlists[i].id);
+            j = filePlaylists.length;
+          }
+        }
+      }
+      //document.getElementById(searchId).style.border="1px solid #A5ACB2";
+    }
+  }
+  xmlhttp.open("GET","/php/livesearch.php?q=" + str + "&bandId=" + CURRENT_BAND.id, true);
+  xmlhttp.send();
+}
+
 function getRecommendedFiles(str, searchId) {
   if (window.XMLHttpRequest) {
     // code for IE7+, Firefox, Chrome, Opera, Safari

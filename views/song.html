@@ -6,8 +6,8 @@
     <div class="filePage" class="col-xs-12">
     </div>
     <div class="col-xs-12" style="border: 1px solid white; border-radius: 8px; padding: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); margin-top: 10px; margin-bottom: 10px;">
-      <h4 style="color: white; padding: 0; margin-top: 27px; text-align: center; font-size: 20px" class="col-xs-12 col-sm-8 col-md-8"><a href="/#/band?id={{ band.id }}" style="color: white" class="backToButton">{{ band.name }}</a>  /  <span style="margin-left: 10px;">{{ song.name }}</span></h4>
-
+      <h4 style="color: white; padding: 0; margin-top: 25px; margin-bottom: 10px; text-align: center; font-size: 20px" class="col-xs-12"><a href="/#/band?id={{ band.id }}" style="color: white" class="backToButton">{{ band.name }}</a>  /  <span style="margin-left: 10px;">{{ song.name }}</span></h4>
+      <p class="col-xs-12" style="text-align: center; margin-bottom: 10px; color: white;">{{ song.description }}</p>
       <div class="topButt" style="display: none;">
         <i class="fas fa-share-alt"></i>
       </div>
@@ -40,20 +40,37 @@
           </div>
         </div>
         <div class="col-xs-6 col-sm-3" style="padding: 10px">
-          <div class="dashboardButton" ng-click="openUploadModal()" style="padding-top: 15px">
+          <div class="dashboardButton" ng-click="openSongFileModal()" style="padding-top: 15px">
             <i class="fas fa-upload"></i>
-            <p style="font-size: 0.9em">Upload</p>
+            <p style="font-size: 0.9em">Add Ideas</p>
           </div>
         </div>
       </div>
     </div>
     <!-- End Band Buttons -->
     <div id="songDetails" class="containers col-xs-12" style="padding: 5px">
-
+      <div id="songArrangement">
+        <h4 style="color: white; text-align: center; margin-top: 25px;">Arrangement</h4>
+      </div>
+      <div id="songLyrics">
+        <h4 style="color: white; text-align: center; margin-top: 25px;">Lyrics</h4>
+        <div id="songLyricsText" class="containers col-xs-12" style="padding: 5px; display: none">
+          {{ song.lyrics }}
+        </div>
+        <div id="songLyricsInputContainer" class="containers col-xs-12" style="padding: 5px; display: none">
+          <textarea id="songLyricsText" name="lyrics" ng-model="song.lyrics" rows="4" cols="50">
+            {{ song.lyrics }}
+          </textarea>
+        </div>
+      </div>
     </div>
+
     <div id="files" class="containers col-xs-12" style="padding: 5px;">
       <div id="fileHeader">
-        <input id="fileSearchBar" type="search" ng-model="search" class="searchBar col-xs-12" style="" placeholder="Search Ideas">
+        <!--<input id="fileSearchBar" type="search" ng-model="search" class="searchBar col-xs-12" style="" placeholder="Search Ideas">-->
+        <div id="addSongFile" class="addToListButton col-xs-6" data-toggle="modal" data-target="#addSongFileModal">
+          <a href="javascript:void(0)" ng-click="openSongFileModal()" ><i class="fas fa-plus"></i></a>
+        </div>
         <div id="fileFilters" style="padding-right: 0; float: right; display: none;">
           <select ng-model="sortBy" id="fileOrder" class="form-control">
             <option value="name">Name</option>
@@ -113,3 +130,36 @@
     </div>
   </div>
 </div>
+<!-- Add Song File Modal -->
+<div id="addSongFileModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add Idea To Song</h4>
+      </div>
+      <div class="modal-body">
+        <!-- Search -->
+        <div id="ideaSearchContainer" class="idea-search col-xs-12">
+          <form class="">
+            <div class="form-group">
+              <input id="idea-search-input" type="search" class="col-xs-12" placeholder="Search Ideas" onkeyup="showIdeaResult(this.value, 'idea-live-search')" autocomplete="off">
+            </div>
+
+          </form>
+        </div>
+        <div style="padding: 15px">
+          <!-- Search Results -->
+          <div id="idea-live-search" class="col-xs-12">
+
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of Add to Song Modal -->

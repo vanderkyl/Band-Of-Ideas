@@ -420,7 +420,42 @@ function playNext() {
             callback(response.data);
           });
     }
+  };
 
+  $scope.openSongFileModal = async function() {
+    showIdeaResult($scope.song.name, 'idea-live-search', $scope.files);
+    $("#addSongFileModal").modal('show');
+  };
+
+  $scope.addToSong = function(idea) {
+    var data = {
+      songId: $scope.song.id,
+      fileId: idea.id
+    }
+    $http.post("/php/addToSong.php", data)
+        .then(function (response) {
+              console.log(response.data);
+              hideElementById("ideaAddButton-" + idea.id);
+              displayElementById("ideaAdded-" + idea.id);
+            },
+            function (response) {
+              console.log(response.data);
+            });
+  };
+
+  $scope.openIdea = function(idea) {
+    navigateToURL("/#/idea?id=" + idea.id);
+  };
+
+  // Http request to get song ideas
+  $scope.getSongFiles = function(songId, callback) {
+    $http.get("/php/getFiles.php?type=songFiles&songId=" + songId)
+        .then(function (response) {
+          console.log(response.data);
+          CURRENT_FILES = response.data;
+          $scope.files = CURRENT_FILES;
+          callback(response.data);
+        });
   };
 
     $scope.loadUIObjects = function() {
