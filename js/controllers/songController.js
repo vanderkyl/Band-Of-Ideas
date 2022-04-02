@@ -25,6 +25,7 @@ function($scope, $sce, $http, $filter) {
   $scope.userLikes = [];
   $scope.members = [];
   $scope.arrangement = [];
+  $scope.newArrangement = {};
 
   //TODO Create functionality for a recent file selection
 
@@ -51,21 +52,15 @@ function playNext() {
     navigateToURL(previousUrl);
   };
 
-  $scope.uploadFiles = function() {
-    console.log(getElementById("upload").style.display);
-    var uploadDisplay = getElementById("upload").style.display;
-    if (uploadDisplay == "none" || uploadDisplay == "") {
-      displayElementById("upload");
-    } else {
-      hideElementById("upload");
-    }
-  };
-
   $scope.goToLink = function() {
     var source = $scope.file.source;
     if (source != "") {
       openLinkInNewTab($scope.file.source);
     }
+  };
+
+  $scope.goToSongFiles = function() {
+    scrollToElementById("fileList");
   };
 
   $scope.openFile = function(file, event) {
@@ -452,6 +447,84 @@ function playNext() {
   $scope.openIdea = function(idea) {
     console.log("Opening idea: " + idea.id);
     navigateToURL("/#/idea?id=" + idea.id);
+  };
+
+  $scope.editLyrics = function() {
+    displayElementById("songLyricsInputContainer");
+    hideElementById("songLyricsTextContainer");
+  };
+
+  $scope.closeEditLyrics = function() {
+    displayElementById("songLyricsTextContainer");
+    hideElementById("songLyricsInputContainer");
+  };
+
+  $scope.saveLyrics = function() {
+    console.log(CURRENT_USER);
+    $http.post("/php/updateSong.php?type=lyrics", CURRENT_SONG)
+    .then(
+      function (response) {
+        console.log(response.data);
+      },
+      function (response) {
+        console.log(response.data);
+        console.log("Sorry, that didn't work.");
+      });
+  }
+
+  $scope.addArrangement = function() {
+    displayElementById("editArrangement");
+    hideElementById("addArrangementButton");
+  };
+
+  $scope.editArrangement = function() {
+    displayElementById("editArrangement");
+    hideElementById("arrangement");
+  };
+
+  $scope.closeEditArrangement = function() {
+    displayElementById("arrangement");
+    hideElementById("editArrangement");
+    hideElementById("closeEditArrangement");
+  };
+
+  $scope.closeAddArrangement = function() {
+    displayElementById("addArrangementButton");
+    hideElementById("editArrangement");
+    hideElementById("closeAddArrangement");
+  };
+
+  $scope.saveArrangement = function() {
+    console.log(CURRENT_USER);
+    CURRENT_SONG.arrangement = $scope.arrangement;
+    $http.post("/php/updateSong.php?type=arrangement", CURRENT_SONG)
+    .then(
+      function (response) {
+        console.log(response.data);
+      },
+      function (response) {
+        console.log(response.data);
+        console.log("Sorry, that didn't work.");
+      });
+  };
+
+  $scope.addArrangementBlock = function() {
+    displayElementInlineById("addArrangementPartBlock");
+    hideElementById("addArrangementBlock");
+  };
+
+  $scope.saveArrangementPart = function() {
+    $scope.newArrangement.userId = CURRENT_USER.id;
+    $scope.newArrangement.songId = CURRENT_SONG.id;
+    $scope.arrangement.push($scope.newArrangement);
+    $scope.closeAddPart();
+    getElementById("addPartNameInput").value = "";
+    console.log("Arrangement part successfully added");
+  };
+
+  $scope.closeAddPart = function() {
+    displayElementInlineById("addArrangementBlock");
+    hideElementById("addArrangementPartBlock");
   };
 
   // Http request to get song ideas

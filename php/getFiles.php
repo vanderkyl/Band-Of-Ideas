@@ -336,7 +336,7 @@
   // Get Files ids for the files in a band with -> $songId
   function getSongFileIds($conn, $songId) {
       $fileIds = [];
-      $query = "SELECT id FROM SongFiles WHERE songId='" . $songId . "';";
+      $query = "SELECT fileId FROM SongFiles WHERE songId='" . $songId . "';";
       if ($result = mysqli_query($conn, $query)) {
           if ($result->num_rows > 0) {
             // Get current row as an array

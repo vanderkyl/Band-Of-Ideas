@@ -12,7 +12,7 @@
   if(mysqli_ping($conn)) {
 
     $query = "INSERT INTO SongFiles (songId, fileId, bandId, userId, addedDate)
-                VALUES ('" . $id . "','" . $songId . "','" . $fileId . "','" . $bandId  . "','" . $userId . "',NOW())";
+                VALUES ('" . $songId . "','" . $fileId . "','" . $bandId  . "','" . $userId . "',NOW())";
 
     if ($result = mysqli_query($conn, $query)) {
       echo "Success!";
