@@ -11,23 +11,23 @@ function addToSong(id) {
     'userId': CURRENT_USER.id
   };
 
-    if (window.XMLHttpRequest) {
-      // code for IE7+, Firefox, Chrome, Opera, Safari
-      xmlhttp=new XMLHttpRequest();
-      // set `Content-Type` header
-      xhr.setRequestHeader('Content-Type', 'application/json');
-    } else {  // code for IE6, IE5
-      xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  if (window.XMLHttpRequest) {
+    // code for IE7+, Firefox, Chrome, Opera, Safari
+    xmlhttp=new XMLHttpRequest();
+    // set `Content-Type` header
+    xmlhttp.setRequestHeader('Content-Type', 'application/json');
+  } else {  // code for IE6, IE5
+    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+  xmlhttp.onreadystatechange=function() {
+    if (this.readyState==4 && this.status==200) {
+      console.log("Success");
+      console.log(this.ResponseText);
+      hideElementById("ideaAddButton-" + id);
+      displayElementById("ideaAdded-" + id);
     }
-    xmlhttp.onreadystatechange=function() {
-      if (this.readyState==4 && this.status==200) {
-        console.log("Success");
-        console.log(this.ResponseText);
-        hideElementById("ideaAddButton-" + id);
-        displayElementById("ideaAdded-" + id);
-      }
-    }
-    xmlhttp.open("POST","/php/addToSong.php", true);
+  }
+  xmlhttp.open("POST","/php/addToSong.php", true);
 
-    xmlhttp.send(JSON.stringify(postData));
+  xmlhttp.send(JSON.stringify(postData));
 }

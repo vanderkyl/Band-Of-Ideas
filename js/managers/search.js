@@ -48,14 +48,16 @@ function showIdeaResult(str, searchId, currentSongIdeas) {
     if (this.readyState==4 && this.status==200) {
       var files = JSON.parse(this.responseText);
       results = files;
+
       var fileHtml = "";
       for (var i = 0; i < files.length; i++) {
+        var link = "/#/idea?id=" + files[i].id;
         var ideaHtml = "<div id='ideaAddButton-" + files[i].id + "'class='playlistDetailsButton btn btn-default col-xs-3' onclick='addToSong(" + files[i].id + ")'>Add Idea</div><div id='ideaAdded-" + files[i].id + "' class='playlistDetailsButton col-xs-3' style='display: none; padding top: 8px'>Added</div>";
         for (var j = 0; j < currentSongIdeas.length; j++)
         if (files[i].id === currentSongIdeas[j].id) {
           ideaHtml = "<div id='ideaAddButton-" + files[i].id + "'class='playlistDetailsButton btn btn-default col-xs-3' style='display: none' onclick='addToSong(" + files[i].id + ")'>Add Idea</div><div id='ideaAdded-" + files[i].id + "' class='playlistDetailsButton col-xs-3' style='padding top: 8px'>Added</div>";
         }
-        fileHtml += "<div class='playlistButton col-xs-12'><div class='playlistDetails col-xs-6'><div>" + files[i].name + "</div></div><div class='playlistDetailsButton btn btn-default col-xs-3' onclick='navigateToURL('/#/idea?id=" + files[i].id + "')'>Open</div>" + ideaHtml + "</div>";
+        fileHtml += "<div class='playlistButton col-xs-12'><div class='playlistDetails col-xs-6'><div>" + files[i].name + "</div></div><div class='playlistDetailsButton btn btn-default col-xs-3' onclick='navigateToURL('" + link + "')'>Open</div>" + ideaHtml + "</div>";
       }
       document.getElementById(searchId).innerHTML= fileHtml;
 

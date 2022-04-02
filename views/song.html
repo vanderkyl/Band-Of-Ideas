@@ -144,26 +144,22 @@
 <div id="addSongFileModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header col-xs-12">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Add Idea To Song</h4>
       </div>
-      <div class="modal-body">
+      <div class="modal-body col-xs-12">
         <!-- Search -->
         <div id="ideaSearchContainer" class="idea-search col-xs-12">
           <form class="">
             <div class="form-group">
               <input id="idea-search-input" type="search" class="col-xs-12" placeholder="Search Ideas" onkeyup="showIdeaResult(this.value, 'idea-live-search', CURRENT_FILES)" autocomplete="off">
             </div>
-
           </form>
         </div>
         <div style="padding: 15px">
           <!-- Search Results -->
-          <div id="idea-live-search" class="col-xs-12">
-
-          </div>
-
+          <div id="idea-live-search" class="col-xs-12" style="margin-top: 10px"> </div>
         </div>
       </div>
       <div class="modal-footer">
