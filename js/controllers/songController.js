@@ -496,6 +496,8 @@ function playNext() {
         if (id) {
           $scope.getSong(id, function(song) {
             CURRENT_SONG = song;
+            var lyrics = getElementById("songLyricsText");
+            getElementById("songLyricsText").innerText = lyrics.innerText.trim();
             $scope.getSongFiles(song.id, function(files) {
               CURRENT_FILES = files;
               updateTitle(CURRENT_SONG.name);
