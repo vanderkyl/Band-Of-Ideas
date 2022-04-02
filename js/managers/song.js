@@ -14,8 +14,7 @@ function addToSong(id) {
   if (window.XMLHttpRequest) {
     // code for IE7+, Firefox, Chrome, Opera, Safari
     xmlhttp=new XMLHttpRequest();
-    // set `Content-Type` header
-    xmlhttp.setRequestHeader('Content-Type', 'application/json');
+
   } else {  // code for IE6, IE5
     xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
   }
@@ -28,6 +27,7 @@ function addToSong(id) {
     }
   }
   xmlhttp.open("POST","/php/addToSong.php", true);
-
+  // set `Content-Type` header
+  xmlhttp.setRequestHeader('Content-Type', 'application/json');
   xmlhttp.send(JSON.stringify(postData));
 }
