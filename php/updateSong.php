@@ -11,7 +11,7 @@
     if ($type == "lyrics") {
       $songId = $data->id;
       $lyrics = $data->lyrics;
-      $query = "UPDATE Songs SET lyrics = '" . $lyrics . "' WHERE id = '" . $songId . "';";
+      $query = "UPDATE Songs SET lyrics = " . $lyrics . " WHERE id = '" . $songId . "';";
       if ($result = mysqli_query($conn, $query)) {
         echo "Success!";
       } else {

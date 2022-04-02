@@ -461,11 +461,13 @@ function playNext() {
 
   $scope.saveLyrics = function() {
     console.log(CURRENT_USER);
-    CURRENT_SONG.lyrics = JSON.stringify(CURRENT_SONG.lyrics);
-    $http.post("/php/updateSong.php?type=lyrics", CURRENT_SONG)
+    var song = CURRENT_SONG;
+    song.lyrics = JSON.stringify(song.lyrics);
+    $http.post("/php/updateSong.php?type=lyrics", song)
     .then(
       function (response) {
         console.log(response.data);
+        $scope.closeEditLyrics();
       },
       function (response) {
         console.log(response.data);
@@ -476,25 +478,25 @@ function playNext() {
   $scope.addArrangement = function() {
     displayElementById("editArrangement");
     hideElementById("addArrangementButton");
-    displayElementById("closeAddArrangement");
+    displayElementById("closeAddArrangementButton");
   };
 
   $scope.editArrangement = function() {
     displayElementById("editArrangement");
     hideElementById("arrangement");
-    displayElementById("closeEditArrangement");
+    displayElementById("closeEditArrangementButton");
   };
 
   $scope.closeEditArrangement = function() {
     displayElementById("arrangement");
     hideElementById("editArrangement");
-    hideElementById("closeEditArrangement");
+    hideElementById("closeEditArrangementButton");
   };
 
   $scope.closeAddArrangement = function() {
     displayElementById("addArrangementButton");
     hideElementById("editArrangement");
-    hideElementById("closeAddArrangement");
+    hideElementById("closeAddArrangementButton");
   };
 
   $scope.saveArrangement = function() {
