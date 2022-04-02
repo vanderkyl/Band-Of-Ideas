@@ -461,6 +461,7 @@ function playNext() {
 
   $scope.saveLyrics = function() {
     console.log(CURRENT_USER);
+    CURRENT_SONG.lyrics = JSON.stringify(CURRENT_SONG.lyrics);
     $http.post("/php/updateSong.php?type=lyrics", CURRENT_SONG)
     .then(
       function (response) {
@@ -475,11 +476,13 @@ function playNext() {
   $scope.addArrangement = function() {
     displayElementById("editArrangement");
     hideElementById("addArrangementButton");
+    displayElementById("closeAddArrangement");
   };
 
   $scope.editArrangement = function() {
     displayElementById("editArrangement");
     hideElementById("arrangement");
+    displayElementById("closeEditArrangement");
   };
 
   $scope.closeEditArrangement = function() {
