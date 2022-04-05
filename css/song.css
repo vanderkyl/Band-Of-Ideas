@@ -10,3 +10,9 @@
   border-radius: 5px;
   margin-bottom: 20px;
 }
+
+#songLyricText, #songLyricsInputContainer {
+  padding: 35px;
+  white-space: pre-wrap;
+  padding-top: 10px;
+}

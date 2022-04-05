@@ -108,25 +108,23 @@
           <div id="songLyricsText" class="col-xs-12" style="padding: 35px; white-space: pre-wrap;">{{ song.lyrics }}</div>
         </div>
 
-        <div id="songLyricsInputContainer" class="containers col-xs-12" style="padding: 35px; white-space: pre-wrap; display: none">
+        <div id="songLyricsInputContainer" class="containers col-xs-12" style="display: none">
+          <div id="closeLyricsButton" class="btn btn-default" style="display: inline-block; text-align: right; font-size: 14px" ng-click="closeEditLyrics()">Close</div>
           <textarea id="songLyricsInput" name="lyrics" ng-model="song.lyrics" rows="4" cols="50">
             {{ song.lyrics }}
           </textarea>
           <div class="col-xs-12" style="text-align: right">
             <div id="saveLyricsButton" class="btn btn-success" style="display: inline-block" ng-click="saveLyrics()">Save Lyrics</div>
-            <div id="closeLyricsButton" class="btn btn-default" style="display: inline-block" ng-click="closeEditLyrics()">Close</div>
-
           </div>
-
         </div>
       </div>
     </div>
 
-
     <div id="files" class="containers col-xs-12" style="padding: 5px;">
       <div id="fileHeader">
         <!--<input id="fileSearchBar" type="search" ng-model="search" class="searchBar col-xs-12" style="" placeholder="Search Ideas">-->
-        <div id="addSongFile" class="addToListButton col-xs-12">
+        <div class="col-xs-6" style="text-align: left; padding-bottom: 13px;">Ideas</div>
+        <div id="addSongFile" class="addToListButton col-xs-6">
           <a href="javascript:void(0)" ng-click="openSongFileModal()" ><i class="fas fa-plus"></i></a>
         </div>
         <div id="fileFilters" style="padding-right: 0; float: right; display: none;">
