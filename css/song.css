@@ -1,0 +1,12 @@
+#addArrangementBlock {
+  padding: 20px 20px 10px 20px;
+}
+
+.editArrangementBlock {
+  display: inline-block;
+  padding: 20px;
+  border: 1px solid white;
+  margin-right: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}

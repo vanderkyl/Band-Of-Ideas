@@ -478,13 +478,13 @@ function playNext() {
   $scope.addArrangement = function() {
     displayElementById("editArrangement");
     hideElementById("addArrangementButton");
-    displayElementById("closeAddArrangementButton");
+    displayElementInlineById("closeAddArrangementButton");
   };
 
   $scope.editArrangement = function() {
     displayElementById("editArrangement");
     hideElementById("arrangement");
-    displayElementById("closeEditArrangementButton");
+    displayElementInlineById("closeEditArrangementButton");
   };
 
   $scope.closeEditArrangement = function() {
@@ -521,8 +521,10 @@ function playNext() {
   $scope.saveArrangementPart = function() {
     $scope.newArrangement.userId = CURRENT_USER.id;
     $scope.newArrangement.songId = CURRENT_SONG.id;
-    $scope.arrangement.push($scope.newArrangement);
+    $scope.newArrangement = {};
+    $scope.arrangement.push(newPart);
     $scope.closeAddPart();
+    var newPart = $scope.newArrangement;
     getElementById("addPartNameInput").value = "";
     console.log("Arrangement part successfully added");
   };

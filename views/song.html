@@ -55,7 +55,7 @@
           <p style="color: white; padding-top: 10px">Add Arrangement</p>
         </div>
         <div id="arrangement" class="col-xs-12" style="display: none">
-          <div id="editLyrics" class="col-xs-12" style="text-align: right">
+          <div id="editArrangement" class="col-xs-12" style="text-align: right">
             <a href="javascript:void(0)" ng-click="editArrangement()" >Edit</a>
           </div>
           <div id="arrangementBlocks">
@@ -67,25 +67,32 @@
           </div>
         </div>
         <div id="editArrangement" class="col-xs-12" style="display: none">
-          <div id="editArrangementBlock" ng-repeat="block in arrangement">
-            <div id="editBlockContents" class="arrangementBlock">
-              {{ block.name }}
+          <div class="col-xs-12" style="min-height: 300px">
+            <div class="editArrangementBlock" ng-repeat="block in arrangement" style="display: inline-block">
+              <div id="editBlockContents" class="arrangementBlock">
+                {{ block.name }}
+              </div>
+            </div>
+            <div id="addArrangementBlock" class="arrangementBlock" ng-click="addArrangementBlock()" style="display: inline-block">
+              <p id="addPartButtonText">Add Part</p>
+            </div>
+            <div id="addArrangementPartBlock" class="arrangementBlock" style="display: none">
+              <div id="addPartForm" style="padding: 20px;">
+                <div class="col-xs-12">
+                    <input id="addPartNameInput" type="text" ng-model="newArrangement.name" value="Name" placeholder="Name"/>
+                </div>
+                <div class="col-xs-12">
+                  <div id="savePartButton" class="btn btn-success" ng-click="saveArrangementPart()">Add Part</div>
+                  <div id="closePartButton" class="btn btn-default" ng-click="closeAddPart()">Close</div>
+                </div>
+              </div>
             </div>
           </div>
-          <div id="addArrangementBlock" class="arrangementBlock" ng-click="addArrangementBlock()">
-            <p id="addPartButtonText">Add Part</p>
+          <div class="col-xs-12" style="text-align: right">
+            <div id="saveLyricsButton" class="btn btn-success" ng-click="saveArrangement()">Save Arrangement</div>
+            <div id="closeAddArrangementButton" class="btn btn-default" style="display: none" ng-click="closeAddArrangement()">Close</div>
+            <div id="closeEditArrangementButton" class="btn btn-default" style="display: none" ng-click="closeEditArrangement()">Close</div>
           </div>
-          <div id="addArrangementPartBlock" class="arrangementBlock" style="display: none">
-            <div id="addPartForm" >
-              <input id="addPartNameInput" type="text" ng-model="newArrangement.name" value="Name" placeholder="Name"/>
-              <div id="closePartButton" class="btn btn-default" ng-click="closeAddPart()">Close</div>
-              <div id="savePartButton" class="btn btn-success" ng-click="saveArrangementPart()">Add Part</div>
-            </div>
-          </div>
-          <div id="closeAddArrangementButton" class="btn btn-default" style="display: none" ng-click="closeAddArrangement()">Close</div>
-          <div id="closeEditArrangementButton" class="btn btn-default" style="display: none" ng-click="closeEditArrangement()">Close</div>
-          <div id="saveLyricsButton" class="btn btn-success" ng-click="saveArrangement()">Save Arrangement</div>
-
        </div>
 
       </div>
@@ -105,8 +112,12 @@
           <textarea id="songLyricsInput" name="lyrics" ng-model="song.lyrics" rows="4" cols="50">
             {{ song.lyrics }}
           </textarea>
-          <div id="closeLyricsButton" class="btn btn-default" ng-click="closeEditLyrics()">Close</div>
-          <div id="saveLyricsButton" class="btn btn-success" ng-click="saveLyrics()">Save Lyrics</div>
+          <div class="col-xs-12" style="text-align: right">
+            <div id="saveLyricsButton" class="btn btn-success" style="display: inline-block" ng-click="saveLyrics()">Save Lyrics</div>
+            <div id="closeLyricsButton" class="btn btn-default" style="display: inline-block" ng-click="closeEditLyrics()">Close</div>
+
+          </div>
+
         </div>
       </div>
     </div>
@@ -115,8 +126,8 @@
     <div id="files" class="containers col-xs-12" style="padding: 5px;">
       <div id="fileHeader">
         <!--<input id="fileSearchBar" type="search" ng-model="search" class="searchBar col-xs-12" style="" placeholder="Search Ideas">-->
-        <div id="addSongFile" class="addToListButton col-xs-12" style="border: 1px solid white;">
-          <a href="javascript:void(0)" ng-click="openSongFileModal()" >Add Ideas</a>
+        <div id="addSongFile" class="addToListButton col-xs-12">
+          <a href="javascript:void(0)" ng-click="openSongFileModal()" ><i class="fas fa-plus"></i></a>
         </div>
         <div id="fileFilters" style="padding-right: 0; float: right; display: none;">
           <select ng-model="sortBy" id="fileOrder" class="form-control">

@@ -14,9 +14,9 @@
           <div id="ideaContainer" class="col-xs-12" style="padding: 0">
             <!-- Idea Container -->
             <div id="idea" class="containers col-xs-12" style="padding-bottom: 5px; min-height: 295px;">
-              <a href="javascript:void(0)" id="ideaCopyButton" onclick="copyIdea()" style="color: white;"><i class="far fa-copy"></i></a>
-              <a href="javascript:void(0)" id="ideaCopiedButton" onclick="copyIdea()" style="display: none; color: white; margin-right: 10px"><i class="fas fa-copy"></i> <span style="font-size: 10px"> Copied!  </span></a>
-              <a href="javascript:void(0)" id="ideaInfoButton" class="glyphicon glyphicon-info-sign" style="color: white; display: inline-block; float: right;" data-toggle="modal" data-target="#ideaDetailsModal"></a>
+              <a href="javascript:void(0)" id="ideaCopyButton" onclick="copyIdea()" style="color: white; font-size: 16px;"><i class="far fa-copy"></i></a>
+              <a href="javascript:void(0)" id="ideaCopiedButton" onclick="copyIdea()" style="display: none; color: white; margin-right: 10px; font-size: 16px;"><i class="fas fa-copy"></i> <span style="font-size: 10px"> Copied!  </span></a>
+              <a href="javascript:void(0)" id="ideaInfoButton" class="glyphicon glyphicon-info-sign" style="color: white; display: inline-block; float: right; font-size: 16px;" data-toggle="modal" data-target="#ideaDetailsModal"></a>
               <input type="text" value="http://bandofideas.com/#/idea?id={{file.id}}" id="ideaURL" style="display:none; position: absolute; font-size: 10px; width: 200px; background: transparent;">
               <p id="fileTitle" class="fileTitle col-xs-12">{{ file.name }}</p>
               <div id="ideaLoader" class="loader" style="margin-top: 75px;"></div>
@@ -74,15 +74,15 @@
                 <br>
                 <!-- Idea Buttons: Highlight, Comment, Download, Like -->
                 <div class="col-xs-12" style="border-top: 1px solid #ffffff59; padding: 5px">
-                  <div id="highlightButton" class="fileButtonLeft" ng-click="highlight()"><i class="far fa-clock"></i></div>
-                  <div id="newCommentButton" class="fileButtonLeft" style="margin-left: 15px; padding-left: 15px; padding-right: 15px;" ng-click="showCommentBar()"><i class="far fa-comment"></i></div>
+                  <div id="highlightButton" class="fileButtonLeft" ng-click="highlight()"><i class="far fa-clock" style="font-size: 16px;"></i></div>
+                  <div id="newCommentButton" class="fileButtonLeft" style="margin-left: 15px; padding-left: 15px; padding-right: 15px;" ng-click="showCommentBar()"><i class="far fa-comment" style="font-size: 16px;"></i></div>
                   <div class="fileButtonLeft" style="margin-left: 15px; padding-left: 15px; padding-right: 15px;">
-                    <a id="ideaDownload" href="{{ file.link }}" style="color: white; font-size: 15px" download>
+                    <a id="ideaDownload" href="{{ file.link }}" style="color: white; font-size: 16px" download>
                       <i class="far fa-save"></i>
                     </a>
                   </div>
                   <div class="fileButtonLeft" style="margin-left: 15px; padding-left: 15px; padding-right: 15px;">
-                    <a href="javascript:void(0)" ng-click="showAddPopup()" style="color: white; font-size: 15px"><i class="fas fa-plus"></i>
+                    <a href="javascript:void(0)" ng-click="showAddPopup()" style="color: white; font-size: 16px"><i class="fas fa-plus"></i>
                       <div class="leftPopup">
                       <span class="popuptext" id="addPopup">
                         <div class="popupButton col-xs-6" id="ideaSourceVideo" ng-click="openSourceVideo()" style="border-right: 1px solid white">

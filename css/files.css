@@ -246,7 +246,7 @@
   padding: 0;
   padding-top: 15px;
   padding-bottom: 15px;
-  font-size: 12px;
+  font-size: 14px;
   text-align: center;
 }
 
@@ -373,6 +373,7 @@
 #highlightInput, #commentInput {
   width: 100%;
   font-size: 15px;
+  color: black;
 }
 
 .comment {
