@@ -55,7 +55,7 @@
           <p style="color: white; padding-top: 10px">Add Arrangement</p>
         </div>
         <div id="arrangement" class="col-xs-12" style="display: none">
-          <div id="editArrangement" class="col-xs-12" style="text-align: right">
+          <div id="editArrangementButton" class="col-xs-12" style="text-align: right">
             <a href="javascript:void(0)" ng-click="editArrangement()" >Edit</a>
           </div>
           <div id="arrangementBlocks">
@@ -109,7 +109,7 @@
         </div>
 
         <div id="songLyricsInputContainer" class="containers col-xs-12" style="display: none">
-          <div id="closeLyricsButton" class="btn btn-default" style="display: inline-block; text-align: right; font-size: 14px" ng-click="closeEditLyrics()">Close</div>
+          <div id="closeLyricsButton" class="btn" style="display: inline-block; float: right; font-size: 14px" ng-click="closeEditLyrics()">Close</div>
           <textarea id="songLyricsInput" name="lyrics" ng-model="song.lyrics" rows="4" cols="50">
             {{ song.lyrics }}
           </textarea>
