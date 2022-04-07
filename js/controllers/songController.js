@@ -28,7 +28,7 @@ function($scope, $sce, $http, $filter) {
   $scope.newArrangement = {};
   $scope.editArrangement = {};
   $scope.currentArrangement = {};
-  $scope.arranementIndex = 1;
+  $scope.arrangementIndex = 1;
 
   //TODO Create functionality for a recent file selection
 
@@ -241,6 +241,12 @@ function playNext() {
         hideElementById("likeButton-" + index);
         displayElementInlineById("likedButton-" + index);
       }
+    }
+  };
+
+  $scope.reloadIdeas = function() {
+    if (addedIdeas > 0) {
+      location.reload(true);
     }
   };
 
@@ -512,6 +518,7 @@ function playNext() {
     .then(
       function (response) {
         console.log(response.data);
+        $scope.arrangementIndex++;
       },
       function (response) {
         console.log(response.data);
@@ -590,6 +597,7 @@ function playNext() {
         console.log(id);
         if (id) {
           $scope.getSong(id, function(song) {
+            addedIdeas = 0;
             CURRENT_SONG = song;
             if (!$scope.arrangement.length) {
               displayElementById("addArrangementButton");

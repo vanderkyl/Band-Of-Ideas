@@ -102,20 +102,16 @@
             <div id="closeEditArrangementButton" class="btn btn-default" style="display: none" ng-click="closeEditArrangement()">Close</div>
           </div>
        </div>
-
       </div>
-
 
       <div id="songLyrics" class="col-xs-12">
         <h4 style="color: white; text-align: center; margin-top: 25px;">Lyrics</h4>
-
         <div id="songLyricsTextContainer" class="containers col-xs-12">
           <div id="editLyrics" class="col-xs-12" style="text-align: right">
             <a href="javascript:void(0)" ng-click="editLyrics()" >Edit</a>
           </div>
           <div id="songLyricsText" class="col-xs-12" style="padding: 35px; white-space: pre-wrap;">{{ song.lyrics }}</div>
         </div>
-
         <div id="songLyricsInputContainer" class="containers col-xs-12" style="display: none">
           <div id="closeLyricsButton" class="btn" style="display: inline-block; float: right; font-size: 14px" ng-click="closeEditLyrics()">Close</div>
           <textarea id="songLyricsInput" name="lyrics" ng-model="song.lyrics" rows="4" cols="50">
@@ -185,6 +181,9 @@
                   <p style="min-width: 40px; display: inline-block">{{ song.likes }}</p>
                 </div>
               </div>
+              <div class="col-xs-12" style="margin-left: 45px; margin-bottom: 10px; font-size: 10px; color: #909090">
+                {{ song.band.name }} / {{ song.folder.name }}
+              </div>
             </div>
             <!-- End of Single File -->
           </div>
@@ -199,7 +198,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header col-xs-12">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <button type="button" class="close" ng-click="reloadIdeas()" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Add Idea To Song</h4>
       </div>
       <div class="modal-body col-xs-12">
@@ -217,7 +216,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn" data-dismiss="modal">Close</button>
+        <button type="button" class="btn" ng-click="reloadIdeas()" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

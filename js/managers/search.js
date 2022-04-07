@@ -51,7 +51,7 @@ function showIdeaResult(str, searchId, currentSongIdeas) {
 
       var fileHtml = "";
       for (var i = 0; i < files.length; i++) {
-        var link = "/#/idea?id=" + files[i].id;
+        var link = "%2F%23%2Fidea%3Fid%3D" + files[i].id;
         var ideaHtml = "<div id='ideaAddButton-" + files[i].id + "'class='playlistDetailsButton btn btn-default col-xs-3' onclick='addToSong(" + files[i].id + ")'>Add Idea</div><div id='ideaAdded-" + files[i].id + "' class='playlistDetailsButton col-xs-3' style='display: none; padding-top: 8px'>Added</div>";
         for (var j = 0; j < currentSongIdeas.length; j++)
         if (files[i].id === currentSongIdeas[j].id) {

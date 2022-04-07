@@ -1,3 +1,5 @@
+var addedIdeas = 0;
+
 function addToSong(id) {
   var data = new FormData();
   data.append('songId', CURRENT_SONG.id);
@@ -24,6 +26,7 @@ function addToSong(id) {
       console.log(this.ResponseText);
       hideElementById("ideaAddButton-" + id);
       displayElementById("ideaAdded-" + id);
+      addedIdeas++;
     }
   }
   xmlhttp.open("POST","/php/addToSong.php", true);
