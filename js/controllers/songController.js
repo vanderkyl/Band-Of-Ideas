@@ -540,6 +540,7 @@ function playNext() {
     $scope.closeAddPart();
     getElementById("addPartNameInput").value = "";
     console.log("Arrangement part successfully added");
+    console.log(newPart);
     $scope.newArrangement = {};
   };
 

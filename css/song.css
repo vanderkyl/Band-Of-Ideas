@@ -1,5 +1,5 @@
 #addArrangementBlock {
-  padding: 20px;
+  padding: 20px 20px 10px 20px;
   width: 100%;
   background: #1717177a;
   margin-top: 10px;
@@ -11,7 +11,7 @@
 }
 
 #addArrangementPartBlock {
-  padding: 20px 20px 10px 20px;
+  padding: 20px;
   width: 100%;
   background: #1717177a;
   margin-top: 7px;
