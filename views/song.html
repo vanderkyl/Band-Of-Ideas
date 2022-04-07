@@ -51,16 +51,16 @@
     <div id="songDetails" class="containers col-xs-12" style="padding: 5px">
       <div id="songArrangement" class="col-xs-12" style="border-bottom: 1px solid white; margin-bottom: 10px; padding-bottom: 25px;">
         <h4 style="color: white; text-align: center; margin-top: 25px;">Arrangement</h4>
-        <div id="addArrangementButton" ng-show="!arrangement.length" ng-click="addArrangement()" class="folder col-xs-12" style="margin-bottom: 30px; text-align: center">
+        <div id="addArrangementButton" ng-click="addArrangement()" class="folder col-xs-12" style="margin-bottom: 30px; text-align: center; display: none">
           <p style="color: white; padding-top: 10px">Add Arrangement</p>
         </div>
-        <div id="arrangement" class="col-xs-12" style="display: none">
+        <div id="arrangement" class="col-xs-12">
           <div id="editArrangementButton" class="col-xs-12" style="text-align: right">
             <a href="javascript:void(0)" ng-click="editArrangement()" >Edit</a>
           </div>
           <div id="arrangementBlocks">
             <div id="arrangementBlock" ng-repeat="block in arrangement">
-              <div id="blockContents">
+              <div id="blockContents-{{ block.id }}">
                 {{ block.name }}
               </div>
             </div>
@@ -69,15 +69,23 @@
         <div id="editArrangement" class="col-xs-12 containers" style="display: none">
           <div class="col-xs-12" style="min-height: 300px">
             <div class="editArrangementBlock" ng-repeat="block in arrangement">
-              <div id="editBlockContents" class="arrangementBlock">
-                {{ block.name }}
+              <div id="editBlock-{{ block.id }}">
+                <div style="font-size: 10px; text-align: right;">
+                  <a href="javascript:void(0)" ng-click="editArrangementBlock(block)">Edit</a>
+                </div>
+                <div id="editBlockContents-{{ block.id }}" class="arrangementBlock">
+                  {{ block.name }}
+                </div>
+                <div id="editBlockInput-{{ block.id }}" class="arrangementBlock">
+                  <input id="editPartNameInput" type="text" ng-model="editArrangement.name" value="Name" placeholder="Name"/>
+                </div>
               </div>
             </div>
             <div id="addArrangementBlock" ng-click="addArrangementBlock()" style="display: inline-block">
               <p id="addPartButtonText">Add Part</p>
             </div>
             <div id="addArrangementPartBlock" style="display: none">
-              <div id="addPartForm" style="padding: 20px;">
+              <div id="addPartForm">
                 <div class="col-xs-12">
                     <input id="addPartNameInput" type="text" ng-model="newArrangement.name" value="Name" placeholder="Name"/>
                 </div>

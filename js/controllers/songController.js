@@ -467,6 +467,7 @@ function playNext() {
     .then(
       function (response) {
         console.log(response.data);
+        $scope.song.lyrics = song.lyrics;
         $scope.closeEditLyrics();
       },
       function (response) {
@@ -516,6 +517,12 @@ function playNext() {
   $scope.addArrangementBlock = function() {
     displayElementInlineById("addArrangementPartBlock");
     hideElementById("addArrangementBlock");
+  };
+
+  $scope.editArrangementBlock = function(part) {
+    displayElementInlineById("editBlockInput" + part.id);
+    hideElementById("editBlockContents" + part.id);
+
   };
 
   $scope.saveArrangementPart = function() {
@@ -576,6 +583,11 @@ function playNext() {
         if (id) {
           $scope.getSong(id, function(song) {
             CURRENT_SONG = song;
+            if (!$scope.arrangement.length) {
+              displayElementById("addArrangementButton");
+              hideElementById("arrangement");
+              hideElementById("editArrangement")
+            }
             var lyrics = getElementById("songLyricsText");
             getElementById("songLyricsText").innerText = lyrics.innerText.trim();
             $scope.getSongFiles(song.id, function(files) {
