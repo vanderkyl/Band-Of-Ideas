@@ -78,7 +78,7 @@
                   {{ block.name }}
                 </div>
                 <div id="editBlockInput-{{ block.id }}" class="arrangementBlock" style="display: none; font-size: 12px">
-                  <input id="editPartNameInput" type="text" ng-model="editArrangement.name" value="Edit Name" placeholder="Edit Name"/>
+                  <input id="editPartNameInput" type="text" ng-model="editedArrangement.name" value="{{editedArrangement.name}}" placeholder="{{editedArrangement.name}}"/>
                   <div class="col-xs-12" style="margin-top: 5px;">
                     <div id="saveEditedPartButton" class="btn btn-success" style="font-size: 12px;" ng-click="saveEditedArrangementPart(block)">Save Part</div>
                     <div id="closeEditedPartButton" class="btn btn-default" style="font-size: 12px;" ng-click="closeEditedPart()">Close</div>
