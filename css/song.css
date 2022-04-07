@@ -36,11 +36,20 @@
 }
 
 #songLyricsText {
-  max-height: 300px;
+  max-height: 400px;
   overflow-y: auto;
   padding: 35px;
   padding-top: 10px;
   white-space: pre-wrap
+}
+
+
+#songLyricsInput {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  height: 400px;
 }
 
 .arrangementBlock {

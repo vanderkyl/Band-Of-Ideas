@@ -26,7 +26,7 @@ function($scope, $sce, $http, $filter) {
   $scope.members = [];
   $scope.arrangement = [];
   $scope.newArrangement = {};
-  $scope.editArrangement = {};
+  $scope.editedArrangement = {};
   $scope.currentArrangement = {};
   $scope.arrangementIndex = 1;
 
@@ -496,7 +496,7 @@ function playNext() {
   $scope.closeLyricsContainer = function() {
     hideElementById("closeLyricsContainerButton");
     displayElementById("openLyricsContainerButton");
-    getElementById("songLyricsText").style.maxHeight = "300px";
+    getElementById("songLyricsText").style.maxHeight = "400px";
   };
 
   $scope.addArrangement = function() {
@@ -538,6 +538,27 @@ function playNext() {
       });
   };
 
+  $scope.saveEditedArrangementPart = function(part) {
+    getElementById("editBlockContents-" + part.id).innerText = $scope.editedArrangement.name;
+    $scope.editedArrangement.userId = part.id;
+    $scope.editedArrangement.songId = part.id;
+    $scope.editedArrangement.id = part.id
+    $scope.currentArrangement = $scope.editedArrangement;
+    $scope.arrangement[part.id] = $scope.editedArrangement;
+    $scope.editedArrangement = {};
+    hideElementById("editBlockInput-" + part.id);
+    hideElementById("closeEditBlockInput-" + part.id);
+    displayElementById("editBlockButton-" + part.id);
+    displayElementById("editBlockContents-" + part.id);
+  };
+
+  $scope.closeEditedPart = function(part) {
+    displayElementById("editBlockInput-" + part.id);
+    displayElementById("closeEditBlockInput-" + part.id);
+    hideElementById("editBlockButton-" + part.id);
+    hideElementById("editBlockContents-" + part.id);
+  };
+
   $scope.addArrangementBlock = function() {
     displayElementInlineById("addArrangementPartBlock");
     hideElementById("addArrangementBlock");
@@ -548,6 +569,7 @@ function playNext() {
     hideElementById("editBlockContents-" + part.id);
     hideElementById("editBlockButton-" + part.id);
     displayElementById("closeEditBlockInput-" + part.id);
+    $scope.currentArrangement = part;
   };
 
   $scope.closeArrangementBlock = function(part) {
