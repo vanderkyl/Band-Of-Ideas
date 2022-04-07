@@ -5,6 +5,7 @@
 .editArrangementBlock {
   padding: 20px;
   border: 1px solid white;
+  text-align: center;
   margin-right: 10px;
   border-radius: 5px;
   margin-bottom: 20px;
@@ -14,4 +15,15 @@
   padding: 35px;
   white-space: pre-wrap;
   padding-top: 10px;
+}
+
+.arrangementBlock {
+  display: inline-block;
+  padding: 10px;
+  width: 250px;
+  background: #1717177a;
+  margin-top: 7px;
+  margin-bottom: 7px;
+  border-radius: 10px;
+  box-shadow: rgb(21, 21, 21) 0px 4px 8px
 }

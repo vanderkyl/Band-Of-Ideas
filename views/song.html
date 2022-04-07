@@ -49,7 +49,7 @@
     </div>
     <!-- End Band Buttons -->
     <div id="songDetails" class="containers col-xs-12" style="padding: 5px">
-      <div id="songArrangement" class="col-xs-12" style="border-bottom: 1px solid white; margin-bottom: 10px">
+      <div id="songArrangement" class="col-xs-12" style="border-bottom: 1px solid white; margin-bottom: 10px; padding-bottom: 25px;">
         <h4 style="color: white; text-align: center; margin-top: 25px;">Arrangement</h4>
         <div id="addArrangementButton" ng-show="!arrangement.length" ng-click="addArrangement()" class="folder col-xs-12" style="margin-bottom: 30px; text-align: center">
           <p style="color: white; padding-top: 10px">Add Arrangement</p>
@@ -66,9 +66,9 @@
             </div>
           </div>
         </div>
-        <div id="editArrangement" class="col-xs-12" style="display: none">
+        <div id="editArrangement" class="col-xs-12 containers" style="display: none">
           <div class="col-xs-12" style="min-height: 300px">
-            <div class="editArrangementBlock" ng-repeat="block in arrangement" style="display: inline-block">
+            <div class="editArrangementBlock" ng-repeat="block in arrangement">
               <div id="editBlockContents" class="arrangementBlock">
                 {{ block.name }}
               </div>
@@ -81,9 +81,9 @@
                 <div class="col-xs-12">
                     <input id="addPartNameInput" type="text" ng-model="newArrangement.name" value="Name" placeholder="Name"/>
                 </div>
-                <div class="col-xs-12">
-                  <div id="savePartButton" class="btn btn-success" ng-click="saveArrangementPart()">Add Part</div>
-                  <div id="closePartButton" class="btn btn-default" ng-click="closeAddPart()">Close</div>
+                <div class="col-xs-12" style="margin-top: 5px;">
+                  <div id="savePartButton" class="btn btn-success" style="font-size: 12px;" ng-click="saveArrangementPart()">Add Part</div>
+                  <div id="closePartButton" class="btn btn-default" style="font-size: 12px;" ng-click="closeAddPart()">Close</div>
                 </div>
               </div>
             </div>
