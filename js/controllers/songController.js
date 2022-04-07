@@ -485,7 +485,19 @@ function playNext() {
         console.log(response.data);
         console.log("Sorry, that didn't work.");
       });
-  }
+  };
+
+  $scope.openLyricsContainer = function() {
+    displayElementById("closeLyricsContainerButton");
+    hideElementById("openLyricsContainerButton");
+    getElementById("songLyricsText").style.maxHeight = "100%";
+  };
+
+  $scope.closeLyricsContainer = function() {
+    hideElementById("closeLyricsContainerButton");
+    displayElementById("openLyricsContainerButton");
+    getElementById("songLyricsText").style.maxHeight = "300px";
+  };
 
   $scope.addArrangement = function() {
     displayElementById("editArrangement");
@@ -536,6 +548,13 @@ function playNext() {
     hideElementById("editBlockContents-" + part.id);
     hideElementById("editBlockButton-" + part.id);
     displayElementById("closeEditBlockInput-" + part.id);
+  };
+
+  $scope.closeArrangementBlock = function(part) {
+    hideElementInlineById("editBlockInput-" + part.id);
+    displayElementById("editBlockContents-" + part.id);
+    displayElementById("editBlockButton-" + part.id);
+    hideElementById("closeEditBlockInput-" + part.id);
   };
 
   $scope.saveArrangementPart = function() {

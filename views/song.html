@@ -72,13 +72,13 @@
               <div id="editBlock-{{ block.id }}">
                 <div style="font-size: 11px; top: 10px; right: 35px; position: absolute;">
                   <a id="editBlockButton-{{ block.id }}" href="javascript:void(0)" ng-click="editArrangementBlock(block)">Edit</a>
-                  <a id="closeEditBlockInput-{{ block.id }}" href="javascript:void(0)" style="display: none; color: white !important;" ng-click="editArrangementBlock(block)">Close</a>
+                  <a id="closeEditBlockInput-{{ block.id }}" href="javascript:void(0)" style="display: none; color: white !important;" ng-click="closeArrangementBlock(block)">Close</a>
                 </div>
                 <div id="editBlockContents-{{ block.id }}" class="arrangementBlock">
                   {{ block.name }}
                 </div>
                 <div id="editBlockInput-{{ block.id }}" class="arrangementBlock" style="display: none; font-size: 12px">
-                  <input id="editPartNameInput" type="text" ng-model="editArrangement.name"/>
+                  <input id="editPartNameInput" type="text" ng-model="editArrangement.name" value="Edit Name" placeholder="Edit Name"/>
                 </div>
               </div>
             </div>
@@ -107,12 +107,14 @@
 
       <div id="songLyrics" class="col-xs-12">
         <h4 style="color: white; text-align: center; margin-top: 25px;">Lyrics</h4>
-        <div id="songLyricsTextContainer" class="containers col-xs-12">
+        <div id="songLyricsTextContainer" class="containers col-xs-12" style="padding-bottom: 10px;">
           <div id="editLyrics" class="col-xs-12" style="text-align: right">
             <a href="javascript:void(0)" ng-click="editLyrics()" >Edit</a>
           </div>
-          <div id="songLyricsText" class="col-xs-12" style="padding: 35px; white-space: pre-wrap;">{{ song.lyrics }}</div>
+          <div id="songLyricsText" class="col-xs-12">{{ song.lyrics }}</div>
         </div>
+        <div id="openLyricsContainerButton" class="col-xs-12" style="text-align: center; border-top: 1px solid white; cursor: pointer; padding-top: 10px;" ng-click="openLyricsContainer()"><i class="fas fa-chevron-down"></i></div>
+        <div id="closeLyricsContainerButton" class="col-xs-12" style="text-align: center; border-top: 1px solid white; cursor: pointer; padding-top: 10px; display: none" ng-click="closeLyricsContainer()"><i class="fas fa-chevron-up"></i></div>
         <div id="songLyricsInputContainer" class="containers col-xs-12" style="display: none">
           <div id="closeLyricsButton" class="btn" style="display: inline-block; float: right; font-size: 14px" ng-click="closeEditLyrics()">Close</div>
           <textarea id="songLyricsInput" name="lyrics" ng-model="song.lyrics" rows="4" cols="50">
