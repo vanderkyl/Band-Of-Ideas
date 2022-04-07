@@ -532,9 +532,10 @@ function playNext() {
   };
 
   $scope.editArrangementBlock = function(part) {
-    displayElementInlineById("editBlockInput" + part.id);
-    hideElementById("editBlockContents" + part.id);
-
+    displayElementInlineById("editBlockInput-" + part.id);
+    hideElementById("editBlockContents-" + part.id);
+    hideElementById("editBlockButton-" + part.id);
+    displayElementById("closeEditBlockInput-" + part.id);
   };
 
   $scope.saveArrangementPart = function() {

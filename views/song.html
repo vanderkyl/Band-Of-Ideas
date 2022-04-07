@@ -71,13 +71,14 @@
             <div class="editArrangementBlock" ng-repeat="block in arrangement">
               <div id="editBlock-{{ block.id }}">
                 <div style="font-size: 11px; top: 10px; right: 35px; position: absolute;">
-                  <a href="javascript:void(0)" ng-click="editArrangementBlock(block)">Edit</a>
+                  <a id="editBlockButton-{{ block.id }}" href="javascript:void(0)" ng-click="editArrangementBlock(block)">Edit</a>
+                  <a id="closeEditBlockInput-{{ block.id }}" href="javascript:void(0)" style="display: none; color: white !important;" ng-click="editArrangementBlock(block)">Close</a>
                 </div>
                 <div id="editBlockContents-{{ block.id }}" class="arrangementBlock">
                   {{ block.name }}
                 </div>
                 <div id="editBlockInput-{{ block.id }}" class="arrangementBlock" style="display: none; font-size: 12px">
-                  <input id="editPartNameInput" type="text" ng-model="editArrangement.name" value="{{editArrangement.name}}" placeholder="{{editArrangement.name}}"/>
+                  <input id="editPartNameInput" type="text" ng-model="editArrangement.name"/>
                 </div>
               </div>
             </div>
