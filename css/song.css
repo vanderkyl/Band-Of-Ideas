@@ -1,5 +1,24 @@
 #addArrangementBlock {
   padding: 20px 20px 10px 20px;
+  width: 100%;
+  background: #1717177a;
+  margin-top: 7px;
+  margin-bottom: 7px;
+  border-radius: 10px;
+  box-shadow: rgb(21, 21, 21) 0px 4px 8px;
+  text-align: center;
+  cursor: pointer;
+}
+
+#addArrangementPartBlock {
+  padding: 20px 20px 10px 20px;
+  width: 100%;
+  background: #1717177a;
+  margin-top: 7px;
+  margin-bottom: 7px;
+  border-radius: 10px;
+  box-shadow: rgb(21, 21, 21) 0px 4px 8px;
+  text-align: center;
 }
 
 .editArrangementBlock {
@@ -18,12 +37,5 @@
 }
 
 .arrangementBlock {
-  display: inline-block;
-  padding: 10px;
-  width: 250px;
-  background: #1717177a;
-  margin-top: 7px;
-  margin-bottom: 7px;
-  border-radius: 10px;
-  box-shadow: rgb(21, 21, 21) 0px 4px 8px
+  font-size: 16px;
 }

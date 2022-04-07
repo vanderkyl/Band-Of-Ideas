@@ -521,12 +521,12 @@ function playNext() {
   $scope.saveArrangementPart = function() {
     $scope.newArrangement.userId = CURRENT_USER.id;
     $scope.newArrangement.songId = CURRENT_SONG.id;
-    $scope.newArrangement = {};
+    var newPart = $scope.newArrangement;
     $scope.arrangement.push(newPart);
     $scope.closeAddPart();
-    var newPart = $scope.newArrangement;
     getElementById("addPartNameInput").value = "";
     console.log("Arrangement part successfully added");
+    $scope.newArrangement = {};
   };
 
   $scope.closeAddPart = function() {
