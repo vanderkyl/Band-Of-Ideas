@@ -26,6 +26,9 @@ function($scope, $sce, $http, $filter) {
   $scope.members = [];
   $scope.arrangement = [];
   $scope.newArrangement = {};
+  $scope.editArrangement = {};
+  $scope.currentArrangement = {};
+  $scope.arranementIndex = 1;
 
   //TODO Create functionality for a recent file selection
 
@@ -460,14 +463,16 @@ function playNext() {
   };
 
   $scope.saveLyrics = function() {
-    console.log(CURRENT_USER);
-    var song = CURRENT_SONG;
-    song.lyrics = JSON.stringify(song.lyrics);
+    var newLyrics = $scope.song.lyrics;
+    var song = $scope.song;
+    song.lyrics = JSON.stringify(newLyrics);
     $http.post("/php/updateSong.php?type=lyrics", song)
     .then(
       function (response) {
         console.log(response.data);
         $scope.song.lyrics = song.lyrics;
+        getElementById("songLyricsInput").value = newLyrics;
+        getElementById("songLyricsText").innerHTML = newLyrics;
         $scope.closeEditLyrics();
       },
       function (response) {
@@ -528,6 +533,8 @@ function playNext() {
   $scope.saveArrangementPart = function() {
     $scope.newArrangement.userId = CURRENT_USER.id;
     $scope.newArrangement.songId = CURRENT_SONG.id;
+    $scope.newArrangement.id = $scope.arrangementIndex;
+    $scope.currentArrangement = $scope.newArrangement;
     var newPart = $scope.newArrangement;
     $scope.arrangement.push(newPart);
     $scope.closeAddPart();
